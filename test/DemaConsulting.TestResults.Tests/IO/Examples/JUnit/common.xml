@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Test Run" time="20.0" timestamp="2024-12-25T12:00:00Z">
+  <testsuite name="TestSuite1" time="10.0" timestamp="2024-12-25T12:00:00Z">
+    <testcase name="testCase1" classname="Tests.Suite1" time="5.0" />
+    <testcase name="testCase2" classname="Tests.Suite1" time="5.0" />
+  </testsuite>
+  <testsuite name="TestSuite2" time="10.0" timestamp="2024-12-25T12:00:10Z">
+    <testcase name="testCase3" classname="Tests.Suite2" time="5.0" />
+    <testcase name="testCase4" classname="Tests.Suite2" time="5.0" />
+  </testsuite>
+</testsuites>

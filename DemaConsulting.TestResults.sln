@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemaConsulting.TestResults", "src\DemaConsulting.TestResults\DemaConsulting.TestResults.csproj", "{E55949FC-6FB7-427F-A5E7-D182A3CD66C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemaConsulting.TestResults.Tests", "test\DemaConsulting.TestResults.Tests\DemaConsulting.TestResults.Tests.csproj", "{D74C4D9F-9F28-450F-A2C3-4D71C0B1294C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E55949FC-6FB7-427F-A5E7-D182A3CD66C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E55949FC-6FB7-427F-A5E7-D182A3CD66C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E55949FC-6FB7-427F-A5E7-D182A3CD66C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E55949FC-6FB7-427F-A5E7-D182A3CD66C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D74C4D9F-9F28-450F-A2C3-4D71C0B1294C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D74C4D9F-9F28-450F-A2C3-4D71C0B1294C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D74C4D9F-9F28-450F-A2C3-4D71C0B1294C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D74C4D9F-9F28-450F-A2C3-4D71C0B1294C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

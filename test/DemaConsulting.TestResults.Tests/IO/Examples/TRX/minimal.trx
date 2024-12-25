@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a0db512b-f191-4818-9b0d-1e211d4a45c6" name="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+	<Results>
+		<UnitTestResult executionId="2ac347cd-05dc-4886-a513-1f24193fbcce" testId="0c5d47ab-65f0-de3a-ff6c-39359ff70568" testName="testCase1" computerName="" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" />
+	</Results>
+	<TestDefinitions>
+		<UnitTest name="testCase1" storage="" id="0c5d47ab-65f0-de3a-ff6c-39359ff70568">
+			<Execution id="2ac347cd-05dc-4886-a513-1f24193fbcce" />
+			<TestMethod codeBase="" className="TestSuite1" name="testCase1" />
+		</UnitTest>
+	</TestDefinitions>
+	<TestEntries>
+		<TestEntry testId="0c5d47ab-65f0-de3a-ff6c-39359ff70568" executionId="2ac347cd-05dc-4886-a513-1f24193fbcce" />
+	</TestEntries>
+</TestRun>

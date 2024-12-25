@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- testsuite may be root element if single top-level suite -->
+<testsuite name="TestSuite1">
+  <testcase name="testCase1" />
+</testsuite>

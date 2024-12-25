@@ -1,0 +1,10 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb84341f_002D3cdb_002D4f6e_002D80d4_002Dcd914e1f2d43/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestMinimal" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::D74C4D9F-9F28-450F-A2C3-4D71C0B1294C::net8.0::DemaConsulting.TestResults.Tests.IO.TestJUnitSerializer.Test_Serialize_Minimal&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::D74C4D9F-9F28-450F-A2C3-4D71C0B1294C::net8.0::DemaConsulting.TestResults.Tests.IO.TestJUnitSerializer.Test_Serialize_Common&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::D74C4D9F-9F28-450F-A2C3-4D71C0B1294C::net8.0::DemaConsulting.TestResults.Tests.IO.TestJUnitDeserializer.Test_Deserialize_JenkinsStyle&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::D74C4D9F-9F28-450F-A2C3-4D71C0B1294C::net8.0::DemaConsulting.TestResults.Tests.IO.TestJUnitSerializer.Test_Serialize_Output&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::D74C4D9F-9F28-450F-A2C3-4D71C0B1294C::net8.0::DemaConsulting.TestResults.Tests.IO.TestTrxDeserializer.Test_Deserialize_Minimal&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

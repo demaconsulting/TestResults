@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="IO\Examples\JUnit\common.xml" />
+    <None Remove="IO\Examples\JUnit\jenkins-style.xml" />
+    <None Remove="IO\Examples\JUnit\junit-basic.xml" />
+    <None Remove="IO\Examples\JUnit\junit-complete.xml" />
+    <None Remove="IO\Examples\JUnit\minimal.xml" />
+    <None Remove="IO\Examples\TRX\minimal.trx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="IO\Examples\JUnit\common.xml" />
+    <EmbeddedResource Include="IO\Examples\JUnit\jenkins-style.xml" />
+    <EmbeddedResource Include="IO\Examples\JUnit\minimal.xml" />
+    <EmbeddedResource Include="IO\Examples\TRX\minimal.trx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DemaConsulting.TestResults\DemaConsulting.TestResults.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+</Project>
