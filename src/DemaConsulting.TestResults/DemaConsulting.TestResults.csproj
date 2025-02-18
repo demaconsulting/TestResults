@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageProjectUrl>https://github.com/demaconsulting/TestResults</PackageProjectUrl>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageTags>tests;trx</PackageTags>
+	<Description>Test Results Library</Description>
+	<Copyright>Copyright DEMA Consulting</Copyright>
+	<Title>Test Results Library</Title>
+	<Authors>DEMA Consulting</Authors>
+	<Company>DEMA Consulting</Company>
+	<Version>0.0.0</Version>
+	<PackageId>DemaConsulting.TestResults</PackageId>
+	<Product>DemaConsulting.TestResults</Product>
+	<PackageIcon>Icon.png</PackageIcon>
+	<IncludeSymbols>True</IncludeSymbols>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="DemaConsulting.TestResults.csproj.DotSettings" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

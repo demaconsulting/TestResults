@@ -1,0 +1,7 @@
+.vs
+*.bak
+*.user
+
+bin/
+obj/
+TestResults/

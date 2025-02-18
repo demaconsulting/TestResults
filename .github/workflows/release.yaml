@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (1.0.0)'
+        required: true
+        type: string
+      publish:
+        description: 'Publish Type'
+        required: true
+        default: 'publish'
+        type: choice
+        options:
+        - none
+        - release
+        - publish
+
+jobs:
+  build:
+    name: Build Linux
+    uses: ./.github/workflows/build.yaml
+    with:
+      os: ubuntu-latest
+      version: ${{ inputs.version }}
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  release:
+    permissions:
+      contents: write
+      packages: write
+
+    runs-on: ubuntu-latest
+    
+    needs: build
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup dotnet 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          8.x
+
+    - name: Download Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: artifacts-ubuntu-latest
+        path: artifacts
+
+    - name: Clean Artifacts
+      shell: bash
+      run: rm -rf artifacts/test
+      
+    - name: Create release
+      if: ${{ inputs.publish == 'release' || inputs.publish == 'publish' }}
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: 'artifacts/**/*'
+        generateReleaseNotes: true
+        tag: ${{ inputs.version }}
+
+    - name: Publish to Nuget
+      if: ${{ inputs.publish == 'publish' }}
+      run: >
+        dotnet
+        nuget push
+        artifacts/src/DemaConsulting.TestResults/bin/Release/*.nupkg
+        --source "https://api.nuget.org/v3/index.json"
+        --api-key "${{ secrets.DEMACONSULTINGNUGETKEY }}"

@@ -1,0 +1,129 @@
+# This workflow annotates the SBOM for the DemaConsulting.TestResults with
+# build tools, and generates a summary markdown.
+
+
+# Workflow Parameters
+parameters:
+  dotnet-version: unknown
+  test-results-spdx: src/DemaConsulting.TestResults/bin/Release/_manifest/spdx_2.2/manifest.spdx.json
+  test-results-md: test-results-summary.md
+  test-results-tests-spdx: test/DemaConsulting.TestResults.Tests/bin/Release/_manifest/spdx_2.2/manifest.spdx.json
+  test-results-tests-md: test-results-tests-summary.md
+
+# Steps
+steps:
+
+  # Get the version of the TestResults package
+- command: get-version
+  inputs:
+    output: version
+    spdx: ${{ test-results-spdx }}
+    name: DemaConsulting.TestResults
+
+  # Rename the package ID for TestResults
+- command: rename-id
+  displayName: Rename TestResults Package ID
+  inputs:
+    spdx: ${{ test-results-spdx }}
+    old: SPDXRef-RootPackage
+    new: SPDXRef-Package-DemaConsulting-TestResults-${{ version }}
+
+  # Query for DotNet version
+- command: run-workflow
+  displayName: Query DotNet Version
+  inputs:
+    url: https://raw.githubusercontent.com/demaconsulting/SpdxWorkflows/main/GetDotNetVersion.yaml
+    outputs:
+      version: dotnet-version
+
+  # Add DotNet package
+- command: run-workflow
+  displayName: Add DotNet Package ${{ dotnet-version }}
+  inputs:
+    url: https://raw.githubusercontent.com/demaconsulting/SpdxWorkflows/main/AddDotNetPackage.yaml
+    parameters:
+      spdx: ${{ test-results-spdx }}
+      id: SPDXRef-Package-DotNet-${{ dotnet-version }}
+      version: ${{ dotnet-version }}
+
+  # Add DotNet relationships
+- command: add-relationship
+  displayName: Add DotNet Relationships
+  inputs:
+    spdx: ${{ test-results-spdx }}
+    id: SPDXRef-Package-DotNet-${{ dotnet-version }}
+    relationships:
+    - type: BUILD_TOOL_OF
+      element: SPDXRef-Package-DemaConsulting-TestResults-${{ version }}
+      comment: DemaConsulting.TestResults compiled by DotNet ${{ dotnet-version }}
+
+  # Update the Sha256 digest on the TestResults SBOM
+- command: hash
+  displayName: Update TestResults SBOM Sha256
+  inputs:
+    operation: generate
+    algorithm: sha256
+    file: ${{ test-results-spdx }}
+
+  # Validate the TestResults SBOM
+- command: validate
+  displayName: Validate TestResults SBOM Sha256
+  inputs:
+    spdx: ${{ test-results-spdx }}
+
+  # Generate the TestResults summary
+- command: to-markdown
+  displayName: Generate TestResults SBOM summary
+  inputs:
+    spdx: ${{ test-results-spdx }}
+    markdown: ${{ test-results-md }}
+
+  # Rename the package ID for TestResults.Tests
+- command: rename-id
+  displayName: Rename TestResults.Tests Package ID
+  inputs:
+    spdx: ${{ test-results-tests-spdx }}
+    old: SPDXRef-RootPackage
+    new: SPDXRef-Package-DemaConsulting-TestResults-Tests-${{ version }}
+
+  # Add DotNet package
+- command: run-workflow
+  displayName: Add DotNet Package ${{ dotnet-version }}
+  inputs:
+    url: https://raw.githubusercontent.com/demaconsulting/SpdxWorkflows/main/AddDotNetPackage.yaml
+    parameters:
+      spdx: ${{ test-results-tests-spdx }}
+      id: SPDXRef-Package-DotNet-${{ dotnet-version }}
+      version: ${{ dotnet-version }}
+
+  # Add DotNet relationships
+- command: add-relationship
+  displayName: Add DotNet Relationships
+  inputs:
+    spdx: ${{ test-results-tests-spdx }}
+    id: SPDXRef-Package-DotNet-${{ dotnet-version }}
+    relationships:
+    - type: BUILD_TOOL_OF
+      element: SPDXRef-Package-DemaConsulting-TestResults-Tests-${{ version }}
+      comment: DemaConsulting.TestResults.Tests compiled by DotNet ${{ dotnet-version }}
+
+  # Update the Sha256 digest on the TestResults.Tests SBOM
+- command: hash
+  displayName: Update TestResults.Tests SBOM Sha256
+  inputs:
+    operation: generate
+    algorithm: sha256
+    file: ${{ test-results-tests-spdx }}
+
+  # Validate the TestResults.Tests SBOM
+- command: validate
+  displayName: Validate TestResults.Tests SBOM Sha256
+  inputs:
+    spdx: ${{ test-results-tests-spdx }}
+
+  # Generate the TestResults.Tests summary
+- command: to-markdown
+  displayName: Generate TestResults.Tests SBOM summary
+  inputs:
+    spdx: ${{ test-results-tests-spdx }}
+    markdown: ${{ test-results-tests-md }}
