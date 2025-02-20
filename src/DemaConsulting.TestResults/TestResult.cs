@@ -21,9 +21,9 @@
 namespace DemaConsulting.TestResults;
 
 /// <summary>
-///     TestCase class
+///     TestResult class
 /// </summary>
-public sealed class TestCase
+public sealed class TestResult
 {
     /// <summary>
     ///     Gets or sets the ID of the test case
@@ -56,22 +56,22 @@ public sealed class TestCase
     public string ComputerName { get; set; } = Environment.MachineName;
 
     /// <summary>
-    ///     Gets or sets the start time of the test
+    ///     Gets or sets the start time of the test execution
     /// </summary>
-    public DateTime StartTime { get; set; } = DateTime.Now;
+    public DateTime StartTime { get; set; } = DateTime.UtcNow;
 
     /// <summary>
-    ///     Gets or sets the duration of the test case
+    ///     Gets or sets the duration of the test execution
     /// </summary>
     public double Duration { get; set; } = 0;
 
     /// <summary>
-    ///     Gets or sets the stdout output when running the test case
+    ///     Gets or sets the stdout output when execution the test case
     /// </summary>
     public string SystemOutput { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the stderr output when running the test case
+    ///     Gets or sets the stderr output when execution the test case
     /// </summary>
     public string SystemError { get; set; } = string.Empty;
 
@@ -81,7 +81,12 @@ public sealed class TestCase
     public TestOutcome Outcome { get; set; } = TestOutcome.Skipped;
 
     /// <summary>
-    ///     Gets or sets the test error information
+    ///     Gets or sets the test case error message
     /// </summary>
-    public TestError? Error { get; set; } = null;
+    public string ErrorMessage { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the test case error stack trace
+    /// </summary>
+    public string ErrorStackTrace { get; set; } = string.Empty;
 }
