@@ -18,8 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.Globalization;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace DemaConsulting.TestResults.IO;
 
@@ -34,29 +37,29 @@ public static class TrxSerializer
     private static readonly XNamespace TrxNamespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010";
 
     /// <summary>
-    ///     Serializes the TestSuites object to a TRX file
+    ///     Serializes the TestResults object to a TRX file
     /// </summary>
-    /// <param name="suites">Test Suites</param>
+    /// <param name="results">Test Results</param>
     /// <returns>TRX file contents</returns>
-    public static string Serialize(TestSuites suites)
+    public static string Serialize(TestResults results)
     {
         // Construct the document
         var doc = new XDocument();
 
         // Construct the root element
         var root = new XElement(TrxNamespace + "TestRun",
-            new XAttribute("id", suites.Id),
-            new XAttribute("name", suites.Name),
-            new XAttribute("runUser", suites.UserName));
+            new XAttribute("id", results.Id),
+            new XAttribute("name", results.Name),
+            new XAttribute("runUser", results.UserName));
         doc.Add(root);
 
         // Construct the results
-        var results = new XElement(TrxNamespace + "Results");
-        root.Add(results);
-        foreach (var c in suites.Cases)
+        var resultsElement = new XElement(TrxNamespace + "Results");
+        root.Add(resultsElement);
+        foreach (var c in results.Results)
         {
             // Construct the result
-            var result = new XElement(TrxNamespace + "UnitTestResult",
+            var resultElement = new XElement(TrxNamespace + "UnitTestResult",
                 new XAttribute("executionId", c.ExecutionId),
                 new XAttribute("testId", c.TestId),
                 new XAttribute("testName", c.Name),
@@ -67,16 +70,16 @@ public static class TrxSerializer
                 new XAttribute("startTime", c.StartTime),
                 new XAttribute("endTime", c.StartTime + TimeSpan.FromSeconds(c.Duration)),
                 new XAttribute("testListId", "19431567-8539-422a-85D7-44EE4E166BDA"));
-            results.Add(result);
+            resultsElement.Add(resultElement);
 
             // Construct the output
-            var output = new XElement(TrxNamespace + "Output");
-            result.Add(output);
+            var outputElement = new XElement(TrxNamespace + "Output");
+            resultElement.Add(outputElement);
 
             // Construct the stdout output
             if (c.SystemOutput != string.Empty)
             {
-                output.Add(
+                outputElement.Add(
                     new XElement(TrxNamespace + "StdOut",
                         new XCData(c.SystemOutput)));
             }
@@ -84,29 +87,29 @@ public static class TrxSerializer
             // Construct the stderr output
             if (c.SystemError != string.Empty)
             {
-                output.Add(
+                outputElement.Add(
                     new XElement(TrxNamespace + "StdOut",
                         new XCData(c.SystemOutput)));
             }
 
             // Construct the error 
-            if (c.Error != null)
+            if (c.ErrorMessage != string.Empty)
             {
-                output.Add(
+                outputElement.Add(
                     new XElement(TrxNamespace + "ErrorInfo",
                         new XElement(TrxNamespace + "Message",
-                            new XCData(c.Error.Message)),
+                            new XCData(c.ErrorMessage)),
                         new XElement(TrxNamespace + "StackTrace",
-                            new XCData(c.Error.StackTrace))));
+                            new XCData(c.ErrorStackTrace))));
             }
         }
 
         // Construct definitions
-        var definitions = new XElement(TrxNamespace + "TestDefinitions");
-        root.Add(definitions);
-        foreach (var c in suites.Cases)
+        var definitionsElement = new XElement(TrxNamespace + "TestDefinitions");
+        root.Add(definitionsElement);
+        foreach (var c in results.Results)
         {
-            definitions.Add(
+            definitionsElement.Add(
                 new XElement(TrxNamespace + "UnitTest",
                     new XAttribute("name", c.Name),
                     new XAttribute("id", c.TestId),
@@ -119,10 +122,10 @@ public static class TrxSerializer
         }
 
         // Construct the Test Entries
-        var entries = new XElement(TrxNamespace + "TestEntries");
-        root.Add(entries);
-        foreach (var c in suites.Cases)
-            entries.Add(
+        var entriesElement = new XElement(TrxNamespace + "TestEntries");
+        root.Add(entriesElement);
+        foreach (var c in results.Results)
+            entriesElement.Add(
                 new XElement(TrxNamespace + "TestEntry",
                     new XAttribute("testId", c.TestId),
                     new XAttribute("executionId", c.ExecutionId),
@@ -142,15 +145,98 @@ public static class TrxSerializer
                 new XAttribute("outcome", "Completed"),
                 new XElement(
                     TrxNamespace + "Counters",
-                    new XAttribute("total", suites.Cases.Count()),
-                    new XAttribute("executed", suites.Cases.Count(c => c.Outcome != TestOutcome.Skipped)),
-                    new XAttribute("passed", suites.Cases.Count(c => c.Outcome == TestOutcome.Passed)),
-                    new XAttribute("failed", suites.Cases.Count(c => c.Outcome == TestOutcome.Failed)))));
+                    new XAttribute("total", results.Results.Count),
+                    new XAttribute("executed", results.Results.Count(c => c.Outcome != TestOutcome.Skipped)),
+                    new XAttribute("passed", results.Results.Count(c => c.Outcome == TestOutcome.Passed)),
+                    new XAttribute("failed", results.Results.Count(c => c.Outcome == TestOutcome.Failed)))));
 
         // Write the TRX text
         var writer = new Utf8StringWriter();
         doc.Save(writer);
         return writer.ToString();
+    }
+
+    /// <summary>
+    ///     Deserializes a TRX file to a TestResults object
+    /// </summary>
+    /// <param name="trxContents">TRX File Contents</param>
+    /// <returns>Test Results</returns>
+    public static TestResults Deserialize(string trxContents)
+    {
+        // Parse the document
+        var doc = XDocument.Parse(trxContents);
+        var nsMgr = new XmlNamespaceManager(new NameTable());
+        nsMgr.AddNamespace("trx", TrxNamespace.NamespaceName);
+
+        // Construct the results
+        var results = new TestResults();
+
+        // Get the run element
+        var runElement = doc.XPathSelectElement("/trx:TestRun", nsMgr) ?? 
+                         throw new InvalidOperationException("Invalid TRX file");
+        results.Id = Guid.Parse(runElement.Attribute("id")?.Value ?? Guid.NewGuid().ToString());
+        results.Name = runElement.Attribute("name")?.Value ?? string.Empty;
+        results.UserName = runElement.Attribute("runUser")?.Value ?? string.Empty;
+
+        // Get the results
+        var resultElements = doc.XPathSelectElements(
+            "/trx:TestRun/trx:Results/trx:UnitTestResult",
+            nsMgr);
+        foreach (var resultElement in resultElements)
+        {
+            // Get the test ID
+            var testId = resultElement.Attribute("testId") ??
+                         throw new InvalidOperationException("Invalid TRX file");
+
+            // Get the test method element
+            var methodElement =
+                doc.XPathSelectElement(
+                    $"/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@id='{testId.Value}']/trx:TestMethod",
+                    nsMgr) ??
+                throw new InvalidOperationException("Invalid TRX File");
+
+            // Get the output element
+            var outputElement = resultElement.Element(TrxNamespace + "Output") ??
+                                throw new InvalidOperationException("Invalid TRX file");
+
+            // Get the errorInfo element
+            var errorInfoElement = outputElement.Element(TrxNamespace + "ErrorInfo");
+
+            // Add the test result
+            results.Results.Add(
+                new TestResult
+                {
+                    TestId = Guid.Parse(testId.Value),
+                    ExecutionId = Guid.Parse(
+                        resultElement.Attribute("executionId")?.Value ?? Guid.NewGuid().ToString()),
+                    Name = methodElement.Attribute("name")?.Value ?? string.Empty,
+                    CodeBase = methodElement.Attribute("codeBase")?.Value ?? string.Empty,
+                    ClassName = methodElement.Attribute("className")?.Value ?? string.Empty,
+                    ComputerName = resultElement.Attribute("computerName")?.Value ?? string.Empty,
+                    Outcome = Enum.Parse<TestOutcome>(resultElement.Attribute("outcome")?.Value ?? "Failed"),
+                    StartTime = DateTime.Parse(
+                        resultElement.Attribute("startTime")?.Value ?? DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.AdjustToUniversal),
+                    Duration = double.Parse(
+                        resultElement.Attribute("duration")?.Value ?? "0"),
+                    SystemOutput = outputElement
+                        .Element(TrxNamespace + "StdOut")
+                        ?.Value ?? string.Empty,
+                    SystemError = outputElement
+                        .Element(TrxNamespace + "StdErr")
+                        ?.Value ?? string.Empty,
+                    ErrorMessage = errorInfoElement
+                        ?.Element(TrxNamespace + "Message")
+                        ?.Value ?? string.Empty,
+                    ErrorStackTrace = errorInfoElement
+                        ?.Element(TrxNamespace + "StackTrace")
+                        ?.Value ?? string.Empty
+                });
+        }
+
+        // Return the results
+        return results;
     }
 
     /// <summary>

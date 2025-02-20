@@ -21,17 +21,27 @@
 namespace DemaConsulting.TestResults;
 
 /// <summary>
-///     TestError class
+///     TestResults class
 /// </summary>
-public sealed class TestError
+public sealed class TestResults
 {
     /// <summary>
-    ///     Gets or sets the test case error message
+    ///     Gets or sets the ID of the test results
     /// </summary>
-    public string Message { get; set; } = string.Empty;
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
-    ///     Gets or sets the test case error stack trace
+    ///     Gets or sets the name of the tests
     /// </summary>
-    public string StackTrace { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the name of the user account running the tests
+    /// </summary>
+    public string UserName { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the list containing each TestResults
+    /// </summary>
+    public List<TestResult> Results { get; set; } = [];
 }
