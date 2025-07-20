@@ -63,7 +63,7 @@ public sealed class TestResult
     /// <summary>
     ///     Gets or sets the duration of the test execution
     /// </summary>
-    public double Duration { get; set; } = 0;
+    public TimeSpan Duration { get; set; } = TimeSpan.Zero;
 
     /// <summary>
     ///     Gets or sets the stdout output when execution the test case
@@ -78,7 +78,7 @@ public sealed class TestResult
     /// <summary>
     ///     Gets or sets the outcome of the test case
     /// </summary>
-    public TestOutcome Outcome { get; set; } = TestOutcome.Skipped;
+    public TestOutcome Outcome { get; set; } = TestOutcome.NotExecuted;
 
     /// <summary>
     ///     Gets or sets the test case error message

@@ -66,9 +66,9 @@ public static class TrxSerializer
                 new XAttribute("computerName", c.ComputerName),
                 new XAttribute("testType", "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B"),
                 new XAttribute("outcome", c.Outcome),
-                new XAttribute("duration", c.Duration),
+                new XAttribute("duration", c.Duration.ToString("c")),
                 new XAttribute("startTime", c.StartTime),
-                new XAttribute("endTime", c.StartTime + TimeSpan.FromSeconds(c.Duration)),
+                new XAttribute("endTime", c.StartTime + c.Duration),
                 new XAttribute("testListId", "19431567-8539-422a-85D7-44EE4E166BDA"));
             resultsElement.Add(resultElement);
 
@@ -88,7 +88,7 @@ public static class TrxSerializer
             if (c.SystemError != string.Empty)
             {
                 outputElement.Add(
-                    new XElement(TrxNamespace + "StdOut",
+                    new XElement(TrxNamespace + "StdErr",
                         new XCData(c.SystemOutput)));
             }
 
@@ -146,9 +146,9 @@ public static class TrxSerializer
                 new XElement(
                     TrxNamespace + "Counters",
                     new XAttribute("total", results.Results.Count),
-                    new XAttribute("executed", results.Results.Count(c => c.Outcome != TestOutcome.Skipped)),
-                    new XAttribute("passed", results.Results.Count(c => c.Outcome == TestOutcome.Passed)),
-                    new XAttribute("failed", results.Results.Count(c => c.Outcome == TestOutcome.Failed)))));
+                    new XAttribute("executed", results.Results.Count(c => c.Outcome.IsExecuted())),
+                    new XAttribute("passed", results.Results.Count(c => c.Outcome.IsPassed())),
+                    new XAttribute("failed", results.Results.Count(c => c.Outcome.IsFailed())))));
 
         // Write the TRX text
         var writer = new Utf8StringWriter();
@@ -196,11 +196,10 @@ public static class TrxSerializer
                 throw new InvalidOperationException("Invalid TRX File");
 
             // Get the output element
-            var outputElement = resultElement.Element(TrxNamespace + "Output") ??
-                                throw new InvalidOperationException("Invalid TRX file");
+            var outputElement = resultElement.Element(TrxNamespace + "Output");
 
             // Get the errorInfo element
-            var errorInfoElement = outputElement.Element(TrxNamespace + "ErrorInfo");
+            var errorInfoElement = outputElement?.Element(TrxNamespace + "ErrorInfo");
 
             // Add the test result
             results.Results.Add(
@@ -218,13 +217,14 @@ public static class TrxSerializer
                         resultElement.Attribute("startTime")?.Value ?? DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
                         CultureInfo.InvariantCulture,
                         DateTimeStyles.AdjustToUniversal),
-                    Duration = double.Parse(
-                        resultElement.Attribute("duration")?.Value ?? "0"),
+                    Duration = TimeSpan.Parse(
+                        resultElement.Attribute("duration")?.Value ?? "0",
+                        CultureInfo.InvariantCulture),
                     SystemOutput = outputElement
-                        .Element(TrxNamespace + "StdOut")
+                        ?.Element(TrxNamespace + "StdOut")
                         ?.Value ?? string.Empty,
                     SystemError = outputElement
-                        .Element(TrxNamespace + "StdErr")
+                        ?.Element(TrxNamespace + "StdErr")
                         ?.Value ?? string.Empty,
                     ErrorMessage = errorInfoElement
                         ?.Element(TrxNamespace + "Message")
