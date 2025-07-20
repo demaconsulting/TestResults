@@ -215,7 +215,7 @@ public sealed class TrxSerializerTests
                     <StdOut><![CDATA[Output]]></StdOut>
                   </Output>
                 </UnitTestResult>
-                <UnitTestResult executionId="ceb08c73-796f-4924-ad35-098a3fbb802b" testId="eb73087a-1def-4776-ba71-c56cd5a1bb1c" testName="Test2" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" duration="00:00:02" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:01Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
+                <UnitTestResult executionId="ceb08c73-796f-4924-ad35-098a3fbb802b" testId="eb73087a-1def-4776-ba71-c56cd5a1bb1c" testName="Test2" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" duration="00:00:02" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:02Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
                   <Output>
                     <StdOut><![CDATA[]]></StdOut>
                     <ErrorInfo>

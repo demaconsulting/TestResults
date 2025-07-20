@@ -67,17 +67,17 @@ public static class TrxSerializer
                 new XAttribute("testType", "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B"),
                 new XAttribute("outcome", c.Outcome),
                 new XAttribute("duration", c.Duration.ToString("c")),
-                new XAttribute("startTime", c.StartTime),
-                new XAttribute("endTime", c.StartTime + c.Duration),
+                new XAttribute("startTime", c.StartTime.ToString("o", CultureInfo.InvariantCulture)),
+                new XAttribute("endTime", (c.StartTime + c.Duration).ToString("o", CultureInfo.InvariantCulture)),
                 new XAttribute("testListId", "19431567-8539-422a-85D7-44EE4E166BDA"));
             resultsElement.Add(resultElement);
 
-            // Construct the output
+            // Construct the output element
             var outputElement = new XElement(TrxNamespace + "Output");
             resultElement.Add(outputElement);
 
             // Construct the stdout output
-            if (c.SystemOutput != string.Empty)
+            if (!string.IsNullOrEmpty(c.SystemOutput))
             {
                 outputElement.Add(
                     new XElement(TrxNamespace + "StdOut",
@@ -85,22 +85,38 @@ public static class TrxSerializer
             }
 
             // Construct the stderr output
-            if (c.SystemError != string.Empty)
+            if (!string.IsNullOrEmpty(c.SystemError))
             {
                 outputElement.Add(
                     new XElement(TrxNamespace + "StdErr",
                         new XCData(c.SystemError)));
             }
 
-            // Construct the error 
-            if (c.ErrorMessage != string.Empty)
+            // Skip writing the error info element if there is no error information
+            if (string.IsNullOrEmpty(c.ErrorMessage) &&
+                string.IsNullOrEmpty(c.ErrorStackTrace))
             {
-                outputElement.Add(
-                    new XElement(TrxNamespace + "ErrorInfo",
-                        new XElement(TrxNamespace + "Message",
-                            new XCData(c.ErrorMessage)),
-                        new XElement(TrxNamespace + "StackTrace",
-                            new XCData(c.ErrorStackTrace))));
+                continue;
+            }
+
+            // Construct the error info element
+            var errorInfoElement = new XElement(TrxNamespace + "ErrorInfo");
+            outputElement.Add(errorInfoElement);
+
+            // Construct the error message
+            if (!string.IsNullOrEmpty(c.ErrorMessage))
+            {
+                errorInfoElement.Add(
+                    new XElement(TrxNamespace + "Message",
+                        new XCData(c.ErrorMessage)));
+            }
+
+            // Construct the stack trace
+            if (!string.IsNullOrEmpty(c.ErrorStackTrace))
+            {
+                errorInfoElement.Add(
+                    new XElement(TrxNamespace + "StackTrace",
+                        new XCData(c.ErrorStackTrace)));
             }
         }
 
