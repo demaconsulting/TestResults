@@ -93,7 +93,7 @@ public class TrxExampleTests
     [TestMethod]
     public void TestDeserializeExample2()
     {
-        // Deserialize the first example file.
+        // Deserialize the second example file.
         var results = TrxSerializer.Deserialize(
             TestHelpers.GetEmbeddedResource(
                 "DemaConsulting.TestResults.Tests.IO.Examples.example2.trx"));

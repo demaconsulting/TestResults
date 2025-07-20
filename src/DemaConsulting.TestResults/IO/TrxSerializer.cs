@@ -89,7 +89,7 @@ public static class TrxSerializer
             {
                 outputElement.Add(
                     new XElement(TrxNamespace + "StdErr",
-                        new XCData(c.SystemOutput)));
+                        new XCData(c.SystemError)));
             }
 
             // Construct the error 
