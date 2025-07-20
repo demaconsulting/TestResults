@@ -18,30 +18,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-namespace DemaConsulting.TestResults;
+namespace DemaConsulting.TestResults.Tests;
 
 /// <summary>
-///     TestResults class
+///     Test helpers class
 /// </summary>
-public sealed class TestResults
+internal static class TestHelpers
 {
     /// <summary>
-    ///     Gets or sets the ID of the test results
+    ///     Get an embedded resource as a string
     /// </summary>
-    public Guid Id { get; set; } = Guid.NewGuid();
+    /// <param name="resourceName">Resource name</param>
+    /// <returns>Resource string</returns>
+    public static string GetEmbeddedResource(string resourceName)
+    {
+        // Open the resource
+        using var stream = typeof(TestHelpers).Assembly.GetManifestResourceStream(resourceName);
+        if (stream == null)
+            return string.Empty;
 
-    /// <summary>
-    ///     Gets or sets the name of the tests
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets the name of the user account running the tests
-    /// </summary>
-    public string UserName { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets the list containing each TestResult
-    /// </summary>
-    public List<TestResult> Results { get; set; } = [];
+        // Read the resource
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd().ReplaceLineEndings();
+    }
 }

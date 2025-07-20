@@ -26,9 +26,9 @@ namespace DemaConsulting.TestResults;
 public enum TestOutcome
 {
     /// <summary>
-    ///     Test case passed
+    ///     Test case errored
     /// </summary>
-    Passed,
+    Error,
 
     /// <summary>
     ///     Test case failed
@@ -36,7 +36,117 @@ public enum TestOutcome
     Failed,
 
     /// <summary>
-    ///     Test case was skipped
+    ///     Test case timed out
     /// </summary>
-    Skipped
+    Timeout,
+
+    /// <summary>
+    ///     Test case aborted
+    /// </summary>
+    Aborted,
+
+    /// <summary>
+    ///     Test case inconclusive
+    /// </summary>
+    Inconclusive,
+
+    /// <summary>
+    ///     Test case passed but run was aborted
+    /// </summary>
+    PassedButRunAborted,
+
+    /// <summary>
+    ///     Test case not runnable
+    /// </summary>
+    NotRunnable,
+
+    /// <summary>
+    ///     Test case not executed
+    /// </summary>
+    NotExecuted,
+
+    /// <summary>
+    ///     Test case disconnected
+    /// </summary>
+    Disconnected,
+
+    /// <summary>
+    ///     Test case passed with warning
+    /// </summary>
+    Warning,
+
+    /// <summary>
+    ///     Test case passed
+    /// </summary>
+    Passed,
+
+    /// <summary>
+    ///     Test case completed
+    /// </summary>
+    Completed,
+
+    /// <summary>
+    ///     Test case in progress
+    /// </summary>
+    InProgress,
+
+    /// <summary>
+    ///     Test case pending
+    /// </summary>
+    Pending
+}
+
+/// <summary>
+///     Extensions for the <see cref="TestOutcome" /> enum.
+/// </summary>
+public static class TestOutcomeExtensions
+{
+    /// <summary>
+    ///     Determines if the test outcome is considered passed.
+    /// </summary>
+    /// <param name="outcome">Test outcome</param>
+    /// <returns>True if the outcome indicates a pass</returns>
+    public static bool IsPassed(this TestOutcome outcome)
+    {
+        return outcome switch
+        {
+            TestOutcome.Passed => true,
+            TestOutcome.PassedButRunAborted => true,
+            TestOutcome.Warning => true,
+            _ => false
+        };
+    }
+
+    /// <summary>
+    ///     Determines if the test outcome is considered failed.
+    /// </summary>
+    /// <param name="outcome">Test outcome</param>
+    /// <returns>True if the outcome indicates a fail</returns>
+    public static bool IsFailed(this TestOutcome outcome)
+    {
+        return outcome switch
+        {
+            TestOutcome.Failed => true,
+            TestOutcome.Error => true,
+            TestOutcome.Timeout => true,
+            TestOutcome.Aborted => true,
+            _ => false
+        };
+    }
+
+    /// <summary>
+    ///     Determines if the test outcome is considered executed.
+    /// </summary>
+    /// <param name="outcome">Test outcome</param>
+    /// <returns>True if the outcome indicates the test was executed</returns>
+    public static bool IsExecuted(this TestOutcome outcome)
+    {
+        return outcome switch
+        {
+            TestOutcome.NotRunnable => false,
+            TestOutcome.NotExecuted => false,
+            TestOutcome.Pending => false,
+            _ => true
+        };
+    }
 }

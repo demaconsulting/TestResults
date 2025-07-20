@@ -8,6 +8,10 @@
 	<IsTestProject>true</IsTestProject>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="IO\Examples\example1.trx" />
+    <EmbeddedResource Include="IO\Examples\example2.trx" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4">

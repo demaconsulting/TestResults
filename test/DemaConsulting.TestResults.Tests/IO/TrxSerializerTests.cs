@@ -51,7 +51,7 @@ public sealed class TrxSerializerTests
                     ClassName = "Class",
                     CodeBase = "Code",
                     StartTime = new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc),
-                    Duration = 1.0,
+                    Duration = TimeSpan.FromSeconds(1.0),
                     SystemOutput = "Output",
                     Outcome = TestOutcome.Passed
                 }
@@ -99,7 +99,7 @@ public sealed class TrxSerializerTests
                     ClassName = "Class",
                     CodeBase = "Code",
                     StartTime = new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc),
-                    Duration = 1.0,
+                    Duration = TimeSpan.FromSeconds(1.0),
                     SystemOutput = "Output",
                     Outcome = TestOutcome.Passed
                 },
@@ -109,7 +109,7 @@ public sealed class TrxSerializerTests
                     ClassName = "Class",
                     CodeBase = "Code",
                     StartTime = new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc),
-                    Duration = 1.0,
+                    Duration = TimeSpan.FromSeconds(1.0),
                     SystemError = "Output",
                     Outcome = TestOutcome.Failed,
                     ErrorMessage = "Error"
@@ -153,7 +153,7 @@ public sealed class TrxSerializerTests
             <?xml version="1.0" encoding="utf-8"?>
             <TestRun id="0ef15ada-c28f-4755-8d4c-5b68d1f9dda6" name="Basic" runUser="user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
               <Results>
-                <UnitTestResult executionId="735286a7-f9ed-404f-8871-300f9266eac9" testId="ec83398d-3b21-4dc4-b55c-c0ee2e81c074" testName="Test" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" duration="1" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:01Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
+                <UnitTestResult executionId="735286a7-f9ed-404f-8871-300f9266eac9" testId="ec83398d-3b21-4dc4-b55c-c0ee2e81c074" testName="Test" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" duration="00:00:01" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:01Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
                   <Output>
                     <StdOut><![CDATA[Output]]></StdOut>
                   </Output>
@@ -193,7 +193,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("Class", result.ClassName);
         Assert.AreEqual("Machine", result.ComputerName);
         Assert.AreEqual(new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc), result.StartTime);
-        Assert.AreEqual(1.0, result.Duration);
+        Assert.AreEqual(1.0, result.Duration.TotalSeconds);
         Assert.AreEqual("Output", result.SystemOutput);
         Assert.AreEqual(TestOutcome.Passed, result.Outcome);
     }
@@ -210,12 +210,12 @@ public sealed class TrxSerializerTests
             <?xml version="1.0" encoding="utf-8"?>
             <TestRun id="0704cd18-88b1-43f7-868e-ad02bfda887d" name="Basic" runUser="user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
               <Results>
-                <UnitTestResult executionId="cebd9f31-adec-4a7d-862b-598c52f1b9cf" testId="57debb4d-6784-482d-93d0-75dca3d3f556" testName="Test1" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" duration="1" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:01Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
+                <UnitTestResult executionId="cebd9f31-adec-4a7d-862b-598c52f1b9cf" testId="57debb4d-6784-482d-93d0-75dca3d3f556" testName="Test1" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Passed" duration="00:00:01" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:01Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
                   <Output>
                     <StdOut><![CDATA[Output]]></StdOut>
                   </Output>
                 </UnitTestResult>
-                <UnitTestResult executionId="ceb08c73-796f-4924-ad35-098a3fbb802b" testId="eb73087a-1def-4776-ba71-c56cd5a1bb1c" testName="Test2" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" duration="1" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:01Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
+                <UnitTestResult executionId="ceb08c73-796f-4924-ad35-098a3fbb802b" testId="eb73087a-1def-4776-ba71-c56cd5a1bb1c" testName="Test2" computerName="Machine" testType="13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B" outcome="Failed" duration="00:00:02" startTime="2025-02-18T03:00:00Z" endTime="2025-02-18T03:00:02Z" testListId="19431567-8539-422a-85D7-44EE4E166BDA">
                   <Output>
                     <StdOut><![CDATA[]]></StdOut>
                     <ErrorInfo>
@@ -264,7 +264,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("Class", result1.ClassName);
         Assert.AreEqual("Machine", result1.ComputerName);
         Assert.AreEqual(new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc), result1.StartTime);
-        Assert.AreEqual(1.0, result1.Duration);
+        Assert.AreEqual(1.0, result1.Duration.TotalSeconds);
         Assert.AreEqual("Output", result1.SystemOutput);
         Assert.AreEqual(TestOutcome.Passed, result1.Outcome);
 
@@ -277,7 +277,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("Class", result2.ClassName);
         Assert.AreEqual("Machine", result2.ComputerName);
         Assert.AreEqual(new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc), result2.StartTime);
-        Assert.AreEqual(1.0, result2.Duration);
+        Assert.AreEqual(2.0, result2.Duration.TotalSeconds);
         Assert.AreEqual(TestOutcome.Failed, result2.Outcome);
         Assert.AreEqual("Error", result2.ErrorMessage);
     }
