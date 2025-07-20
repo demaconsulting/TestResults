@@ -97,7 +97,7 @@ public enum TestOutcome
 }
 
 /// <summary>
-///      Extensions for the <see cref="TestOutcome"/> enum.
+///     Extensions for the <see cref="TestOutcome" /> enum.
 /// </summary>
 public static class TestOutcomeExtensions
 {

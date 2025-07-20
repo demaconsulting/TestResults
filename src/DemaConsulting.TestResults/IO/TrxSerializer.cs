@@ -188,7 +188,7 @@ public static class TrxSerializer
         var results = new TestResults();
 
         // Get the run element
-        var runElement = doc.XPathSelectElement("/trx:TestRun", nsMgr) ?? 
+        var runElement = doc.XPathSelectElement("/trx:TestRun", nsMgr) ??
                          throw new InvalidOperationException("Invalid TRX file");
         results.Id = Guid.Parse(runElement.Attribute("id")?.Value ?? Guid.NewGuid().ToString());
         results.Name = runElement.Attribute("name")?.Value ?? string.Empty;
@@ -230,7 +230,8 @@ public static class TrxSerializer
                     ComputerName = resultElement.Attribute("computerName")?.Value ?? string.Empty,
                     Outcome = Enum.Parse<TestOutcome>(resultElement.Attribute("outcome")?.Value ?? "Failed"),
                     StartTime = DateTime.Parse(
-                        resultElement.Attribute("startTime")?.Value ?? DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
+                        resultElement.Attribute("startTime")?.Value ??
+                        DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
                         CultureInfo.InvariantCulture,
                         DateTimeStyles.AdjustToUniversal),
                     Duration = TimeSpan.Parse(
