@@ -42,7 +42,7 @@ public class TrxExampleTests
                 "DemaConsulting.TestResults.Tests.IO.Examples.example1.trx"));
 
         // Confirm we got 6 test results
-        Assert.AreEqual(6, results.Results.Count);
+        Assert.HasCount(6, results.Results);
 
         // Confirm the first test result
         Assert.AreEqual("test1", results.Results[0].Name);
@@ -61,18 +61,18 @@ public class TrxExampleTests
         Assert.AreEqual("test3", results.Results[2].ClassName);
         Assert.AreEqual(TestOutcome.Failed, results.Results[2].Outcome);
         Assert.AreEqual(44.7811567, results.Results[2].Duration.TotalSeconds, 0.001);
-        StringAssert.Contains(results.Results[2].SystemOutput, "This is sample output for the unit test");
-        StringAssert.Contains(results.Results[2].ErrorMessage, "This unit test failed for a bad reason");
-        StringAssert.Contains(results.Results[2].ErrorStackTrace, @"at test3() in c:\tests\test3.js:line 1");
+        Assert.Contains("This is sample output for the unit test", results.Results[2].SystemOutput);
+        Assert.Contains("This unit test failed for a bad reason", results.Results[2].ErrorMessage);
+        Assert.Contains(@"at test3() in c:\tests\test3.js:line 1", results.Results[2].ErrorStackTrace);
 
         // Confirm the fourth test result
         Assert.AreEqual("test4", results.Results[3].Name);
         Assert.AreEqual("test4", results.Results[3].ClassName);
         Assert.AreEqual(TestOutcome.Timeout, results.Results[3].Outcome);
         Assert.AreEqual(44.7811567, results.Results[3].Duration.TotalSeconds, 0.001);
-        StringAssert.Contains(results.Results[3].SystemOutput, "This is sample output for the unit test");
-        StringAssert.Contains(results.Results[3].ErrorMessage, "This unit test failed because it timed out");
-        StringAssert.Contains(results.Results[3].ErrorStackTrace, @"at test4() in c:\tests\test4.js:line 1");
+        Assert.Contains("This is sample output for the unit test", results.Results[3].SystemOutput);
+        Assert.Contains("This unit test failed because it timed out", results.Results[3].ErrorMessage);
+        Assert.Contains(@"at test4() in c:\tests\test4.js:line 1", results.Results[3].ErrorStackTrace);
 
         // Confirm the fifth test result
         Assert.AreEqual("test5", results.Results[4].Name);
@@ -99,7 +99,7 @@ public class TrxExampleTests
                 "DemaConsulting.TestResults.Tests.IO.Examples.example2.trx"));
 
         // Confirm we got 4 test results
-        Assert.AreEqual(4, results.Results.Count);
+        Assert.HasCount(4, results.Results);
 
         // Confirm the first test result
         Assert.AreEqual("AddShouldReturnCorrectValue", results.Results[0].Name);
