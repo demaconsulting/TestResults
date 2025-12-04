@@ -182,7 +182,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual(Guid.Parse("0ef15ada-c28f-4755-8d4c-5b68d1f9dda6"), results.Id);
         Assert.AreEqual("Basic", results.Name);
         Assert.AreEqual("user", results.UserName);
-        Assert.AreEqual(1, results.Results.Count);
+        Assert.HasCount(1, results.Results);
 
         // Assert test result information
         var result = results.Results[0];
@@ -253,7 +253,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual(Guid.Parse("0704cd18-88b1-43f7-868e-ad02bfda887d"), results.Id);
         Assert.AreEqual("Basic", results.Name);
         Assert.AreEqual("user", results.UserName);
-        Assert.AreEqual(2, results.Results.Count);
+        Assert.HasCount(2, results.Results);
 
         // Assert test1 result information
         var result1 = results.Results[0];

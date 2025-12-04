@@ -42,7 +42,7 @@ public class TrxExampleTests
                 "DemaConsulting.TestResults.Tests.IO.Examples.example1.trx"));
 
         // Confirm we got 6 test results
-        Assert.AreEqual(6, results.Results.Count);
+        Assert.HasCount(6, results.Results);
 
         // Confirm the first test result
         Assert.AreEqual("test1", results.Results[0].Name);
@@ -99,7 +99,7 @@ public class TrxExampleTests
                 "DemaConsulting.TestResults.Tests.IO.Examples.example2.trx"));
 
         // Confirm we got 4 test results
-        Assert.AreEqual(4, results.Results.Count);
+        Assert.HasCount(4, results.Results);
 
         // Confirm the first test result
         Assert.AreEqual("AddShouldReturnCorrectValue", results.Results[0].Name);
