@@ -1,4 +1,4 @@
-# SPDX Model
+# TestResults Library
 
 ![GitHub forks](https://img.shields.io/github/forks/demaconsulting/TestResults?style=plastic)
 ![GitHub Repo stars](https://img.shields.io/github/stars/demaconsulting/TestResults?style=plastic)
