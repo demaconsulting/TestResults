@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2025 DEMA Consulting
+// Copyright(c) 2025 DEMA Consulting
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,13 @@ namespace DemaConsulting.TestResults.Tests.IO;
 [TestClass]
 public sealed class TrxSerializerTests
 {
+#pragma warning disable S1075 // URIs should not be hardcoded - This is an XML namespace URI, not a file path
+    /// <summary>
+    ///     TRX namespace URI
+    /// </summary>
+    private const string TrxNamespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010";
+#pragma warning restore S1075
+
     /// <summary>
     ///     Test for basic serialization
     /// </summary>
@@ -65,7 +72,7 @@ public sealed class TrxSerializerTests
         // Parse the document
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
-        nsMgr.AddNamespace("trx", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+        nsMgr.AddNamespace("trx", TrxNamespace);
 
         // Verify the UnitTestResult element is present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='Test']", nsMgr));
@@ -124,7 +131,7 @@ public sealed class TrxSerializerTests
         // Parse the document
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
-        nsMgr.AddNamespace("trx", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+        nsMgr.AddNamespace("trx", TrxNamespace);
 
         // Verify the UnitTestResult elements are present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='Test1']", nsMgr));

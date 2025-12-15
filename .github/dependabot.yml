@@ -1,0 +1,27 @@
+version: 2
+updates:
+  # Maintain dependencies for NuGet
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    groups:
+      analyzers:
+        patterns:
+          - "Microsoft.CodeAnalysis.*"
+          - "SonarAnalyzer.*"
+      test-dependencies:
+        patterns:
+          - "Microsoft.NET.Test.Sdk"
+          - "MSTest.*"
+          - "coverlet.*"
+      
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
