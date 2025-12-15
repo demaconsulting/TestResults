@@ -170,3 +170,4 @@ csharp_style_conditional_delegate_call = true:suggestion
 
 # Code quality rules
 dotnet_code_quality_unused_parameters = all:warning
+
