@@ -8,13 +8,13 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=demaconsulting_TestResults)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=demaconsulting_TestResults)
 
-A lightweight, zero-dependency C# library for programmatically creating TRX (Test Results) files.
+A lightweight C# library for programmatically creating TRX (Test Results) files.
 
 ## Features
 
 - ✨ **Simple API** - Intuitive and easy-to-use object model
 - 🎯 **Type-Safe** - Strongly-typed C# classes for test results
-- 🪶 **Lightweight** - Zero external dependencies
+- 🪶 **Lightweight** - Minimal external dependencies
 - 🔄 **Multi-Target** - Supports .NET 8, 9, and 10
 - 📦 **NuGet Ready** - Easy integration via NuGet package
 - ✅ **Compatible** - Generates TRX files compatible with Visual Studio, Azure DevOps, and other Microsoft testing tools
