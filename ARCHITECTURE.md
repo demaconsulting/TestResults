@@ -2,7 +2,8 @@
 
 ## Overview
 
-The TestResults library is a lightweight C# library designed to programmatically create TRX (Test Results) files.
+The TestResults library is a lightweight C# library designed to programmatically create test result files.
+The library currently focuses on the TRX (Test Results) format, with potential for additional formats in the future.
 TRX files are XML-based test result files commonly used by Visual Studio, Azure DevOps, and other Microsoft testing
 tools to store and visualize test execution results.
 
@@ -10,9 +11,9 @@ tools to store and visualize test execution results.
 
 The library follows these core principles:
 
-- **Simplicity**: Provide a straightforward API for creating TRX files without unnecessary complexity
+- **Simplicity**: Provide a straightforward API for creating test result files without unnecessary complexity
 - **Type Safety**: Use strongly-typed C# objects to represent test results
-- **Zero Dependencies**: Avoid external dependencies to keep the library lightweight and easy to integrate
+- **Lightweight**: Minimize external dependencies to keep the library easy to integrate
 - **Multi-Target Support**: Support multiple .NET versions (.NET 8, 9, and 10) for broad compatibility
 
 ## Architecture Components
@@ -83,14 +84,11 @@ The `TrxSerializer` class is responsible for converting the domain model into TR
 
 ## File Organization
 
-```text
-/src/DemaConsulting.TestResults/
-├── TestResults.cs          # Root container for test results
-├── TestResult.cs           # Individual test result representation
-├── TestOutcome.cs          # Test outcome enumeration
-└── IO/
-    └── TrxSerializer.cs    # TRX serialization logic
-```
+The library source code is organized in the `/src/DemaConsulting.TestResults/` directory:
+
+- **Domain Model**: Core classes representing test results (`TestResults`, `TestResult`, `TestOutcome`)
+- **Serialization**: I/O operations for converting to/from file formats (in the `IO/` subdirectory)
+- **Additional Components**: May be added as the library evolves
 
 ## Extension Points
 

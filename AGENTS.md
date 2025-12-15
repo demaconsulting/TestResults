@@ -5,12 +5,14 @@ interact effectively with this C# project.
 
 ## Project Overview
 
-TestResults is a C# library for creating TRX test result files. The library is designed to be:
+TestResults is a C# library for creating test result files. The library is designed to be:
 
-- **Lightweight**: Zero external dependencies
-- **Simple**: Easy-to-use API for creating TRX files
+- **Lightweight**: Minimal external dependencies
+- **Simple**: Easy-to-use API for creating test result files
 - **Type-Safe**: Strongly-typed C# objects
 - **Cross-Platform**: Supports .NET 8, 9, and 10
+
+The library currently focuses on TRX format, with potential for additional formats in the future.
 
 ## Technologies and Dependencies
 
@@ -18,7 +20,7 @@ TestResults is a C# library for creating TRX test result files. The library is d
 
 - **Language**: C# 12
 - **.NET Frameworks**: .NET 8, 9, and 10
-- **Primary Dependencies**: None (by design)
+- **Primary Dependencies**: None currently
 
 ### Development Tools
 
@@ -35,33 +37,25 @@ The repository is organized as follows:
 ```text
 /
 ├── .config/                              # .NET tool configurations
-│   └── dotnet-tools.json                 # Tool manifest
-├── .github/
-│   └── workflows/                        # CI/CD pipeline configurations
-│       ├── build.yaml                    # Reusable build workflow
-│       ├── build_on_push.yaml            # Build on push/PR workflow
-│       └── release.yaml                  # Release workflow
-├── src/
-│   └── DemaConsulting.TestResults/       # Main library source code
-│       ├── TestResults.cs                # Root test results container
-│       ├── TestResult.cs                 # Individual test result
-│       ├── TestOutcome.cs                # Test outcome enumeration
-│       └── IO/
-│           └── TrxSerializer.cs          # TRX serialization logic
-├── test/
-│   └── DemaConsulting.TestResults.Tests/ # Unit tests
+├── .github/workflows/                    # CI/CD pipeline configurations
+├── src/DemaConsulting.TestResults/       # Main library source code
+├── test/DemaConsulting.TestResults.Tests/ # Unit tests
 ├── .editorconfig                         # Code style enforcement
 ├── .cspell.json                          # Spell checking configuration
 ├── .markdownlint.json                    # Markdown linting rules
-├── .gitignore                            # Git ignore rules
 ├── AGENTS.md                             # This file
 ├── ARCHITECTURE.md                       # Architecture documentation
 ├── CODE_OF_CONDUCT.md                    # Code of conduct
 ├── CONTRIBUTING.md                       # Contribution guidelines
 ├── DemaConsulting.TestResults.sln        # Visual Studio solution
-├── LICENSE                               # MIT license
 └── README.md                             # Main documentation
 ```
+
+Key directories:
+
+- **src/** - Contains the main library implementation
+- **test/** - Contains unit tests and test resources
+- **.github/** - Contains CI/CD workflows and automation
 
 ## Development Commands
 
