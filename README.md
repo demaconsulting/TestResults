@@ -128,9 +128,9 @@ This library is useful when you need to:
 
 ## Documentation
 
-- [Architecture](ARCHITECTURE.md) - Learn about the library's architecture and design
-- [Contributing](CONTRIBUTING.md) - Guidelines for contributing to the project
-- [Code of Conduct](CODE_OF_CONDUCT.md) - Our code of conduct for contributors
+- [Architecture][architecture] - Learn about the library's architecture and design
+- [Contributing][contributing] - Guidelines for contributing to the project
+- [Code of Conduct][code-of-conduct] - Our code of conduct for contributors
 
 ## Building from Source
 
@@ -158,11 +158,11 @@ dotnet test
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide][contributing] for details.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE][license] file for details.
 
 ## Support
 
@@ -173,3 +173,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 Developed and maintained by [DEMA Consulting](https://github.com/demaconsulting).
+
+[architecture]: https://github.com/demaconsulting/TestResults/blob/main/ARCHITECTURE.md
+[contributing]: https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md
+[code-of-conduct]: https://github.com/demaconsulting/TestResults/blob/main/CODE_OF_CONDUCT.md
+[license]: https://github.com/demaconsulting/TestResults/blob/main/LICENSE
