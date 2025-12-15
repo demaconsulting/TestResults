@@ -24,11 +24,12 @@ The library currently focuses on TRX format, with potential for additional forma
 
 ### Development Tools
 
-- **Analyzers**: Microsoft.CodeAnalysis.NetAnalyzers for static code analysis
+- **Analyzers**: Microsoft.CodeAnalysis.NetAnalyzers and SonarAnalyzer.CSharp for static code analysis
 - **Source Control**: SourceLink for debugging support
 - **Testing**: MSTest framework with code coverage
 - **CI/CD**: GitHub Actions for build and release automation
 - **Code Quality**: SonarCloud for quality metrics
+- **Dependency Management**: Dependabot for automated dependency updates
 
 ## Project Structure
 
@@ -165,13 +166,14 @@ dotnet format
 - Keep methods focused and concise (Single Responsibility Principle)
 - Avoid code duplication (DRY principle)
 - Comment only when necessary to explain "why", not "what"
-- Use static analysis recommendations from Microsoft.CodeAnalysis.NetAnalyzers
+- Use static analysis recommendations from analyzers
 
 ## Quality Standards
 
 ### Static Analysis
 
-- Microsoft.CodeAnalysis.NetAnalyzers is enabled in all projects
+- Microsoft.CodeAnalysis.NetAnalyzers is enabled in all projects for .NET-specific analysis
+- SonarAnalyzer.CSharp is enabled in all projects for additional code quality checks
 - All analyzer warnings must be addressed or explicitly suppressed with justification
 - Code style rules are enforced via .editorconfig
 

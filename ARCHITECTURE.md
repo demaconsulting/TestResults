@@ -137,12 +137,13 @@ Potential enhancements that could be considered:
 
 ### Runtime Dependencies
 
-- None (by design)
+- None currently
 
 ### Development Dependencies
 
 - Microsoft.SourceLink.GitHub: For source linking in NuGet packages
-- Microsoft.CodeAnalysis.NetAnalyzers: For static code analysis
+- Microsoft.CodeAnalysis.NetAnalyzers: For .NET-specific static code analysis
+- SonarAnalyzer.CSharp: For additional code quality and security analysis
 
 ### Test Dependencies
 

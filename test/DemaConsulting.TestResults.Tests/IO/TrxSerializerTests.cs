@@ -65,7 +65,9 @@ public sealed class TrxSerializerTests
         // Parse the document
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
+#pragma warning disable S1075 // URIs should not be hardcoded - This is an XML namespace URI, not a file path
         nsMgr.AddNamespace("trx", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+#pragma warning restore S1075
 
         // Verify the UnitTestResult element is present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='Test']", nsMgr));
@@ -124,7 +126,9 @@ public sealed class TrxSerializerTests
         // Parse the document
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
+#pragma warning disable S1075 // URIs should not be hardcoded - This is an XML namespace URI, not a file path
         nsMgr.AddNamespace("trx", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+#pragma warning restore S1075
 
         // Verify the UnitTestResult elements are present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='Test1']", nsMgr));
