@@ -1,0 +1,34 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "csproj",
+    "Dema",
+    "dotnet",
+    "editorconfig",
+    "markdownlint",
+    "mstest",
+    "SBOM",
+    "snupkg",
+    "Sonar",
+    "sonarcloud",
+    "spdx",
+    "TestResults",
+    "trx",
+    "vcxproj"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    ".git",
+    "bin",
+    "obj",
+    "*.nupkg",
+    "*.snupkg",
+    "*.dll",
+    "*.exe",
+    "*.trx",
+    "*.spdx.json",
+    "package-lock.json",
+    "yarn.lock"
+  ]
+}
