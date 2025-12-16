@@ -435,4 +435,277 @@ public sealed class JUnitSerializerTests
         Assert.IsNotNull(failure);
         Assert.AreEqual("Expected value to be 42 but was 0", failure.Attribute("message")?.Value);
     }
+
+    /// <summary>
+    ///     Test for basic deserialization
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeBasic()
+    {
+        // Deserialize the test results object
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="BasicTests">
+              <testsuite name="MyTestClass" tests="1" failures="0" errors="0" skipped="0" time="1.500">
+                <testcase name="Test1" classname="MyTestClass" time="1.500" />
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert results information
+        Assert.AreEqual("BasicTests", results.Name);
+        Assert.HasCount(1, results.Results);
+
+        // Assert test result information
+        var result = results.Results[0];
+        Assert.AreEqual("Test1", result.Name);
+        Assert.AreEqual("MyTestClass", result.ClassName);
+        Assert.AreEqual(1.5, result.Duration.TotalSeconds);
+        Assert.AreEqual(TestOutcome.Passed, result.Outcome);
+    }
+
+    /// <summary>
+    ///     Test for deserialization with failure
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeWithFailure()
+    {
+        // Deserialize the test results object with a failed test
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="FailureTests">
+              <testsuite name="MyTestClass" tests="1" failures="1" errors="0" skipped="0" time="0.500">
+                <testcase name="Test2" classname="MyTestClass" time="0.500">
+                  <failure message="Expected value to be 42 but was 0"><![CDATA[at MyTestClass.Test2() in Test.cs:line 15]]></failure>
+                </testcase>
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert results information
+        Assert.AreEqual("FailureTests", results.Name);
+        Assert.HasCount(1, results.Results);
+
+        // Assert test result information
+        var result = results.Results[0];
+        Assert.AreEqual("Test2", result.Name);
+        Assert.AreEqual("MyTestClass", result.ClassName);
+        Assert.AreEqual(TestOutcome.Failed, result.Outcome);
+        Assert.AreEqual("Expected value to be 42 but was 0", result.ErrorMessage);
+        Assert.Contains("at MyTestClass.Test2() in Test.cs:line 15", result.ErrorStackTrace);
+    }
+
+    /// <summary>
+    ///     Test for deserialization with error
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeWithError()
+    {
+        // Deserialize the test results object with an error test
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="ErrorTests">
+              <testsuite name="MyTestClass" tests="1" failures="0" errors="1" skipped="0" time="0.100">
+                <testcase name="Test3" classname="MyTestClass" time="0.100">
+                  <error message="Unexpected exception occurred"><![CDATA[at MyTestClass.Test3() in Test.cs:line 20]]></error>
+                </testcase>
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert test result information
+        var result = results.Results[0];
+        Assert.AreEqual("Test3", result.Name);
+        Assert.AreEqual(TestOutcome.Error, result.Outcome);
+        Assert.AreEqual("Unexpected exception occurred", result.ErrorMessage);
+        Assert.Contains("at MyTestClass.Test3() in Test.cs:line 20", result.ErrorStackTrace);
+    }
+
+    /// <summary>
+    ///     Test for deserialization with skipped test
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeWithSkipped()
+    {
+        // Deserialize the test results object with a skipped test
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="SkippedTests">
+              <testsuite name="MyTestClass" tests="1" failures="0" errors="0" skipped="1" time="0.000">
+                <testcase name="Test4" classname="MyTestClass" time="0.000">
+                  <skipped message="Test was skipped" />
+                </testcase>
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert test result information
+        var result = results.Results[0];
+        Assert.AreEqual("Test4", result.Name);
+        Assert.AreEqual(TestOutcome.NotExecuted, result.Outcome);
+        Assert.AreEqual("Test was skipped", result.ErrorMessage);
+    }
+
+    /// <summary>
+    ///     Test for deserialization with system output
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeWithSystemOutput()
+    {
+        // Deserialize the test results object with system output
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="OutputTests">
+              <testsuite name="MyTestClass" tests="1" failures="0" errors="0" skipped="0" time="1.000">
+                <testcase name="Test5" classname="MyTestClass" time="1.000">
+                  <system-out><![CDATA[Standard output message]]></system-out>
+                  <system-err><![CDATA[Standard error message]]></system-err>
+                </testcase>
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert test result information
+        var result = results.Results[0];
+        Assert.AreEqual("Test5", result.Name);
+        Assert.AreEqual("Standard output message", result.SystemOutput);
+        Assert.AreEqual("Standard error message", result.SystemError);
+    }
+
+    /// <summary>
+    ///     Test for deserialization with multiple test suites
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeMultipleTestSuites()
+    {
+        // Deserialize the test results object with multiple test suites
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="MultipleTests">
+              <testsuite name="Class1" tests="2" failures="1" errors="0" skipped="0" time="1.500">
+                <testcase name="Test1" classname="Class1" time="1.000" />
+                <testcase name="Test2" classname="Class1" time="0.500">
+                  <failure message="Test failed" />
+                </testcase>
+              </testsuite>
+              <testsuite name="Class2" tests="1" failures="0" errors="0" skipped="0" time="2.000">
+                <testcase name="Test3" classname="Class2" time="2.000" />
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert results information
+        Assert.AreEqual("MultipleTests", results.Name);
+        Assert.HasCount(3, results.Results);
+
+        // Verify first test
+        var test1 = results.Results[0];
+        Assert.AreEqual("Test1", test1.Name);
+        Assert.AreEqual("Class1", test1.ClassName);
+        Assert.AreEqual(TestOutcome.Passed, test1.Outcome);
+
+        // Verify second test
+        var test2 = results.Results[1];
+        Assert.AreEqual("Test2", test2.Name);
+        Assert.AreEqual(TestOutcome.Failed, test2.Outcome);
+
+        // Verify third test
+        var test3 = results.Results[2];
+        Assert.AreEqual("Test3", test3.Name);
+        Assert.AreEqual("Class2", test3.ClassName);
+        Assert.AreEqual(TestOutcome.Passed, test3.Outcome);
+    }
+
+    /// <summary>
+    ///     Test for deserialization with empty class name (DefaultSuite)
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeEmptyClassName()
+    {
+        // Deserialize the test results object with DefaultSuite
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="EmptyClassTests">
+              <testsuite name="DefaultSuite" tests="1" failures="0" errors="0" skipped="0" time="1.000">
+                <testcase name="Test1" classname="DefaultSuite" time="1.000" />
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert test result information - DefaultSuite should be converted to empty string
+        var result = results.Results[0];
+        Assert.AreEqual("Test1", result.Name);
+        Assert.AreEqual(string.Empty, result.ClassName);
+    }
+
+    /// <summary>
+    ///     Test for round-trip serialization and deserialization
+    /// </summary>
+    [TestMethod]
+    public void TestRoundTrip()
+    {
+        // Create original test results
+        var original = new TestResults { Name = "RoundTripTests" };
+        original.Results.Add(
+            new TestResult
+            {
+                Name = "Test1",
+                ClassName = "TestClass",
+                Duration = TimeSpan.FromSeconds(1.5),
+                Outcome = TestOutcome.Passed,
+                SystemOutput = "Output message"
+            });
+        original.Results.Add(
+            new TestResult
+            {
+                Name = "Test2",
+                ClassName = "TestClass",
+                Duration = TimeSpan.FromSeconds(0.5),
+                Outcome = TestOutcome.Failed,
+                ErrorMessage = "Test failed",
+                ErrorStackTrace = "Stack trace here"
+            });
+
+        // Serialize to JUnit XML
+        var xml = JUnitSerializer.Serialize(original);
+
+        // Deserialize back
+        var deserialized = JUnitSerializer.Deserialize(xml);
+
+        // Verify results match
+        Assert.AreEqual(original.Name, deserialized.Name);
+        Assert.HasCount(original.Results.Count, deserialized.Results);
+
+        // Verify first test
+        var origTest1 = original.Results[0];
+        var deserTest1 = deserialized.Results[0];
+        Assert.AreEqual(origTest1.Name, deserTest1.Name);
+        Assert.AreEqual(origTest1.ClassName, deserTest1.ClassName);
+        Assert.AreEqual(origTest1.Duration.TotalSeconds, deserTest1.Duration.TotalSeconds, 0.001);
+        Assert.AreEqual(origTest1.Outcome, deserTest1.Outcome);
+        Assert.AreEqual(origTest1.SystemOutput, deserTest1.SystemOutput);
+
+        // Verify second test
+        var origTest2 = original.Results[1];
+        var deserTest2 = deserialized.Results[1];
+        Assert.AreEqual(origTest2.Name, deserTest2.Name);
+        Assert.AreEqual(origTest2.ClassName, deserTest2.ClassName);
+        Assert.AreEqual(origTest2.Outcome, deserTest2.Outcome);
+        Assert.AreEqual(origTest2.ErrorMessage, deserTest2.ErrorMessage);
+        Assert.AreEqual(origTest2.ErrorStackTrace, deserTest2.ErrorStackTrace);
+    }
 }

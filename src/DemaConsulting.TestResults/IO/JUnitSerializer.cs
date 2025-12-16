@@ -130,6 +130,102 @@ public static class JUnitSerializer
     }
 
     /// <summary>
+    ///     Deserializes a JUnit XML file to a TestResults object
+    /// </summary>
+    /// <param name="junitContents">JUnit XML File Contents</param>
+    /// <returns>Test Results</returns>
+    public static TestResults Deserialize(string junitContents)
+    {
+        // Parse the document
+        var doc = XDocument.Parse(junitContents);
+
+        // Construct the results
+        var results = new TestResults();
+
+        // Get the root element (testsuites)
+        var rootElement = doc.Root ??
+                         throw new InvalidOperationException("Invalid JUnit XML file");
+
+        // Get the test suite name (from testsuites or first testsuite)
+        results.Name = rootElement.Attribute("name")?.Value ?? string.Empty;
+
+        // Handle both testsuites (with nested testsuite) and single testsuite root
+        var testSuiteElements = rootElement.Name.LocalName == "testsuites"
+            ? rootElement.Elements("testsuite")
+            : new[] { rootElement };
+
+        // Process each test suite
+        foreach (var testSuiteElement in testSuiteElements)
+        {
+            // Get test cases
+            var testCaseElements = testSuiteElement.Elements("testcase");
+
+            foreach (var testCaseElement in testCaseElements)
+            {
+                // Parse test case attributes
+                var name = testCaseElement.Attribute("name")?.Value ?? string.Empty;
+                var className = testCaseElement.Attribute("classname")?.Value ?? string.Empty;
+                var timeStr = testCaseElement.Attribute("time")?.Value ?? "0";
+                var duration = double.TryParse(timeStr, NumberStyles.Float, CultureInfo.InvariantCulture, out var timeValue)
+                    ? TimeSpan.FromSeconds(timeValue)
+                    : TimeSpan.Zero;
+
+                // Determine outcome based on child elements
+                var failureElement = testCaseElement.Element("failure");
+                var errorElement = testCaseElement.Element("error");
+                var skippedElement = testCaseElement.Element("skipped");
+
+                TestOutcome outcome;
+                string errorMessage = string.Empty;
+                string errorStackTrace = string.Empty;
+
+                if (failureElement != null)
+                {
+                    outcome = TestOutcome.Failed;
+                    errorMessage = failureElement.Attribute("message")?.Value ?? string.Empty;
+                    errorStackTrace = failureElement.Value;
+                }
+                else if (errorElement != null)
+                {
+                    outcome = TestOutcome.Error;
+                    errorMessage = errorElement.Attribute("message")?.Value ?? string.Empty;
+                    errorStackTrace = errorElement.Value;
+                }
+                else if (skippedElement != null)
+                {
+                    outcome = TestOutcome.NotExecuted;
+                    errorMessage = skippedElement.Attribute("message")?.Value ?? string.Empty;
+                }
+                else
+                {
+                    outcome = TestOutcome.Passed;
+                }
+
+                // Get system output and error
+                var systemOutput = testCaseElement.Element("system-out")?.Value ?? string.Empty;
+                var systemError = testCaseElement.Element("system-err")?.Value ?? string.Empty;
+
+                // Create test result
+                var testResult = new TestResult
+                {
+                    Name = name,
+                    ClassName = className == "DefaultSuite" ? string.Empty : className,
+                    Duration = duration,
+                    Outcome = outcome,
+                    ErrorMessage = errorMessage,
+                    ErrorStackTrace = errorStackTrace,
+                    SystemOutput = systemOutput,
+                    SystemError = systemError
+                };
+
+                results.Results.Add(testResult);
+            }
+        }
+
+        return results;
+    }
+
+    /// <summary>
     ///     String writer that uses UTF-8 encoding
     /// </summary>
     private sealed class Utf8StringWriter : StringWriter
