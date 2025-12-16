@@ -3,9 +3,9 @@
 ## Overview
 
 The TestResults library is a lightweight C# library designed to programmatically create test result files.
-The library currently focuses on the TRX (Test Results) format, with potential for additional formats in the future.
+The library supports both TRX (Test Results) and JUnit XML formats.
 TRX files are XML-based test result files commonly used by Visual Studio, Azure DevOps, and other Microsoft testing
-tools to store and visualize test execution results.
+tools, while JUnit XML is widely used across various CI/CD systems and testing frameworks.
 
 ## Design Philosophy
 
@@ -67,13 +67,22 @@ The `TrxSerializer` class is responsible for converting the domain model into TR
 - Produces TRX files compatible with Visual Studio and Azure DevOps
 - Handles proper formatting and schema compliance
 
+#### `JUnitSerializer`
+
+The `JUnitSerializer` class is responsible for converting the domain model into JUnit XML format:
+
+- Uses .NET's built-in XML serialization capabilities
+- Produces JUnit XML files compatible with various CI/CD systems and testing tools
+- Groups test results by class name into test suites
+- Maps test outcomes to JUnit semantics (failure, error, skipped)
+
 ## Data Flow
 
 ```text
 1. User creates TestResults instance
 2. User adds TestResult objects to the Results collection
-3. User calls TrxSerializer.Serialize() to convert to TRX XML format
-4. User saves the XML string to a .trx file
+3. User calls TrxSerializer.Serialize() or JUnitSerializer.Serialize() to convert to desired format
+4. User saves the XML string to a .trx or .xml file
 ```
 
 ## Design Patterns
@@ -95,8 +104,8 @@ The library source code is organized in the `/src/DemaConsulting.TestResults/` d
 The library is designed to be extended in several ways:
 
 1. **Custom Test Outcomes**: While the standard outcomes cover most scenarios, custom outcomes could be added
-2. **Additional Metadata**: The model could be extended to support additional TRX metadata fields
-3. **Alternative Serializers**: Additional serializers could be added for other test result formats
+2. **Additional Metadata**: The model could be extended to support additional metadata fields
+3. **Alternative Serializers**: Additional serializers could be added for other test result formats (NUnit, xUnit, etc.)
 
 ## Quality Attributes
 
@@ -128,10 +137,10 @@ The library is designed to be extended in several ways:
 
 Potential enhancements that could be considered:
 
-1. **Deserialization**: Add support for reading existing TRX files back into the object model
-2. **Additional Formats**: Support for other test result formats (JUnit XML, NUnit XML, etc.)
+1. **Deserialization**: Add support for reading existing TRX and JUnit XML files back into the object model
+2. **Additional Formats**: Support for other test result formats (NUnit XML, xUnit XML, etc.)
 3. **Streaming**: Support for streaming large test result sets to avoid memory issues
-4. **Validation**: Add schema validation to ensure generated TRX files are well-formed
+4. **Validation**: Add schema validation to ensure generated files are well-formed
 
 ## Dependencies
 

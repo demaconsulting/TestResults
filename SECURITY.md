@@ -103,8 +103,8 @@ Historical security advisories can be found in the
 When using the TestResults library:
 
 1. **Keep Updated**: Always use the latest version of the library
-2. **Validate Input**: If accepting TRX file paths from users, validate and sanitize them
-3. **File Permissions**: When writing TRX files, use appropriate file permissions
+2. **Validate Input**: If accepting test result file paths from users, validate and sanitize them
+3. **File Permissions**: When writing test result files (TRX or JUnit XML), use appropriate file permissions
 4. **Error Handling**: Implement proper error handling when using the library
 5. **Code Review**: Review any code that uses this library as part of your security practices
 
