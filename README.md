@@ -114,6 +114,28 @@ File.WriteAllText(
     JUnitSerializer.Serialize(results));
 ```
 
+### Converting Between Formats
+
+The library supports reading and converting between TRX and JUnit formats:
+
+```csharp
+using DemaConsulting.TestResults.IO;
+
+// Read JUnit XML file
+var junitXml = File.ReadAllText("junit-results.xml");
+var results = JUnitSerializer.Deserialize(junitXml);
+
+// Convert to TRX format
+var trxXml = TrxSerializer.Serialize(results);
+File.WriteAllText("converted.trx", trxXml);
+
+// Or convert TRX to JUnit
+var trxXml2 = File.ReadAllText("test-results.trx");
+var results2 = TrxSerializer.Deserialize(trxXml2);
+var junitXml2 = JUnitSerializer.Serialize(results2);
+File.WriteAllText("converted.xml", junitXml2);
+```
+
 ## Advanced Usage
 
 ### Capturing Standard Output

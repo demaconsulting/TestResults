@@ -69,10 +69,11 @@ The `TrxSerializer` class is responsible for converting the domain model into TR
 
 #### `JUnitSerializer`
 
-The `JUnitSerializer` class is responsible for converting the domain model into JUnit XML format:
+The `JUnitSerializer` class is responsible for converting between the domain model and JUnit XML format:
 
 - Uses .NET's built-in XML serialization capabilities
 - Produces JUnit XML files compatible with various CI/CD systems and testing tools
+- Can deserialize JUnit XML files back into the domain model
 - Groups test results by class name into test suites
 - Maps test outcomes to JUnit semantics (failure, error, skipped)
 
