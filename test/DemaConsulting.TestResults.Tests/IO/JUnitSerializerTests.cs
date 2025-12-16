@@ -692,20 +692,20 @@ public sealed class JUnitSerializerTests
 
         // Verify first test
         var origTest1 = original.Results[0];
-        var deserTest1 = deserialized.Results[0];
-        Assert.AreEqual(origTest1.Name, deserTest1.Name);
-        Assert.AreEqual(origTest1.ClassName, deserTest1.ClassName);
-        Assert.AreEqual(origTest1.Duration.TotalSeconds, deserTest1.Duration.TotalSeconds, 0.001);
-        Assert.AreEqual(origTest1.Outcome, deserTest1.Outcome);
-        Assert.AreEqual(origTest1.SystemOutput, deserTest1.SystemOutput);
+        var deserializedTest1 = deserialized.Results[0];
+        Assert.AreEqual(origTest1.Name, deserializedTest1.Name);
+        Assert.AreEqual(origTest1.ClassName, deserializedTest1.ClassName);
+        Assert.AreEqual(origTest1.Duration.TotalSeconds, deserializedTest1.Duration.TotalSeconds, 0.001);
+        Assert.AreEqual(origTest1.Outcome, deserializedTest1.Outcome);
+        Assert.AreEqual(origTest1.SystemOutput, deserializedTest1.SystemOutput);
 
         // Verify second test
         var origTest2 = original.Results[1];
-        var deserTest2 = deserialized.Results[1];
-        Assert.AreEqual(origTest2.Name, deserTest2.Name);
-        Assert.AreEqual(origTest2.ClassName, deserTest2.ClassName);
-        Assert.AreEqual(origTest2.Outcome, deserTest2.Outcome);
-        Assert.AreEqual(origTest2.ErrorMessage, deserTest2.ErrorMessage);
-        Assert.AreEqual(origTest2.ErrorStackTrace, deserTest2.ErrorStackTrace);
+        var deserializedTest2 = deserialized.Results[1];
+        Assert.AreEqual(origTest2.Name, deserializedTest2.Name);
+        Assert.AreEqual(origTest2.ClassName, deserializedTest2.ClassName);
+        Assert.AreEqual(origTest2.Outcome, deserializedTest2.Outcome);
+        Assert.AreEqual(origTest2.ErrorMessage, deserializedTest2.ErrorMessage);
+        Assert.AreEqual(origTest2.ErrorStackTrace, deserializedTest2.ErrorStackTrace);
     }
 }
