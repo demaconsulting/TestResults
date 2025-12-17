@@ -98,7 +98,7 @@ dotnet pack
 cspell "**/*.{md,cs}"
 
 # Run markdown linter (requires npm install -g markdownlint-cli)
-markdownlint "**/*.md"
+markdownlint *.md
 
 # Format code
 dotnet format

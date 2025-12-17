@@ -117,7 +117,7 @@ dotnet format --verify-no-changes
 cspell "**/*.{md,cs}"
 
 # (Optional) Run markdown linter if you modified markdown files
-markdownlint "**/*.md"
+markdownlint *.md
 ```
 
 All builds must complete with zero warnings, and all tests must pass.
