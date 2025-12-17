@@ -151,7 +151,7 @@ This library is useful when you need to:
 - Convert test results between formats (TRX ↔ JUnit)
 - Create test reports programmatically
 - Aggregate test results from multiple sources
-- Build custom testing tools that integrate with Visual Studio, Azure DevOps, or CI/CD systems that consume JUnit XML
+- Build custom testing tools that integrate with Visual Studio, Azure DevOps, or CI/CD systems
 
 ## Documentation
 
