@@ -109,6 +109,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the root TestRun element
     /// </summary>
+    /// <param name="results">The test results containing test run metadata</param>
+    /// <returns>An XElement representing the TestRun root element</returns>
     private static XElement CreateRootElement(TestResults results)
     {
         return new XElement(TrxNamespace + "TestRun",
@@ -120,6 +122,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the Results section with all test results
     /// </summary>
+    /// <param name="testResults">The collection of test results to serialize</param>
+    /// <returns>An XElement containing all UnitTestResult elements</returns>
     private static XElement CreateResultsElement(IList<TestResult> testResults)
     {
         var resultsElement = new XElement(TrxNamespace + "Results");
@@ -136,6 +140,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates a single UnitTestResult element
     /// </summary>
+    /// <param name="test">The test result to serialize</param>
+    /// <returns>An XElement representing a UnitTestResult with all test attributes and output</returns>
     private static XElement CreateUnitTestResultElement(TestResult test)
     {
         var resultElement = new XElement(TrxNamespace + "UnitTestResult",
@@ -159,6 +165,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the Output element with stdout, stderr, and error information
     /// </summary>
+    /// <param name="test">The test result containing output and error information</param>
+    /// <returns>An XElement containing StdOut, StdErr, and ErrorInfo child elements as appropriate</returns>
     private static XElement CreateOutputElement(TestResult test)
     {
         var outputElement = new XElement(TrxNamespace + "Output");
@@ -192,6 +200,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the ErrorInfo element with message and stack trace
     /// </summary>
+    /// <param name="test">The test result containing error message and stack trace</param>
+    /// <returns>An XElement containing Message and StackTrace child elements</returns>
     private static XElement CreateErrorInfoElement(TestResult test)
     {
         var errorInfoElement = new XElement(TrxNamespace + "ErrorInfo");
@@ -216,6 +226,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the TestDefinitions section with all unit test definitions
     /// </summary>
+    /// <param name="testResults">The collection of test results to create definitions for</param>
+    /// <returns>An XElement containing all UnitTest definition elements</returns>
     private static XElement CreateDefinitionsElement(IList<TestResult> testResults)
     {
         var definitionsElement = new XElement(TrxNamespace + "TestDefinitions");
@@ -240,6 +252,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the TestEntries section with all test entry mappings
     /// </summary>
+    /// <param name="testResults">The collection of test results to create entries for</param>
+    /// <returns>An XElement containing all TestEntry mapping elements</returns>
     private static XElement CreateTestEntriesElement(IList<TestResult> testResults)
     {
         var entriesElement = new XElement(TrxNamespace + "TestEntries");
@@ -259,6 +273,7 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the TestLists section
     /// </summary>
+    /// <returns>An XElement containing the standard TestList with the "All Loaded Results" list</returns>
     private static XElement CreateTestListsElement()
     {
         return new XElement(TrxNamespace + "TestLists",
@@ -270,6 +285,8 @@ public static class TrxSerializer
     /// <summary>
     ///     Creates the ResultSummary section with test statistics
     /// </summary>
+    /// <param name="testResults">The collection of test results to calculate statistics from</param>
+    /// <returns>An XElement containing the ResultSummary with Counters for total, executed, passed, and failed tests</returns>
     private static XElement CreateSummaryElement(IList<TestResult> testResults)
     {
         return new XElement(
@@ -311,6 +328,9 @@ public static class TrxSerializer
     /// <summary>
     ///     Parses the TestRun element and populates basic result properties
     /// </summary>
+    /// <param name="doc">The XML document containing the TRX file</param>
+    /// <param name="nsMgr">The namespace manager with TRX namespace mappings</param>
+    /// <param name="results">The TestResults object to populate with run metadata</param>
     private static void ParseRunElement(XDocument doc, XmlNamespaceManager nsMgr, TestResults results)
     {
         var runElement = doc.XPathSelectElement("/trx:TestRun", nsMgr) ??
@@ -323,6 +343,9 @@ public static class TrxSerializer
     /// <summary>
     ///     Parses all test result elements and adds them to the results collection
     /// </summary>
+    /// <param name="doc">The XML document containing the TRX file</param>
+    /// <param name="nsMgr">The namespace manager with TRX namespace mappings</param>
+    /// <param name="results">The TestResults object to populate with test result data</param>
     private static void ParseTestResults(XDocument doc, XmlNamespaceManager nsMgr, TestResults results)
     {
         var resultElements = doc.XPathSelectElements(
@@ -339,6 +362,10 @@ public static class TrxSerializer
     /// <summary>
     ///     Parses a single UnitTestResult element
     /// </summary>
+    /// <param name="doc">The XML document containing the TRX file</param>
+    /// <param name="nsMgr">The namespace manager with TRX namespace mappings</param>
+    /// <param name="resultElement">The UnitTestResult element to parse</param>
+    /// <returns>A TestResult object populated with data from the XML element</returns>
     private static TestResult ParseTestResult(XDocument doc, XmlNamespaceManager nsMgr, XElement resultElement)
     {
         var testId = resultElement.Attribute("testId") ??
