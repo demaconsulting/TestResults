@@ -45,6 +45,11 @@ public static class JUnitSerializer
     private const string InvalidJUnitFileMessage = "Invalid JUnit XML file";
 
     /// <summary>
+    ///     Attribute name for message in XML elements
+    /// </summary>
+    private const string MessageAttributeName = "message";
+
+    /// <summary>
     ///     Serializes the TestResults object to a JUnit XML file
     /// </summary>
     /// <param name="results">Test Results</param>
@@ -164,7 +169,7 @@ public static class JUnitSerializer
             var skipped = new XElement("skipped");
             if (!string.IsNullOrEmpty(test.ErrorMessage))
             {
-                skipped.Add(new XAttribute("message", test.ErrorMessage));
+                skipped.Add(new XAttribute(MessageAttributeName, test.ErrorMessage));
             }
             testCase.Add(skipped);
         }
@@ -182,7 +187,7 @@ public static class JUnitSerializer
 
         if (!string.IsNullOrEmpty(test.ErrorMessage))
         {
-            element.Add(new XAttribute("message", test.ErrorMessage));
+            element.Add(new XAttribute(MessageAttributeName, test.ErrorMessage));
         }
 
         if (!string.IsNullOrEmpty(test.ErrorStackTrace))
@@ -305,7 +310,7 @@ public static class JUnitSerializer
         {
             return (
                 TestOutcome.Failed,
-                failureElement.Attribute("message")?.Value ?? string.Empty,
+                failureElement.Attribute(MessageAttributeName)?.Value ?? string.Empty,
                 failureElement.Value
             );
         }
@@ -314,7 +319,7 @@ public static class JUnitSerializer
         {
             return (
                 TestOutcome.Error,
-                errorElement.Attribute("message")?.Value ?? string.Empty,
+                errorElement.Attribute(MessageAttributeName)?.Value ?? string.Empty,
                 errorElement.Value
             );
         }
@@ -323,7 +328,7 @@ public static class JUnitSerializer
         {
             return (
                 TestOutcome.NotExecuted,
-                skippedElement.Attribute("message")?.Value ?? string.Empty,
+                skippedElement.Attribute(MessageAttributeName)?.Value ?? string.Empty,
                 string.Empty
             );
         }

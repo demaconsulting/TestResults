@@ -124,7 +124,7 @@ public static class TrxSerializer
     /// </summary>
     /// <param name="testResults">The collection of test results to serialize</param>
     /// <returns>An XElement containing all UnitTestResult elements</returns>
-    private static XElement CreateResultsElement(IList<TestResult> testResults)
+    private static XElement CreateResultsElement(List<TestResult> testResults)
     {
         var resultsElement = new XElement(TrxNamespace + "Results");
 
@@ -228,7 +228,7 @@ public static class TrxSerializer
     /// </summary>
     /// <param name="testResults">The collection of test results to create definitions for</param>
     /// <returns>An XElement containing all UnitTest definition elements</returns>
-    private static XElement CreateDefinitionsElement(IList<TestResult> testResults)
+    private static XElement CreateDefinitionsElement(List<TestResult> testResults)
     {
         var definitionsElement = new XElement(TrxNamespace + "TestDefinitions");
 
@@ -254,7 +254,7 @@ public static class TrxSerializer
     /// </summary>
     /// <param name="testResults">The collection of test results to create entries for</param>
     /// <returns>An XElement containing all TestEntry mapping elements</returns>
-    private static XElement CreateTestEntriesElement(IList<TestResult> testResults)
+    private static XElement CreateTestEntriesElement(List<TestResult> testResults)
     {
         var entriesElement = new XElement(TrxNamespace + "TestEntries");
 
@@ -287,7 +287,7 @@ public static class TrxSerializer
     /// </summary>
     /// <param name="testResults">The collection of test results to calculate statistics from</param>
     /// <returns>An XElement containing the ResultSummary with Counters for total, executed, passed, and failed tests</returns>
-    private static XElement CreateSummaryElement(IList<TestResult> testResults)
+    private static XElement CreateSummaryElement(List<TestResult> testResults)
     {
         return new XElement(
             TrxNamespace + "ResultSummary",
