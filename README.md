@@ -72,10 +72,10 @@ results.Results.Add(
         ErrorStackTrace = "at SomeTestClass.Test2() in Test.cs:line 15"
     });
 
-// Save the results to TRX file
+// Save the results to a TRX file (Visual Studio format)
 File.WriteAllText("results.trx", TrxSerializer.Serialize(results));
 
-// Save the results to JUnit XML file
+// Save the results to a JUnit XML file
 File.WriteAllText("results.xml", JUnitSerializer.Serialize(results));
 ```
 
