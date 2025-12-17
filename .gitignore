@@ -5,3 +5,16 @@
 bin/
 obj/
 TestResults/
+
+# Code coverage reports
+coverage/
+*.coverage
+*.coveragexml
+*.opencover.xml
+
+# Test results
+*.trx
+
+# Temporary files
+*.tmp
+.DS_Store

@@ -95,8 +95,32 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 2. Make your changes, following the coding guidelines below
 3. Add or update tests as needed
 4. Run the full test suite to ensure nothing is broken
-5. Commit your changes with a clear and descriptive commit message
-6. Push to your fork and submit a pull request
+5. Run pre-commit quality checks (see below)
+6. Commit your changes with a clear and descriptive commit message
+7. Push to your fork and submit a pull request
+
+### Pre-Commit Quality Checks
+
+Before committing your changes, ensure the following checks pass:
+
+```bash
+# Build the project
+dotnet build --configuration Release
+
+# Run all tests
+dotnet test --configuration Release
+
+# Verify code formatting
+dotnet format --verify-no-changes
+
+# (Optional) Run spell checker if you modified documentation
+cspell "**/*.{md,cs}"
+
+# (Optional) Run markdown linter if you modified markdown files
+markdownlint "**/*.md"
+```
+
+All builds must complete with zero warnings, and all tests must pass.
 
 ## Coding Guidelines
 

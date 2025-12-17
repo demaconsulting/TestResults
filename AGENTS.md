@@ -100,8 +100,11 @@ cspell "**/*.{md,cs}"
 # Run markdown linter (requires npm install -g markdownlint-cli)
 markdownlint "**/*.md"
 
-# Format code (if format tools are installed)
+# Format code
 dotnet format
+
+# Verify formatting
+dotnet format --verify-no-changes
 ```
 
 ## Testing Guidelines
@@ -226,6 +229,7 @@ All builds must pass:
 5. Update XML documentation
 6. Update README.md with usage examples
 7. Run all tests and ensure they pass
+8. Complete pre-finalization quality checks (see below)
 
 ### Fixing a Bug
 
@@ -234,6 +238,7 @@ All builds must pass:
 3. Ensure the test now passes
 4. Verify no other tests are broken
 5. Update documentation if the bug fix changes behavior
+6. Complete pre-finalization quality checks (see below)
 
 ### Improving Code Quality
 
@@ -243,6 +248,7 @@ All builds must pass:
 4. Improve naming and clarity
 5. Add missing documentation
 6. Verify all tests still pass
+7. Complete pre-finalization quality checks (see below)
 
 ### Updating Dependencies
 
@@ -250,6 +256,55 @@ All builds must pass:
 2. Update to latest stable versions when appropriate
 3. Test thoroughly after updates
 4. Update documentation if APIs changed
+5. Complete pre-finalization quality checks (see below)
+
+## Pre-Finalization Quality Checks
+
+Before marking any task as complete and finalizing your session, you **MUST** run the following quality checks in this order:
+
+### 1. Build and Test Validation
+
+```bash
+# Build the project
+dotnet build --configuration Release
+
+# Run all tests
+dotnet test --configuration Release
+```
+
+All builds must complete with zero warnings and all tests must pass.
+
+### 2. Code Review
+
+Use the **code_review** tool to get automated feedback on your changes:
+
+- Review all comments and suggestions
+- Address relevant feedback
+- If significant changes are made, run code_review again
+
+### 3. Security Scanning
+
+Use the **codeql_checker** tool to scan for security vulnerabilities:
+
+- This tool must be run after code_review is complete
+- Investigate all alerts discovered
+- Fix any alerts that require localized changes
+- Re-run codeql_checker after fixes to verify
+- Include a Security Summary with any unfixed vulnerabilities
+
+### Quality Check Workflow
+
+The complete workflow before task completion:
+
+1. Make code changes
+2. Run build and tests → Fix any issues
+3. Run code_review tool → Address relevant feedback
+4. Run codeql_checker tool → Fix security issues
+5. If significant changes were made, repeat steps 2-4
+6. Report progress with final commit
+7. Complete task
+
+**Note**: Only proceed to finalize your task after all quality checks pass and all issues are addressed.
 
 ## Boundaries and Guardrails
 
@@ -270,6 +325,7 @@ All builds must pass:
 - Add tests for new functionality
 - Resolve all warnings and analyzer suggestions
 - Keep changes minimal and focused
+- Complete all pre-finalization quality checks (build, test, code_review, codeql_checker) before marking work as complete
 
 ### What AI Agents Should ASK About
 

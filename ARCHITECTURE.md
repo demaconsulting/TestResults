@@ -61,11 +61,13 @@ An enumeration representing possible test outcomes:
 
 #### `TrxSerializer`
 
-The `TrxSerializer` class is responsible for converting the domain model into TRX XML format:
+The `TrxSerializer` class is responsible for converting between the domain model and TRX XML format:
 
 - Uses .NET's built-in XML serialization capabilities
 - Produces TRX files compatible with Visual Studio and Azure DevOps
+- Can deserialize TRX XML files back into the domain model
 - Handles proper formatting and schema compliance
+- Implements helper methods for complex XML structure creation to maintain code clarity and reduce complexity
 
 #### `JUnitSerializer`
 
@@ -76,6 +78,7 @@ The `JUnitSerializer` class is responsible for converting between the domain mod
 - Can deserialize JUnit XML files back into the domain model
 - Groups test results by class name into test suites
 - Maps test outcomes to JUnit semantics (failure, error, skipped)
+- Implements helper methods for complex XML structure creation to maintain code clarity and reduce complexity
 
 ## Data Flow
 
@@ -89,8 +92,13 @@ The `JUnitSerializer` class is responsible for converting between the domain mod
 ## Design Patterns
 
 - **Data Transfer Object (DTO)**: The `TestResults` and `TestResult` classes serve as DTOs for test data
-- **Serializer Pattern**: The `TrxSerializer` class encapsulates all serialization logic
+- **Serializer Pattern**: The `TrxSerializer` and `JUnitSerializer` classes encapsulate all
+  serialization/deserialization logic
 - **Builder Pattern**: The API allows for fluent construction of test results
+- **Helper Method Extraction**: Complex serialization/deserialization logic is broken down into focused helper
+  methods, each handling a specific portion of the XML structure
+- **Constant Extraction**: Repeated string literals are extracted as private constants to improve maintainability
+  and reduce duplication
 
 ## File Organization
 
@@ -138,10 +146,10 @@ The library is designed to be extended in several ways:
 
 Potential enhancements that could be considered:
 
-1. **Deserialization**: Add support for reading existing TRX and JUnit XML files back into the object model
-2. **Additional Formats**: Support for other test result formats (NUnit XML, xUnit XML, etc.)
-3. **Streaming**: Support for streaming large test result sets to avoid memory issues
-4. **Validation**: Add schema validation to ensure generated files are well-formed
+1. **Additional Formats**: Support for other test result formats (NUnit XML, xUnit XML, etc.)
+2. **Streaming**: Support for streaming large test result sets to avoid memory issues
+3. **Validation**: Add schema validation to ensure generated files are well-formed
+4. **Format Detection**: Automatic detection of input format when deserializing
 
 ## Dependencies
 
