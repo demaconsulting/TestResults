@@ -92,10 +92,13 @@ The `JUnitSerializer` class is responsible for converting between the domain mod
 ## Design Patterns
 
 - **Data Transfer Object (DTO)**: The `TestResults` and `TestResult` classes serve as DTOs for test data
-- **Serializer Pattern**: The `TrxSerializer` and `JUnitSerializer` classes encapsulate all serialization/deserialization logic
+- **Serializer Pattern**: The `TrxSerializer` and `JUnitSerializer` classes encapsulate all
+  serialization/deserialization logic
 - **Builder Pattern**: The API allows for fluent construction of test results
-- **Helper Method Extraction**: Complex serialization/deserialization logic is broken down into focused helper methods, each handling a specific portion of the XML structure
-- **Constant Extraction**: Repeated string literals are extracted as private constants to improve maintainability and reduce duplication
+- **Helper Method Extraction**: Complex serialization/deserialization logic is broken down into focused helper
+  methods, each handling a specific portion of the XML structure
+- **Constant Extraction**: Repeated string literals are extracted as private constants to improve maintainability
+  and reduce duplication
 
 ## File Organization
 
