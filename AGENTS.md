@@ -12,7 +12,7 @@ TestResults is a C# library for creating test result files. The library is desig
 - **Type-Safe**: Strongly-typed C# objects
 - **Cross-Platform**: Supports .NET 8, 9, and 10
 
-The library currently focuses on TRX format, with potential for additional formats in the future.
+The library supports both TRX and JUnit XML formats, with potential for additional formats in the future.
 
 ## Technologies and Dependencies
 

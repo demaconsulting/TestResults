@@ -8,7 +8,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=demaconsulting_TestResults)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=demaconsulting_TestResults)
 
-A lightweight C# library for programmatically creating TRX (Test Results) files.
+A lightweight C# library for programmatically creating test result files in TRX and JUnit formats.
 
 ## Features
 
@@ -18,6 +18,7 @@ A lightweight C# library for programmatically creating TRX (Test Results) files.
 - 🔄 **Multi-Target** - Supports .NET 8, 9, and 10
 - 📦 **NuGet Ready** - Easy integration via NuGet package
 - ✅ **Compatible** - Generates TRX files compatible with Visual Studio, Azure DevOps, and other Microsoft testing tools
+- 📊 **Multiple Formats** - Supports both TRX and JUnit XML formats
 
 ## Installation
 
@@ -34,6 +35,8 @@ Install-Package DemaConsulting.TestResults
 ```
 
 ## Quick Start
+
+### Creating TRX Files
 
 The following code-snippet shows how to create a TRX test-results file:
 
@@ -68,10 +71,69 @@ results.Results.Add(
         ErrorStackTrace = "at SomeTestClass.Test2() in Test.cs:line 15"
     });
 
-// Save the results to file
+// Save the results to TRX file
 File.WriteAllText(
     "results.trx",
     TrxSerializer.Serialize(results));
+```
+
+### Creating JUnit XML Files
+
+The following code-snippet shows how to create a JUnit XML test-results file:
+
+```csharp
+using DemaConsulting.TestResults;
+using DemaConsulting.TestResults.IO;
+
+// Create a TestResults instance
+var results = new TestResults { Name = "SomeTests" };
+
+// Add some results
+results.Results.Add(
+    new TestResult
+    {
+        Name = "Test1",
+        ClassName = "SomeTestClass",
+        Outcome = TestOutcome.Passed,
+        Duration = TimeSpan.FromSeconds(1.5)
+    });
+
+results.Results.Add(
+    new TestResult
+    {
+        Name = "Test2",
+        ClassName = "SomeTestClass",
+        Outcome = TestOutcome.Failed,
+        ErrorMessage = "Expected value to be 42 but was 0",
+        ErrorStackTrace = "at SomeTestClass.Test2() in Test.cs:line 15"
+    });
+
+// Save the results to JUnit XML file
+File.WriteAllText(
+    "results.xml",
+    JUnitSerializer.Serialize(results));
+```
+
+### Converting Between Formats
+
+The library supports reading and converting between TRX and JUnit formats:
+
+```csharp
+using DemaConsulting.TestResults.IO;
+
+// Read JUnit XML file
+var junitXml = File.ReadAllText("junit-results.xml");
+var results = JUnitSerializer.Deserialize(junitXml);
+
+// Convert to TRX format
+var trxXml = TrxSerializer.Serialize(results);
+File.WriteAllText("converted.trx", trxXml);
+
+// Or convert TRX to JUnit
+var trxXml2 = File.ReadAllText("test-results.trx");
+var results2 = TrxSerializer.Deserialize(trxXml2);
+var junitXml2 = JUnitSerializer.Serialize(results2);
+File.WriteAllText("converted.xml", junitXml2);
 ```
 
 ## Advanced Usage
@@ -120,11 +182,11 @@ The library supports the following test outcomes:
 
 This library is useful when you need to:
 
-- Generate TRX files from custom test runners
-- Convert test results from other formats to TRX
+- Generate TRX or JUnit XML files from custom test runners
+- Convert test results between formats (TRX ↔ JUnit)
 - Create test reports programmatically
 - Aggregate test results from multiple sources
-- Build custom testing tools that integrate with Visual Studio or Azure DevOps
+- Build custom testing tools that integrate with Visual Studio, Azure DevOps, or CI/CD systems that consume JUnit XML
 
 ## Documentation
 
