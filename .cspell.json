@@ -3,10 +3,12 @@
   "language": "en",
   "words": [
     "camelcase",
+    "copilot",
     "cspell",
     "csproj",
     "dbproj",
     "Dema",
+    "Dependabot",
     "dependabot",
     "dotnet",
     "editorconfig",
@@ -14,6 +16,7 @@
     "Gidget",
     "gitattributes",
     "LINQ",
+    "maintainer",
     "markdownlint",
     "mstest",
     "nuget",
@@ -25,6 +28,7 @@
     "sonarcloud",
     "spdx",
     "TestResults",
+    "triaging",
     "trx",
     "vbproj",
     "vcxproj"
