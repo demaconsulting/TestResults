@@ -31,45 +31,46 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const today = new Date().toISOString().split('T')[0];
-            
-            // Create a maintenance issue for the Project Maintainer agent to address
+
+            // Create a maintenance issue for the Project Maintainer agent
             const issue = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `Weekly Maintenance - ${today}`,
               body: `## Weekly Maintenance Tasks
-              
-              This issue tracks weekly project maintenance activities. The Project Maintainer agent should review and address the following:
-              
-              ### Tasks
-              
-              - [ ] Review and triage open issues
-              - [ ] Review pending Dependabot PRs
-              - [ ] Check CI/CD pipeline status
-              - [ ] Review SonarCloud metrics
-              - [ ] Check code coverage trends
-              - [ ] Identify technical debt or improvement opportunities
-              - [ ] Create enhancement issues for identified improvements
-              - [ ] Update project documentation if needed
-              - [ ] Close resolved or stale issues
-              
-              ### Instructions for Project Maintainer Agent
-              
-              Please review each task above and:
-              1. Complete the maintenance activities
-              2. Check off completed items
-              3. Create separate issues for any significant improvements identified
-              4. Add comments with findings and actions taken
-              5. Close this issue once all maintenance is complete
-              
-              ---
-              *This issue was automatically created by the Weekly Maintenance workflow.*
-              *Assign to @copilot[project-maintainer] to have the agent address these tasks.*`,
+
+            This issue tracks weekly project maintenance activities.
+            The Project Maintainer agent should review and address the following:
+
+            ### Tasks
+
+            - [ ] Review and triage open issues
+            - [ ] Review pending Dependabot PRs
+            - [ ] Check CI/CD pipeline status
+            - [ ] Review SonarCloud metrics
+            - [ ] Check code coverage trends
+            - [ ] Identify technical debt or improvement opportunities
+            - [ ] Create enhancement issues for identified improvements
+            - [ ] Update project documentation if needed
+            - [ ] Close resolved or stale issues
+
+            ### Instructions for Project Maintainer Agent
+
+            Please review each task above and:
+            1. Complete the maintenance activities
+            2. Check off completed items
+            3. Create separate issues for any significant improvements
+            4. Add comments with findings and actions taken
+            5. Close this issue once all maintenance is complete
+
+            ---
+            *This issue was automatically created by the Weekly Maintenance workflow.*
+            *Assign to @copilot[project-maintainer] to have the agent address these tasks.*`,
               labels: ['maintenance', 'automated']
             });
-            
+
             console.log(`Created maintenance issue #${issue.data.number}`);
-            
+
             // Post a comment mentioning the Project Maintainer agent
             await github.rest.issues.createComment({
               owner: context.repo.owner,
