@@ -28,6 +28,7 @@
     "sonarcloud",
     "spdx",
     "TestResults",
+    "triaging",
     "trx",
     "vbproj",
     "vcxproj"
