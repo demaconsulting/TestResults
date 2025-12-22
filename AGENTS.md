@@ -373,3 +373,59 @@ The complete workflow before task completion:
 - Use APIs available in all target frameworks
 - Test on multiple framework versions when possible
 - Check for framework-specific issues in CI/CD logs
+
+## Custom GitHub Copilot Agents
+
+This project has specialized GitHub Copilot agents to help with specific tasks. These agents
+are configured in the `.github/agents/` directory and can be invoked for their areas of expertise.
+
+### Available Agents
+
+#### Documentation Writer (`@copilot[documentation-writer]`)
+
+Expert technical writer specializing in:
+- Maintaining README, ARCHITECTURE, and markdown documentation
+- Writing XML documentation comments for APIs
+- Ensuring documentation accuracy and clarity
+- Following markdown and spelling standards
+
+**Use this agent for**: Documentation updates, API comments, usage examples, and documentation fixes.
+
+#### Software Quality Enforcer (`@copilot[software-quality-enforcer]`)
+
+Code quality specialist focused on:
+- Enforcing testing standards and code coverage
+- Running static analysis and linting
+- Code review and quality gates
+- Ensuring zero-warning builds
+
+**Use this agent for**: Code reviews, test improvements, quality issues, and coding standards enforcement.
+
+#### Project Maintainer (`@copilot[project-maintainer]`)
+
+Project maintenance specialist responsible for:
+- Managing dependencies and Dependabot PRs
+- Triaging and organizing issues
+- Identifying improvement opportunities
+- Planning enhancements and releases
+- Weekly maintenance tasks
+
+**Use this agent for**: Issue triage, dependency updates, project health checks, and enhancement planning.
+
+### Using Custom Agents
+
+Invoke agents in issues and pull requests by mentioning them:
+
+```markdown
+@copilot[documentation-writer] Please update the README with examples for the new feature.
+```
+
+```markdown
+@copilot[software-quality-enforcer] Review this PR for code quality standards.
+```
+
+```markdown
+@copilot[project-maintainer] Please triage recent issues and suggest priorities.
+```
+
+See `.github/agents/README.md` for detailed information about the agents and their capabilities.
