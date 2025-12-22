@@ -384,6 +384,7 @@ are configured in the `.github/agents/` directory and can be invoked for their a
 #### Documentation Writer (`@copilot[documentation-writer]`)
 
 Expert technical writer specializing in:
+
 - Maintaining README, ARCHITECTURE, and markdown documentation
 - Writing XML documentation comments for APIs
 - Ensuring documentation accuracy and clarity
@@ -394,6 +395,7 @@ Expert technical writer specializing in:
 #### Software Quality Enforcer (`@copilot[software-quality-enforcer]`)
 
 Code quality specialist focused on:
+
 - Enforcing testing standards and code coverage
 - Running static analysis and linting
 - Code review and quality gates
@@ -404,6 +406,7 @@ Code quality specialist focused on:
 #### Project Maintainer (`@copilot[project-maintainer]`)
 
 Project maintenance specialist responsible for:
+
 - Managing dependencies and Dependabot PRs
 - Triaging and organizing issues
 - Identifying improvement opportunities
