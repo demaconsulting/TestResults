@@ -8,15 +8,9 @@ updates:
       day: "monday"
     open-pull-requests-limit: 10
     groups:
-      analyzers:
+      nuget-dependencies:
         patterns:
-          - "Microsoft.CodeAnalysis.*"
-          - "SonarAnalyzer.*"
-      test-dependencies:
-        patterns:
-          - "Microsoft.NET.Test.Sdk"
-          - "MSTest.*"
-          - "coverlet.*"
+          - "*"
       
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
