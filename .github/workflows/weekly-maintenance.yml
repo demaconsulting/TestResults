@@ -8,12 +8,13 @@ on:
   schedule:
     # Run every Monday at 9:00 AM UTC
     - cron: '0 9 * * 1'
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch:  # Allow manual triggering
 
 permissions:
   contents: read
   issues: write
   pull-requests: read
+  id-token: write
 
 jobs:
   maintenance:
@@ -65,16 +66,96 @@ jobs:
 
             ---
             *This issue was automatically created by the Weekly Maintenance workflow.*
-            *Assign to @copilot[project-maintainer] to have the agent address these tasks.*`,
+            *The project-maintainer agent has been automatically assigned to address these tasks.*`,
               labels: ['maintenance', 'automated']
             });
 
             console.log(`Created maintenance issue #${issue.data.number}`);
 
-            // Post a comment mentioning the Project Maintainer agent
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.data.number,
-              body: '@copilot[project-maintainer] Please review and complete the weekly maintenance tasks listed above.'
-            });
+            // Query for the project-maintainer custom agent ID
+            const agentQuery = `
+              query($owner: String!, $repo: String!, $slug: String!) {
+                repository(owner: $owner, name: $repo) {
+                  customAgent(slug: $slug) {
+                    id
+                    name
+                  }
+                }
+              }
+            `;
+
+            let customAgentId;
+            try {
+              const agentResponse = await github.graphql(agentQuery, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                slug: 'project-maintainer'
+              });
+
+              customAgentId = agentResponse.repository.customAgent?.id;
+
+              if (!customAgentId) {
+                console.log('Warning: project-maintainer agent not found');
+                // Fallback: Post a comment mentioning the agent
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.data.number,
+                  body: '@copilot[project-maintainer] Please review and complete ' +
+                        'the weekly maintenance tasks listed above.'
+                });
+                return;
+              }
+
+              console.log(`Found project-maintainer agent: ` +
+                          `${agentResponse.repository.customAgent.name} ` +
+                          `(${customAgentId})`);
+            } catch (error) {
+              console.log(`Error querying for agent: ${error.message}`);
+              // Fallback: Post a comment mentioning the agent
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.data.number,
+                body: '@copilot[project-maintainer] Please review and complete ' +
+                      'the weekly maintenance tasks listed above.'
+              });
+              return;
+            }
+
+            // Assign the custom agent to the issue using GraphQL mutation
+            const assignMutation = `
+              mutation($assignableId: ID!, $customAgentId: ID!) {
+                assignCopilotAgentToAssignable(input: {
+                  assignableId: $assignableId,
+                  customAgentId: $customAgentId
+                }) {
+                  assignable {
+                    ... on Issue {
+                      number
+                      title
+                    }
+                  }
+                }
+              }
+            `;
+
+            try {
+              const assignResponse = await github.graphql(assignMutation, {
+                assignableId: issue.data.node_id,
+                customAgentId: customAgentId
+              });
+
+              console.log(`Successfully assigned project-maintainer agent ` +
+                          `to issue #${issue.data.number}`);
+            } catch (error) {
+              console.log(`Error assigning agent: ${error.message}`);
+              // Fallback: Post a comment mentioning the agent
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.data.number,
+                body: '@copilot[project-maintainer] Please review and complete ' +
+                      'the weekly maintenance tasks listed above.'
+              });
+            }
