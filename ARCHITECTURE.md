@@ -167,3 +167,17 @@ Potential enhancements that could be considered:
 - MSTest: Testing framework
 - Microsoft.NET.Test.Sdk: Test SDK
 - coverlet.collector: Code coverage collection
+
+## Testing Conventions
+
+The TestResults library follows these testing conventions:
+
+### Test Framework Standards
+
+- **MSTest Framework**: All tests use MSTest with modern .NET testing practices
+- **String Containment Checks**: Use `Assert.Contains` for string containment checks for consistency, better
+  readability, and improved discoverability in modern .NET testing with MSTest
+- **Test Naming**: Follow the pattern `TestMethod_Scenario_ExpectedBehavior` for descriptive test names
+- **Test Structure**: Use AAA (Arrange, Act, Assert) pattern for clarity
+- **Test Coverage**: Maintain high code coverage (>80%) with comprehensive unit tests covering success, failure, and
+  edge cases
