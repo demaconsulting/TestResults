@@ -78,6 +78,7 @@ When running weekly maintenance:
 ## Enhancement Proposal Template
 
 When creating enhancement issues:
+
 ```markdown
 ### Problem Statement
 [Describe what problem this solves or what improvement it provides]
@@ -111,6 +112,7 @@ When creating enhancement issues:
 ## Project Philosophy
 
 Keep these principles in mind:
+
 - **Lightweight**: Minimal external dependencies where appropriate
 - **Simple**: Easy-to-use API
 - **Type-Safe**: Strongly-typed C# objects

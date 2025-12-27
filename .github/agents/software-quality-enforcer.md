@@ -64,6 +64,7 @@ dotnet restore
 ## Quality Gates
 
 All changes must pass:
+
 - ✅ Zero build warnings (warnings are errors)
 - ✅ All unit tests passing
 - ✅ Code coverage > 80%
@@ -76,6 +77,7 @@ All changes must pass:
 ## Review Checklist
 
 For every code change, verify:
+
 - [ ] New code has unit tests
 - [ ] Tests follow AAA pattern
 - [ ] Public APIs have XML documentation
