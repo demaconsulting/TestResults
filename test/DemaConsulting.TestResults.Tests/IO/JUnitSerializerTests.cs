@@ -708,4 +708,30 @@ public sealed class JUnitSerializerTests
         Assert.AreEqual(origTest2.ErrorMessage, deserializedTest2.ErrorMessage);
         Assert.AreEqual(origTest2.ErrorStackTrace, deserializedTest2.ErrorStackTrace);
     }
+
+    /// <summary>
+    ///     Test for deserialization with missing time attribute
+    /// </summary>
+    [TestMethod]
+    public void TestDeserializeWithMissingTimeAttribute()
+    {
+        // Deserialize the test results object without time attribute
+        var results = JUnitSerializer.Deserialize(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="MissingTimeTests">
+              <testsuite name="MyTestClass" tests="1" failures="0" errors="0" skipped="0" time="0.000">
+                <testcase name="TestWithoutTime" classname="MyTestClass" />
+              </testsuite>
+            </testsuites>
+            """);
+        Assert.IsNotNull(results);
+
+        // Assert test result information - duration should default to zero
+        var result = results.Results[0];
+        Assert.AreEqual("TestWithoutTime", result.Name);
+        Assert.AreEqual("MyTestClass", result.ClassName);
+        Assert.AreEqual(TimeSpan.Zero, result.Duration);
+        Assert.AreEqual(TestOutcome.Passed, result.Outcome);
+    }
 }
