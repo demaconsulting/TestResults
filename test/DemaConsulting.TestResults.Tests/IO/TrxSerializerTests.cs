@@ -43,7 +43,7 @@ public sealed class TrxSerializerTests
     ///     Test for basic serialization
     /// </summary>
     [TestMethod]
-    public void TestSerializeBasic()
+    public void Serialize_BasicTestResults_ProducesValidTrxXml()
     {
         // Construct a basic test results object
         var suites = new TestResults
@@ -91,7 +91,7 @@ public sealed class TrxSerializerTests
     ///     Test for complex serialization
     /// </summary>
     [TestMethod]
-    public void TestSerializeComplex()
+    public void Serialize_MultipleTestResults_ProducesValidTrxXml()
     {
         // Construct a complex test results object
         var suites = new TestResults
@@ -152,7 +152,7 @@ public sealed class TrxSerializerTests
     ///     Test for basic deserialization
     /// </summary>
     [TestMethod]
-    public void TestDeserializeBasic()
+    public void Deserialize_BasicTrxXml_ReturnsTestResults()
     {
         // Deserialize the test results object
         var results = TrxSerializer.Deserialize(
@@ -209,7 +209,7 @@ public sealed class TrxSerializerTests
     ///     Test for complex deserialization
     /// </summary>
     [TestMethod]
-    public void TestDeserializeComplex()
+    public void Deserialize_ComplexTrxXml_ReturnsTestResults()
     {
         // Deserialize the test results object
         var results = TrxSerializer.Deserialize(
@@ -293,7 +293,7 @@ public sealed class TrxSerializerTests
     ///     Test for serialization with stack trace but no error message
     /// </summary>
     [TestMethod]
-    public void TestSerializeWithStackTraceOnly()
+    public void Serialize_StackTraceWithoutMessage_IncludesStackTraceElement()
     {
         // Construct a test results object with stack trace but no message
         var suites = new TestResults

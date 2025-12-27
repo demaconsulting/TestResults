@@ -34,7 +34,7 @@ public sealed class JUnitSerializerTests
     ///     Test for basic serialization with passed test
     /// </summary>
     [TestMethod]
-    public void TestSerializeBasic()
+    public void Serialize_PassedTest_ProducesValidJUnitXml()
     {
         // Construct a basic test results object
         var results = new TestResults
@@ -90,7 +90,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with failed test
     /// </summary>
     [TestMethod]
-    public void TestSerializeWithFailure()
+    public void Serialize_FailedTest_IncludesFailureElement()
     {
         // Construct test results with a failed test
         var results = new TestResults
@@ -138,7 +138,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with error test
     /// </summary>
     [TestMethod]
-    public void TestSerializeWithError()
+    public void Serialize_ErrorTest_IncludesErrorElement()
     {
         // Construct test results with an error test
         var results = new TestResults
@@ -183,7 +183,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with skipped test
     /// </summary>
     [TestMethod]
-    public void TestSerializeWithSkipped()
+    public void Serialize_SkippedTest_IncludesSkippedElement()
     {
         // Construct test results with a skipped test
         var results = new TestResults
@@ -227,7 +227,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with system output
     /// </summary>
     [TestMethod]
-    public void TestSerializeWithSystemOutput()
+    public void Serialize_TestWithOutput_IncludesSystemOutAndErr()
     {
         // Construct test results with system output
         var results = new TestResults
@@ -271,7 +271,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with multiple test results
     /// </summary>
     [TestMethod]
-    public void TestSerializeMultipleTests()
+    public void Serialize_MultipleTestsInClasses_GroupsByClassName()
     {
         // Construct test results with multiple tests
         var results = new TestResults
@@ -336,7 +336,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with empty class name
     /// </summary>
     [TestMethod]
-    public void TestSerializeEmptyClassName()
+    public void Serialize_EmptyClassName_UsesDefaultSuite()
     {
         // Construct test results with empty class name
         var results = new TestResults
@@ -373,7 +373,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization matching the usage example from the issue
     /// </summary>
     [TestMethod]
-    public void TestSerializeUsageExample()
+    public void Serialize_UsageExample_ProducesValidJUnitXml()
     {
         // Create a TestResults instance matching the usage example
         var results = new TestResults { Name = "SomeTests" };
@@ -440,7 +440,7 @@ public sealed class JUnitSerializerTests
     ///     Test for basic deserialization
     /// </summary>
     [TestMethod]
-    public void TestDeserializeBasic()
+    public void Deserialize_BasicJUnitXml_ReturnsTestResults()
     {
         // Deserialize the test results object
         var results = JUnitSerializer.Deserialize(
@@ -470,7 +470,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with failure
     /// </summary>
     [TestMethod]
-    public void TestDeserializeWithFailure()
+    public void Deserialize_FailedTest_ReturnsFailureDetails()
     {
         // Deserialize the test results object with a failed test
         var results = JUnitSerializer.Deserialize(
@@ -503,7 +503,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with error
     /// </summary>
     [TestMethod]
-    public void TestDeserializeWithError()
+    public void Deserialize_ErrorTest_ReturnsErrorDetails()
     {
         // Deserialize the test results object with an error test
         var results = JUnitSerializer.Deserialize(
@@ -531,7 +531,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with skipped test
     /// </summary>
     [TestMethod]
-    public void TestDeserializeWithSkipped()
+    public void Deserialize_SkippedTest_ReturnsSkippedStatus()
     {
         // Deserialize the test results object with a skipped test
         var results = JUnitSerializer.Deserialize(
@@ -558,7 +558,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with system output
     /// </summary>
     [TestMethod]
-    public void TestDeserializeWithSystemOutput()
+    public void Deserialize_TestWithOutput_ReturnsSystemOutput()
     {
         // Deserialize the test results object with system output
         var results = JUnitSerializer.Deserialize(
@@ -586,7 +586,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with multiple test suites
     /// </summary>
     [TestMethod]
-    public void TestDeserializeMultipleTestSuites()
+    public void Deserialize_MultipleTestSuites_ReturnsAllTests()
     {
         // Deserialize the test results object with multiple test suites
         var results = JUnitSerializer.Deserialize(
@@ -632,7 +632,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with empty class name (DefaultSuite)
     /// </summary>
     [TestMethod]
-    public void TestDeserializeEmptyClassName()
+    public void Deserialize_DefaultSuite_ReturnsEmptyClassName()
     {
         // Deserialize the test results object with DefaultSuite
         var results = JUnitSerializer.Deserialize(
@@ -656,7 +656,7 @@ public sealed class JUnitSerializerTests
     ///     Test for round-trip serialization and deserialization
     /// </summary>
     [TestMethod]
-    public void TestRoundTrip()
+    public void Serialize_ThenDeserialize_PreservesTestData()
     {
         // Create original test results
         var original = new TestResults { Name = "RoundTripTests" };
@@ -713,7 +713,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with missing time attribute
     /// </summary>
     [TestMethod]
-    public void TestDeserializeWithMissingTimeAttribute()
+    public void Deserialize_MissingTimeAttribute_DefaultsToZero()
     {
         // Deserialize the test results object without time attribute
         var results = JUnitSerializer.Deserialize(
