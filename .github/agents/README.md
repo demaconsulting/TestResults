@@ -10,12 +10,14 @@ These agents have specialized roles and expertise to help maintain and improve t
 **Role**: Expert technical writer for documentation maintenance
 
 **Specialties**:
+
 - Maintaining README, ARCHITECTURE, and other markdown files
 - Writing XML documentation comments for C# APIs
 - Ensuring documentation accuracy and clarity
 - Following markdown and spelling standards
 
 **When to Use**:
+
 - Adding or updating documentation
 - Improving code comments
 - Creating usage examples
@@ -28,12 +30,14 @@ These agents have specialized roles and expertise to help maintain and improve t
 **Role**: Code quality specialist ensuring high standards
 
 **Specialties**:
+
 - Enforcing testing standards and code coverage
 - Running static analysis and linting
 - Code review and quality gates
 - Ensuring zero-warning builds
 
 **When to Use**:
+
 - Reviewing code changes
 - Improving test coverage
 - Fixing quality issues
@@ -46,6 +50,7 @@ These agents have specialized roles and expertise to help maintain and improve t
 **Role**: Project maintenance and improvement specialist
 
 **Specialties**:
+
 - Managing dependencies and Dependabot PRs
 - Triaging and organizing issues
 - Identifying improvement opportunities
@@ -53,6 +58,7 @@ These agents have specialized roles and expertise to help maintain and improve t
 - Weekly maintenance tasks
 
 **When to Use**:
+
 - Weekly project health checks
 - Issue triage and prioritization
 - Planning enhancements
