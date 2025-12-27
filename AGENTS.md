@@ -411,7 +411,6 @@ Project maintenance specialist responsible for:
 - Triaging and organizing issues
 - Identifying improvement opportunities
 - Planning enhancements and releases
-- Weekly maintenance tasks
 
 **Use this agent for**: Issue triage, dependency updates, project health checks, and enhancement planning.
 
