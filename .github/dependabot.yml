@@ -11,7 +11,7 @@ updates:
       nuget-dependencies:
         patterns:
           - "*"
-      
+
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"

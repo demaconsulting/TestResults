@@ -23,16 +23,3 @@ rules:
   # Ensure proper comment formatting
   comments:
     min-spaces-from-content: 2
-
-  # Document start is optional
-  document-start: disable
-
-  # Allow trailing spaces
-  trailing-spaces: disable
-
-  # Allow comments at various indentation levels
-  comments-indentation: disable
-
-# Ignore spdx-workflow.yaml as it's not a standard YAML workflow but a custom workflow format
-ignore: |
-  spdx-workflow.yaml
