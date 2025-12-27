@@ -13,8 +13,8 @@
     <PackageProjectUrl>https://github.com/demaconsulting/TestResults</PackageProjectUrl>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
-	<PackageTags>tests;trx</PackageTags>
-	<Description>Test Results Library</Description>
+	<PackageTags>tests;trx;junit;test-results</PackageTags>
+	<Description>A lightweight C# library for programmatically creating test result files in TRX and JUnit formats</Description>
 	<Copyright>Copyright DEMA Consulting</Copyright>
 	<Title>Test Results Library</Title>
 	<Authors>DEMA Consulting</Authors>

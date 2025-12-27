@@ -430,4 +430,4 @@ Invoke agents in issues and pull requests by mentioning them:
 @copilot[project-maintainer] Please triage recent issues and suggest priorities.
 ```
 
-See `.github/agents/README.md` for detailed information about the agents and their capabilities.
+For detailed information about each agent, see their individual files in the `.github/agents/` directory.
