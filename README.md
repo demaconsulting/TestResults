@@ -57,8 +57,7 @@ results.Results.Add(
         CodeBase = "MyTestAssembly",
         Outcome = TestOutcome.Passed,
         Duration = TimeSpan.FromSeconds(1.5),
-        StartTime = DateTime.UtcNow,
-        EndTime = DateTime.UtcNow.AddSeconds(1.5)
+        StartTime = DateTime.UtcNow
     });
 
 results.Results.Add(
@@ -112,7 +111,7 @@ var result = new TestResult
     ClassName = "MyTests",
     CodeBase = "MyAssembly",
     Outcome = TestOutcome.Passed,
-    StdOut = "Debug information\nTest completed successfully"
+    SystemOutput = "Debug information\nTest completed successfully"
 };
 ```
 
@@ -127,7 +126,7 @@ var failedResult = new TestResult
     Outcome = TestOutcome.Failed,
     ErrorMessage = "Assertion failed: Expected 100, got 50",
     ErrorStackTrace = "at MyTests.FailingTest() in Tests.cs:line 42",
-    StdErr = "Additional error details"
+    SystemError = "Additional error details"
 };
 ```
 

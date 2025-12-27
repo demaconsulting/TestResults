@@ -66,12 +66,12 @@ public sealed class TestResult
     public TimeSpan Duration { get; set; } = TimeSpan.Zero;
 
     /// <summary>
-    ///     Gets or sets the stdout output when execution the test case
+    ///     Gets or sets the stdout output when executing the test case
     /// </summary>
     public string SystemOutput { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the stderr output when execution the test case
+    ///     Gets or sets the stderr output when executing the test case
     /// </summary>
     public string SystemError { get; set; } = string.Empty;
 

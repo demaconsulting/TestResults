@@ -39,11 +39,10 @@ Represents a single test result. Key properties:
 - `Outcome`: The test outcome (see `TestOutcome` enum)
 - `Duration`: Test execution duration
 - `StartTime`: When the test started
-- `EndTime`: When the test finished
 - `ErrorMessage`: Error message if the test failed
 - `ErrorStackTrace`: Stack trace if the test failed
-- `StdOut`: Standard output captured during test execution
-- `StdErr`: Standard error output captured during test execution
+- `SystemOutput`: Standard output captured during test execution
+- `SystemError`: Standard error output captured during test execution
 
 #### `TestOutcome`
 
