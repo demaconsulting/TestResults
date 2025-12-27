@@ -43,7 +43,7 @@ public sealed class TrxSerializerTests
     ///     Test for basic serialization
     /// </summary>
     [TestMethod]
-    public void TestSerializeBasic()
+    public void Serialize_BasicTestResults_ProducesValidTrxXml()
     {
         // Construct a basic test results object
         var suites = new TestResults
@@ -91,7 +91,7 @@ public sealed class TrxSerializerTests
     ///     Test for complex serialization
     /// </summary>
     [TestMethod]
-    public void TestSerializeComplex()
+    public void Serialize_MultipleTestResults_ProducesValidTrxXml()
     {
         // Construct a complex test results object
         var suites = new TestResults
@@ -152,7 +152,7 @@ public sealed class TrxSerializerTests
     ///     Test for basic deserialization
     /// </summary>
     [TestMethod]
-    public void TestDeserializeBasic()
+    public void Deserialize_BasicTrxXml_ReturnsTestResults()
     {
         // Deserialize the test results object
         var results = TrxSerializer.Deserialize(
@@ -209,7 +209,7 @@ public sealed class TrxSerializerTests
     ///     Test for complex deserialization
     /// </summary>
     [TestMethod]
-    public void TestDeserializeComplex()
+    public void Deserialize_ComplexTrxXml_ReturnsTestResults()
     {
         // Deserialize the test results object
         var results = TrxSerializer.Deserialize(
@@ -287,5 +287,48 @@ public sealed class TrxSerializerTests
         Assert.AreEqual(2.0, result2.Duration.TotalSeconds);
         Assert.AreEqual(TestOutcome.Failed, result2.Outcome);
         Assert.AreEqual("Error", result2.ErrorMessage);
+    }
+
+    /// <summary>
+    ///     Test for serialization with stack trace but no error message
+    /// </summary>
+    [TestMethod]
+    public void Serialize_StackTraceWithoutMessage_IncludesStackTraceElement()
+    {
+        // Construct a test results object with stack trace but no message
+        var suites = new TestResults
+        {
+            Name = "StackTraceOnly",
+            UserName = "user",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "TestWithStackTrace",
+                    ClassName = "Class",
+                    CodeBase = "Code",
+                    StartTime = new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc),
+                    Duration = TimeSpan.FromSeconds(1.0),
+                    Outcome = TestOutcome.Failed,
+                    ErrorStackTrace = "at TestClass.Method() in Test.cs:line 42"
+                }
+            ]
+        };
+
+        // Serialize the test suites object
+        var result = TrxSerializer.Serialize(suites);
+        Assert.IsNotNull(result);
+
+        // Parse the document
+        var doc = XDocument.Parse(result);
+        var nsMgr = new XmlNamespaceManager(new NameTable());
+        nsMgr.AddNamespace("trx", TrxNamespace);
+
+        // Verify the StackTrace element is present
+        var stackTraceElement = doc.XPathSelectElement(
+            "/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='TestWithStackTrace']/trx:Output/trx:ErrorInfo/trx:StackTrace",
+            nsMgr);
+        Assert.IsNotNull(stackTraceElement);
+        Assert.Contains("at TestClass.Method() in Test.cs:line 42", stackTraceElement.Value);
     }
 }
