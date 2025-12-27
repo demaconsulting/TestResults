@@ -31,7 +31,8 @@
     "triaging",
     "trx",
     "vbproj",
-    "vcxproj"
+    "vcxproj",
+    "yamllint"
   ],
   "ignorePaths": [
     "node_modules",
