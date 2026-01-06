@@ -163,22 +163,20 @@ jobs:
         run: dotnet tool install --global DemaConsulting.WeasyprintTool
 
       - name: Generate HTML with Pandoc
-        run: |
-          cd docs/guide
-          pandoc-tool \
-            title.txt \
-            --defaults definition.yaml \
-            --output guide.html
+        run: >
+          pandoc-tool
+          docs/guide/title.txt
+          --defaults docs/guide/definition.yaml
+          --output docs/guide/guide.html
 
       - name: Generate PDF with Weasyprint
-        run: |
-          cd docs/guide
-          weasyprint-tool guide.html guide.pdf
+        run: >
+          weasyprint-tool
+          docs/guide/guide.html
+          docs/guide/guide.pdf
 
       - name: Upload Documentation
         uses: actions/upload-artifact@v6
         with:
           name: documentation
-          path: |
-            docs/guide/guide.html
-            docs/guide/guide.pdf
+          path: docs/guide/guide.pdf
