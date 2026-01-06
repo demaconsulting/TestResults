@@ -4,7 +4,7 @@ resource-path:
   - docs/template
 
 input-files:
-  - guide.md
+  - docs/guide/guide.md
 
 template: guide_template.html
 
