@@ -63,4 +63,4 @@ jobs:
     needs: quality-checks
     permissions:
       contents: read # To read repository contents
-    uses: ./.github/workflows/build-docs.yaml
+    uses: ./.github/workflows/build_docs.yaml

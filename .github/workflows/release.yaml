@@ -35,7 +35,7 @@ jobs:
     name: Build Documentation
     permissions:
       contents: read # To read repository contents
-    uses: ./.github/workflows/build-docs.yaml
+    uses: ./.github/workflows/build_docs.yaml
 
   release:
     permissions:
