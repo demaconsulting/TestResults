@@ -31,6 +31,12 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  build-docs:
+    name: Build Documentation
+    permissions:
+      contents: read # To read repository contents
+    uses: ./.github/workflows/build_docs.yaml
+
   release:
     permissions:
       contents: write # To create releases
