@@ -1,7 +1,4 @@
 {
-  "name": "testresults",
-  "version": "1.0.0",
-  "description": "TestResults library documentation build dependencies",
   "private": true,
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "11.12.0",
