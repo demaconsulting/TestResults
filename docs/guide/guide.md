@@ -4,7 +4,8 @@ A comprehensive guide to using the TestResults library for creating and managing
 
 ## Quick Navigation
 
-This section provides quick links to major sections when viewing this guide on GitHub. A complete table of contents is available in the generated HTML and PDF versions.
+This section provides quick links to major sections when viewing this guide on GitHub. A complete table of contents
+is available in the generated HTML and PDF versions.
 
 - [Introduction](#introduction)
 - [Prerequisites](#prerequisites)
