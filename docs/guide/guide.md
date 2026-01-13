@@ -459,7 +459,8 @@ File.WriteAllText("metadata-results.xml", JUnitSerializer.Serialize(results));
 
 ### Automatic Format Detection
 
-The library can automatically detect whether a test result file is in TRX or JUnit format, eliminating the need to manually determine the format:
+The library can automatically detect whether a test result file is in TRX or JUnit format, eliminating the need to
+manually determine the format:
 
 ```csharp
 using System;
@@ -498,6 +499,7 @@ The `Serializer` class provides two key methods:
 - **`Deserialize(string contents)`**: Automatically detects the format and deserializes using the appropriate parser
 
 This is particularly useful when:
+
 - Processing test results from different CI/CD systems
 - Building tools that handle multiple formats
 - You don't know in advance which format will be provided
@@ -918,7 +920,9 @@ else if (format == TestResultFormat.JUnit)
 var results = Serializer.Deserialize(File.ReadAllText("test-results.xml"));
 ```
 
-The `Serializer.Identify()` method analyzes the XML structure to determine if it's a TRX file (by checking for the Visual Studio namespace and TestRun root element) or a JUnit file (by checking for testsuites or testsuite root elements). It returns `TestResultFormat.Unknown` for invalid or unrecognized formats.
+The `Serializer.Identify()` method analyzes the XML structure to determine if it's a TRX file (by checking for the
+Visual Studio namespace and TestRun root element) or a JUnit file (by checking for testsuites or testsuite root
+elements). It returns `TestResultFormat.Unknown` for invalid or unrecognized formats.
 
 ### How do I set custom properties or metadata?
 
