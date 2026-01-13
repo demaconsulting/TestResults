@@ -2,11 +2,14 @@
   "version": "0.2",
   "language": "en",
   "words": [
+    "Blockquotes",
     "camelcase",
     "copilot",
     "cspell",
     "csproj",
     "dbproj",
+    "dcterms",
+    "doctitle",
     "Dema",
     "Dependabot",
     "dependabot",
@@ -21,6 +24,8 @@
     "mstest",
     "nuget",
     "nupkg",
+    "pagetitle",
+    "pandoc",
     "SBOM",
     "semver",
     "snupkg",
@@ -32,6 +37,7 @@
     "trx",
     "vbproj",
     "vcxproj",
+    "Weasyprint",
     "yamllint"
   ],
   "ignorePaths": [
