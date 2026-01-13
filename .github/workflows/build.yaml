@@ -1,25 +1,54 @@
 ---
-on:
-  workflow_call:
-    inputs:
-      os:
-        required: true
-        type: string
-      version:
-        required: true
-        type: string
-    secrets:
-      SONAR_TOKEN:
-        required: true
+name: Build
 
+on:
+  push:                 # On push to any branch
+  workflow_dispatch:    # Allow manual trigger
+    inputs:
+      version:
+        description: 'Version to build'
+        required: false
+        type: string
+  schedule:             # 5PM UTC every Monday
+    - cron: '0 17 * * 1'
 
 jobs:
+  quality-checks:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run markdown linter
+        uses: DavidAnson/markdownlint-cli2-action@v22
+        with:
+          globs: '**/*.md'
+
+      - name: Run spell checker
+        uses: streetsidesoftware/cspell-action@v8
+        with:
+          files: '**/*.{md,cs}'
+
+      - name: Run YAML linter
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yaml
+
   build:
+    name: Build ${{ matrix.os }}
+    needs: quality-checks
     permissions:
       contents: read       # To read repository contents
       pull-requests: write # To write pull requests analysis results and artifacts
 
-    runs-on: ${{ inputs.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
 
@@ -45,6 +74,7 @@ jobs:
           dotnet restore
 
       - name: Start Sonar Scanner
+        if: matrix.os == 'ubuntu-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
@@ -62,17 +92,20 @@ jobs:
           dotnet build
           --no-restore
           --configuration Release
-          --property:Version=${{ inputs.version }}
+          --property:Version=${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
 
       - name: Test
         run: >
           dotnet test
           --no-build
           --configuration Release
-          --property:Version=${{ inputs.version }}
+          --property:Version=${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
           --collect "XPlat Code Coverage;Format=opencover"
+          --logger "trx;LogFileName=TestResults.trx"
+          --results-directory test-results
 
       - name: End Sonar Scanner
+        if: matrix.os == 'ubuntu-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
@@ -86,7 +119,7 @@ jobs:
           -b src/DemaConsulting.TestResults/bin/Release
           -bc src/DemaConsulting.TestResults
           -pn DemaConsulting.TestResults
-          -pv ${{ inputs.version }}
+          -pv ${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
           -ps DemaConsulting
           -nsb https://DemaConsulting.com/TestResults
           -pm true
@@ -99,7 +132,7 @@ jobs:
           -bc test/DemaConsulting.TestResults.Tests
           -cd "--DirectoryExclusionList **/Examples/**"
           -pn DemaConsulting.TestResults.Tests
-          -pv ${{ inputs.version }}
+          -pv ${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
           -ps DemaConsulting
           -nsb https://DemaConsulting.com/TestResults.Tests
           -pm true
@@ -115,15 +148,134 @@ jobs:
           dotnet pack
           --no-build
           --no-restore
-          --property:PackageVersion=${{ inputs.version }}
+          --property:PackageVersion=${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results-${{ matrix.os }}
+          path: test-results/*.trx
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: artifacts-${{ inputs.os }}
+          name: artifacts-${{ matrix.os }}
           path: |
             **/*.nupkg
             **/*.snupkg
             **/manifest.spdx.json
             **/manifest.spdx.json.sha256
             *summary.md
+
+  build-docs:
+    name: Build Documentation
+    needs: build
+    permissions:
+      contents: read # To read repository contents
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            10.x
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Install dotnet tools
+        run: dotnet tool restore
+
+      - name: Download Windows Test Results
+        uses: actions/download-artifact@v7
+        with:
+          name: test-results-windows-latest
+          path: test-results
+
+      - name: Download Linux Test Results
+        uses: actions/download-artifact@v7
+        with:
+          name: test-results-ubuntu-latest
+          path: test-results
+
+      - name: Import Requirements and Test Results
+        run: >
+          dotnet reqstream
+          requirements-import requirements.yaml
+
+      - name: Import Test Results (Windows)
+        run: >
+          dotnet reqstream
+          trx-import test-results/TestResults.trx
+
+      - name: Export Requirements
+        run: >
+          dotnet reqstream
+          requirements-export docs/requirements/requirements.md
+
+      - name: Export Trace Matrix
+        run: >
+          dotnet reqstream
+          trace-matrix-export docs/tracematrix/tracematrix.md
+
+      - name: Enforce Requirements Coverage
+        run: >
+          dotnet reqstream
+          requirements-coverage
+
+      - name: Generate Developer Guide HTML with Pandoc
+        run: >
+          dotnet pandoc
+          docs/guide/title.txt
+          --defaults docs/guide/definition.yaml
+          --filter node_modules/.bin/mermaid-filter.cmd
+          --output docs/guide/guide.html
+
+      - name: Generate Developer Guide PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/guide/guide.html
+          "docs/TestResults Developer Guide.pdf"
+
+      - name: Generate Requirements HTML with Pandoc
+        run: >
+          dotnet pandoc
+          docs/requirements/title.txt
+          --defaults docs/requirements/definition.yaml
+          --output docs/requirements/requirements.html
+
+      - name: Generate Requirements PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/requirements/requirements.html
+          "docs/TestResults Requirements.pdf"
+
+      - name: Generate Trace Matrix HTML with Pandoc
+        run: >
+          dotnet pandoc
+          docs/tracematrix/title.txt
+          --defaults docs/tracematrix/definition.yaml
+          --output docs/tracematrix/tracematrix.html
+
+      - name: Generate Trace Matrix PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/tracematrix/tracematrix.html
+          "docs/TestResults Trace Matrix.pdf"
+
+      - name: Upload Documentation
+        uses: actions/upload-artifact@v6
+        with:
+          name: documentation
+          path: docs/*.pdf
