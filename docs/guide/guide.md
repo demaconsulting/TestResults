@@ -457,6 +457,53 @@ File.WriteAllText("metadata-results.trx", TrxSerializer.Serialize(results));
 File.WriteAllText("metadata-results.xml", JUnitSerializer.Serialize(results));
 ```
 
+### Automatic Format Detection
+
+The library can automatically detect whether a test result file is in TRX or JUnit format, eliminating the need to
+manually determine the format:
+
+```csharp
+using System;
+using System.IO;
+using DemaConsulting.TestResults;
+using DemaConsulting.TestResults.IO;
+
+// Automatically detect and deserialize any supported format
+string testResultsXml = File.ReadAllText("test-results.xml");
+TestResults results = Serializer.Deserialize(testResultsXml);
+
+Console.WriteLine($"Loaded {results.Results.Count} test results");
+Console.WriteLine($"Test suite: {results.Name}");
+
+// You can also identify the format without deserializing
+string unknownFile = File.ReadAllText("unknown-format.xml");
+TestResultFormat format = Serializer.Identify(unknownFile);
+
+switch (format)
+{
+    case TestResultFormat.Trx:
+        Console.WriteLine("This is a TRX (Visual Studio) test result file");
+        break;
+    case TestResultFormat.JUnit:
+        Console.WriteLine("This is a JUnit XML test result file");
+        break;
+    case TestResultFormat.Unknown:
+        Console.WriteLine("Unknown or invalid test result format");
+        break;
+}
+```
+
+The `Serializer` class provides two key methods:
+
+- **`Identify(string contents)`**: Determines the format without deserializing the content
+- **`Deserialize(string contents)`**: Automatically detects the format and deserializes using the appropriate parser
+
+This is particularly useful when:
+
+- Processing test results from different CI/CD systems
+- Building tools that handle multiple formats
+- You don't know in advance which format will be provided
+
 ### Converting Between Formats
 
 The library makes it easy to convert test results between TRX and JUnit formats:
@@ -467,18 +514,24 @@ using System.IO;
 using DemaConsulting.TestResults;
 using DemaConsulting.TestResults.IO;
 
-// Convert JUnit to TRX
+// Automatic format detection and conversion
+string testResultsXml = File.ReadAllText("test-results.xml");
+TestResults results = Serializer.Deserialize(testResultsXml);  // Works with either format
+string trxXml = TrxSerializer.Serialize(results);
+File.WriteAllText("converted-to-trx.trx", trxXml);
+Console.WriteLine("Converted to TRX format");
+
+// Or use format-specific deserializers if you know the format
 string junitXml = File.ReadAllText("original-junit-results.xml");
 TestResults resultsFromJUnit = JUnitSerializer.Deserialize(junitXml);
-string trxXml = TrxSerializer.Serialize(resultsFromJUnit);
-File.WriteAllText("converted-to-trx.trx", trxXml);
+string trxXml2 = TrxSerializer.Serialize(resultsFromJUnit);
+File.WriteAllText("converted-junit-to-trx.trx", trxXml2);
 Console.WriteLine("Converted JUnit to TRX format");
 
-// Convert TRX to JUnit
-string trxXml2 = File.ReadAllText("original-trx-results.trx");
-TestResults resultsFromTrx = TrxSerializer.Deserialize(trxXml2);
+string trxInput = File.ReadAllText("original-trx-results.trx");
+TestResults resultsFromTrx = TrxSerializer.Deserialize(trxInput);
 string junitXml2 = JUnitSerializer.Serialize(resultsFromTrx);
-File.WriteAllText("converted-to-junit.xml", junitXml2);
+File.WriteAllText("converted-trx-to-junit.xml", junitXml2);
 Console.WriteLine("Converted TRX to JUnit format");
 ```
 
@@ -686,15 +739,15 @@ using System.Linq;
 using DemaConsulting.TestResults;
 using DemaConsulting.TestResults.IO;
 
-// Read multiple test result files
+// Read multiple test result files (automatically detect format)
 var unitTestsXml = File.ReadAllText("unit-tests.xml");
 var integrationTestsXml = File.ReadAllText("integration-tests.xml");
 var e2eTestsTrx = File.ReadAllText("e2e-tests.trx");
 
-// Deserialize each file
-var unitTests = JUnitSerializer.Deserialize(unitTestsXml);
-var integrationTests = JUnitSerializer.Deserialize(integrationTestsXml);
-var e2eTests = TrxSerializer.Deserialize(e2eTestsTrx);
+// Deserialize each file (format is automatically detected)
+var unitTests = Serializer.Deserialize(unitTestsXml);
+var integrationTests = Serializer.Deserialize(integrationTestsXml);
+var e2eTests = Serializer.Deserialize(e2eTestsTrx);
 
 // Create combined results
 var combinedResults = new TestResults
@@ -831,17 +884,45 @@ Both formats can be created from scratch or converted from one to the other.
 Yes! The library provides bidirectional conversion between formats:
 
 ```csharp
-// TRX to JUnit
-var trxResults = TrxSerializer.Deserialize(File.ReadAllText("test.trx"));
-var junitXml = JUnitSerializer.Serialize(trxResults);
+// Automatic format detection and conversion
+var results = Serializer.Deserialize(File.ReadAllText("test-results.xml"));
+var trxXml = TrxSerializer.Serialize(results);
+var junitXml = JUnitSerializer.Serialize(results);
 
-// JUnit to TRX
+// Or use format-specific deserializers
+var trxResults = TrxSerializer.Deserialize(File.ReadAllText("test.trx"));
+var junitFromTrx = JUnitSerializer.Serialize(trxResults);
+
 var junitResults = JUnitSerializer.Deserialize(File.ReadAllText("test.xml"));
-var trxXml = TrxSerializer.Serialize(junitResults);
+var trxFromJunit = TrxSerializer.Serialize(junitResults);
 ```
 
 The conversion preserves all compatible information between formats, including test names, outcomes, durations, error
 messages, and output.
+
+### How do I automatically detect the format of a test result file?
+
+Use the `Serializer` class to automatically identify and deserialize test result files:
+
+```csharp
+// Identify format without deserializing
+var format = Serializer.Identify(File.ReadAllText("test-results.xml"));
+if (format == TestResultFormat.Trx)
+{
+    Console.WriteLine("This is a TRX file");
+}
+else if (format == TestResultFormat.JUnit)
+{
+    Console.WriteLine("This is a JUnit XML file");
+}
+
+// Or just deserialize directly - format is detected automatically
+var results = Serializer.Deserialize(File.ReadAllText("test-results.xml"));
+```
+
+The `Serializer.Identify()` method analyzes the XML structure to determine if it's a TRX file (by checking for the
+Visual Studio namespace and TestRun root element) or a JUnit file (by checking for testsuites or testsuite root
+elements). It returns `TestResultFormat.Unknown` for invalid or unrecognized formats.
 
 ### How do I set custom properties or metadata?
 
