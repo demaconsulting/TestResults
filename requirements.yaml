@@ -53,20 +53,20 @@ sections:
           - id: "REQ-FUNC-006"
             title: "The library shall support .NET 8 runtime."
             tests:
-              - "dotnet8.x@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "dotnet8.x@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - "net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
+              - "net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
 
           - id: "REQ-FUNC-007"
             title: "The library shall support .NET 9 runtime."
             tests:
-              - "dotnet9.x@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "dotnet9.x@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - "net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
+              - "net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
 
           - id: "REQ-FUNC-008"
             title: "The library shall support .NET 10 runtime."
             tests:
-              - "dotnet10.x@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "dotnet10.x@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - "net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
+              - "net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
 
           - id: "REQ-FUNC-009"
             title: "The library shall support the Passed test outcome."
