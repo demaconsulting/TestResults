@@ -56,11 +56,6 @@ public static class Serializer
 #pragma warning restore S1075
 
     /// <summary>
-    ///     Error message for unknown test result format
-    /// </summary>
-    private const string UnknownFormatMessage = "Unable to identify test result format";
-
-    /// <summary>
     ///     Identifies the test result format based on the contents
     /// </summary>
     /// <param name="contents">The test result file contents</param>
@@ -120,7 +115,7 @@ public static class Serializer
         {
             TestResultFormat.Trx => TrxSerializer.Deserialize(contents),
             TestResultFormat.JUnit => JUnitSerializer.Deserialize(contents),
-            _ => throw new InvalidOperationException(UnknownFormatMessage)
+            _ => throw new InvalidOperationException("Unable to identify test result format")
         };
     }
 }
