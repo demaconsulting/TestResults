@@ -61,11 +61,6 @@ public static class Serializer
     private const string UnknownFormatMessage = "Unable to identify test result format";
 
     /// <summary>
-    ///     Error message for deserialization failure
-    /// </summary>
-    private const string DeserializationErrorMessage = "Failed to deserialize test results";
-
-    /// <summary>
     ///     Identifies the test result format based on the contents
     /// </summary>
     /// <param name="contents">The test result file contents</param>
@@ -121,24 +116,11 @@ public static class Serializer
         var format = Identify(contents);
 
         // Deserialize based on format
-        try
+        return format switch
         {
-            return format switch
-            {
-                TestResultFormat.Trx => TrxSerializer.Deserialize(contents),
-                TestResultFormat.JUnit => JUnitSerializer.Deserialize(contents),
-                _ => throw new InvalidOperationException(UnknownFormatMessage)
-            };
-        }
-        catch (InvalidOperationException)
-        {
-            // Re-throw InvalidOperationException as-is
-            throw;
-        }
-        catch (Exception ex)
-        {
-            // Wrap other exceptions in InvalidOperationException
-            throw new InvalidOperationException(DeserializationErrorMessage, ex);
-        }
+            TestResultFormat.Trx => TrxSerializer.Deserialize(contents),
+            TestResultFormat.JUnit => JUnitSerializer.Deserialize(contents),
+            _ => throw new InvalidOperationException(UnknownFormatMessage)
+        };
     }
 }
