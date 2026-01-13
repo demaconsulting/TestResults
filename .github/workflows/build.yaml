@@ -97,7 +97,7 @@ jobs:
           --configuration Release
           --property:Version=${{ inputs.version }}
           --collect "XPlat Code Coverage;Format=opencover"
-          --logger "trx;LogFileName=TestResults-${{ matrix.os }}.trx"
+          --logger "trx;LogFilePrefix=${{ matrix.os }}"
           --results-directory test-results
 
       - name: End Sonar Scanner
