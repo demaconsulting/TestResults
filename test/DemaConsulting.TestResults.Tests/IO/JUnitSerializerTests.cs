@@ -90,7 +90,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with failed test
     /// </summary>
     [TestMethod]
-    public void Serialize_FailedTest_IncludesFailureElement()
+    public void JUnitSerializer_Serialize_FailedTest_IncludesFailureElement()
     {
         // Construct test results with a failed test
         var results = new TestResults
@@ -138,7 +138,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with error test
     /// </summary>
     [TestMethod]
-    public void Serialize_ErrorTest_IncludesErrorElement()
+    public void JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement()
     {
         // Construct test results with an error test
         var results = new TestResults
@@ -271,7 +271,7 @@ public sealed class JUnitSerializerTests
     ///     Test for serialization with multiple test results
     /// </summary>
     [TestMethod]
-    public void Serialize_MultipleTestsInClasses_GroupsByClassName()
+    public void JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName()
     {
         // Construct test results with multiple tests
         var results = new TestResults
@@ -531,7 +531,7 @@ public sealed class JUnitSerializerTests
     ///     Test for deserialization with skipped test
     /// </summary>
     [TestMethod]
-    public void Deserialize_SkippedTest_ReturnsSkippedStatus()
+    public void JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus()
     {
         // Deserialize the test results object with a skipped test
         var results = JUnitSerializer.Deserialize(

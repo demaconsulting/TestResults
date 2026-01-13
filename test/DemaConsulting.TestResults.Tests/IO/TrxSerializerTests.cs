@@ -152,7 +152,7 @@ public sealed class TrxSerializerTests
     ///     Test for basic deserialization
     /// </summary>
     [TestMethod]
-    public void Deserialize_BasicTrxXml_ReturnsTestResults()
+    public void TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults()
     {
         // Deserialize the test results object
         var results = TrxSerializer.Deserialize(
@@ -209,7 +209,7 @@ public sealed class TrxSerializerTests
     ///     Test for complex deserialization
     /// </summary>
     [TestMethod]
-    public void Deserialize_ComplexTrxXml_ReturnsTestResults()
+    public void TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults()
     {
         // Deserialize the test results object
         var results = TrxSerializer.Deserialize(

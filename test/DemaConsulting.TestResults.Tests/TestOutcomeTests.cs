@@ -32,7 +32,7 @@ public class TestOutcomeTests
     ///     Test the IsPassed method for all outcomes
     /// </summary>
     [TestMethod]
-    public void Test_Outcome_IsPassed()
+    public void TestOutcome_IsPassed_PassedOutcome_ReturnsTrue()
     {
         Assert.IsFalse(TestOutcome.Error.IsPassed());
         Assert.IsFalse(TestOutcome.Failed.IsPassed());
@@ -54,7 +54,7 @@ public class TestOutcomeTests
     ///     Test the IsFailed method for all outcomes
     /// </summary>
     [TestMethod]
-    public void Test_Outcome_IsFailed()
+    public void TestOutcome_IsFailed_FailedOutcome_ReturnsTrue()
     {
         Assert.IsTrue(TestOutcome.Error.IsFailed());
         Assert.IsTrue(TestOutcome.Failed.IsFailed());
@@ -76,7 +76,7 @@ public class TestOutcomeTests
     ///     Test the IsExecuted method for all outcomes
     /// </summary>
     [TestMethod]
-    public void Test_Outcome_IsExecuted()
+    public void TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue()
     {
         Assert.IsTrue(TestOutcome.Error.IsExecuted());
         Assert.IsTrue(TestOutcome.Failed.IsExecuted());
@@ -92,5 +92,14 @@ public class TestOutcomeTests
         Assert.IsTrue(TestOutcome.Completed.IsExecuted());
         Assert.IsTrue(TestOutcome.InProgress.IsExecuted());
         Assert.IsFalse(TestOutcome.Pending.IsExecuted());
+    }
+
+    /// <summary>
+    ///     Test the IsExecuted method for NotExecuted outcome
+    /// </summary>
+    [TestMethod]
+    public void TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse()
+    {
+        Assert.IsFalse(TestOutcome.NotExecuted.IsExecuted());
     }
 }

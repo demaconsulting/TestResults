@@ -91,7 +91,7 @@ public class TrxExampleTests
     ///     Test deserializing the second example file
     /// </summary>
     [TestMethod]
-    public void Deserialize_Example2Trx_ReturnsAllTestResults()
+    public void TrxExampleTests_Deserialize_Example2Trx_ReturnsAllTestResults()
     {
         // Deserialize the second example file.
         var results = TrxSerializer.Deserialize(

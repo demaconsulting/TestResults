@@ -132,7 +132,12 @@ dotnet format --verify-no-changes
 - Use the AAA (Arrange, Act, Assert) pattern
 - Keep tests focused on a single behavior
 - Use descriptive test method names that explain what is being tested
-- Example: `TestMethod_Scenario_ExpectedBehavior`
+- **Test Naming Convention**: `ClassName_MethodUnderTest_Scenario_ExpectedBehavior`
+  - `ClassName`: The name of the class being tested (e.g., `TrxSerializer`, `TestOutcome`)
+  - `MethodUnderTest`: The method or property being tested (e.g., `Serialize`, `IsPassed`)
+  - `Scenario`: The specific scenario or input condition (e.g., `BasicTestResults`, `PassedOutcome`)
+  - `ExpectedBehavior`: The expected result (e.g., `ProducesValidTrxXml`, `ReturnsTrue`)
+  - Example: `TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml`
 
 ### Test Coverage
 
@@ -155,7 +160,8 @@ dotnet format --verify-no-changes
 - **PascalCase**: Classes, methods, properties, public fields, namespaces
 - **camelCase**: Local variables, private fields, parameters
 - **Interface names**: Start with 'I' (e.g., `ITestResult`)
-- **Test methods**: Use descriptive names (e.g., `Serialize_EmptyResults_ReturnsValidXml`)
+- **Test methods**: Follow `ClassName_MethodUnderTest_Scenario_ExpectedBehavior` pattern
+  - Example: `TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml`
 
 ### Code Organization
 
