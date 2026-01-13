@@ -7,7 +7,7 @@ on:
 jobs:
   build-docs:
     permissions:
-      contents: read # To read repository contents
+      contents: read  # To read repository contents
 
     runs-on: windows-latest
 

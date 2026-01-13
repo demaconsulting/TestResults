@@ -33,7 +33,7 @@ public sealed class SerializerTests
     ///     Test that Identify correctly identifies TRX format
     /// </summary>
     [TestMethod]
-    public void Identify_TrxContent_ReturnsTrx()
+    public void Serializer_Identify_TrxContent_ReturnsTrx()
     {
         // Create a sample TRX content
         var trxContent = """
@@ -73,7 +73,7 @@ public sealed class SerializerTests
     ///     Test that Identify correctly identifies JUnit format with testsuites root
     /// </summary>
     [TestMethod]
-    public void Identify_JUnitTestsuitesContent_ReturnsJUnit()
+    public void Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit()
     {
         // Create a sample JUnit content with testsuites root
         var junitContent = """
@@ -96,7 +96,7 @@ public sealed class SerializerTests
     ///     Test that Identify correctly identifies JUnit format with testsuite root
     /// </summary>
     [TestMethod]
-    public void Identify_JUnitTestsuiteContent_ReturnsJUnit()
+    public void Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit()
     {
         // Create a sample JUnit content with testsuite root
         var junitContent = """
@@ -117,7 +117,7 @@ public sealed class SerializerTests
     ///     Test that Identify returns Unknown for empty content
     /// </summary>
     [TestMethod]
-    public void Identify_EmptyContent_ReturnsUnknown()
+    public void Serializer_Identify_EmptyContent_ReturnsUnknown()
     {
         // Identify format of empty string
         var format = Serializer.Identify(string.Empty);
@@ -130,7 +130,7 @@ public sealed class SerializerTests
     ///     Test that Identify returns Unknown for null content
     /// </summary>
     [TestMethod]
-    public void Identify_NullContent_ReturnsUnknown()
+    public void Serializer_Identify_NullContent_ReturnsUnknown()
     {
         // Identify format of null string
         var format = Serializer.Identify(null!);
@@ -143,7 +143,7 @@ public sealed class SerializerTests
     ///     Test that Identify returns Unknown for whitespace content
     /// </summary>
     [TestMethod]
-    public void Identify_WhitespaceContent_ReturnsUnknown()
+    public void Serializer_Identify_WhitespaceContent_ReturnsUnknown()
     {
         // Identify format of whitespace string
         var format = Serializer.Identify("   \n\t  ");
@@ -156,7 +156,7 @@ public sealed class SerializerTests
     ///     Test that Identify returns Unknown for invalid XML
     /// </summary>
     [TestMethod]
-    public void Identify_InvalidXml_ReturnsUnknown()
+    public void Serializer_Identify_InvalidXml_ReturnsUnknown()
     {
         // Create invalid XML content
         var invalidXml = "<invalid><unclosed>";
@@ -172,7 +172,7 @@ public sealed class SerializerTests
     ///     Test that Identify returns Unknown for unrecognized XML format
     /// </summary>
     [TestMethod]
-    public void Identify_UnrecognizedXmlFormat_ReturnsUnknown()
+    public void Serializer_Identify_UnrecognizedXmlFormat_ReturnsUnknown()
     {
         // Create XML with unrecognized root element
         var unrecognizedXml = """
@@ -193,7 +193,7 @@ public sealed class SerializerTests
     ///     Test that Deserialize successfully deserializes TRX content
     /// </summary>
     [TestMethod]
-    public void Deserialize_TrxContent_ReturnsTestResults()
+    public void Serializer_Deserialize_TrxContent_ReturnsTestResults()
     {
         // Create a sample TRX content
         var trxContent = """
@@ -238,7 +238,7 @@ public sealed class SerializerTests
     ///     Test that Deserialize successfully deserializes JUnit content
     /// </summary>
     [TestMethod]
-    public void Deserialize_JUnitContent_ReturnsTestResults()
+    public void Serializer_Deserialize_JUnitContent_ReturnsTestResults()
     {
         // Create a sample JUnit content
         var junitContent = """
@@ -271,7 +271,7 @@ public sealed class SerializerTests
     ///     Test that Deserialize can handle real TRX example file
     /// </summary>
     [TestMethod]
-    public void Deserialize_RealTrxExample_ReturnsTestResults()
+    public void Serializer_Deserialize_RealTrxExample_ReturnsTestResults()
     {
         // Load example TRX file
         var trxContent = TestHelpers.GetEmbeddedResource(
@@ -295,7 +295,7 @@ public sealed class SerializerTests
     ///     Test that Deserialize handles multiple test outcomes from TRX
     /// </summary>
     [TestMethod]
-    public void Deserialize_TrxWithMultipleOutcomes_ParsesCorrectly()
+    public void Serializer_Deserialize_TrxWithMultipleOutcomes_ParsesCorrectly()
     {
         // Create TRX content with different outcomes
         var trxContent = """
@@ -357,7 +357,7 @@ public sealed class SerializerTests
     ///     Test that Deserialize handles JUnit with system output and error
     /// </summary>
     [TestMethod]
-    public void Deserialize_JUnitWithSystemOutput_ParsesCorrectly()
+    public void Serializer_Deserialize_JUnitWithSystemOutput_ParsesCorrectly()
     {
         // Create JUnit content with system output
         var junitContent = """

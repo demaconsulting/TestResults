@@ -2,9 +2,6 @@
 on:
   workflow_call:
     inputs:
-      os:
-        required: true
-        type: string
       version:
         required: true
         type: string
@@ -12,14 +9,43 @@ on:
       SONAR_TOKEN:
         required: true
 
-
 jobs:
+  quality-checks:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run markdown linter
+        uses: DavidAnson/markdownlint-cli2-action@v22
+        with:
+          globs: '**/*.md'
+
+      - name: Run spell checker
+        uses: streetsidesoftware/cspell-action@v8
+        with:
+          files: '**/*.{md,cs}'
+
+      - name: Run YAML linter
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yaml
+
   build:
+    name: Build ${{ matrix.os }}
+    needs: quality-checks
     permissions:
       contents: read       # To read repository contents
-      pull-requests: write # To write pull requests analysis results and artifacts
+      pull-requests: write  # To write pull requests analysis results and artifacts
 
-    runs-on: ${{ inputs.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
 
@@ -71,6 +97,8 @@ jobs:
           --configuration Release
           --property:Version=${{ inputs.version }}
           --collect "XPlat Code Coverage;Format=opencover"
+          --logger "trx;LogFilePrefix=${{ matrix.os }}"
+          --results-directory test-results
 
       - name: End Sonar Scanner
         env:
@@ -117,13 +145,111 @@ jobs:
           --no-restore
           --property:PackageVersion=${{ inputs.version }}
 
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results-${{ matrix.os }}
+          path: test-results/*.trx
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: artifacts-${{ inputs.os }}
+          name: artifacts-${{ matrix.os }}
           path: |
             **/*.nupkg
             **/*.snupkg
             **/manifest.spdx.json
             **/manifest.spdx.json.sha256
             *summary.md
+
+  build-docs:
+    name: Build Documentation
+    needs: build
+    permissions:
+      contents: read  # To read repository contents
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            10.x
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Install dotnet tools
+        run: dotnet tool restore
+
+      - name: Download Test Results
+        uses: actions/download-artifact@v7
+        with:
+          pattern: test-results-*-latest
+          path: test-results
+          merge-multiple: true
+
+      - name: Generate Requirements Report and Trace Matrix
+        run: >
+          dotnet reqstream
+          --requirements requirements.yaml
+          --tests "test-results/**/*.trx"
+          --report docs/requirements/requirements.md
+          --matrix docs/tracematrix/tracematrix.md
+          --enforce
+
+      - name: Generate Developer Guide HTML with Pandoc
+        run: >
+          dotnet pandoc
+          docs/guide/title.txt
+          --defaults docs/guide/definition.yaml
+          --filter node_modules/.bin/mermaid-filter.cmd
+          --output docs/guide/guide.html
+
+      - name: Generate Developer Guide PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/guide/guide.html
+          "docs/TestResults Developer Guide.pdf"
+
+      - name: Generate Requirements HTML with Pandoc
+        run: >
+          dotnet pandoc
+          docs/requirements/title.txt
+          --defaults docs/requirements/definition.yaml
+          --output docs/requirements/requirements.html
+
+      - name: Generate Requirements PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/requirements/requirements.html
+          "docs/TestResults Requirements.pdf"
+
+      - name: Generate Trace Matrix HTML with Pandoc
+        run: >
+          dotnet pandoc
+          docs/tracematrix/title.txt
+          --defaults docs/tracematrix/definition.yaml
+          --output docs/tracematrix/tracematrix.html
+
+      - name: Generate Trace Matrix PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/tracematrix/tracematrix.html
+          "docs/TestResults Trace Matrix.pdf"
+
+      - name: Upload Documentation
+        uses: actions/upload-artifact@v6
+        with:
+          name: documentation
+          path: docs/*.pdf

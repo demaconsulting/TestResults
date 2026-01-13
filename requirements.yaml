@@ -1,0 +1,94 @@
+---
+# TestResults Library Requirements
+#
+# This file defines the requirements for the TestResults library.
+# Requirements are verified through tests and documented in the requirements and trace matrix documents.
+
+sections:
+  - title: "TestResults Library Requirements"
+    sections:
+      - title: "Functional Requirements"
+        requirements:
+          - id: "REQ-FUNC-001"
+            title: "The library shall support serializing test results to TRX (Visual Studio Test Results) format."
+            tests:
+              - "TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
+              - "TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml"
+
+          - id: "REQ-FUNC-002"
+            title: "The library shall support deserializing TRX test result files."
+            tests:
+              - "TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults"
+              - "TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults"
+              - "TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults"
+              - "TrxExampleTests_Deserialize_Example2Trx_ReturnsAllTestResults"
+
+          - id: "REQ-FUNC-003"
+            title: "The library shall support serializing test results to JUnit XML format."
+            tests:
+              - "JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - "JUnitSerializer_Serialize_FailedTest_IncludesFailureElement"
+              - "JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement"
+              - "JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement"
+              - "JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr"
+              - "JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName"
+
+          - id: "REQ-FUNC-004"
+            title: "The library shall support deserializing JUnit XML test result files."
+            tests:
+              - "JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults"
+              - "JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails"
+              - "JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails"
+              - "JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus"
+              - "JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput"
+              - "JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests"
+
+          - id: "REQ-FUNC-005"
+            title: "The library shall automatically identify test result file format."
+            tests:
+              - "Serializer_Identify_TrxContent_ReturnsTrx"
+              - "Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit"
+              - "Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit"
+
+          - id: "REQ-FUNC-006"
+            title: "The library shall support .NET 8 runtime."
+            tests:
+              - "net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
+              - "net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+
+          - id: "REQ-FUNC-007"
+            title: "The library shall support .NET 9 runtime."
+            tests:
+              - "net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
+              - "net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+
+          - id: "REQ-FUNC-008"
+            title: "The library shall support .NET 10 runtime."
+            tests:
+              - "net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
+              - "net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+
+          - id: "REQ-FUNC-009"
+            title: "The library shall support the Passed test outcome."
+            tests:
+              - "TestOutcome_IsPassed_PassedOutcome_ReturnsTrue"
+
+          - id: "REQ-FUNC-010"
+            title: "The library shall support the Failed test outcome."
+            tests:
+              - "TestOutcome_IsFailed_FailedOutcome_ReturnsTrue"
+
+          - id: "REQ-FUNC-011"
+            title: "The library shall support the Skipped test outcome."
+            tests:
+              - "JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement"
+
+          - id: "REQ-FUNC-012"
+            title: "The library shall support the Inconclusive test outcome."
+            tests:
+              - "TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue"
+
+          - id: "REQ-FUNC-013"
+            title: "The library shall support the NotExecuted test outcome."
+            tests:
+              - "TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse"

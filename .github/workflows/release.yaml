@@ -20,30 +20,23 @@ on:
 
 jobs:
   build:
-    name: Build Linux
+    name: Build
     permissions:
-      contents: read       # To read repository contents
-      pull-requests: write # To write pull requests analysis results and artifacts
+      contents: read        # To read repository contents
+      pull-requests: write  # To write pull requests analysis results and artifacts
     uses: ./.github/workflows/build.yaml
     with:
-      os: ubuntu-latest
       version: ${{ inputs.version }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  build-docs:
-    name: Build Documentation
-    permissions:
-      contents: read # To read repository contents
-    uses: ./.github/workflows/build_docs.yaml
-
   release:
     permissions:
-      contents: write # To create releases
+      contents: write  # To create releases
 
     runs-on: ubuntu-latest
 
-    needs: [build, build-docs]
+    needs: build
 
     steps:
       - uses: actions/checkout@v6
@@ -54,7 +47,7 @@ jobs:
           dotnet-version: |
             10.x
 
-      - name: Download Artifacts
+      - name: Download Linux Artifacts
         uses: actions/download-artifact@v7
         with:
           name: artifacts-ubuntu-latest
@@ -68,7 +61,8 @@ jobs:
 
       - name: Clean Artifacts
         shell: bash
-        run: rm -rf artifacts/test
+        run: |
+          rm -rf artifacts/test
 
       - name: Create release
         if: ${{ inputs.publish == 'release' || inputs.publish == 'publish' }}

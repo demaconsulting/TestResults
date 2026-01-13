@@ -27,6 +27,7 @@ The library supports both TRX and JUnit XML formats, with potential for addition
 - **Analyzers**: Microsoft.CodeAnalysis.NetAnalyzers and SonarAnalyzer.CSharp for static code analysis
 - **Source Control**: SourceLink for debugging support
 - **Testing**: MSTest framework with code coverage
+- **Requirements Management**: DemaConsulting.ReqStream for requirements tracking and traceability
 - **CI/CD**: GitHub Actions for build and release automation
 - **Code Quality**: SonarCloud for quality metrics
 - **Dependency Management**: Dependabot for automated dependency updates
@@ -39,6 +40,10 @@ The repository is organized as follows:
 /
 ├── .config/                              # .NET tool configurations
 ├── .github/workflows/                    # CI/CD pipeline configurations
+├── docs/                                 # Documentation source files
+│   ├── guide/                           # Developer guide
+│   ├── requirements/                     # Requirements specification
+│   └── tracematrix/                      # Requirements trace matrix
 ├── src/DemaConsulting.TestResults/       # Main library source code
 ├── test/DemaConsulting.TestResults.Tests/ # Unit tests
 ├── .editorconfig                         # Code style enforcement
@@ -49,14 +54,21 @@ The repository is organized as follows:
 ├── CODE_OF_CONDUCT.md                    # Code of conduct
 ├── CONTRIBUTING.md                       # Contribution guidelines
 ├── DemaConsulting.TestResults.sln        # Visual Studio solution
-└── README.md                             # Main documentation
+├── README.md                             # Main documentation
+└── requirements.yaml                     # Requirements definitions
 ```
 
 Key directories:
 
 - **src/** - Contains the main library implementation
 - **test/** - Contains unit tests and test resources
+- **docs/** - Contains documentation source files and templates
 - **.github/** - Contains CI/CD workflows and automation
+
+Key files:
+
+- **requirements.yaml** - Defines the functional, quality, and documentation requirements
+  for the library. All requirements should be traceable to test cases.
 
 ## Development Commands
 
@@ -120,7 +132,12 @@ dotnet format --verify-no-changes
 - Use the AAA (Arrange, Act, Assert) pattern
 - Keep tests focused on a single behavior
 - Use descriptive test method names that explain what is being tested
-- Example: `TestMethod_Scenario_ExpectedBehavior`
+- **Test Naming Convention**: `ClassName_MethodUnderTest_Scenario_ExpectedBehavior`
+  - `ClassName`: The name of the class being tested (e.g., `TrxSerializer`, `TestOutcome`)
+  - `MethodUnderTest`: The method or property being tested (e.g., `Serialize`, `IsPassed`)
+  - `Scenario`: The specific scenario or input condition (e.g., `BasicTestResults`, `PassedOutcome`)
+  - `ExpectedBehavior`: The expected result (e.g., `ProducesValidTrxXml`, `ReturnsTrue`)
+  - Example: `TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml`
 
 ### Test Coverage
 
@@ -143,7 +160,8 @@ dotnet format --verify-no-changes
 - **PascalCase**: Classes, methods, properties, public fields, namespaces
 - **camelCase**: Local variables, private fields, parameters
 - **Interface names**: Start with 'I' (e.g., `ITestResult`)
-- **Test methods**: Use descriptive names (e.g., `Serialize_EmptyResults_ReturnsValidXml`)
+- **Test methods**: Follow `ClassName_MethodUnderTest_Scenario_ExpectedBehavior` pattern
+  - Example: `TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml`
 
 ### Code Organization
 
@@ -199,15 +217,22 @@ dotnet format --verify-no-changes
 
 The build pipeline includes:
 
-1. **Checkout**: Clone the repository
-2. **Setup**: Install .NET SDKs (8, 9, 10)
-3. **Restore**: Restore tools and dependencies
-4. **SonarCloud Start**: Begin SonarCloud analysis
-5. **Build**: Compile in Release mode
-6. **Test**: Run all tests with code coverage
-7. **SonarCloud End**: Complete SonarCloud analysis
-8. **SBOM**: Generate Software Bill of Materials
-9. **Package**: Create NuGet packages
+1. **Quality Checks**: Run markdown linter, spell checker, and YAML linter
+2. **Checkout**: Clone the repository
+3. **Setup**: Install .NET SDKs (8, 9, 10)
+4. **Restore**: Restore tools and dependencies
+5. **SonarCloud Start**: Begin SonarCloud analysis (Linux only)
+6. **Build**: Compile in Release mode on both Windows and Linux
+7. **Test**: Run all tests with code coverage and generate TRX test result files
+8. **SonarCloud End**: Complete SonarCloud analysis (Linux only)
+9. **SBOM**: Generate Software Bill of Materials
+10. **Package**: Create NuGet packages
+11. **Build Documentation**:
+    - Import requirements from requirements.yaml
+    - Import TRX test results
+    - Export requirements and trace matrix documents
+    - Enforce requirements coverage
+    - Generate PDF documentation (Developer Guide, Requirements, Trace Matrix)
 
 ### Quality Gates
 
@@ -217,19 +242,52 @@ All builds must pass:
 - All unit tests passing
 - SonarCloud quality gate
 - Code coverage thresholds
+- Requirements coverage validation
+
+## Requirements Management
+
+The project uses DemaConsulting.ReqStream for requirements management and traceability.
+
+### Requirements File
+
+The `requirements.yaml` file defines all functional, quality, and documentation requirements for the library. Each requirement:
+
+- Has a unique identifier (e.g., REQ-FUNC-001)
+- Has a descriptive title
+- Is mapped to one or more test cases
+- Is organized into hierarchical sections
+
+### Requirements Process
+
+When working on this project:
+
+1. **Review Requirements**: Check `requirements.yaml` to understand existing requirements
+2. **Add New Requirements**: When adding significant new functionality, add corresponding requirements to `requirements.yaml`
+3. **Update Test Mappings**: Ensure all requirements reference the appropriate test cases
+4. **Verify Coverage**: The CI/CD pipeline enforces that all requirements are covered by passing tests
+
+### Requirements Documentation
+
+The build process generates:
+
+- **Requirements Specification PDF**: Complete requirements document
+- **Trace Matrix PDF**: Shows mapping between requirements and test cases with pass/fail status
 
 ## Common Tasks for AI Agents
 
 ### Adding a New Feature
 
 1. Read ARCHITECTURE.md to understand the design
-2. Create or update the domain model classes
-3. Update serialization logic if needed
-4. Add comprehensive unit tests
-5. Update XML documentation
-6. Update README.md with usage examples
-7. Run all tests and ensure they pass
-8. Complete pre-finalization quality checks (see below)
+2. Review requirements.yaml to see if a requirement exists for this feature
+3. If adding significant new functionality, add appropriate requirements to requirements.yaml
+4. Create or update the domain model classes
+5. Update serialization logic if needed
+6. Add comprehensive unit tests
+7. Update requirements.yaml to map requirements to new test cases
+8. Update XML documentation
+9. Update README.md with usage examples
+10. Run all tests and ensure they pass
+11. Complete pre-finalization quality checks (see below)
 
 ### Fixing a Bug
 

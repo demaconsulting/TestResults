@@ -1,5 +1,5 @@
 ---
-name: Build
+name: Build on Push
 
 on:
   push:                 # On push to any branch
@@ -8,59 +8,13 @@ on:
     - cron: '0 17 * * 1'
 
 jobs:
-  quality-checks:
-    name: Quality Checks
-    runs-on: ubuntu-latest
+  build:
+    name: Build
     permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Run markdown linter
-        uses: DavidAnson/markdownlint-cli2-action@v22
-        with:
-          globs: '**/*.md'
-
-      - name: Run spell checker
-        uses: streetsidesoftware/cspell-action@v8
-        with:
-          files: '**/*.{md,cs}'
-
-      - name: Run YAML linter
-        uses: ibiqlik/action-yamllint@v3
-        with:
-          config_file: .yamllint.yaml
-
-  build-windows:
-    name: Build Windows
-    needs: quality-checks
-    permissions:
-      contents: read       # To read repository contents
-      pull-requests: write # To write pull requests analysis results and artifacts
+      contents: read        # To read repository contents
+      pull-requests: write  # To write pull requests analysis results and artifacts
     uses: ./.github/workflows/build.yaml
     with:
-      os: windows-latest
       version: 0.0.0-run.${{ github.run_number }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  build-linux:
-    name: Build Linux
-    needs: quality-checks
-    permissions:
-      contents: read       # To read repository contents
-      pull-requests: write # To write pull requests analysis results and artifacts
-    uses: ./.github/workflows/build.yaml
-    with:
-      os: ubuntu-latest
-      version: 0.0.0-run.${{ github.run_number }}
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  build-docs:
-    name: Build Documentation
-    needs: quality-checks
-    permissions:
-      contents: read # To read repository contents
-    uses: ./.github/workflows/build_docs.yaml
