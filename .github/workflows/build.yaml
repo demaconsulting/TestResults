@@ -71,7 +71,6 @@ jobs:
           dotnet restore
 
       - name: Start Sonar Scanner
-        if: matrix.os == 'ubuntu-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
@@ -98,11 +97,10 @@ jobs:
           --configuration Release
           --property:Version=${{ inputs.version }}
           --collect "XPlat Code Coverage;Format=opencover"
-          --logger "trx;LogFileName=TestResults.trx"
+          --logger "trx;LogFileName=TestResults-${{ matrix.os }}.trx"
           --results-directory test-results
 
       - name: End Sonar Scanner
-        if: matrix.os == 'ubuntu-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
@@ -214,7 +212,12 @@ jobs:
       - name: Import Test Results (Windows)
         run: >
           dotnet reqstream
-          trx-import test-results/TestResults.trx
+          trx-import test-results/TestResults-windows-latest.trx
+
+      - name: Import Test Results (Linux)
+        run: >
+          dotnet reqstream
+          trx-import test-results/TestResults-ubuntu-latest.trx
 
       - name: Export Requirements
         run: >
