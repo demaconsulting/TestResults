@@ -1,6 +1,8 @@
 ---
 title: TestResults Library
 subtitle: Developer Guide
+author: DEMA Consulting
+description: A C# library for creating test result files in TRX and JUnit XML formats
 lang: en-US
 keywords:
   - TestResults
