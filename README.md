@@ -78,6 +78,29 @@ File.WriteAllText("results.trx", TrxSerializer.Serialize(results));
 File.WriteAllText("results.xml", JUnitSerializer.Serialize(results));
 ```
 
+### Automatic Format Detection
+
+The library can automatically detect the format of test result files:
+
+```csharp
+using DemaConsulting.TestResults.IO;
+
+// Automatically detect and deserialize any supported format
+var testResultsXml = File.ReadAllText("test-results.xml");
+var results = Serializer.Deserialize(testResultsXml);
+
+// Or identify the format without deserializing
+var format = Serializer.Identify(testResultsXml);
+if (format == TestResultFormat.Trx)
+{
+    Console.WriteLine("This is a TRX file");
+}
+else if (format == TestResultFormat.JUnit)
+{
+    Console.WriteLine("This is a JUnit XML file");
+}
+```
+
 ### Converting Between Formats
 
 The library supports reading and converting between TRX and JUnit formats:
@@ -85,19 +108,17 @@ The library supports reading and converting between TRX and JUnit formats:
 ```csharp
 using DemaConsulting.TestResults.IO;
 
-// Read JUnit XML file
-var junitXml = File.ReadAllText("junit-results.xml");
-var results = JUnitSerializer.Deserialize(junitXml);
-
-// Convert to TRX format
+// Automatic format detection and conversion
+var testResultsXml = File.ReadAllText("test-results.xml");
+var results = Serializer.Deserialize(testResultsXml);  // Works with TRX or JUnit
 var trxXml = TrxSerializer.Serialize(results);
 File.WriteAllText("converted.trx", trxXml);
 
-// Or convert TRX to JUnit
-var trxXml2 = File.ReadAllText("test-results.trx");
-var results2 = TrxSerializer.Deserialize(trxXml2);
-var junitXml2 = JUnitSerializer.Serialize(results2);
-File.WriteAllText("converted.xml", junitXml2);
+// Or use specific deserializers if format is known
+var junitXml = File.ReadAllText("junit-results.xml");
+var results2 = JUnitSerializer.Deserialize(junitXml);
+var trxXml2 = TrxSerializer.Serialize(results2);
+File.WriteAllText("converted-from-junit.trx", trxXml2);
 ```
 
 ## Advanced Usage

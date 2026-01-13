@@ -58,6 +58,18 @@ An enumeration representing possible test outcomes:
 
 ### Serialization Layer
 
+#### `Serializer`
+
+The `Serializer` class provides automatic format detection and deserialization:
+
+- Automatically identifies test result format (TRX or JUnit) based on XML structure
+- Delegates to the appropriate format-specific serializer
+- Simplifies usage when the input format is unknown
+- Provides a `TestResultFormat` enum with values: `Unknown`, `Trx`, and `JUnit`
+- Includes two main methods:
+  - `Identify(string contents)`: Detects the format without deserializing
+  - `Deserialize(string contents)`: Automatically detects format and deserializes
+
 #### `TrxSerializer`
 
 The `TrxSerializer` class is responsible for converting between the domain model and TRX XML format:
@@ -81,11 +93,22 @@ The `JUnitSerializer` class is responsible for converting between the domain mod
 
 ## Data Flow
 
+### Creating Test Results
+
 ```text
 1. User creates TestResults instance
 2. User adds TestResult objects to the Results collection
 3. User calls TrxSerializer.Serialize() or JUnitSerializer.Serialize() to convert to desired format
 4. User saves the XML string to a .trx or .xml file
+```
+
+### Reading Test Results
+
+```text
+1. User reads test result file contents
+2. User calls Serializer.Deserialize() for automatic format detection
+   OR calls TrxSerializer.Deserialize() or JUnitSerializer.Deserialize() for specific formats
+3. User receives TestResults instance with deserialized data
 ```
 
 ## Design Patterns
@@ -148,7 +171,6 @@ Potential enhancements that could be considered:
 1. **Additional Formats**: Support for other test result formats (NUnit XML, xUnit XML, etc.)
 2. **Streaming**: Support for streaming large test result sets to avoid memory issues
 3. **Validation**: Add schema validation to ensure generated files are well-formed
-4. **Format Detection**: Automatic detection of input format when deserializing
 
 ## Dependencies
 
