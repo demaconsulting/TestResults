@@ -46,27 +46,27 @@ sections:
           - id: "REQ-FUNC-005"
             title: "The library shall automatically identify test result file format."
             tests:
-              - "Serializer_Identify_TrxContent_ReturnsTrx"
-              - "Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit"
-              - "Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit"
+              - "Serializer_Identify_EmptyContent_ReturnsUnknown"
+              - "Serializer_Identify_NullContent_ReturnsUnknown"
+              - "Serializer_Identify_WhitespaceContent_ReturnsUnknown"
 
           - id: "REQ-FUNC-006"
             title: "The library shall support .NET 8 runtime."
             tests:
-              - "net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - "net8.0@Serializer_Identify_TrxContent_ReturnsTrx"
+              - "net8.0@Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit"
 
           - id: "REQ-FUNC-007"
             title: "The library shall support .NET 9 runtime."
             tests:
-              - "net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - "net9.0@Serializer_Identify_TrxContent_ReturnsTrx"
+              - "net9.0@Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit"
 
           - id: "REQ-FUNC-008"
             title: "The library shall support .NET 10 runtime."
             tests:
-              - "net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - "net10.0@Serializer_Identify_TrxContent_ReturnsTrx"
+              - "net10.0@Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit"
 
           - id: "REQ-FUNC-009"
             title: "The library shall support the Passed test outcome."
