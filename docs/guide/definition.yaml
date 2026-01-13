@@ -6,7 +6,7 @@ resource-path:
 input-files:
   - docs/guide/guide.md
 
-template: guide_template.html
+template: template.html
 
 table-of-contents: true
 
