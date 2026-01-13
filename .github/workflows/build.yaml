@@ -192,47 +192,21 @@ jobs:
       - name: Install dotnet tools
         run: dotnet tool restore
 
-      - name: Download Windows Test Results
+      - name: Download Test Results
         uses: actions/download-artifact@v7
         with:
-          name: test-results-windows-latest
+          pattern: test-results-*
           path: test-results
+          merge-multiple: true
 
-      - name: Download Linux Test Results
-        uses: actions/download-artifact@v7
-        with:
-          name: test-results-ubuntu-latest
-          path: test-results
-
-      - name: Import Requirements and Test Results
+      - name: Generate Requirements Report and Trace Matrix
         run: >
           dotnet reqstream
-          requirements-import requirements.yaml
-
-      - name: Import Test Results (Windows)
-        run: >
-          dotnet reqstream
-          trx-import test-results/TestResults-windows-latest.trx
-
-      - name: Import Test Results (Linux)
-        run: >
-          dotnet reqstream
-          trx-import test-results/TestResults-ubuntu-latest.trx
-
-      - name: Export Requirements
-        run: >
-          dotnet reqstream
-          requirements-export docs/requirements/requirements.md
-
-      - name: Export Trace Matrix
-        run: >
-          dotnet reqstream
-          trace-matrix-export docs/tracematrix/tracematrix.md
-
-      - name: Enforce Requirements Coverage
-        run: >
-          dotnet reqstream
-          requirements-coverage
+          --requirements requirements.yaml
+          --tests "test-results/**/*.trx"
+          --report docs/requirements/requirements.md
+          --matrix docs/tracematrix/tracematrix.md
+          --enforce
 
       - name: Generate Developer Guide HTML with Pandoc
         run: >

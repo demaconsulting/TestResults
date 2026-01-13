@@ -47,39 +47,28 @@ jobs:
           dotnet-version: |
             10.x
 
-      - name: Download Windows Artifacts
-        uses: actions/download-artifact@v7
-        with:
-          name: artifacts-windows-latest
-          path: artifacts/windows
-
       - name: Download Linux Artifacts
         uses: actions/download-artifact@v7
         with:
           name: artifacts-ubuntu-latest
-          path: artifacts/linux
+          path: artifacts
 
       - name: Download Documentation
         uses: actions/download-artifact@v7
         with:
           name: documentation
-          path: artifacts/docs
+          path: artifacts
 
       - name: Clean Artifacts
         shell: bash
         run: |
-          rm -rf artifacts/windows/test
-          rm -rf artifacts/linux/test
-          # Flatten artifacts for release
-          mkdir -p artifacts/release
-          cp -r artifacts/linux/* artifacts/release/
-          cp -r artifacts/docs/* artifacts/release/
+          rm -rf artifacts/test
 
       - name: Create release
         if: ${{ inputs.publish == 'release' || inputs.publish == 'publish' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'artifacts/release/**/*'
+          artifacts: 'artifacts/**/*'
           generateReleaseNotes: true
           tag: ${{ inputs.version }}
 
@@ -88,6 +77,6 @@ jobs:
         run: >
           dotnet
           nuget push
-          artifacts/linux/src/DemaConsulting.TestResults/bin/Release/*.nupkg
+          artifacts/src/DemaConsulting.TestResults/bin/Release/*.nupkg
           --source "https://api.nuget.org/v3/index.json"
           --api-key "${{ secrets.DEMACONSULTINGNUGETKEY }}"
