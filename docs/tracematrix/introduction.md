@@ -1,6 +1,7 @@
 # Introduction
 
-This document provides a requirements traceability matrix for the TestResults library, showing the relationship between requirements and test cases.
+This document provides a requirements traceability matrix for the TestResults library, showing
+the relationship between requirements and test cases.
 
 ## Purpose
 

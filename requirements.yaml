@@ -25,7 +25,9 @@ sections:
               - "TestOutcomeTests"
 
           - id: "REQ-FUNC-004"
-            title: "The library shall support standard test outcomes (Passed, Failed, Skipped, Inconclusive, NotExecuted)."
+            title: >-
+              The library shall support standard test outcomes
+              (Passed, Failed, Skipped, Inconclusive, NotExecuted).
             tests:
               - "TestOutcomeTests"
 

@@ -22,8 +22,8 @@ jobs:
   build:
     name: Build
     permissions:
-      contents: read       # To read repository contents
-      pull-requests: write # To write pull requests analysis results and artifacts
+      contents: read        # To read repository contents
+      pull-requests: write  # To write pull requests analysis results and artifacts
     uses: ./.github/workflows/build.yaml
     with:
       version: ${{ inputs.version }}
@@ -32,7 +32,7 @@ jobs:
 
   release:
     permissions:
-      contents: write # To create releases
+      contents: write  # To create releases
 
     runs-on: ubuntu-latest
 
@@ -51,32 +51,35 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: artifacts-windows-latest
-          path: artifacts
+          path: artifacts/windows
 
       - name: Download Linux Artifacts
         uses: actions/download-artifact@v7
         with:
           name: artifacts-ubuntu-latest
-          path: artifacts
+          path: artifacts/linux
 
       - name: Download Documentation
         uses: actions/download-artifact@v7
         with:
           name: documentation
-          path: artifacts
+          path: artifacts/docs
 
       - name: Clean Artifacts
         shell: bash
         run: |
-          rm -rf artifacts/test
-          # Keep only Linux build artifacts for publishing
-          rm -rf artifacts/artifacts-windows-latest
+          rm -rf artifacts/windows/test
+          rm -rf artifacts/linux/test
+          # Flatten artifacts for release
+          mkdir -p artifacts/release
+          cp -r artifacts/linux/* artifacts/release/
+          cp -r artifacts/docs/* artifacts/release/
 
       - name: Create release
         if: ${{ inputs.publish == 'release' || inputs.publish == 'publish' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'artifacts/**/*'
+          artifacts: 'artifacts/release/**/*'
           generateReleaseNotes: true
           tag: ${{ inputs.version }}
 
@@ -85,6 +88,6 @@ jobs:
         run: >
           dotnet
           nuget push
-          artifacts/artifacts-ubuntu-latest/src/DemaConsulting.TestResults/bin/Release/*.nupkg
+          artifacts/linux/src/DemaConsulting.TestResults/bin/Release/*.nupkg
           --source "https://api.nuget.org/v3/index.json"
           --api-key "${{ secrets.DEMACONSULTINGNUGETKEY }}"

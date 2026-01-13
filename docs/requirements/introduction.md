@@ -1,6 +1,7 @@
 # Introduction
 
-This document specifies the requirements for the TestResults library, a C# library for creating test result files in TRX and JUnit XML formats.
+This document specifies the requirements for the TestResults library, a C# library for creating
+test result files in TRX and JUnit XML formats.
 
 ## Purpose
 

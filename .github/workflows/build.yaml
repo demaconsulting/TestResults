@@ -1,16 +1,13 @@
 ---
-name: Build
-
 on:
-  push:                 # On push to any branch
-  workflow_dispatch:    # Allow manual trigger
+  workflow_call:
     inputs:
       version:
-        description: 'Version to build'
         required: false
         type: string
-  schedule:             # 5PM UTC every Monday
-    - cron: '0 17 * * 1'
+    secrets:
+      SONAR_TOKEN:
+        required: true
 
 jobs:
   quality-checks:
@@ -42,7 +39,7 @@ jobs:
     needs: quality-checks
     permissions:
       contents: read       # To read repository contents
-      pull-requests: write # To write pull requests analysis results and artifacts
+      pull-requests: write  # To write pull requests analysis results and artifacts
 
     strategy:
       matrix:
@@ -92,14 +89,14 @@ jobs:
           dotnet build
           --no-restore
           --configuration Release
-          --property:Version=${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
+          --property:Version=${{ inputs.version }}
 
       - name: Test
         run: >
           dotnet test
           --no-build
           --configuration Release
-          --property:Version=${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
+          --property:Version=${{ inputs.version }}
           --collect "XPlat Code Coverage;Format=opencover"
           --logger "trx;LogFileName=TestResults.trx"
           --results-directory test-results
@@ -119,7 +116,7 @@ jobs:
           -b src/DemaConsulting.TestResults/bin/Release
           -bc src/DemaConsulting.TestResults
           -pn DemaConsulting.TestResults
-          -pv ${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
+          -pv ${{ inputs.version }}
           -ps DemaConsulting
           -nsb https://DemaConsulting.com/TestResults
           -pm true
@@ -132,7 +129,7 @@ jobs:
           -bc test/DemaConsulting.TestResults.Tests
           -cd "--DirectoryExclusionList **/Examples/**"
           -pn DemaConsulting.TestResults.Tests
-          -pv ${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
+          -pv ${{ inputs.version }}
           -ps DemaConsulting
           -nsb https://DemaConsulting.com/TestResults.Tests
           -pm true
@@ -148,7 +145,7 @@ jobs:
           dotnet pack
           --no-build
           --no-restore
-          --property:PackageVersion=${{ inputs.version || format('0.0.0-run.{0}', github.run_number) }}
+          --property:PackageVersion=${{ inputs.version }}
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v6
@@ -171,7 +168,7 @@ jobs:
     name: Build Documentation
     needs: build
     permissions:
-      contents: read # To read repository contents
+      contents: read  # To read repository contents
 
     runs-on: windows-latest
 

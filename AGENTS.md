@@ -67,7 +67,8 @@ Key directories:
 
 Key files:
 
-- **requirements.yaml** - Defines the functional, quality, and documentation requirements for the library. All requirements should be traceable to test cases.
+- **requirements.yaml** - Defines the functional, quality, and documentation requirements
+  for the library. All requirements should be traceable to test cases.
 
 ## Development Commands
 
@@ -220,7 +221,7 @@ The build pipeline includes:
 8. **SonarCloud End**: Complete SonarCloud analysis (Linux only)
 9. **SBOM**: Generate Software Bill of Materials
 10. **Package**: Create NuGet packages
-11. **Build Documentation**: 
+11. **Build Documentation**:
     - Import requirements from requirements.yaml
     - Import TRX test results
     - Export requirements and trace matrix documents
