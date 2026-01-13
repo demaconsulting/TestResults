@@ -92,4 +92,3 @@ sections:
             title: "The library shall support the NotExecuted test outcome."
             tests:
               - "TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse"
-
