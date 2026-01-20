@@ -118,6 +118,9 @@ cspell "**/*.{md,cs}"
 
 # (Optional) Run markdown linter if you modified markdown files
 markdownlint "**/*.md"
+
+# (Optional) Run YAML linter if you modified YAML files
+yamllint '**/*.{yml,yaml}'
 ```
 
 All builds must complete with zero warnings, and all tests must pass.
