@@ -220,7 +220,7 @@ jobs:
 
   build-docs:
     name: Build Documentation
-    needs: build
+    needs: [build, codeql]
     permissions:
       contents: read  # To read repository contents
 
