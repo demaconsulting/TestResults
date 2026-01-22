@@ -37,6 +37,12 @@
       "commands": [
         "reqstream"
       ]
+    },
+    "demaconsulting.sonarmark": {
+      "version": "1.0.0",
+      "commands": [
+        "sonarmark"
+      ]
     }
   }
 }
