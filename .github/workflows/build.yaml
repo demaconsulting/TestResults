@@ -248,6 +248,32 @@ jobs:
           docs/tracematrix/tracematrix.html
           "docs/TestResults Trace Matrix.pdf"
 
+      - name: Generate Code Quality Report with SonarMark
+        shell: pwsh
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          dotnet sonarmark
+          --server https://sonarcloud.io
+          --project-key demaconsulting_TestResults
+          --branch ${{ github.ref_name }}
+          --token "$env:SONAR_TOKEN"
+          --report docs/quality/sonar-quality.md
+          --report-depth 1
+
+      - name: Generate Code Quality HTML with Pandoc
+        run: >
+          dotnet pandoc
+          docs/quality/title.txt
+          --defaults docs/quality/definition.yaml
+          --output docs/quality/quality.html
+
+      - name: Generate Code Quality PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/quality/quality.html
+          "docs/TestResults Code Quality.pdf"
+
       - name: Upload Documentation
         uses: actions/upload-artifact@v6
         with:
