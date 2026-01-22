@@ -14,7 +14,7 @@ This code quality report covers:
 
 - Quality gate status and conditions
 - Code issues categorized by type and severity
-- Security hot-spots requiring review
+- Security hotspots requiring review
 - Technical debt assessment
 - Code coverage and duplication metrics
 
