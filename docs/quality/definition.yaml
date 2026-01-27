@@ -5,6 +5,7 @@ resource-path:
 
 input-files:
   - docs/quality/introduction.md
+  - docs/quality/codeql-quality.md
   - docs/quality/sonar-quality.md
 
 template: template.html
