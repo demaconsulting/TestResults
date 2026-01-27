@@ -258,7 +258,7 @@ img {
   margin: 1in 0.75in;
   
   @top-center {
-    content: string(doctitle) " - " string(docversion);
+    content: string(doctitle-with-version);
     font-size: 10pt;
     color: #666;
     border-bottom: 1px solid #e0e0e0;
@@ -285,14 +285,13 @@ img {
   }
 }
 
-/* Set the document title for the header */
+/* Set the document title and version for the header */
 .title {
-  string-set: doctitle content();
+  string-set: doctitle content(), doctitle-with-version content();
 }
 
-/* Set the document version for the header */
 .version {
-  string-set: docversion content();
+  string-set: doctitle-with-version string(doctitle) " - " content();
 }
 
 /* Add page numbers to TOC entries using target-counter */
