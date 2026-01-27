@@ -66,11 +66,7 @@ public static class JUnitSerializer
             new XAttribute("name", results.Name));
 
         // Add test suites for each class
-        foreach (var suiteGroup in testSuites)
-        {
-            var testSuite = CreateTestSuiteElement(suiteGroup);
-            root.Add(testSuite);
-        }
+        root.Add(testSuites.Select(CreateTestSuiteElement));
 
         // Write the XML text
         var doc = new XDocument(root);
@@ -98,11 +94,7 @@ public static class JUnitSerializer
             new XAttribute("time", suiteTests.Sum(t => t.Duration.TotalSeconds).ToString(TimeFormatString, CultureInfo.InvariantCulture)));
 
         // Add test cases
-        foreach (var test in suiteTests)
-        {
-            var testCase = CreateTestCaseElement(test);
-            testSuite.Add(testCase);
-        }
+        testSuite.Add(suiteTests.Select(CreateTestCaseElement));
 
         return testSuite;
     }
@@ -239,12 +231,7 @@ public static class JUnitSerializer
     private static void ParseTestSuite(XElement testSuiteElement, TestResults results)
     {
         var testCaseElements = testSuiteElement.Elements("testcase");
-
-        foreach (var testCaseElement in testCaseElements)
-        {
-            var testResult = ParseTestCase(testCaseElement);
-            results.Results.Add(testResult);
-        }
+        results.Results.AddRange(testCaseElements.Select(ParseTestCase));
     }
 
     /// <summary>

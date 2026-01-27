@@ -127,13 +127,7 @@ public static class TrxSerializer
     private static XElement CreateResultsElement(List<TestResult> testResults)
     {
         var resultsElement = new XElement(TrxNamespace + "Results");
-
-        foreach (var test in testResults)
-        {
-            var resultElement = CreateUnitTestResultElement(test);
-            resultsElement.Add(resultElement);
-        }
-
+        resultsElement.Add(testResults.Select(CreateUnitTestResultElement));
         return resultsElement;
     }
 
@@ -352,11 +346,7 @@ public static class TrxSerializer
             "/trx:TestRun/trx:Results/trx:UnitTestResult",
             nsMgr);
 
-        foreach (var resultElement in resultElements)
-        {
-            var testResult = ParseTestResult(doc, nsMgr, resultElement);
-            results.Results.Add(testResult);
-        }
+        results.Results.AddRange(resultElements.Select(e => ParseTestResult(doc, nsMgr, e)));
     }
 
     /// <summary>
