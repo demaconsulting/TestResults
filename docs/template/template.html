@@ -257,8 +257,16 @@ img {
   size: letter;
   margin: 1in 0.75in;
   
-  @top-center {
-    content: string(doctitle-with-version);
+  @top-left {
+    content: string(doctitle);
+    font-size: 10pt;
+    color: #666;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.25in;
+  }
+  
+  @top-right {
+    content: string(docversion);
     font-size: 10pt;
     color: #666;
     border-bottom: 1px solid #e0e0e0;
@@ -276,7 +284,11 @@ img {
 
 /* Don't show header/footer on title page */
 @page :first {
-  @top-center {
+  @top-left {
+    content: none;
+  }
+  
+  @top-right {
     content: none;
   }
   
@@ -287,7 +299,12 @@ img {
 
 /* Set the document title for the header */
 .title {
-  string-set: doctitle-with-version content();
+  string-set: doctitle content();
+}
+
+/* Set the document version for the header */
+.version {
+  string-set: docversion content();
 }
 
 /* Add page numbers to TOC entries using target-counter */
@@ -312,7 +329,7 @@ $include-before$
 $endfor$
 $if(title)$
 <header id="title-block-header">
-<h1 class="title">$title$$if(version)$ - Version $version$$endif$</h1>
+<h1 class="title">$title$</h1>
 $if(subtitle)$
 <p class="subtitle">$subtitle$</p>
 $endif$
