@@ -285,13 +285,9 @@ img {
   }
 }
 
-/* Set the document title and version for the header */
-.title {
-  string-set: doctitle content(), doctitle-with-version content();
-}
-
-.version {
-  string-set: doctitle-with-version string(doctitle) " - " content();
+/* Set the document title for the header */
+#title-with-version-header {
+  string-set: doctitle-with-version content();
 }
 
 /* Add page numbers to TOC entries using target-counter */
@@ -329,6 +325,8 @@ $endfor$
 $if(date)$
 <p class="date">$date$</p>
 $endif$
+<!-- Hidden element for page header string-set -->
+<span id="title-with-version-header" style="display: none;">$title$$if(version)$ - Version $version$$endif$</span>
 </header>
 $endif$
 $if(toc)$
