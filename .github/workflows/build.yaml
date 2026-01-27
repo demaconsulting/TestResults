@@ -327,11 +327,13 @@ jobs:
           --report-depth 1
 
       - name: Display CodeQL Quality Report
+        shell: pwsh
         run: |
           echo "=== CodeQL Quality Report ==="
           Get-Content docs/quality/codeql-quality.md
 
       - name: Generate Code Quality Report with SonarMark
+        shell: pwsh
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
@@ -344,6 +346,7 @@ jobs:
           --report-depth 1
 
       - name: Display SonarCloud Quality Report
+        shell: pwsh
         run: |
           echo "=== SonarCloud Quality Report ==="
           Get-Content docs/quality/sonar-quality.md
