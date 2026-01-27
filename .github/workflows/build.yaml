@@ -278,6 +278,8 @@ jobs:
           docs/guide/title.txt
           --defaults docs/guide/definition.yaml
           --filter node_modules/.bin/mermaid-filter.cmd
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
           --output docs/guide/guide.html
 
       - name: Generate Developer Guide PDF with Weasyprint
@@ -291,6 +293,8 @@ jobs:
           dotnet pandoc
           docs/requirements/title.txt
           --defaults docs/requirements/definition.yaml
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
           --output docs/requirements/requirements.html
 
       - name: Generate Requirements PDF with Weasyprint
@@ -304,6 +308,8 @@ jobs:
           dotnet pandoc
           docs/tracematrix/title.txt
           --defaults docs/tracematrix/definition.yaml
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
           --output docs/tracematrix/tracematrix.html
 
       - name: Generate Trace Matrix PDF with Weasyprint
@@ -351,6 +357,8 @@ jobs:
           dotnet pandoc
           docs/quality/title.txt
           --defaults docs/quality/definition.yaml
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
           --output docs/quality/quality.html
 
       - name: Generate Code Quality PDF with Weasyprint
