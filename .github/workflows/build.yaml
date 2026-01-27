@@ -188,7 +188,8 @@ jobs:
         uses: github/codeql-action/init@v4
         with:
           languages: csharp
-          build-mode: manual
+          queries: security-and-quality
+          config-file: ./.github/codeql-config.yml
 
       - name: Restore Tools
         run: >
@@ -215,7 +216,7 @@ jobs:
       - name: Upload SARIF
         uses: actions/upload-artifact@v6
         with:
-          name: codeql-results
+          name: codeql-sarif
           path: sarif-results/csharp.sarif
 
   build-docs:
@@ -254,6 +255,12 @@ jobs:
           pattern: test-results-*-latest
           path: test-results
           merge-multiple: true
+
+      - name: Download CodeQL SARIF
+        uses: actions/download-artifact@v7
+        with:
+          name: codeql-sarif
+          path: codeql-results
 
       - name: Generate Requirements Report and Trace Matrix
         run: >
@@ -303,6 +310,15 @@ jobs:
           dotnet weasyprint
           docs/tracematrix/tracematrix.html
           "docs/TestResults Trace Matrix.pdf"
+
+      - name: Generate CodeQL Quality Report with SarifMark
+        shell: pwsh
+        run: >
+          dotnet sarifmark
+          --sarif codeql-results/csharp.sarif
+          --report docs/quality/codeql-quality.md
+          --heading "TestResults CodeQL Analysis"
+          --report-depth 1
 
       - name: Generate Code Quality Report with SonarMark
         shell: pwsh
