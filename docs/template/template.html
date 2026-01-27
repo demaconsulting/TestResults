@@ -286,7 +286,7 @@ img {
 }
 
 /* Set the document title for the header */
-#title-with-version-header {
+.title {
   string-set: doctitle-with-version content();
 }
 
@@ -307,14 +307,12 @@ $for(header-includes)$
 $endfor$
 </head>
 <body>
-<!-- Hidden element for page header string-set -->
-<span id="title-with-version-header" style="display: none;">$title$$if(version)$ - Version $version$$endif$</span>
 $for(include-before)$
 $include-before$
 $endfor$
 $if(title)$
 <header id="title-block-header">
-<h1 class="title">$title$</h1>
+<h1 class="title">$title$$if(version)$ - Version $version$$endif$</h1>
 $if(subtitle)$
 <p class="subtitle">$subtitle$</p>
 $endif$
