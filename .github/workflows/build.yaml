@@ -273,7 +273,6 @@ jobs:
           --enforce
 
       - name: Generate Developer Guide HTML with Pandoc
-        shell: bash
         run: >
           dotnet pandoc
           docs/guide/title.txt
@@ -290,7 +289,6 @@ jobs:
           "docs/TestResults Developer Guide.pdf"
 
       - name: Generate Requirements HTML with Pandoc
-        shell: bash
         run: >
           dotnet pandoc
           docs/requirements/title.txt
@@ -306,7 +304,6 @@ jobs:
           "docs/TestResults Requirements.pdf"
 
       - name: Generate Trace Matrix HTML with Pandoc
-        shell: bash
         run: >
           dotnet pandoc
           docs/tracematrix/title.txt
@@ -354,7 +351,6 @@ jobs:
           cat docs/quality/sonar-quality.md
 
       - name: Generate Code Quality HTML with Pandoc
-        shell: bash
         run: >
           dotnet pandoc
           docs/quality/title.txt
