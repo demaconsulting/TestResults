@@ -84,6 +84,38 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
    dotnet test
    ```
 
+### Helper Scripts
+
+The repository includes helper scripts to simplify common development tasks:
+
+**Quick Build and Test:**
+
+```bash
+# On Windows
+build.bat
+
+# On Linux/macOS
+./build.sh
+```
+
+**Quick Linting:**
+
+```bash
+# On Windows
+lint.bat
+
+# On Linux/macOS
+./lint.sh
+```
+
+### Visual Studio Code Tasks
+
+If you're using Visual Studio Code, preconfigured tasks are available:
+
+- Press `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (macOS) to access build tasks
+- Press `Ctrl+Shift+P` and type "Tasks: Run Task" to access all tasks
+- Available tasks: `build`, `test`, `clean`, `restore`, `lint`, `format`
+
 ### Making Changes
 
 1. Create a new branch for your changes:
@@ -102,6 +134,18 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 ### Pre-Commit Quality Checks
 
 Before committing your changes, ensure the following checks pass:
+
+**Using Helper Scripts (Recommended):**
+
+```bash
+# On Windows
+build.bat && lint.bat
+
+# On Linux/macOS
+./build.sh && ./lint.sh
+```
+
+**Manual Commands:**
 
 ```bash
 # Build the project
@@ -184,6 +228,8 @@ All builds must complete with zero warnings, and all tests must pass.
 TestResults/
 ├── .config/                      # .NET tool configuration
 ├── .github/workflows/            # CI/CD workflows
+├── .vscode/                      # VS Code configuration
+│   └── tasks.json               # Build, test, and lint tasks
 ├── src/
 │   └── DemaConsulting.TestResults/   # Main library
 ├── test/
@@ -194,6 +240,8 @@ TestResults/
 ├── ARCHITECTURE.md               # Architecture documentation
 ├── CODE_OF_CONDUCT.md            # Code of conduct
 ├── CONTRIBUTING.md               # This file
+├── build.bat / build.sh          # Build helper scripts
+├── lint.bat / lint.sh            # Lint helper scripts
 ├── DemaConsulting.TestResults.sln # Solution file
 ├── LICENSE                       # MIT license
 └── README.md                     # Main documentation

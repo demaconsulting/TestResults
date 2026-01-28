@@ -48,13 +48,26 @@ Represents a single test result. Key properties:
 
 An enumeration representing possible test outcomes:
 
-- `Passed`: Test passed successfully
-- `Failed`: Test failed
-- `Inconclusive`: Test result was inconclusive
-- `NotExecuted`: Test was not executed
-- `Timeout`: Test exceeded timeout limit
-- `Aborted`: Test was aborted
-- `Unknown`: Test outcome is unknown
+- `Passed` - Test passed successfully
+- `Failed` - Test failed
+- `Error` - Test encountered an error
+- `Timeout` - Test exceeded timeout limit
+- `Aborted` - Test was aborted
+- `Inconclusive` - Test result was inconclusive
+- `NotExecuted` - Test was not executed
+- `NotRunnable` - Test is not runnable
+- `PassedButRunAborted` - Test passed but the run was aborted
+- `Warning` - Test passed with warnings
+- `Completed` - Test completed successfully
+- `InProgress` - Test is currently in progress
+- `Pending` - Test is pending execution
+- `Disconnected` - Test was disconnected
+
+The `TestOutcomeExtensions` class provides helper methods to categorize outcomes:
+
+- `IsPassed()` - Checks if the outcome represents a successful test
+- `IsFailed()` - Checks if the outcome represents a failed test
+- `IsExecuted()` - Checks if the test was actually executed
 
 ### Serialization Layer
 

@@ -1,0 +1,78 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/DemaConsulting.TestResults.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "clean",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "clean",
+        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "restore",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "restore",
+        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "test",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "test",
+        "${workspaceFolder}/DemaConsulting.TestResults.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "lint",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "format",
+        "--verify-no-changes",
+        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "format",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "format",
+        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
