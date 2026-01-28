@@ -155,13 +155,37 @@ var failedResult = new TestResult
 
 The library supports the following test outcomes:
 
+**Successful Outcomes:**
+
 - `Passed` - Test passed successfully
+- `PassedButRunAborted` - Test passed but the run was aborted
+- `Warning` - Test passed with warnings
+- `Completed` - Test completed successfully
+
+**Failure Outcomes:**
+
 - `Failed` - Test failed
-- `Inconclusive` - Test result was inconclusive
-- `NotExecuted` - Test was not executed
+- `Error` - Test encountered an error
 - `Timeout` - Test exceeded timeout limit
 - `Aborted` - Test was aborted
-- `Unknown` - Test outcome is unknown
+
+**Skipped/Not Run Outcomes:**
+
+- `NotExecuted` - Test was not executed
+- `NotRunnable` - Test is not runnable
+- `Pending` - Test is pending execution
+
+**Other Outcomes:**
+
+- `Inconclusive` - Test result was inconclusive
+- `Disconnected` - Test was disconnected
+- `InProgress` - Test is currently in progress
+
+The `TestOutcome` enum also provides helper extension methods:
+
+- `IsPassed()` - Returns true for passed outcomes (Passed, PassedButRunAborted, Warning)
+- `IsFailed()` - Returns true for failed outcomes (Failed, Error, Timeout, Aborted)
+- `IsExecuted()` - Returns true if the test was executed
 
 ## Use Cases
 
@@ -198,6 +222,41 @@ dotnet build
 # Run tests
 dotnet test
 ```
+
+### Helper Scripts
+
+For convenience, the repository includes helper scripts to streamline development:
+
+**Windows:**
+
+```bash
+# Build and test the project
+build.bat
+
+# Run code formatting, spelling, and markdown checks
+lint.bat
+```
+
+**Linux/macOS:**
+
+```bash
+# Build and test the project
+./build.sh
+
+# Run code formatting, spelling, and markdown checks
+./lint.sh
+```
+
+**Visual Studio Code:**
+
+If you're using VS Code, preconfigured tasks are available via `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (macOS):
+
+- `build` - Build the solution (default build task)
+- `test` - Run all tests (default test task)
+- `clean` - Clean build artifacts
+- `restore` - Restore NuGet packages
+- `lint` - Check code formatting
+- `format` - Auto-format code
 
 ## Requirements
 
