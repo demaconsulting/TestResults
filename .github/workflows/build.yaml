@@ -337,7 +337,7 @@ jobs:
         run: >
           dotnet weasyprint
           docs/justifications/justifications.html
-          "docs/TestResults Justifications.pdf"
+          "docs/TestResults Requirements Justifications.pdf"
 
       - name: Generate CodeQL Quality Report with SarifMark
         run: >
