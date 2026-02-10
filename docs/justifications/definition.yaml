@@ -1,0 +1,14 @@
+---
+resource-path:
+  - docs/justifications
+  - docs/template
+
+input-files:
+  - docs/justifications/introduction.md
+  - docs/justifications/justifications.md
+
+template: template.html
+
+table-of-contents: true
+
+number-sections: true

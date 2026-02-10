@@ -264,13 +264,14 @@ jobs:
           name: codeql-sarif
           path: codeql-results
 
-      - name: Generate Requirements Report and Trace Matrix
+      - name: Generate Requirements Report, Trace Matrix, and Justifications
         run: >
           dotnet reqstream
           --requirements requirements.yaml
           --tests "test-results/**/*.trx"
           --report docs/requirements/requirements.md
           --matrix docs/tracematrix/tracematrix.md
+          --justifications docs/justifications/justifications.md
           --enforce
 
       - name: Generate Developer Guide HTML with Pandoc
@@ -321,6 +322,22 @@ jobs:
           dotnet weasyprint
           docs/tracematrix/tracematrix.html
           "docs/TestResults Trace Matrix.pdf"
+
+      - name: Generate Justifications HTML with Pandoc
+        shell: bash
+        run: >
+          dotnet pandoc
+          docs/justifications/title.txt
+          --defaults docs/justifications/definition.yaml
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
+          --output docs/justifications/justifications.html
+
+      - name: Generate Justifications PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          docs/justifications/justifications.html
+          "docs/TestResults Justifications.pdf"
 
       - name: Generate CodeQL Quality Report with SarifMark
         run: >
