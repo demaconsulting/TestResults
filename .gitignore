@@ -23,5 +23,14 @@ coverage/
 node_modules/
 
 # Generated documentation
+docs/*.pdf
 docs/guide/*.html
-docs/guide/*.pdf
+docs/requirements/requirements.md
+docs/requirements/*.html
+docs/tracematrix/tracematrix.md
+docs/tracematrix/*.html
+docs/justifications/justifications.md
+docs/justifications/*.html
+docs/quality/codeql-quality.md
+docs/quality/sonar-quality.md
+docs/quality/*.html

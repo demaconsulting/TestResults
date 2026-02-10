@@ -5,90 +5,145 @@
 # Requirements are verified through tests and documented in the requirements and trace matrix documents.
 
 sections:
-  - title: "TestResults Library Requirements"
+  - title: TestResults Library Requirements
     sections:
-      - title: "Functional Requirements"
+      - title: Functional Requirements
         requirements:
-          - id: "REQ-FUNC-001"
-            title: "The library shall support serializing test results to TRX (Visual Studio Test Results) format."
+          - id: REQ-FUNC-001
+            title: The library shall support serializing test results to TRX (Visual Studio Test Results) format.
+            justification: |
+              TRX is the native test result format for Visual Studio and Azure DevOps. Supporting TRX
+              serialization enables the library to integrate seamlessly with Microsoft's testing ecosystem,
+              allowing users to generate test results that are compatible with Visual Studio Test Explorer,
+              Azure Pipelines, and other Microsoft tools.
             tests:
-              - "TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml"
+              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml
 
-          - id: "REQ-FUNC-002"
-            title: "The library shall support deserializing TRX test result files."
+          - id: REQ-FUNC-002
+            title: The library shall support deserializing TRX test result files.
+            justification: |
+              Deserializing TRX files allows users to read and analyze existing test results programmatically.
+              This is essential for test result aggregation, reporting, conversion to other formats, and
+              integration with custom analysis tools.
             tests:
-              - "TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults"
-              - "TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults"
-              - "TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults"
-              - "TrxExampleTests_Deserialize_Example2Trx_ReturnsAllTestResults"
+              - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
+              - TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults
+              - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
+              - TrxExampleTests_Deserialize_Example2Trx_ReturnsAllTestResults
 
-          - id: "REQ-FUNC-003"
-            title: "The library shall support serializing test results to JUnit XML format."
+          - id: REQ-FUNC-003
+            title: The library shall support serializing test results to JUnit XML format.
+            justification: |
+              JUnit XML is a widely-adopted, cross-platform test result format supported by many CI/CD
+              systems including Jenkins, GitLab CI, GitHub Actions, and CircleCI. Supporting JUnit
+              serialization ensures the library can be used in diverse development environments beyond
+              the Microsoft ecosystem.
             tests:
-              - "JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
-              - "JUnitSerializer_Serialize_FailedTest_IncludesFailureElement"
-              - "JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement"
-              - "JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement"
-              - "JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr"
-              - "JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName"
+              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - JUnitSerializer_Serialize_FailedTest_IncludesFailureElement
+              - JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement
+              - JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement
+              - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
+              - JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName
 
-          - id: "REQ-FUNC-004"
-            title: "The library shall support deserializing JUnit XML test result files."
+          - id: REQ-FUNC-004
+            title: The library shall support deserializing JUnit XML test result files.
+            justification: |
+              Deserializing JUnit XML enables reading test results from a wide variety of testing
+              frameworks and CI/CD systems. This capability is crucial for aggregating results from
+              different sources, converting between formats, and building unified reporting solutions.
             tests:
-              - "JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults"
-              - "JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails"
-              - "JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails"
-              - "JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus"
-              - "JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput"
-              - "JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests"
+              - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults
+              - JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails
+              - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails
+              - JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus
+              - JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput
+              - JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests
 
-          - id: "REQ-FUNC-005"
-            title: "The library shall automatically identify test result file format."
+          - id: REQ-FUNC-005
+            title: The library shall automatically identify test result file format.
+            justification: |
+              Automatic format detection simplifies usage by eliminating the need for users to
+              explicitly specify the format. This reduces potential for errors and improves the
+              user experience, especially when processing test results from multiple sources.
             tests:
-              - "Serializer_Identify_TrxContent_ReturnsTrx"
-              - "Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit"
-              - "Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit"
+              - Serializer_Identify_TrxContent_ReturnsTrx
+              - Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit
+              - Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit
 
-          - id: "REQ-FUNC-006"
-            title: "The library shall support .NET 8 runtime."
+          - id: REQ-FUNC-006
+            title: The library shall support .NET 8 runtime.
+            justification: |
+              .NET 8 is a Long-Term Support (LTS) release with support through November 2026. Supporting
+              this framework ensures the library can be used in stable, enterprise environments that
+              require long-term maintenance guarantees.
             tests:
-              - "net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
-          - id: "REQ-FUNC-007"
-            title: "The library shall support .NET 9 runtime."
+          - id: REQ-FUNC-007
+            title: The library shall support .NET 9 runtime.
+            justification: |
+              .NET 9 is a Standard-Term Support (STS) release that provides access to the latest
+              framework features and performance improvements. Supporting this version allows users
+              to benefit from the newest capabilities while maintaining compatibility with current
+              development practices.
             tests:
-              - "net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
-          - id: "REQ-FUNC-008"
-            title: "The library shall support .NET 10 runtime."
+          - id: REQ-FUNC-008
+            title: The library shall support .NET 10 runtime.
+            justification: |
+              .NET 10 is the upcoming Long-Term Support (LTS) release scheduled for November 2025.
+              Supporting this framework ensures the library remains current and provides a clear
+              upgrade path for users as they migrate to future .NET versions.
             tests:
-              - "net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml"
-              - "net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml"
+              - net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
-          - id: "REQ-FUNC-009"
-            title: "The library shall support the Passed test outcome."
+          - id: REQ-FUNC-009
+            title: The library shall support the Passed test outcome.
+            justification: |
+              The Passed outcome represents a successful test execution and is the most common test
+              result status. Supporting this outcome is fundamental to accurately representing test
+              results in both TRX and JUnit formats.
             tests:
-              - "TestOutcome_IsPassed_PassedOutcome_ReturnsTrue"
+              - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
 
-          - id: "REQ-FUNC-010"
-            title: "The library shall support the Failed test outcome."
+          - id: REQ-FUNC-010
+            title: The library shall support the Failed test outcome.
+            justification: |
+              The Failed outcome indicates a test that executed but did not meet its success criteria.
+              This is a critical status for identifying regressions and quality issues, making it
+              essential for any test result representation.
             tests:
-              - "TestOutcome_IsFailed_FailedOutcome_ReturnsTrue"
+              - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-          - id: "REQ-FUNC-011"
-            title: "The library shall support the Skipped test outcome."
+          - id: REQ-FUNC-011
+            title: The library shall support the Skipped test outcome.
+            justification: |
+              The Skipped outcome represents tests that were not executed, typically due to conditional
+              execution or explicit skipping. This status is important for understanding test coverage
+              and for distinguishing between untested code and passing tests.
             tests:
-              - "JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement"
+              - JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement
 
-          - id: "REQ-FUNC-012"
-            title: "The library shall support the Inconclusive test outcome."
+          - id: REQ-FUNC-012
+            title: The library shall support the Inconclusive test outcome.
+            justification: |
+              The Inconclusive outcome represents tests that executed but did not produce a definitive
+              pass or fail result. This status is important for test frameworks that support
+              inconclusive results and helps distinguish ambiguous test executions from failures.
             tests:
-              - "TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue"
+              - TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue
 
-          - id: "REQ-FUNC-013"
-            title: "The library shall support the NotExecuted test outcome."
+          - id: REQ-FUNC-013
+            title: The library shall support the NotExecuted test outcome.
+            justification: |
+              The NotExecuted outcome represents tests that were not run, distinct from Skipped which
+              implies intentional skipping. This status provides granular control over test execution
+              tracking and is important for accurate test result reporting in both TRX and JUnit formats.
             tests:
-              - "TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse"
+              - TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse
