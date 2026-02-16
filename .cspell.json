@@ -4,6 +4,8 @@
   "words": [
     "Anson",
     "Blockquotes",
+    "buildmark",
+    "buildnotes",
     "camelcase",
     "copilot",
     "cspell",
@@ -33,8 +35,11 @@
     "opencover",
     "pagetitle",
     "pandoc",
+    "pandoctool",
     "reqstream",
     "ReqStream",
+    "Sarif",
+    "sarifmark",
     "SBOM",
     "semver",
     "snupkg",
@@ -49,7 +54,9 @@
     "trx",
     "vbproj",
     "vcxproj",
+    "versionmark",
     "Weasyprint",
+    "weasyprinttool",
     "yamllint"
   ],
   "ignorePaths": [
