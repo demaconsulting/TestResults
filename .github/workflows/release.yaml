@@ -64,7 +64,12 @@ jobs:
       - name: Move buildnotes.md to root
         run: |
           set -e
+          if [ ! -f "artifacts/docs/buildnotes.md" ]; then
+            echo "Error: buildnotes.md not found in artifacts/docs/"
+            exit 1
+          fi
           mv artifacts/docs/buildnotes.md buildnotes.md
+          echo "Successfully moved buildnotes.md to root"
 
       - name: Clean Artifacts
         shell: bash
