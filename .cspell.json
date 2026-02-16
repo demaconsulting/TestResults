@@ -35,8 +35,11 @@
     "opencover",
     "pagetitle",
     "pandoc",
+    "pandoctool",
     "reqstream",
     "ReqStream",
+    "Sarif",
+    "sarifmark",
     "SBOM",
     "semver",
     "snupkg",
@@ -53,6 +56,7 @@
     "vcxproj",
     "versionmark",
     "Weasyprint",
+    "weasyprinttool",
     "yamllint"
   ],
   "ignorePaths": [
