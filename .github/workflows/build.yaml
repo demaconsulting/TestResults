@@ -501,15 +501,10 @@ jobs:
           docs/buildnotes/buildnotes.html
           "docs/TestResults Build Notes.pdf"
 
-      - name: Copy buildnotes.md to root for artifact
-        shell: bash
-        run: |
-          cp docs/buildnotes.md buildnotes.md
-
       - name: Upload Documentation
         uses: actions/upload-artifact@v6
         with:
           name: documentation
           path: |
             docs/*.pdf
-            buildnotes.md
+            docs/buildnotes.md
