@@ -4,6 +4,8 @@
   "words": [
     "Anson",
     "Blockquotes",
+    "buildmark",
+    "buildnotes",
     "camelcase",
     "copilot",
     "cspell",
@@ -49,6 +51,7 @@
     "trx",
     "vbproj",
     "vcxproj",
+    "versionmark",
     "Weasyprint",
     "yamllint"
   ],

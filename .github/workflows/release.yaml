@@ -61,6 +61,11 @@ jobs:
           name: documentation
           path: artifacts
 
+      - name: Move buildnotes.md to root
+        run: |
+          set -e
+          mv artifacts/docs/buildnotes.md buildnotes.md
+
       - name: Clean Artifacts
         shell: bash
         run: |
@@ -71,7 +76,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: 'artifacts/**/*'
-          generateReleaseNotes: true
+          bodyFile: buildnotes.md
+          generateReleaseNotes: false
           tag: ${{ inputs.version }}
 
       - name: Publish to Nuget
