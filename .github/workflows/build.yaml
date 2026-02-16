@@ -464,6 +464,12 @@ jobs:
           --report docs/buildnotes.md
           --report-depth 1
 
+      - name: Display Build Notes Report
+        shell: bash
+        run: |
+          echo "=== Build Notes Report ==="
+          cat docs/buildnotes.md
+
       - name: Publish Tool Versions
         shell: bash
         run: |
@@ -495,10 +501,15 @@ jobs:
           docs/buildnotes/buildnotes.html
           "docs/TestResults Build Notes.pdf"
 
+      - name: Copy buildnotes.md to root for artifact
+        shell: bash
+        run: |
+          cp docs/buildnotes.md buildnotes.md
+
       - name: Upload Documentation
         uses: actions/upload-artifact@v6
         with:
           name: documentation
           path: |
             docs/*.pdf
-            docs/buildnotes.md
+            buildnotes.md
