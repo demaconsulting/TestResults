@@ -439,53 +439,81 @@ are configured in the `.github/agents/` directory and can be invoked for their a
 
 ### Available Agents
 
-#### Documentation Writer (`@copilot[documentation-writer]`)
+#### Code Quality Agent (`@copilot[code-quality-agent]`)
 
-Expert technical writer specializing in:
+Ensures code quality through linting and static analysis:
 
-- Maintaining README, ARCHITECTURE, and markdown documentation
-- Writing XML documentation comments for APIs
-- Ensuring documentation accuracy and clarity
-- Following markdown and spelling standards
+- Running and fixing linting issues (markdown, YAML, spell check, code formatting)
+- Ensuring static analysis passes with zero warnings
+- Verifying code security
+- Enforcing quality gates before merging
+
+**Use this agent for**: Code reviews, linting fixes, static analysis, quality gate enforcement.
+
+#### Repo Consistency Agent (`@copilot[repo-consistency-agent]`)
+
+Ensures this repository remains consistent with the TemplateDotNetLibrary template:
+
+- Reviewing repository structure against the template
+- Identifying drift from template standards
+- Recommending updates to bring the project back in sync
+
+**Use this agent for**: Periodic consistency reviews, checking for template drift, adopting new template patterns.
+
+#### Requirements Agent (`@copilot[requirements-agent]`)
+
+Develops requirements and ensures appropriate test coverage:
+
+- Creating and reviewing requirements in `requirements.yaml`
+- Ensuring requirements have appropriate test coverage
+- Differentiating requirements from design details
+
+**Use this agent for**: Adding new requirements, reviewing requirement quality, test linkage strategy.
+
+#### Software Developer (`@copilot[software-developer]`)
+
+Writes production code with emphasis on testability and clarity:
+
+- Implementing production code features
+- Code refactoring for testability and maintainability
+- Implementing library APIs and functionality
+
+**Use this agent for**: Feature implementation, bug fixes, refactoring production code.
+
+#### Technical Writer (`@copilot[technical-writer]`)
+
+Creates and maintains clear, accurate, and complete documentation:
+
+- Creating or updating project documentation (README, guides, CONTRIBUTING, etc.)
+- Ensuring documentation accuracy and completeness
+- Markdown and spell checking compliance
 
 **Use this agent for**: Documentation updates, API comments, usage examples, and documentation fixes.
 
-#### Software Quality Enforcer (`@copilot[software-quality-enforcer]`)
+#### Test Developer (`@copilot[test-developer]`)
 
-Code quality specialist focused on:
+Writes unit and integration tests following the AAA pattern:
 
-- Enforcing testing standards and code coverage
-- Running static analysis and linting
-- Code review and quality gates
-- Ensuring zero-warning builds
+- Creating unit tests for individual components
+- Improving test coverage
+- Refactoring existing tests for clarity
 
-**Use this agent for**: Code reviews, test improvements, quality issues, and coding standards enforcement.
-
-#### Project Maintainer (`@copilot[project-maintainer]`)
-
-Project maintenance specialist responsible for:
-
-- Managing dependencies and Dependabot PRs
-- Triaging and organizing issues
-- Identifying improvement opportunities
-- Planning enhancements and releases
-
-**Use this agent for**: Issue triage, dependency updates, project health checks, and enhancement planning.
+**Use this agent for**: Writing new tests, improving test coverage, refactoring test code.
 
 ### Using Custom Agents
 
 Invoke agents in issues and pull requests by mentioning them:
 
 ```markdown
-@copilot[documentation-writer] Please update the README with examples for the new feature.
+@copilot[technical-writer] Please update the README with examples for the new feature.
 ```
 
 ```markdown
-@copilot[software-quality-enforcer] Review this PR for code quality standards.
+@copilot[code-quality-agent] Review this PR for code quality standards.
 ```
 
 ```markdown
-@copilot[project-maintainer] Please triage recent issues and suggest priorities.
+@copilot[repo-consistency-agent] Please check if this repository is consistent with the template.
 ```
 
 For detailed information about each agent, see their individual files in the `.github/agents/` directory.
