@@ -228,9 +228,6 @@ sections:
                   - JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests
 
       - title: Runtime
-        # NOTE: The runtime requirements below use framework-prefixed test names
-        # (e.g. "net8.0@TestName") to ensure that evidence is only accepted from
-        # tests executed on the specific runtime. Do NOT remove these prefixes.
         requirements:
           - id: REQ-FUNC-006
             title: The library shall support .NET 8 runtime.
