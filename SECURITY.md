@@ -24,7 +24,7 @@ findings.
 Instead, please report them using one of the following methods:
 
 1. **GitHub Security Advisories** (Preferred)
-   - Go to the [Security tab](https://github.com/demaconsulting/TestResults/security)
+   - Go to the [Security tab][security-tab]
    - Click on "Report a vulnerability"
    - Fill out the form with details about the vulnerability
 
@@ -96,7 +96,7 @@ We maintain transparency about known security issues:
 - No known vulnerabilities at this time
 
 Historical security advisories can be found in the
-[GitHub Security Advisories](https://github.com/demaconsulting/TestResults/security/advisories) section.
+[GitHub Security Advisories][security-advisories] section.
 
 ## Security Best Practices for Users
 
@@ -130,3 +130,7 @@ directly.
 ## Attribution
 
 This security policy is based on security policy best practices and adapted for the TestResults project.
+
+<!-- Link References -->
+[security-tab]: https://github.com/demaconsulting/TestResults/security
+[security-advisories]: https://github.com/demaconsulting/TestResults/security/advisories
