@@ -273,6 +273,20 @@ The build process generates:
 - **Requirements Specification PDF**: Complete requirements document
 - **Trace Matrix PDF**: Shows mapping between requirements and test cases with pass/fail status
 
+## Test Source Filters
+
+Test links in `requirements.yaml` can include a source filter prefix to restrict which test results count as
+evidence. This is critical for platform and framework requirements - **do not remove these filters**.
+
+- `windows@TestName` - proves the test passed on a Windows platform
+- `ubuntu@TestName` - proves the test passed on a Linux (Ubuntu) platform
+- `net8.0@TestName` - proves the test passed under the .NET 8 runtime
+- `net9.0@TestName` - proves the test passed under the .NET 9 runtime
+- `net10.0@TestName` - proves the test passed under the .NET 10 runtime
+
+Without the source filter, a test result from any platform/framework satisfies the requirement. Adding the filter
+ensures the CI evidence comes specifically from the required environment.
+
 ## Common Tasks for AI Agents
 
 ### Adding a New Feature
