@@ -255,7 +255,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           path: test-results
-          pattern: 'test-results-*-latest'
+          pattern: '*test-results*'
           merge-multiple: true
         continue-on-error: true
 

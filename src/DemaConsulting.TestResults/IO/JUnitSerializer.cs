@@ -275,7 +275,9 @@ public static class JUnitSerializer
     private static TimeSpan ParseDuration(string? timeStr)
     {
         if (string.IsNullOrEmpty(timeStr))
+        {
             return TimeSpan.Zero;
+        }
 
         return double.TryParse(timeStr, NumberStyles.Float, CultureInfo.InvariantCulture, out var timeValue)
             ? TimeSpan.FromSeconds(timeValue)
