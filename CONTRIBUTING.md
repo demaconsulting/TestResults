@@ -242,7 +242,7 @@ TestResults/
 ├── CONTRIBUTING.md               # This file
 ├── build.bat / build.sh          # Build helper scripts
 ├── lint.bat / lint.sh            # Lint helper scripts
-├── DemaConsulting.TestResults.sln # Solution file
+├── DemaConsulting.TestResults.slnx # Solution file
 ├── LICENSE                       # MIT license
 └── README.md                     # Main documentation
 ```

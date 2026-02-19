@@ -62,6 +62,7 @@ public static class Serializer
     /// <returns>The identified test result format</returns>
     public static TestResultFormat Identify(string contents)
     {
+        // Validate input is not null or whitespace
         if (string.IsNullOrWhiteSpace(contents))
         {
             return TestResultFormat.Unknown;
@@ -73,6 +74,7 @@ public static class Serializer
             var doc = XDocument.Parse(contents);
             var root = doc.Root;
 
+            // Check if root element exists
             if (root == null)
             {
                 return TestResultFormat.Unknown;
@@ -92,7 +94,7 @@ public static class Serializer
 
             return TestResultFormat.Unknown;
         }
-        catch
+        catch (System.Xml.XmlException)
         {
             // If XML parsing fails, format is unknown
             return TestResultFormat.Unknown;
@@ -104,9 +106,16 @@ public static class Serializer
     /// </summary>
     /// <param name="contents">The test result file contents</param>
     /// <returns>Deserialized test results</returns>
+    /// <exception cref="ArgumentException">Thrown when contents is null or whitespace</exception>
     /// <exception cref="InvalidOperationException">Thrown when format cannot be identified or deserialization fails</exception>
     public static TestResults Deserialize(string contents)
     {
+        // Validate input
+        if (string.IsNullOrWhiteSpace(contents))
+        {
+            throw new ArgumentException("Test result contents cannot be null or whitespace", nameof(contents));
+        }
+
         // Identify the format
         var format = Identify(contents);
 

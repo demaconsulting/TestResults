@@ -35,7 +35,9 @@ internal static class TestHelpers
         // Open the resource
         using var stream = typeof(TestHelpers).Assembly.GetManifestResourceStream(resourceName);
         if (stream == null)
+        {
             return string.Empty;
+        }
 
         // Read the resource
         using var reader = new StreamReader(stream);

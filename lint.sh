@@ -1,22 +1,18 @@
-#!/bin/bash
-# Lint script for TestResults project
+#!/usr/bin/env bash
+# Run all linters for TestResults
 
-set -e
+set -e  # Exit on error
 
-echo "Checking code formatting..."
-if ! dotnet format --verify-no-changes DemaConsulting.TestResults.sln; then
-    echo ""
-    echo "Code formatting issues found. Run 'dotnet format' to fix."
-    exit 1
-fi
+echo "📝 Checking markdown..."
+npx markdownlint-cli2 "**/*.md"
 
-echo ""
-echo "Checking spelling..."
-cspell "**/*.{md,cs}" --no-progress
+echo "🔤 Checking spelling..."
+npx cspell "**/*.{cs,md,json,yaml,yml}" --no-progress
 
-echo ""
-echo "Checking markdown..."
-markdownlint "**/*.md" --ignore node_modules
+echo "📋 Checking YAML..."
+yamllint -c .yamllint.yaml .
 
-echo ""
-echo "All lint checks passed!"
+echo "🎨 Checking code formatting..."
+dotnet format --verify-no-changes
+
+echo "✨ All linting passed!"

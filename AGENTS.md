@@ -53,7 +53,7 @@ The repository is organized as follows:
 ├── ARCHITECTURE.md                       # Architecture documentation
 ├── CODE_OF_CONDUCT.md                    # Code of conduct
 ├── CONTRIBUTING.md                       # Contribution guidelines
-├── DemaConsulting.TestResults.sln        # Visual Studio solution
+├── DemaConsulting.TestResults.slnx        # Visual Studio solution
 ├── README.md                             # Main documentation
 └── requirements.yaml                     # Requirements definitions
 ```

@@ -331,4 +331,60 @@ public sealed class TrxSerializerTests
         Assert.IsNotNull(stackTraceElement);
         Assert.Contains("at TestClass.Method() in Test.cs:line 42", stackTraceElement.Value);
     }
+
+    /// <summary>
+    ///     Test that Serialize throws ArgumentNullException for null input
+    /// </summary>
+    [TestMethod]
+    public void TrxSerializer_Serialize_NullResults_ThrowsArgumentNullException()
+    {
+        // Arrange - null test results
+        TestResults? nullResults = null;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentNullException>(() => TrxSerializer.Serialize(nullResults!));
+        Assert.AreEqual("results", ex.ParamName);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for null input
+    /// </summary>
+    [TestMethod]
+    public void TrxSerializer_Deserialize_NullContents_ThrowsArgumentException()
+    {
+        // Arrange - null contents
+        string? nullContents = null;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(nullContents!));
+        Assert.AreEqual("trxContents", ex.ParamName);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for empty string input
+    /// </summary>
+    [TestMethod]
+    public void TrxSerializer_Deserialize_EmptyContents_ThrowsArgumentException()
+    {
+        // Arrange - empty string
+        var emptyContents = string.Empty;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(emptyContents));
+        Assert.AreEqual("trxContents", ex.ParamName);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for whitespace input
+    /// </summary>
+    [TestMethod]
+    public void TrxSerializer_Deserialize_WhitespaceContents_ThrowsArgumentException()
+    {
+        // Arrange - whitespace string
+        var whitespaceContents = "   \n\t  ";
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(whitespaceContents));
+        Assert.AreEqual("trxContents", ex.ParamName);
+    }
 }

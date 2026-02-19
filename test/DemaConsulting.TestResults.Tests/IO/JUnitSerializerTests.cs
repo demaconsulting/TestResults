@@ -734,4 +734,60 @@ public sealed class JUnitSerializerTests
         Assert.AreEqual(TimeSpan.Zero, result.Duration);
         Assert.AreEqual(TestOutcome.Passed, result.Outcome);
     }
+
+    /// <summary>
+    ///     Test that Serialize throws ArgumentNullException for null input
+    /// </summary>
+    [TestMethod]
+    public void JUnitSerializer_Serialize_NullResults_ThrowsArgumentNullException()
+    {
+        // Arrange - null test results
+        TestResults? nullResults = null;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentNullException>(() => JUnitSerializer.Serialize(nullResults!));
+        Assert.AreEqual("results", ex.ParamName);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for null input
+    /// </summary>
+    [TestMethod]
+    public void JUnitSerializer_Deserialize_NullContents_ThrowsArgumentException()
+    {
+        // Arrange - null contents
+        string? nullContents = null;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => JUnitSerializer.Deserialize(nullContents!));
+        Assert.AreEqual("junitContents", ex.ParamName);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for empty string input
+    /// </summary>
+    [TestMethod]
+    public void JUnitSerializer_Deserialize_EmptyContents_ThrowsArgumentException()
+    {
+        // Arrange - empty string
+        var emptyContents = string.Empty;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => JUnitSerializer.Deserialize(emptyContents));
+        Assert.AreEqual("junitContents", ex.ParamName);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for whitespace input
+    /// </summary>
+    [TestMethod]
+    public void JUnitSerializer_Deserialize_WhitespaceContents_ThrowsArgumentException()
+    {
+        // Arrange - whitespace string
+        var whitespaceContents = "   \n\t  ";
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => JUnitSerializer.Deserialize(whitespaceContents));
+        Assert.AreEqual("junitContents", ex.ParamName);
+    }
 }

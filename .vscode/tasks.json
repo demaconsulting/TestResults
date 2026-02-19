@@ -7,7 +7,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/DemaConsulting.TestResults.sln",
+        "${workspaceFolder}/DemaConsulting.TestResults.slnx",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
@@ -23,7 +23,7 @@
       "type": "process",
       "args": [
         "clean",
-        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+        "${workspaceFolder}/DemaConsulting.TestResults.slnx"
       ],
       "problemMatcher": "$msCompile"
     },
@@ -33,7 +33,7 @@
       "type": "process",
       "args": [
         "restore",
-        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+        "${workspaceFolder}/DemaConsulting.TestResults.slnx"
       ],
       "problemMatcher": "$msCompile"
     },
@@ -43,7 +43,7 @@
       "type": "process",
       "args": [
         "test",
-        "${workspaceFolder}/DemaConsulting.TestResults.sln",
+        "${workspaceFolder}/DemaConsulting.TestResults.slnx",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
@@ -60,7 +60,7 @@
       "args": [
         "format",
         "--verify-no-changes",
-        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+        "${workspaceFolder}/DemaConsulting.TestResults.slnx"
       ],
       "problemMatcher": []
     },
@@ -70,7 +70,7 @@
       "type": "shell",
       "args": [
         "format",
-        "${workspaceFolder}/DemaConsulting.TestResults.sln"
+        "${workspaceFolder}/DemaConsulting.TestResults.slnx"
       ],
       "problemMatcher": []
     }

@@ -54,8 +54,12 @@ public static class JUnitSerializer
     /// </summary>
     /// <param name="results">Test Results</param>
     /// <returns>JUnit XML file contents</returns>
+    /// <exception cref="ArgumentNullException">Thrown when results is null</exception>
     public static string Serialize(TestResults results)
     {
+        // Validate input
+        ArgumentNullException.ThrowIfNull(results);
+
         // Group test results by class name for test suites
         var testSuites = results.Results
             .GroupBy(r => r.ClassName)
@@ -195,8 +199,16 @@ public static class JUnitSerializer
     /// </summary>
     /// <param name="junitContents">JUnit XML File Contents</param>
     /// <returns>Test Results</returns>
+    /// <exception cref="ArgumentException">Thrown when junitContents is null or whitespace</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the XML structure is invalid</exception>
     public static TestResults Deserialize(string junitContents)
     {
+        // Validate input
+        if (string.IsNullOrWhiteSpace(junitContents))
+        {
+            throw new ArgumentException("JUnit contents cannot be null or whitespace", nameof(junitContents));
+        }
+
         // Parse the document
         var doc = XDocument.Parse(junitContents);
 
@@ -275,7 +287,9 @@ public static class JUnitSerializer
     private static TimeSpan ParseDuration(string? timeStr)
     {
         if (string.IsNullOrEmpty(timeStr))
+        {
             return TimeSpan.Zero;
+        }
 
         return double.TryParse(timeStr, NumberStyles.Float, CultureInfo.InvariantCulture, out var timeValue)
             ? TimeSpan.FromSeconds(timeValue)

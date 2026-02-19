@@ -1,14 +1,12 @@
-#!/bin/bash
-# Build script for TestResults project
+#!/usr/bin/env bash
+# Build and test TestResults
 
-set -e
+set -e  # Exit on error
 
-echo "Building TestResults..."
-dotnet build DemaConsulting.TestResults.sln --configuration Release
+echo "🔧 Building TestResults..."
+dotnet build --configuration Release
 
-echo ""
-echo "Running tests..."
-dotnet test DemaConsulting.TestResults.sln --configuration Release --no-build
+echo "🧪 Running unit tests..."
+dotnet test --configuration Release
 
-echo ""
-echo "Build completed successfully!"
+echo "✨ Build and tests completed successfully!"

@@ -10,6 +10,8 @@ on:
         required: true
 
 jobs:
+  # Performs quick quality checks for project formatting consistency including
+  # markdown linting, spell checking, and YAML validation.
   quality-checks:
     name: Quality Checks
     runs-on: ubuntu-latest
@@ -57,12 +59,15 @@ jobs:
         with:
           config_file: .yamllint.yaml
 
+  # Builds and unit-tests the project on supported operating systems to ensure
+  # unit-tests operate on all platforms and to run SonarScanner for generating
+  # the code quality report.
   build:
     name: Build ${{ matrix.os }}
     needs: quality-checks
     permissions:
-      contents: read       # To read repository contents
-      pull-requests: write  # To write pull requests analysis results and artifacts
+      contents: read
+      pull-requests: write
 
     strategy:
       matrix:
@@ -131,37 +136,7 @@ jobs:
           end
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
-      - name: Generate SBOM
-        run: >
-          dotnet sbom-tool generate
-          -b src/DemaConsulting.TestResults/bin/Release
-          -bc src/DemaConsulting.TestResults
-          -pn DemaConsulting.TestResults
-          -pv ${{ inputs.version }}
-          -ps DemaConsulting
-          -nsb https://DemaConsulting.com/TestResults
-          -pm true
-          -li true
-
-      - name: Generate Tests SBOM
-        run: >
-          dotnet sbom-tool generate
-          -b test/DemaConsulting.TestResults.Tests/bin/Release
-          -bc test/DemaConsulting.TestResults.Tests
-          -cd "--DirectoryExclusionList **/Examples/**"
-          -pn DemaConsulting.TestResults.Tests
-          -pv ${{ inputs.version }}
-          -ps DemaConsulting
-          -nsb https://DemaConsulting.com/TestResults.Tests
-          -pm true
-          -li true
-
-      - name: Run SBOM Workflow
-        run: >
-          dotnet spdx-tool
-          run-workflow spdx-workflow.yaml
-
-      - name: Create Dotnet Tool
+      - name: Create Library Package
         run: >
           dotnet pack
           --no-build
@@ -196,25 +171,32 @@ jobs:
         with:
           name: artifacts-${{ matrix.os }}
           path: |
-            **/*.nupkg
-            **/*.snupkg
-            **/manifest.spdx.json
-            **/manifest.spdx.json.sha256
-            *summary.md
+            src/DemaConsulting.TestResults/bin/Release/*.nupkg
+            src/DemaConsulting.TestResults/bin/Release/*.snupkg
 
+  # Runs CodeQL security and quality analysis, gathering results to include
+  # in the code quality report.
   codeql:
     name: CodeQL Analysis
+    runs-on: ubuntu-latest
     needs: quality-checks
     permissions:
-      actions: read       # To read workflow actions
-      contents: read      # To read repository contents
-      security-events: write  # To upload SARIF results
-
-    runs-on: ubuntu-latest
+      actions: read
+      contents: read
+      security-events: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: csharp
+          queries: security-and-quality
+          config-file: ./.github/codeql-config.yml
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v5
@@ -223,14 +205,6 @@ jobs:
             8.x
             9.x
             10.x
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: csharp
-          queries: security-and-quality
-          config-file: ./.github/codeql-config.yml
-          build-mode: manual
 
       - name: Restore Tools
         run: >
@@ -254,61 +228,42 @@ jobs:
           output: sarif-results
           upload: false
 
-      - name: Capture tool versions
-        shell: bash
-        run: |
-          echo "Capturing tool versions..."
-          dotnet versionmark --capture --job-id "codeql" -- dotnet git versionmark
-          echo "✓ Tool versions captured"
-
-      - name: Upload version capture
-        uses: actions/upload-artifact@v6
-        with:
-          name: version-capture-codeql
-          path: versionmark-codeql.json
-
-      - name: Upload SARIF
+      - name: Upload CodeQL SARIF
         uses: actions/upload-artifact@v6
         with:
           name: codeql-sarif
           path: sarif-results/csharp.sarif
 
+  # Builds the supporting documentation including user guides, requirements,
+  # trace matrices, code quality reports, and build notes.
   build-docs:
-    name: Build Documentation
+    name: Build Documents
+    runs-on: windows-latest
     needs: [build, codeql]
     permissions:
-      contents: read  # To read repository contents
-
-    runs-on: windows-latest
+      contents: read
 
     steps:
+      # === CHECKOUT AND DOWNLOAD ARTIFACTS ===
+      # This section retrieves the code and all necessary artifacts from previous jobs.
+      # Downstream projects: Add any additional artifact downloads here.
 
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 'lts/*'
-
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            10.x
-
-      - name: Install npm dependencies
-        run: npm install
-
-      - name: Install dotnet tools
-        run: dotnet tool restore
-
-      - name: Download Test Results
+      - name: Download all test results
         uses: actions/download-artifact@v7
         with:
-          pattern: test-results-*-latest
           path: test-results
+          pattern: '*test-results*'
           merge-multiple: true
+        continue-on-error: true
+
+      - name: Download Library package
+        uses: actions/download-artifact@v7
+        with:
+          name: artifacts-windows-latest
+          path: packages
 
       - name: Download CodeQL SARIF
         uses: actions/download-artifact@v7
@@ -323,6 +278,30 @@ jobs:
           pattern: 'version-capture-*'
         continue-on-error: true
 
+      # === INSTALL DEPENDENCIES ===
+      # This section installs all required dependencies and tools for document generation.
+      # Downstream projects: Add any additional dependency installations here.
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.x
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Restore Tools
+        run: dotnet tool restore
+
+      # === CAPTURE TOOL VERSIONS ===
+      # This section captures the versions of all tools used in the build process.
+      # Downstream projects: Add any additional tools to capture here.
+
       - name: Capture tool versions for build-docs
         shell: bash
         run: |
@@ -331,80 +310,19 @@ jobs:
             dotnet git node npm pandoc weasyprint sarifmark sonarmark reqstream buildmark versionmark
           echo "✓ Tool versions captured"
 
-      - name: Generate Requirements Report, Trace Matrix, and Justifications
+      # === GENERATE MARKDOWN REPORTS ===
+      # This section generates all markdown reports from various tools and sources.
+      # Downstream projects: Add any additional markdown report generation steps here.
+
+      - name: Generate Requirements Report, Justifications, and Trace Matrix
         run: >
           dotnet reqstream
           --requirements requirements.yaml
           --tests "test-results/**/*.trx"
           --report docs/requirements/requirements.md
-          --matrix docs/tracematrix/tracematrix.md
           --justifications docs/justifications/justifications.md
+          --matrix docs/tracematrix/tracematrix.md
           --enforce
-
-      - name: Generate Developer Guide HTML with Pandoc
-        shell: bash
-        run: >
-          dotnet pandoc
-          docs/guide/title.txt
-          --defaults docs/guide/definition.yaml
-          --filter node_modules/.bin/mermaid-filter.cmd
-          --metadata version="${{ inputs.version }}"
-          --metadata date="$(date +'%Y-%m-%d')"
-          --output docs/guide/guide.html
-
-      - name: Generate Developer Guide PDF with Weasyprint
-        run: >
-          dotnet weasyprint
-          docs/guide/guide.html
-          "docs/TestResults Developer Guide.pdf"
-
-      - name: Generate Requirements HTML with Pandoc
-        shell: bash
-        run: >
-          dotnet pandoc
-          docs/requirements/title.txt
-          --defaults docs/requirements/definition.yaml
-          --metadata version="${{ inputs.version }}"
-          --metadata date="$(date +'%Y-%m-%d')"
-          --output docs/requirements/requirements.html
-
-      - name: Generate Requirements PDF with Weasyprint
-        run: >
-          dotnet weasyprint
-          docs/requirements/requirements.html
-          "docs/TestResults Requirements.pdf"
-
-      - name: Generate Trace Matrix HTML with Pandoc
-        shell: bash
-        run: >
-          dotnet pandoc
-          docs/tracematrix/title.txt
-          --defaults docs/tracematrix/definition.yaml
-          --metadata version="${{ inputs.version }}"
-          --metadata date="$(date +'%Y-%m-%d')"
-          --output docs/tracematrix/tracematrix.html
-
-      - name: Generate Trace Matrix PDF with Weasyprint
-        run: >
-          dotnet weasyprint
-          docs/tracematrix/tracematrix.html
-          "docs/TestResults Trace Matrix.pdf"
-
-      - name: Generate Justifications HTML with Pandoc
-        shell: bash
-        run: >
-          dotnet pandoc
-          docs/justifications/title.txt
-          --defaults docs/justifications/definition.yaml
-          --metadata version="${{ inputs.version }}"
-          --metadata date="$(date +'%Y-%m-%d')"
-          --output docs/justifications/justifications.html
-
-      - name: Generate Justifications PDF with Weasyprint
-        run: >
-          dotnet weasyprint
-          docs/justifications/justifications.html
-          "docs/TestResults Requirements Justifications.pdf"
 
       - name: Generate CodeQL Quality Report with SarifMark
         run: >
@@ -420,7 +338,8 @@ jobs:
           echo "=== CodeQL Quality Report ==="
           cat docs/quality/codeql-quality.md
 
-      - name: Generate Code Quality Report with SonarMark
+      - name: Generate SonarCloud Quality Report
+        shell: bash
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
@@ -437,22 +356,6 @@ jobs:
         run: |
           echo "=== SonarCloud Quality Report ==="
           cat docs/quality/sonar-quality.md
-
-      - name: Generate Code Quality HTML with Pandoc
-        shell: bash
-        run: >
-          dotnet pandoc
-          docs/quality/title.txt
-          --defaults docs/quality/definition.yaml
-          --metadata version="${{ inputs.version }}"
-          --metadata date="$(date +'%Y-%m-%d')"
-          --output docs/quality/quality.html
-
-      - name: Generate Code Quality PDF with Weasyprint
-        run: >
-          dotnet weasyprint
-          docs/quality/quality.html
-          "docs/TestResults Code Quality.pdf"
 
       - name: Generate Build Notes with BuildMark
         shell: bash
@@ -484,6 +387,10 @@ jobs:
           echo "=== Tool Versions Report ==="
           cat docs/buildnotes/versions.md
 
+      # === GENERATE HTML DOCUMENTS WITH PANDOC ===
+      # This section converts markdown documents to HTML using Pandoc.
+      # Downstream projects: Add any additional Pandoc HTML generation steps here.
+
       - name: Generate Build Notes HTML with Pandoc
         shell: bash
         run: >
@@ -494,6 +401,60 @@ jobs:
           --metadata date="$(date +'%Y-%m-%d')"
           --output docs/buildnotes/buildnotes.html
 
+      - name: Generate Guide HTML with Pandoc
+        shell: bash
+        run: >
+          dotnet pandoc
+          --defaults docs/guide/definition.yaml
+          --filter node_modules/.bin/mermaid-filter.cmd
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
+          --output docs/guide/guide.html
+
+      - name: Generate Code Quality HTML with Pandoc
+        shell: bash
+        run: >
+          dotnet pandoc
+          --defaults docs/quality/definition.yaml
+          --filter node_modules/.bin/mermaid-filter.cmd
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
+          --output docs/quality/quality.html
+
+      - name: Generate Requirements HTML with Pandoc
+        shell: bash
+        run: >
+          dotnet pandoc
+          --defaults docs/requirements/definition.yaml
+          --filter node_modules/.bin/mermaid-filter.cmd
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
+          --output docs/requirements/requirements.html
+
+      - name: Generate Requirements Justifications HTML with Pandoc
+        shell: bash
+        run: >
+          dotnet pandoc
+          --defaults docs/justifications/definition.yaml
+          --filter node_modules/.bin/mermaid-filter.cmd
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
+          --output docs/justifications/justifications.html
+
+      - name: Generate Trace Matrix HTML with Pandoc
+        shell: bash
+        run: >
+          dotnet pandoc
+          --defaults docs/tracematrix/definition.yaml
+          --filter node_modules/.bin/mermaid-filter.cmd
+          --metadata version="${{ inputs.version }}"
+          --metadata date="$(date +'%Y-%m-%d')"
+          --output docs/tracematrix/tracematrix.html
+
+      # === GENERATE PDF DOCUMENTS WITH WEASYPRINT ===
+      # This section converts HTML documents to PDF using Weasyprint.
+      # Downstream projects: Add any additional Weasyprint PDF generation steps here.
+
       - name: Generate Build Notes PDF with Weasyprint
         run: >
           dotnet weasyprint
@@ -501,10 +462,49 @@ jobs:
           docs/buildnotes/buildnotes.html
           "docs/TestResults Build Notes.pdf"
 
-      - name: Upload Documentation
+      - name: Generate Guide PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          --pdf-variant pdf/a-3u
+          docs/guide/guide.html
+          "docs/TestResults User Guide.pdf"
+
+      - name: Generate Code Quality PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          --pdf-variant pdf/a-3u
+          docs/quality/quality.html
+          "docs/TestResults Code Quality.pdf"
+
+      - name: Generate Requirements PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          --pdf-variant pdf/a-3u
+          docs/requirements/requirements.html
+          "docs/TestResults Requirements.pdf"
+
+      - name: Generate Requirements Justifications PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          --pdf-variant pdf/a-3u
+          docs/justifications/justifications.html
+          "docs/TestResults Requirements Justifications.pdf"
+
+      - name: Generate Trace Matrix PDF with Weasyprint
+        run: >
+          dotnet weasyprint
+          --pdf-variant pdf/a-3u
+          docs/tracematrix/tracematrix.html
+          "docs/TestResults Trace Matrix.pdf"
+
+      # === UPLOAD ARTIFACTS ===
+      # This section uploads all generated documentation artifacts.
+      # Downstream projects: Add any additional artifact uploads here.
+
+      - name: Upload documentation
         uses: actions/upload-artifact@v6
         with:
-          name: documentation
+          name: documents
           path: |
             docs/*.pdf
             docs/buildnotes.md
