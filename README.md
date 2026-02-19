@@ -1,13 +1,13 @@
 # TestResults Library
 
-![GitHub forks](https://img.shields.io/github/forks/demaconsulting/TestResults?style=plastic)
-![GitHub Repo stars](https://img.shields.io/github/stars/demaconsulting/TestResults?style=plastic)
-![GitHub contributors](https://img.shields.io/github/contributors/demaconsulting/TestResults?style=plastic)
-![GitHub](https://img.shields.io/github/license/demaconsulting/TestResults?style=plastic)
-![Build](https://github.com/demaconsulting/TestResults/actions/workflows/build_on_push.yaml/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=demaconsulting_TestResults)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=demaconsulting_TestResults)
-[![NuGet](https://img.shields.io/nuget/v/DemaConsulting.TestResults?style=plastic)](https://www.nuget.org/packages/DemaConsulting.TestResults)
+[![GitHub forks][badge-forks]][link-forks]
+[![GitHub stars][badge-stars]][link-stars]
+[![GitHub contributors][badge-contributors]][link-contributors]
+[![License][badge-license]][link-license]
+[![Build][badge-build]][link-build]
+[![Quality Gate][badge-quality]][link-quality]
+[![Security][badge-security]][link-security]
+[![NuGet][badge-nuget]][link-nuget]
 
 A lightweight C# library for programmatically creating test result files in TRX and JUnit formats.
 
@@ -268,7 +268,7 @@ We welcome contributions! Please see our [Contributing Guide][contributing] for 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE][license] file for details.
+This project is licensed under the MIT License - see the [LICENSE][link-license] file for details.
 
 ## Support
 
@@ -280,7 +280,27 @@ This project is licensed under the MIT License - see the [LICENSE][license] file
 
 Developed and maintained by [DEMA Consulting](https://github.com/demaconsulting).
 
+<!-- Badge References -->
+[badge-forks]: https://img.shields.io/github/forks/demaconsulting/TestResults?style=plastic
+[badge-stars]: https://img.shields.io/github/stars/demaconsulting/TestResults?style=plastic
+[badge-contributors]: https://img.shields.io/github/contributors/demaconsulting/TestResults?style=plastic
+[badge-license]: https://img.shields.io/github/license/demaconsulting/TestResults?style=plastic
+[badge-build]: https://img.shields.io/github/actions/workflow/status/demaconsulting/TestResults/build_on_push.yaml?style=plastic
+[badge-quality]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=alert_status
+[badge-security]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=security_rating
+[badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.TestResults?style=plastic
+
+<!-- Link References -->
+[link-forks]: https://github.com/demaconsulting/TestResults/network/members
+[link-stars]: https://github.com/demaconsulting/TestResults/stargazers
+[link-contributors]: https://github.com/demaconsulting/TestResults/graphs/contributors
+[link-license]: https://github.com/demaconsulting/TestResults/blob/main/LICENSE
+[link-build]: https://github.com/demaconsulting/TestResults/actions/workflows/build_on_push.yaml
+[link-quality]: https://sonarcloud.io/dashboard?id=demaconsulting_TestResults
+[link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_TestResults
+[link-nuget]: https://www.nuget.org/packages/DemaConsulting.TestResults
+
+<!-- Document References -->
 [architecture]: https://github.com/demaconsulting/TestResults/blob/main/ARCHITECTURE.md
 [contributing]: https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md
 [code-of-conduct]: https://github.com/demaconsulting/TestResults/blob/main/CODE_OF_CONDUCT.md
-[license]: https://github.com/demaconsulting/TestResults/blob/main/LICENSE
