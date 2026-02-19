@@ -122,62 +122,8 @@ sections:
               - JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails
               - TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults
 
-      - title: TRX Serialization
+      - title: Serialization
         requirements:
-          - id: REQ-FUNC-001
-            title: The library shall support serializing test results to TRX (Visual Studio Test Results) format.
-            justification: |
-              TRX is the native test result format for Visual Studio and Azure DevOps. Supporting TRX
-              serialization enables the library to integrate seamlessly with Microsoft's testing ecosystem,
-              allowing users to generate test results that are compatible with Visual Studio Test Explorer,
-              Azure Pipelines, and other Microsoft tools.
-            tests:
-              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml
-
-          - id: REQ-FUNC-002
-            title: The library shall support deserializing TRX test result files.
-            justification: |
-              Deserializing TRX files allows users to read and analyze existing test results programmatically.
-              This is essential for test result aggregation, reporting, conversion to other formats, and
-              integration with custom analysis tools.
-            tests:
-              - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
-              - TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults
-              - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
-              - TrxExampleTests_Deserialize_Example2Trx_ReturnsAllTestResults
-
-      - title: JUnit Serialization
-        requirements:
-          - id: REQ-FUNC-003
-            title: The library shall support serializing test results to JUnit XML format.
-            justification: |
-              JUnit XML is a widely-adopted, cross-platform test result format supported by many CI/CD
-              systems including Jenkins, GitLab CI, GitHub Actions, and CircleCI. Supporting JUnit
-              serialization ensures the library can be used in diverse development environments beyond
-              the Microsoft ecosystem.
-            tests:
-              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
-              - JUnitSerializer_Serialize_FailedTest_IncludesFailureElement
-              - JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement
-              - JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement
-              - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
-              - JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName
-
-          - id: REQ-FUNC-004
-            title: The library shall support deserializing JUnit XML test result files.
-            justification: |
-              Deserializing JUnit XML enables reading test results from a wide variety of testing
-              frameworks and CI/CD systems. This capability is crucial for aggregating results from
-              different sources, converting between formats, and building unified reporting solutions.
-            tests:
-              - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults
-              - JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails
-              - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails
-              - JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus
-              - JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput
-              - JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests
-
           - id: REQ-FUNC-005
             title: The library shall automatically identify test result file format.
             justification: |
@@ -212,6 +158,63 @@ sections:
               - JUnitSerializer_Serialize_ThenDeserialize_PreservesTestData
               - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
               - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults
+
+        sections:
+          - title: TRX Serialization
+            requirements:
+              - id: REQ-FUNC-001
+                title: The library shall support serializing test results to TRX (Visual Studio Test Results) format.
+                justification: |
+                  TRX is the native test result format for Visual Studio and Azure DevOps. Supporting TRX
+                  serialization enables the library to integrate seamlessly with Microsoft's testing ecosystem,
+                  allowing users to generate test results that are compatible with Visual Studio Test Explorer,
+                  Azure Pipelines, and other Microsoft tools.
+                tests:
+                  - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+                  - TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml
+
+              - id: REQ-FUNC-002
+                title: The library shall support deserializing TRX test result files.
+                justification: |
+                  Deserializing TRX files allows users to read and analyze existing test results programmatically.
+                  This is essential for test result aggregation, reporting, conversion to other formats, and
+                  integration with custom analysis tools.
+                tests:
+                  - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
+                  - TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults
+                  - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
+                  - TrxExampleTests_Deserialize_Example2Trx_ReturnsAllTestResults
+
+          - title: JUnit Serialization
+            requirements:
+              - id: REQ-FUNC-003
+                title: The library shall support serializing test results to JUnit XML format.
+                justification: |
+                  JUnit XML is a widely-adopted, cross-platform test result format supported by many CI/CD
+                  systems including Jenkins, GitLab CI, GitHub Actions, and CircleCI. Supporting JUnit
+                  serialization ensures the library can be used in diverse development environments beyond
+                  the Microsoft ecosystem.
+                tests:
+                  - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+                  - JUnitSerializer_Serialize_FailedTest_IncludesFailureElement
+                  - JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement
+                  - JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement
+                  - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
+                  - JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName
+
+              - id: REQ-FUNC-004
+                title: The library shall support deserializing JUnit XML test result files.
+                justification: |
+                  Deserializing JUnit XML enables reading test results from a wide variety of testing
+                  frameworks and CI/CD systems. This capability is crucial for aggregating results from
+                  different sources, converting between formats, and building unified reporting solutions.
+                tests:
+                  - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults
+                  - JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails
+                  - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails
+                  - JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus
+                  - JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput
+                  - JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests
 
       - title: Runtime
         requirements:
