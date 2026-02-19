@@ -58,10 +58,7 @@ public static class JUnitSerializer
     public static string Serialize(TestResults results)
     {
         // Validate input
-        if (results == null)
-        {
-            throw new ArgumentNullException(nameof(results));
-        }
+        ArgumentNullException.ThrowIfNull(results);
 
         // Group test results by class name for test suites
         var testSuites = results.Results

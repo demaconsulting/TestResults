@@ -75,10 +75,7 @@ public static class TrxSerializer
     public static string Serialize(TestResults results)
     {
         // Validate input
-        if (results == null)
-        {
-            throw new ArgumentNullException(nameof(results));
-        }
+        ArgumentNullException.ThrowIfNull(results);
 
         // Construct the document
         var doc = new XDocument();
