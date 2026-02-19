@@ -2,26 +2,33 @@
 
 A comprehensive guide to using the TestResults library for creating and managing test result files in C#.
 
-## Quick Navigation
+# Introduction
 
-This section provides quick links to major sections when viewing this guide on GitHub. A complete table of contents
-is available in the generated HTML and PDF versions.
+## Purpose
 
-- [Introduction](#introduction)
-- [Prerequisites](#prerequisites)
-- [Adding to Your Project](#adding-to-your-project)
-- [Creating Test Results](#creating-test-results)
-- [Advanced Usage](#advanced-usage)
-- [FAQ](#faq)
+This guide provides comprehensive instructions for using the TestResults library to create test result files
+programmatically in .NET applications. It serves as a reference for developers who need to generate TRX or JUnit XML
+test result files from custom test runners, validation tools, or other testing scenarios.
 
-## Introduction
+## Scope
 
-### What is TestResults?
+This guide covers the following topics related to using the TestResults library in .NET projects:
+
+- Installing the TestResults library via NuGet
+- Basic usage patterns for creating test results
+- Advanced features including format conversion and result aggregation
+- Common scenarios and best practices
+- Frequently asked questions and troubleshooting
+
+This guide assumes familiarity with C# and .NET development. It does not cover the internal implementation details of
+the library or the specifications of the TRX and JUnit XML formats.
+
+## What is TestResults?
 
 The TestResults library is a lightweight C# library designed for programmatically creating test result files. It
 provides a simple, type-safe API for generating test results in both TRX (Test Results) and JUnit XML formats.
 
-### When to Use TestResults
+## When to Use TestResults
 
 This library is ideal for:
 
@@ -33,12 +40,12 @@ This library is ideal for:
 - **Test Result Generation**: Generating test result files from non-standard testing scenarios or custom validation
   tools
 
-### Supported Formats
+## Supported Formats
 
 - **TRX (Test Results)**: XML-based format used by Visual Studio, Azure DevOps, and Microsoft testing tools
 - **JUnit XML**: Widely-supported format compatible with Jenkins, GitHub Actions, and many other CI/CD systems
 
-### Key Features
+## Key Features
 
 - ✨ **Simple API**: Intuitive object model with minimal learning curve
 - 🎯 **Type-Safe**: Strongly-typed C# classes with compile-time safety
@@ -47,20 +54,20 @@ This library is ideal for:
 - 📦 **Easy Integration**: Available as a NuGet package
 - ✅ **Standards Compliant**: Generates files compatible with industry-standard tools
 
-## Prerequisites
+# Prerequisites
 
-### Required Tools
+## Required Tools
 
 - **.NET SDK**: Version 8.0, 9.0, or 10.0
 - **Development Environment**: Visual Studio 2022, Visual Studio Code, or JetBrains Rider (any modern C# IDE)
 
-### Required Knowledge
+## Required Knowledge
 
 - Basic understanding of C# programming
 - Familiarity with .NET project structure
 - Understanding of test result concepts (test cases, outcomes, assertions)
 
-### Compatibility
+## Compatibility
 
 The TestResults library targets:
 
@@ -70,9 +77,9 @@ The TestResults library targets:
 
 It can be used in any .NET project type: console applications, class libraries, ASP.NET Core applications, etc.
 
-## Adding to Your Project
+# Adding to Your Project
 
-### Using .NET CLI
+## Using .NET CLI
 
 The recommended way to install the TestResults library is using the .NET CLI:
 
@@ -82,7 +89,7 @@ dotnet add package DemaConsulting.TestResults
 
 This command adds the latest stable version to your project file (.csproj).
 
-#### Installing a Specific Version
+### Installing a Specific Version
 
 To install a specific version:
 
@@ -90,7 +97,7 @@ To install a specific version:
 dotnet add package DemaConsulting.TestResults --version 1.0.0
 ```
 
-### Using Visual Studio Package Manager Console
+## Using Visual Studio Package Manager Console
 
 If you're using Visual Studio, you can install the package via the Package Manager Console:
 
@@ -104,7 +111,7 @@ For a specific version:
 Install-Package DemaConsulting.TestResults -Version 1.0.0
 ```
 
-### Using Visual Studio NuGet Package Manager GUI
+## Using Visual Studio NuGet Package Manager GUI
 
 1. Right-click on your project in Solution Explorer
 2. Select "Manage NuGet Packages..."
@@ -112,7 +119,7 @@ Install-Package DemaConsulting.TestResults -Version 1.0.0
 4. Search for "DemaConsulting.TestResults"
 5. Select the package and click "Install"
 
-### Manual Package Reference
+## Manual Package Reference
 
 You can also manually add the package reference to your .csproj file:
 
@@ -128,9 +135,9 @@ After adding the reference manually, run:
 dotnet restore
 ```
 
-## Creating Test Results
+# Creating Test Results
 
-### Basic Test Result Creation
+## Basic Test Result Creation
 
 Here's a simple example showing the core concepts:
 
@@ -167,7 +174,7 @@ File.WriteAllText("test-results.trx", trxContent);
 Console.WriteLine("Test results saved to test-results.trx");
 ```
 
-### Creating TRX Format Results
+## Creating TRX Format Results
 
 TRX (Test Results) format is used by Visual Studio and Azure DevOps:
 
@@ -212,7 +219,7 @@ File.WriteAllText("results.trx", trxXml);
 Console.WriteLine($"Created TRX file with {results.Results.Count} test results");
 ```
 
-### Creating JUnit Format Results
+## Creating JUnit Format Results
 
 JUnit XML format is widely supported by CI/CD systems like Jenkins and GitHub Actions:
 
@@ -254,7 +261,7 @@ File.WriteAllText("junit-results.xml", junitXml);
 Console.WriteLine($"Created JUnit XML file with {results.Results.Count} test results");
 ```
 
-### Handling Different Test Outcomes
+## Handling Different Test Outcomes
 
 The library supports various test outcomes to represent different test states:
 
@@ -332,7 +339,7 @@ results.Results.Add(new TestResult
 File.WriteAllText("comprehensive-results.trx", TrxSerializer.Serialize(results));
 ```
 
-### Available Test Outcomes
+## Available Test Outcomes
 
 The `TestOutcome` enum includes the following values:
 
@@ -351,7 +358,7 @@ The `TestOutcome` enum includes the following values:
 - **`InProgress`**: Test is currently executing
 - **`Pending`**: Test is pending execution
 
-### Capturing Standard Output and Error
+## Capturing Standard Output and Error
 
 Tests often produce console output that should be captured:
 
@@ -407,7 +414,7 @@ results.Results.Add(new TestResult
 File.WriteAllText("output-results.trx", TrxSerializer.Serialize(results));
 ```
 
-### Setting Test Metadata
+## Setting Test Metadata
 
 Provide detailed metadata for each test:
 
@@ -457,7 +464,7 @@ File.WriteAllText("metadata-results.trx", TrxSerializer.Serialize(results));
 File.WriteAllText("metadata-results.xml", JUnitSerializer.Serialize(results));
 ```
 
-### Automatic Format Detection
+## Automatic Format Detection
 
 The library can automatically detect whether a test result file is in TRX or JUnit format, eliminating the need to
 manually determine the format:
@@ -504,7 +511,7 @@ This is particularly useful when:
 - Building tools that handle multiple formats
 - You don't know in advance which format will be provided
 
-### Converting Between Formats
+## Converting Between Formats
 
 The library makes it easy to convert test results between TRX and JUnit formats:
 
@@ -535,7 +542,7 @@ File.WriteAllText("converted-trx-to-junit.xml", junitXml2);
 Console.WriteLine("Converted TRX to JUnit format");
 ```
 
-### Complete Working Example
+## Complete Working Example
 
 Here's a comprehensive example that demonstrates all major features:
 
@@ -693,9 +700,9 @@ namespace TestResultsDemo
 }
 ```
 
-## Advanced Usage
+# Advanced Usage
 
-### Using TestOutcome Extension Methods
+## Using TestOutcome Extension Methods
 
 The library provides extension methods to check test outcome categories:
 
@@ -728,7 +735,7 @@ double successRate = executedCount > 0
 Console.WriteLine($"Success Rate: {successRate:F2}%");
 ```
 
-### Aggregating Test Results from Multiple Sources
+## Aggregating Test Results from Multiple Sources
 
 Combine test results from different test suites or runs:
 
@@ -768,7 +775,7 @@ File.WriteAllText("combined-results.xml", JUnitSerializer.Serialize(combinedResu
 Console.WriteLine($"Combined {combinedResults.Results.Count} tests from 3 sources");
 ```
 
-### Custom Test Result Filtering
+## Custom Test Result Filtering
 
 Filter and save subsets of test results:
 
@@ -822,7 +829,7 @@ Console.WriteLine($"Found {failedResults.Results.Count} failed tests");
 Console.WriteLine($"Found {slowTests.Results.Count} slow tests");
 ```
 
-### Generating Summary Reports
+## Generating Summary Reports
 
 Create summary statistics from test results:
 
@@ -867,9 +874,9 @@ Console.WriteLine(summary);
 File.WriteAllText("test-summary.txt", summary);
 ```
 
-## FAQ
+# FAQ
 
-### What test result formats are supported?
+## What test result formats are supported?
 
 The TestResults library currently supports two formats:
 
@@ -879,7 +886,7 @@ The TestResults library currently supports two formats:
 
 Both formats can be created from scratch or converted from one to the other.
 
-### Can I convert between TRX and JUnit formats?
+## Can I convert between TRX and JUnit formats?
 
 Yes! The library provides bidirectional conversion between formats:
 
@@ -900,7 +907,7 @@ var trxFromJunit = TrxSerializer.Serialize(junitResults);
 The conversion preserves all compatible information between formats, including test names, outcomes, durations, error
 messages, and output.
 
-### How do I automatically detect the format of a test result file?
+## How do I automatically detect the format of a test result file?
 
 Use the `Serializer` class to automatically identify and deserialize test result files:
 
@@ -924,7 +931,7 @@ The `Serializer.Identify()` method analyzes the XML structure to determine if it
 Visual Studio namespace and TestRun root element) or a JUnit file (by checking for testsuites or testsuite root
 elements). It returns `TestResultFormat.Unknown` for invalid or unrecognized formats.
 
-### How do I set custom properties or metadata?
+## How do I set custom properties or metadata?
 
 Currently, the library supports the standard metadata fields available in `TestResults` and `TestResult` classes:
 
@@ -937,7 +944,7 @@ Currently, the library supports the standard metadata fields available in `TestR
 For additional custom properties, you may need to extend the classes or use the SystemOutput field to include extra
 information.
 
-### What test outcomes are available?
+## What test outcomes are available?
 
 The `TestOutcome` enum provides comprehensive outcome values:
 
@@ -967,7 +974,7 @@ The `TestOutcome` enum provides comprehensive outcome values:
 - `Disconnected` - Test was disconnected
 - `InProgress` - Test is running
 
-### How do I handle test failures with error details?
+## How do I handle test failures with error details?
 
 Set the `ErrorMessage` and `ErrorStackTrace` properties on failed tests:
 
@@ -987,7 +994,7 @@ var failedTest = new TestResult
 
 Both TRX and JUnit formats preserve this information when serializing.
 
-### Is the library thread-safe?
+## Is the library thread-safe?
 
 The `TestResults` and `TestResult` classes are simple data transfer objects (DTOs) and are not inherently thread-safe.
 If you need to add test results from multiple threads, you should use appropriate synchronization:
@@ -1010,7 +1017,7 @@ Parallel.ForEach(testCases, testCase =>
 The serializer classes (`TrxSerializer` and `JUnitSerializer`) are stateless and safe to use from multiple threads
 simultaneously.
 
-### Where are the test result files saved?
+## Where are the test result files saved?
 
 The library **does not** perform any file I/O operations. You are responsible for:
 
@@ -1031,7 +1038,7 @@ var xml = TrxSerializer.Serialize(results);
 File.WriteAllText(outputPath, xml);
 ```
 
-### Can I use this library with MSTest, NUnit, or xUnit?
+## Can I use this library with MSTest, NUnit, or xUnit?
 
 The TestResults library is **not** a test framework replacement. It's designed for scenarios where you need to
 programmatically **generate** test result files, such as:
@@ -1044,7 +1051,7 @@ programmatically **generate** test result files, such as:
 If you're using MSTest, NUnit, or xUnit, those frameworks already generate their own test result files, and you
 typically won't need this library unless you're building tools that process or convert those results.
 
-### How do I handle large numbers of test results?
+## How do I handle large numbers of test results?
 
 For large test suites, consider these approaches:
 
@@ -1087,7 +1094,7 @@ foreach (var testCase in testCases)
 }
 ```
 
-### What .NET versions are supported?
+## What .NET versions are supported?
 
 The library targets:
 
@@ -1098,20 +1105,20 @@ The library targets:
 It uses modern C# features and follows current .NET best practices. The library has **zero runtime dependencies**,
 making it easy to integrate into any .NET project.
 
-### How do I report bugs or request features?
+## How do I report bugs or request features?
 
 - **Report a Bug**: [Create an issue on GitHub](https://github.com/demaconsulting/TestResults/issues/new?labels=bug)
 - **Request a Feature**: [Create an issue on GitHub](https://github.com/demaconsulting/TestResults/issues/new?labels=enhancement)
 - **Ask Questions**: [Start a discussion on GitHub](https://github.com/demaconsulting/TestResults/discussions)
 
-### Where can I find more information?
+## Where can I find more information?
 
 - **GitHub Repository**: <https://github.com/demaconsulting/TestResults>
 - **NuGet Package**: <https://www.nuget.org/packages/DemaConsulting.TestResults>
 - **Architecture Documentation**: [ARCHITECTURE.md](https://github.com/demaconsulting/TestResults/blob/main/ARCHITECTURE.md)
 - **Contributing Guide**: [CONTRIBUTING.md](https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md)
 
-## Next Steps
+# Next Steps
 
 Now that you've learned how to use the TestResults library, you can:
 
