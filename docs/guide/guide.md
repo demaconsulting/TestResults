@@ -1,7 +1,3 @@
-# TestResults Library - Developer Guide
-
-A comprehensive guide to using the TestResults library for creating and managing test result files in C#.
-
 # Introduction
 
 ## Purpose
