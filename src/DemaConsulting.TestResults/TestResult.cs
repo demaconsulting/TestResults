@@ -51,7 +51,7 @@ public sealed class TestResult
     public string ClassName { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets the name of the computer that executed the test case
+    ///     Gets or sets the name of the computer that executed the test case
     /// </summary>
     public string ComputerName { get; set; } = Environment.MachineName;
 

@@ -6,7 +6,7 @@ great tool.
 ## Code of Conduct
 
 This project and everyone participating in it is governed by our
-[Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report
+[Code of Conduct][code-of-conduct]. By participating, you are expected to uphold this code. Please report
 unacceptable behavior through GitHub issues.
 
 ## How Can I Contribute?
@@ -46,9 +46,8 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 
 ### Prerequisites
 
-- [.NET SDK 8.0, 9.0, or 10.0](https://dotnet.microsoft.com/download)
-- A code editor ([Visual Studio](https://visualstudio.microsoft.com/),
-  [Visual Studio Code](https://code.visualstudio.com/), or [JetBrains Rider](https://www.jetbrains.com/rider/))
+- [.NET SDK 8.0, 9.0, or 10.0][dotnet-download]
+- A code editor ([Visual Studio][vs], [Visual Studio Code][vscode], or [JetBrains Rider][rider])
 
 ### Getting Started
 
@@ -251,7 +250,7 @@ TestResults/
 
 Releases are managed by the project maintainers:
 
-1. Version numbers follow [Semantic Versioning](https://semver.org/)
+1. Version numbers follow [Semantic Versioning][semver]
 2. Releases are created through GitHub releases
 3. NuGet packages are automatically published on release
 4. Release notes are generated from commit messages
@@ -266,3 +265,11 @@ Contributors will be recognized in the project README and release notes. We appr
 how small!
 
 Thank you for contributing to TestResults! 🎉
+
+<!-- Link References -->
+[code-of-conduct]: CODE_OF_CONDUCT.md
+[dotnet-download]: https://dotnet.microsoft.com/download
+[vs]: https://visualstudio.microsoft.com/
+[vscode]: https://code.visualstudio.com/
+[rider]: https://www.jetbrains.com/rider/
+[semver]: https://semver.org/
