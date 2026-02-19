@@ -225,8 +225,8 @@ sections:
               this framework ensures the library can be used in stable, enterprise environments that
               require long-term maintenance guarantees.
             tests:
-              - net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
           - id: REQ-FUNC-007
             title: The library shall support .NET 9 runtime.
@@ -236,8 +236,8 @@ sections:
               to benefit from the newest capabilities while maintaining compatibility with current
               development practices.
             tests:
-              - net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
           - id: REQ-FUNC-008
             title: The library shall support .NET 10 runtime.
@@ -246,5 +246,5 @@ sections:
               Supporting this framework ensures the library remains current and provides a clear
               upgrade path for users as they migrate to future .NET versions.
             tests:
-              - net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
