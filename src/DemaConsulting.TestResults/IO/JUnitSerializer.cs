@@ -54,8 +54,15 @@ public static class JUnitSerializer
     /// </summary>
     /// <param name="results">Test Results</param>
     /// <returns>JUnit XML file contents</returns>
+    /// <exception cref="ArgumentNullException">Thrown when results is null</exception>
     public static string Serialize(TestResults results)
     {
+        // Validate input
+        if (results == null)
+        {
+            throw new ArgumentNullException(nameof(results));
+        }
+
         // Group test results by class name for test suites
         var testSuites = results.Results
             .GroupBy(r => r.ClassName)
@@ -195,8 +202,16 @@ public static class JUnitSerializer
     /// </summary>
     /// <param name="junitContents">JUnit XML File Contents</param>
     /// <returns>Test Results</returns>
+    /// <exception cref="ArgumentException">Thrown when junitContents is null or whitespace</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the XML structure is invalid</exception>
     public static TestResults Deserialize(string junitContents)
     {
+        // Validate input
+        if (string.IsNullOrWhiteSpace(junitContents))
+        {
+            throw new ArgumentException("JUnit contents cannot be null or whitespace", nameof(junitContents));
+        }
+
         // Parse the document
         var doc = XDocument.Parse(junitContents);
 

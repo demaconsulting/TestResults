@@ -382,4 +382,68 @@ public sealed class SerializerTests
         Assert.AreEqual("Standard output", results.Results[0].SystemOutput);
         Assert.AreEqual("Standard error", results.Results[0].SystemError);
     }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for null input
+    /// </summary>
+    [TestMethod]
+    public void Serializer_Deserialize_NullContents_ThrowsArgumentException()
+    {
+        // Arrange - null contents
+        string? nullContents = null;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(nullContents!));
+        Assert.AreEqual("contents", ex.ParamName);
+        Assert.Contains("cannot be null or whitespace", ex.Message);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for empty string input
+    /// </summary>
+    [TestMethod]
+    public void Serializer_Deserialize_EmptyContents_ThrowsArgumentException()
+    {
+        // Arrange - empty string
+        var emptyContents = string.Empty;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(emptyContents));
+        Assert.AreEqual("contents", ex.ParamName);
+        Assert.Contains("cannot be null or whitespace", ex.Message);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws ArgumentException for whitespace input
+    /// </summary>
+    [TestMethod]
+    public void Serializer_Deserialize_WhitespaceContents_ThrowsArgumentException()
+    {
+        // Arrange - whitespace string
+        var whitespaceContents = "   \n\t  ";
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(whitespaceContents));
+        Assert.AreEqual("contents", ex.ParamName);
+        Assert.Contains("cannot be null or whitespace", ex.Message);
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws InvalidOperationException for unknown format
+    /// </summary>
+    [TestMethod]
+    public void Serializer_Deserialize_UnknownFormat_ThrowsInvalidOperationException()
+    {
+        // Arrange - valid XML but unknown format
+        var unknownFormatXml = """
+            <?xml version="1.0"?>
+            <UnknownRoot>
+              <SomeData>value</SomeData>
+            </UnknownRoot>
+            """;
+
+        // Act & Assert
+        var ex = Assert.ThrowsExactly<InvalidOperationException>(() => Serializer.Deserialize(unknownFormatXml));
+        Assert.Contains("Unable to identify test result format", ex.Message);
+    }
 }
