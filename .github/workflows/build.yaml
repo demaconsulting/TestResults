@@ -460,42 +460,42 @@ jobs:
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/buildnotes/buildnotes.html
-          "docs/DemaConsulting.TestResults Build Notes.pdf"
+          "docs/TestResults Build Notes.pdf"
 
       - name: Generate Guide PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/guide/guide.html
-          "docs/DemaConsulting.TestResults User Guide.pdf"
+          "docs/TestResults User Guide.pdf"
 
       - name: Generate Code Quality PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/quality/quality.html
-          "docs/DemaConsulting.TestResults Code Quality.pdf"
+          "docs/TestResults Code Quality.pdf"
 
       - name: Generate Requirements PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/requirements/requirements.html
-          "docs/DemaConsulting.TestResults Requirements.pdf"
+          "docs/TestResults Requirements.pdf"
 
       - name: Generate Requirements Justifications PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/justifications/justifications.html
-          "docs/DemaConsulting.TestResults Requirements Justifications.pdf"
+          "docs/TestResults Requirements Justifications.pdf"
 
       - name: Generate Trace Matrix PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/tracematrix/tracematrix.html
-          "docs/DemaConsulting.TestResults Trace Matrix.pdf"
+          "docs/TestResults Trace Matrix.pdf"
 
       # === UPLOAD ARTIFACTS ===
       # This section uploads all generated documentation artifacts.

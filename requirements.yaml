@@ -77,11 +77,10 @@ sections:
             justification: |
               .NET 8 is a Long-Term Support (LTS) release with support through November 2026. Supporting
               this framework ensures the library can be used in stable, enterprise environments that
-              require long-term maintenance guarantees. Framework support is verified by executing
-              the full test suite on .NET 8 runtime.
+              require long-term maintenance guarantees.
             tests:
-              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
           - id: REQ-FUNC-007
             title: The library shall support .NET 9 runtime.
@@ -89,22 +88,20 @@ sections:
               .NET 9 is a Standard-Term Support (STS) release that provides access to the latest
               framework features and performance improvements. Supporting this version allows users
               to benefit from the newest capabilities while maintaining compatibility with current
-              development practices. Framework support is verified by executing the full test suite
-              on .NET 9 runtime.
+              development practices.
             tests:
-              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
           - id: REQ-FUNC-008
             title: The library shall support .NET 10 runtime.
             justification: |
               .NET 10 is the upcoming Long-Term Support (LTS) release scheduled for November 2025.
               Supporting this framework ensures the library remains current and provides a clear
-              upgrade path for users as they migrate to future .NET versions. Framework support is
-              verified by executing the full test suite on .NET 10 runtime.
+              upgrade path for users as they migrate to future .NET versions.
             tests:
-              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
           - id: REQ-FUNC-009
             title: The library shall support the Passed test outcome.
