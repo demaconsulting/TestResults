@@ -31,35 +31,61 @@ public class TestOutcomeTests
     /// <summary>
     ///     Test the IsPassed method for all outcomes
     /// </summary>
+    /// <remarks>
+    ///     Tests that IsPassed() returns true only for passed outcomes
+    ///     (Passed, PassedButRunAborted, Warning) and false for all others.
+    ///     Proves that the IsPassed extension method correctly identifies passing test outcomes.
+    /// </remarks>
     [TestMethod]
-    public void TestOutcome_IsPassed_PassedOutcome_ReturnsTrue()
+    public void TestOutcome_IsPassed_AllOutcomes_ReturnsCorrectValue()
     {
+        // Arrange - All TestOutcome enum values
+        // (No explicit setup needed - using enum values directly)
+
+        // Act & Assert - Verify IsPassed returns correct values for all outcomes
+        // Failed outcomes should return false
         Assert.IsFalse(TestOutcome.Error.IsPassed());
         Assert.IsFalse(TestOutcome.Failed.IsPassed());
         Assert.IsFalse(TestOutcome.Timeout.IsPassed());
         Assert.IsFalse(TestOutcome.Aborted.IsPassed());
+        
+        // Inconclusive and not-executed outcomes should return false
         Assert.IsFalse(TestOutcome.Inconclusive.IsPassed());
-        Assert.IsTrue(TestOutcome.PassedButRunAborted.IsPassed());
         Assert.IsFalse(TestOutcome.NotRunnable.IsPassed());
         Assert.IsFalse(TestOutcome.NotExecuted.IsPassed());
         Assert.IsFalse(TestOutcome.Disconnected.IsPassed());
-        Assert.IsTrue(TestOutcome.Warning.IsPassed());
-        Assert.IsTrue(TestOutcome.Passed.IsPassed());
         Assert.IsFalse(TestOutcome.Completed.IsPassed());
         Assert.IsFalse(TestOutcome.InProgress.IsPassed());
         Assert.IsFalse(TestOutcome.Pending.IsPassed());
+        
+        // Passed outcomes should return true
+        Assert.IsTrue(TestOutcome.Passed.IsPassed());
+        Assert.IsTrue(TestOutcome.PassedButRunAborted.IsPassed());
+        Assert.IsTrue(TestOutcome.Warning.IsPassed());
     }
 
     /// <summary>
     ///     Test the IsFailed method for all outcomes
     /// </summary>
+    /// <remarks>
+    ///     Tests that IsFailed() returns true only for failed outcomes
+    ///     (Error, Failed, Timeout, Aborted) and false for all others.
+    ///     Proves that the IsFailed extension method correctly identifies failing test outcomes.
+    /// </remarks>
     [TestMethod]
-    public void TestOutcome_IsFailed_FailedOutcome_ReturnsTrue()
+    public void TestOutcome_IsFailed_AllOutcomes_ReturnsCorrectValue()
     {
+        // Arrange - All TestOutcome enum values
+        // (No explicit setup needed - using enum values directly)
+
+        // Act & Assert - Verify IsFailed returns correct values for all outcomes
+        // Failed outcomes should return true
         Assert.IsTrue(TestOutcome.Error.IsFailed());
         Assert.IsTrue(TestOutcome.Failed.IsFailed());
         Assert.IsTrue(TestOutcome.Timeout.IsFailed());
         Assert.IsTrue(TestOutcome.Aborted.IsFailed());
+        
+        // Non-failed outcomes should return false
         Assert.IsFalse(TestOutcome.Inconclusive.IsFailed());
         Assert.IsFalse(TestOutcome.PassedButRunAborted.IsFailed());
         Assert.IsFalse(TestOutcome.NotRunnable.IsFailed());
@@ -75,31 +101,34 @@ public class TestOutcomeTests
     /// <summary>
     ///     Test the IsExecuted method for all outcomes
     /// </summary>
+    /// <remarks>
+    ///     Tests that IsExecuted() returns true for outcomes where the test was executed
+    ///     and false for outcomes where the test was not executed (NotRunnable, NotExecuted, Pending).
+    ///     Proves that the IsExecuted extension method correctly identifies executed test outcomes.
+    /// </remarks>
     [TestMethod]
-    public void TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue()
+    public void TestOutcome_IsExecuted_AllOutcomes_ReturnsCorrectValue()
     {
+        // Arrange - All TestOutcome enum values
+        // (No explicit setup needed - using enum values directly)
+
+        // Act & Assert - Verify IsExecuted returns correct values for all outcomes
+        // Executed outcomes should return true
         Assert.IsTrue(TestOutcome.Error.IsExecuted());
         Assert.IsTrue(TestOutcome.Failed.IsExecuted());
         Assert.IsTrue(TestOutcome.Timeout.IsExecuted());
         Assert.IsTrue(TestOutcome.Aborted.IsExecuted());
         Assert.IsTrue(TestOutcome.Inconclusive.IsExecuted());
         Assert.IsTrue(TestOutcome.PassedButRunAborted.IsExecuted());
-        Assert.IsFalse(TestOutcome.NotRunnable.IsExecuted());
-        Assert.IsFalse(TestOutcome.NotExecuted.IsExecuted());
         Assert.IsTrue(TestOutcome.Disconnected.IsExecuted());
         Assert.IsTrue(TestOutcome.Warning.IsExecuted());
         Assert.IsTrue(TestOutcome.Passed.IsExecuted());
         Assert.IsTrue(TestOutcome.Completed.IsExecuted());
         Assert.IsTrue(TestOutcome.InProgress.IsExecuted());
-        Assert.IsFalse(TestOutcome.Pending.IsExecuted());
-    }
-
-    /// <summary>
-    ///     Test the IsExecuted method for NotExecuted outcome
-    /// </summary>
-    [TestMethod]
-    public void TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse()
-    {
+        
+        // Not executed outcomes should return false
+        Assert.IsFalse(TestOutcome.NotRunnable.IsExecuted());
         Assert.IsFalse(TestOutcome.NotExecuted.IsExecuted());
+        Assert.IsFalse(TestOutcome.Pending.IsExecuted());
     }
 }
