@@ -75,7 +75,7 @@ public static class TrxSerializer
     public static string Serialize(TestResults results)
     {
         // Validate input
-        ArgumentNullException.ThrowIfNull(results);
+        _ = results ?? throw new ArgumentNullException(nameof(results));
 
         // Construct the document
         var doc = new XDocument();
@@ -389,7 +389,7 @@ public static class TrxSerializer
             CodeBase = methodElement.Attribute("codeBase")?.Value ?? string.Empty,
             ClassName = methodElement.Attribute("className")?.Value ?? string.Empty,
             ComputerName = resultElement.Attribute("computerName")?.Value ?? string.Empty,
-            Outcome = Enum.Parse<TestOutcome>(resultElement.Attribute("outcome")?.Value ?? "Failed"),
+            Outcome = (TestOutcome)Enum.Parse(typeof(TestOutcome), resultElement.Attribute("outcome")?.Value ?? "Failed"),
             StartTime = DateTime.Parse(
                 resultElement.Attribute("startTime")?.Value ??
                 DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
