@@ -250,6 +250,17 @@ sections:
               - net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
+          - id: REQ-FUNC-022
+            title: The library shall support the .NET Standard 2.0 target framework.
+            justification: |
+              .NET Standard 2.0 is a widely-supported target framework that enables the library to
+              be used in MSBuild extensions and other tooling that requires .NET Standard compatibility.
+              Supporting this target framework ensures the library can be integrated into a broader
+              range of .NET projects, including those targeting .NET Framework and older .NET Core versions.
+            tests:
+              - net462@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net462@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+
           - id: REQ-FUNC-008
             title: The library shall support .NET 10 runtime.
             justification: |
