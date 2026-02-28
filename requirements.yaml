@@ -258,8 +258,8 @@ sections:
               Supporting this target framework ensures the library can be integrated into a broader
               range of .NET projects, including those targeting .NET Framework and older .NET Core versions.
             tests:
-              - net462@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-              - net462@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - net481@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - net481@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
           - id: REQ-FUNC-008
             title: The library shall support .NET 10 runtime.
