@@ -20,7 +20,7 @@ sections:
     sections:
       - title: Model
         requirements:
-          - id: REQ-FUNC-009
+          - id: TestResults-Mdl-PassedOutcome
             title: The library shall support the Passed test outcome.
             justification: |
               The Passed outcome represents a successful test execution and is the most common test
@@ -29,7 +29,7 @@ sections:
             tests:
               - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
 
-          - id: REQ-FUNC-010
+          - id: TestResults-Mdl-FailedOutcome
             title: The library shall support the Failed test outcome.
             justification: |
               The Failed outcome indicates a test that executed but did not meet its success criteria.
@@ -38,7 +38,7 @@ sections:
             tests:
               - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-          - id: REQ-FUNC-011
+          - id: TestResults-Mdl-ErrorOutcome
             title: The library shall support the Error test outcome.
             justification: |
               The Error outcome represents tests that encountered an unexpected error or exception
@@ -49,7 +49,7 @@ sections:
               - JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement
               - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails
 
-          - id: REQ-FUNC-012
+          - id: TestResults-Mdl-TimeoutOutcome
             title: The library shall support the Timeout test outcome.
             justification: |
               The Timeout outcome represents tests that exceeded their allotted execution time and
@@ -59,7 +59,7 @@ sections:
               - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
               - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-          - id: REQ-FUNC-013
+          - id: TestResults-Mdl-NotExecutedOutcome
             title: The library shall support the NotExecuted test outcome.
             justification: |
               The NotExecuted outcome represents tests that were not run, which maps to the skipped
@@ -71,7 +71,7 @@ sections:
               - JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus
               - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
-          - id: REQ-FUNC-014
+          - id: TestResults-Mdl-InconclusiveOutcome
             title: The library shall support the Inconclusive test outcome.
             justification: |
               The Inconclusive outcome represents tests that executed but did not produce a definitive
@@ -81,7 +81,7 @@ sections:
               - TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue
               - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
-          - id: REQ-FUNC-015
+          - id: TestResults-Mdl-AbortedOutcome
             title: The library shall support the Aborted test outcome.
             justification: |
               The Aborted outcome represents tests that were terminated before completion, typically
@@ -90,7 +90,7 @@ sections:
             tests:
               - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-          - id: REQ-FUNC-016
+          - id: TestResults-Mdl-PendingOutcome
             title: The library shall support the Pending test outcome.
             justification: |
               The Pending outcome represents tests that are scheduled for execution but have not yet
@@ -100,7 +100,7 @@ sections:
               - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
               - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
-          - id: REQ-FUNC-017
+          - id: TestResults-Mdl-WarningOutcome
             title: The library shall support the Warning test outcome.
             justification: |
               The Warning outcome represents tests that passed but produced warnings or minor issues.
@@ -109,7 +109,7 @@ sections:
             tests:
               - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
 
-          - id: REQ-FUNC-020
+          - id: TestResults-Mdl-TestOutput
             title: The library shall support capturing test output streams.
             justification: |
               Capturing standard output and error streams from tests is essential for debugging
@@ -121,7 +121,7 @@ sections:
               - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - Serializer_Deserialize_JUnitWithSystemOutput_ParsesCorrectly
 
-          - id: REQ-FUNC-021
+          - id: TestResults-Mdl-ErrorInfo
             title: The library shall support capturing error messages and stack traces.
             justification: |
               Error messages and stack traces are critical for diagnosing test failures. They provide
@@ -135,7 +135,7 @@ sections:
 
       - title: Serialization
         requirements:
-          - id: REQ-FUNC-005
+          - id: TestResults-Ser-FormatIdentify
             title: The library shall automatically identify test result file format.
             justification: |
               Automatic format detection simplifies usage by eliminating the need for users to
@@ -146,7 +146,7 @@ sections:
               - Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit
               - Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit
 
-          - id: REQ-FUNC-018
+          - id: TestResults-Ser-FormatConversion
             title: The library shall support conversion between TRX and JUnit formats.
             justification: |
               Format conversion enables users to integrate test results across different toolchains
@@ -158,7 +158,7 @@ sections:
               - Serializer_Deserialize_JUnitContent_ReturnsTestResults
               - JUnitSerializer_Serialize_ThenDeserialize_PreservesTestData
 
-          - id: REQ-FUNC-019
+          - id: TestResults-Ser-RoundTrip
             title: The library shall preserve test data during round-trip serialization.
             justification: |
               Round-trip preservation ensures that test results can be serialized and deserialized
@@ -173,7 +173,7 @@ sections:
         sections:
           - title: TRX Serialization
             requirements:
-              - id: REQ-FUNC-001
+              - id: TestResults-Trx-Serialize
                 title: The library shall support serializing test results to TRX (Visual Studio Test Results) format.
                 justification: |
                   TRX is the native test result format for Visual Studio and Azure DevOps. Supporting TRX
@@ -184,7 +184,7 @@ sections:
                   - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
                   - TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml
 
-              - id: REQ-FUNC-002
+              - id: TestResults-Trx-Deserialize
                 title: The library shall support deserializing TRX test result files.
                 justification: |
                   Deserializing TRX files allows users to read and analyze existing test results programmatically.
@@ -198,7 +198,7 @@ sections:
 
           - title: JUnit Serialization
             requirements:
-              - id: REQ-FUNC-003
+              - id: TestResults-Jun-Serialize
                 title: The library shall support serializing test results to JUnit XML format.
                 justification: |
                   JUnit XML is a widely-adopted, cross-platform test result format supported by many CI/CD
@@ -213,7 +213,7 @@ sections:
                   - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
                   - JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName
 
-              - id: REQ-FUNC-004
+              - id: TestResults-Jun-Deserialize
                 title: The library shall support deserializing JUnit XML test result files.
                 justification: |
                   Deserializing JUnit XML enables reading test results from a wide variety of testing
@@ -229,7 +229,7 @@ sections:
 
       - title: Runtime
         requirements:
-          - id: REQ-FUNC-006
+          - id: TestResults-Run-Net8
             title: The library shall support .NET 8 runtime.
             justification: |
               .NET 8 is a Long-Term Support (LTS) release with support through November 2026. Supporting
@@ -239,7 +239,7 @@ sections:
               - net8.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - net8.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
-          - id: REQ-FUNC-007
+          - id: TestResults-Run-Net9
             title: The library shall support .NET 9 runtime.
             justification: |
               .NET 9 is a Standard-Term Support (STS) release that provides access to the latest
@@ -250,7 +250,7 @@ sections:
               - net9.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - net9.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
-          - id: REQ-FUNC-022
+          - id: TestResults-Run-NetStd20
             title: The library shall support the .NET Standard 2.0 target framework.
             justification: |
               .NET Standard 2.0 is a widely-supported target framework that enables the library to
@@ -261,7 +261,7 @@ sections:
               - net481@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - net481@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
 
-          - id: REQ-FUNC-008
+          - id: TestResults-Run-Net10
             title: The library shall support .NET 10 runtime.
             justification: |
               .NET 10 is the upcoming Long-Term Support (LTS) release scheduled for November 2025.
@@ -270,3 +270,80 @@ sections:
             tests:
               - net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+
+      - title: OTS Software
+        requirements:
+          - id: TestResults-OTS-MSTest
+            title: MSTest shall execute unit tests and report results.
+            justification: |
+              MSTest (MSTest.TestFramework and MSTest.TestAdapter) is the unit-testing framework used
+              by the project. It discovers and runs all test methods and writes TRX result files that
+              feed into coverage reporting and requirements traceability. Passing tests confirm the
+              framework is functioning correctly.
+            tags: [ots]
+            tests:
+              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
+              - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+              - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults
+
+          - id: TestResults-OTS-ReqStream
+            title: ReqStream shall enforce that every requirement is linked to passing test evidence.
+            justification: |
+              DemaConsulting.ReqStream processes requirements.yaml and the TRX test-result files to
+              produce a requirements report, justifications document, and traceability matrix. When
+              run with --enforce, it exits with a non-zero code if any requirement lacks test evidence,
+              making unproven requirements a build-breaking condition. A successful pipeline run with
+              --enforce proves all requirements are covered and that ReqStream is functioning.
+            tags: [ots]
+            tests:
+              - ReqStream_EnforcementMode
+
+          - id: TestResults-OTS-BuildMark
+            title: BuildMark shall generate build-notes documentation from GitHub Actions metadata.
+            justification: |
+              DemaConsulting.BuildMark queries the GitHub API to capture workflow run details and
+              renders them as a markdown build-notes document included in the release artifacts.
+              It runs as part of the same CI pipeline that produces the TRX test results, so a
+              successful pipeline run is evidence that BuildMark executed without error.
+            tags: [ots]
+            tests:
+              - BuildMark_MarkdownReportGeneration
+
+          - id: TestResults-OTS-VersionMark
+            title: VersionMark shall publish captured tool-version information.
+            justification: |
+              DemaConsulting.VersionMark reads version metadata for each dotnet tool used in the
+              pipeline and writes a versions markdown document included in the release artifacts.
+              It runs in the same CI pipeline that produces the TRX test results, so a successful
+              pipeline run is evidence that VersionMark executed without error.
+            tags: [ots]
+            tests:
+              - VersionMark_CapturesVersions
+              - VersionMark_GeneratesMarkdownReport
+
+          - id: TestResults-OTS-SarifMark
+            title: SarifMark shall convert CodeQL SARIF results into a markdown report.
+            justification: |
+              DemaConsulting.SarifMark reads the SARIF output produced by CodeQL code scanning and
+              renders it as a human-readable markdown document included in the release artifacts.
+              It runs in the same CI pipeline that produces the TRX test results, so a successful
+              pipeline run is evidence that SarifMark executed without error.
+            tags: [ots]
+            tests:
+              - SarifMark_SarifReading
+              - SarifMark_MarkdownReportGeneration
+
+          - id: TestResults-OTS-SonarMark
+            title: SonarMark shall generate a SonarCloud quality report.
+            justification: |
+              DemaConsulting.SonarMark retrieves quality-gate and metrics data from SonarCloud and
+              renders it as a markdown document included in the release artifacts. It runs in the
+              same CI pipeline that produces the TRX test results, so a successful pipeline run is
+              evidence that SonarMark executed without error.
+            tags: [ots]
+            tests:
+              - SonarMark_QualityGateRetrieval
+              - SonarMark_IssuesRetrieval
+              - SonarMark_HotSpotsRetrieval
+              - SonarMark_MarkdownReportGeneration
