@@ -50,6 +50,20 @@ This library is ideal for:
 - 📦 **Easy Integration**: Available as a NuGet package
 - ✅ **Standards Compliant**: Generates files compatible with industry-standard tools
 
+# Continuous Compliance
+
+The TestResults library follows the [Continuous Compliance][continuous-compliance] methodology,
+which ensures compliance evidence is generated automatically on every CI run.
+
+## Key Practices
+
+- **Requirements Traceability**: Every requirement is linked to passing tests, and a trace matrix
+  is auto-generated on each release
+- **Linting Enforcement**: markdownlint, cspell, and yamllint are enforced before any build proceeds
+- **Automated Audit Documentation**: Each release ships with generated requirements, justifications,
+  trace matrix, and quality reports
+- **CodeQL and SonarCloud**: Security and quality analysis runs on every build
+
 # Prerequisites
 
 ## Required Tools
@@ -1127,3 +1141,6 @@ Now that you've learned how to use the TestResults library, you can:
 5. **Get support**: Ask questions in [GitHub Discussions](https://github.com/demaconsulting/TestResults/discussions)
 
 Happy testing! 🎉
+
+<!-- Link References -->
+[continuous-compliance]: https://github.com/demaconsulting/ContinuousCompliance
