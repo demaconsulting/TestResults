@@ -20,6 +20,9 @@ A lightweight C# library for programmatically creating test result files in TRX 
 - 📦 **NuGet Ready** - Easy integration via NuGet package
 - 📊 **Multiple Formats** - Supports both TRX and JUnit XML formats
 - ✅ **Compatible** - Works with Visual Studio, Azure DevOps, and CI/CD systems
+- 🔒 **Continuous Compliance** - Compliance evidence generated automatically on every CI run,
+  following the [Continuous Compliance](https://github.com/demaconsulting/ContinuousCompliance)
+  methodology
 
 ## Installation
 
