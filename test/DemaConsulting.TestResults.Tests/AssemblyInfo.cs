@@ -20,4 +20,5 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("DynamicProxyGenAssembly2")]
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]

@@ -384,18 +384,17 @@ public sealed class SerializerTests
     }
 
     /// <summary>
-    ///     Test that Deserialize throws ArgumentException for null input
+    ///     Test that Deserialize throws ArgumentNullException for null input
     /// </summary>
     [TestMethod]
-    public void Serializer_Deserialize_NullContents_ThrowsArgumentException()
+    public void Serializer_Deserialize_NullContents_ThrowsArgumentNullException()
     {
         // Arrange - null contents
         string? nullContents = null;
 
         // Act & Assert
-        var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(nullContents!));
+        var ex = Assert.ThrowsExactly<ArgumentNullException>(() => Serializer.Deserialize(nullContents!));
         Assert.AreEqual("contents", ex.ParamName);
-        Assert.Contains("cannot be null or whitespace", ex.Message);
     }
 
     /// <summary>
@@ -410,7 +409,6 @@ public sealed class SerializerTests
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(emptyContents));
         Assert.AreEqual("contents", ex.ParamName);
-        Assert.Contains("cannot be null or whitespace", ex.Message);
     }
 
     /// <summary>
@@ -425,7 +423,6 @@ public sealed class SerializerTests
         // Act & Assert
         var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(whitespaceContents));
         Assert.AreEqual("contents", ex.ParamName);
-        Assert.Contains("cannot be null or whitespace", ex.Message);
     }
 
     /// <summary>
