@@ -106,15 +106,13 @@ public static class Serializer
     /// </summary>
     /// <param name="contents">The test result file contents</param>
     /// <returns>Deserialized test results</returns>
-    /// <exception cref="ArgumentException">Thrown when contents is null or whitespace</exception>
+    /// <exception cref="ArgumentNullException">Thrown when contents is null</exception>
+    /// <exception cref="ArgumentException">Thrown when contents is whitespace</exception>
     /// <exception cref="InvalidOperationException">Thrown when format cannot be identified or deserialization fails</exception>
     public static TestResults Deserialize(string contents)
     {
         // Validate input
-        if (string.IsNullOrWhiteSpace(contents))
-        {
-            throw new ArgumentException("Test result contents cannot be null or whitespace", nameof(contents));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(contents);
 
         // Identify the format
         var format = Identify(contents);

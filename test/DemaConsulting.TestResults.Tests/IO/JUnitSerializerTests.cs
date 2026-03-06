@@ -772,16 +772,16 @@ public sealed class JUnitSerializerTests
     }
 
     /// <summary>
-    ///     Test that Deserialize throws ArgumentException for null input
+    ///     Test that Deserialize throws ArgumentNullException for null input
     /// </summary>
     [TestMethod]
-    public void JUnitSerializer_Deserialize_NullContents_ThrowsArgumentException()
+    public void JUnitSerializer_Deserialize_NullContents_ThrowsArgumentNullException()
     {
         // Arrange - null contents
         string? nullContents = null;
 
         // Act & Assert
-        var ex = Assert.ThrowsExactly<ArgumentException>(() => JUnitSerializer.Deserialize(nullContents!));
+        var ex = Assert.ThrowsExactly<ArgumentNullException>(() => JUnitSerializer.Deserialize(nullContents!));
         Assert.AreEqual("junitContents", ex.ParamName);
     }
 

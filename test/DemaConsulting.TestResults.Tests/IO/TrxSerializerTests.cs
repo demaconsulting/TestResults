@@ -347,16 +347,16 @@ public sealed class TrxSerializerTests
     }
 
     /// <summary>
-    ///     Test that Deserialize throws ArgumentException for null input
+    ///     Test that Deserialize throws ArgumentNullException for null input
     /// </summary>
     [TestMethod]
-    public void TrxSerializer_Deserialize_NullContents_ThrowsArgumentException()
+    public void TrxSerializer_Deserialize_NullContents_ThrowsArgumentNullException()
     {
         // Arrange - null contents
         string? nullContents = null;
 
         // Act & Assert
-        var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(nullContents!));
+        var ex = Assert.ThrowsExactly<ArgumentNullException>(() => TrxSerializer.Deserialize(nullContents!));
         Assert.AreEqual("trxContents", ex.ParamName);
     }
 

@@ -75,7 +75,7 @@ public static class TrxSerializer
     public static string Serialize(TestResults results)
     {
         // Validate input
-        _ = results ?? throw new ArgumentNullException(nameof(results));
+        ArgumentNullException.ThrowIfNull(results);
 
         // Construct the document
         var doc = new XDocument();
@@ -303,15 +303,13 @@ public static class TrxSerializer
     /// </summary>
     /// <param name="trxContents">TRX File Contents</param>
     /// <returns>Test Results</returns>
-    /// <exception cref="ArgumentException">Thrown when trxContents is null or whitespace</exception>
+    /// <exception cref="ArgumentNullException">Thrown when trxContents is null</exception>
+    /// <exception cref="ArgumentException">Thrown when trxContents is whitespace</exception>
     /// <exception cref="InvalidOperationException">Thrown when the TRX structure is invalid</exception>
     public static TestResults Deserialize(string trxContents)
     {
         // Validate input
-        if (string.IsNullOrWhiteSpace(trxContents))
-        {
-            throw new ArgumentException("TRX contents cannot be null or whitespace", nameof(trxContents));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(trxContents);
 
         // Parse the document
         var doc = XDocument.Parse(trxContents);
