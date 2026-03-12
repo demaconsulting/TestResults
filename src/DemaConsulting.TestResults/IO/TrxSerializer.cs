@@ -235,6 +235,7 @@ public static class TrxSerializer
             definitionsElement.Add(
                 new XElement(TrxNamespace + "UnitTest",
                     new XAttribute("name", test.Name),
+                    new XAttribute("storage", test.CodeBase),
                     new XAttribute("id", test.TestId),
                     new XElement(TrxNamespace + "Execution",
                         new XAttribute("id", test.ExecutionId)),

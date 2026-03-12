@@ -90,7 +90,7 @@ When serializing a `TestResults` object to TRX:
   `Output/ErrorInfo/StackTrace` if `ErrorMessage` or `ErrorStackTrace` is non-empty
 - A corresponding `UnitTest` element is written under `TestDefinitions` with the
   `testId`, `name`, and `storage` (from `CodeBase`) attributes, plus a `TestMethod`
-  child element carrying `className`
+  child element carrying `codeBase` (also from `CodeBase`), `className`, and `name`
 - A `TestEntry` element is written under `TestEntries` linking `testId` and `executionId`
 - A single default `TestList` is included under `TestLists`
 - A `ResultSummary` element with outcome counters closes the document
@@ -138,13 +138,15 @@ When serializing a `TestResults` object to JUnit XML:
 
 - Test results are **grouped by `ClassName`** into `testsuite` elements under a
   `testsuites` root
-- Each `testsuite` carries `name`, `tests`, `failures`, `errors`, and `skipped`
-  aggregate attributes
+- Each `testsuite` carries `name`, `tests`, `failures`, `errors`, `skipped`,
+  `time` (total duration in seconds), and `timestamp` (ISO 8601 start time of the
+  earliest test in the suite) aggregate attributes
 - Each `TestResult` is written as a `testcase` element with `name`, `classname`,
-  `time` (duration in seconds), and `timestamp` attributes
-- A `failure` child element (with `message` and `type` attributes and stack-trace text
+  and `time` (duration in seconds) attributes
+- A `failure` child element (with a `message` attribute and stack-trace text
   content) is written when `Outcome` is `Failed`
-- An `error` child element is written when `Outcome` is `Error`, `Timeout`, or `Aborted`
+- An `error` child element (with a `message` attribute and stack-trace text
+  content) is written when `Outcome` is `Error`, `Timeout`, or `Aborted`
 - A `skipped` child element is written when `IsExecuted()` returns `false`
 - Standard output is written to `system-out` and standard error to `system-err`
   child elements if the respective properties are non-empty
@@ -153,11 +155,11 @@ When serializing a `TestResults` object to JUnit XML:
 
 When deserializing a JUnit document to a `TestResults` object:
 
+- Each `testsuite` element carries an optional `timestamp` attribute (ISO 8601); when
+  present it is used as the `StartTime` for all test cases in that suite
 - Each `testcase` element is mapped to a `TestResult`
 - `Name` and `ClassName` are read from the `name` and `classname` attributes
 - `Duration` is read from the `time` attribute (seconds as a decimal)
-- `StartTime` is read from the `timestamp` attribute if present; otherwise it defaults
-  to `DateTime.UtcNow`
 - The presence of a `failure` child element sets `Outcome` to `Failed` and populates
   `ErrorMessage` and `ErrorStackTrace`
 - The presence of an `error` child element sets `Outcome` to `Error` and populates
