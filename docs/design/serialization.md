@@ -1,0 +1,186 @@
+# Serialization
+
+## Overview
+
+The serialization layer is responsible for reading and writing test result data in the
+two formats supported by the library: TRX (Visual Studio Test Results) and JUnit XML.
+It is built on top of the model layer and has no knowledge of how test results are
+produced or consumed beyond the XML structures it reads and writes.
+
+The serialization layer consists of four types:
+
+- `TestResultFormat` — an enumeration identifying the file format
+- `Serializer` — a facade that auto-detects format and delegates to the correct serializer
+- `TrxSerializer` — reads and writes TRX XML files
+- `JUnitSerializer` — reads and writes JUnit XML files
+
+## TestResultFormat Enumeration
+
+The `TestResultFormat` enumeration identifies the file format of a test result document.
+
+| Value     | Description                                                       |
+|-----------|-------------------------------------------------------------------|
+| `Unknown` | Format could not be determined                                    |
+| `Trx`     | Visual Studio Test Results (TRX) XML format                       |
+| `JUnit`   | JUnit XML format                                                  |
+
+## Format Identification
+
+The `Serializer.Identify()` method determines the format of a serialized test result
+document without fully deserializing it. This satisfies requirement
+`TestResults-Ser-FormatIdentify`.
+
+The identification algorithm:
+
+1. Parses just enough of the XML to read the root element name and its namespace
+2. Returns `TestResultFormat.Trx` if the root element name is `TestRun` **and** the
+   namespace URI is `http://microsoft.com/schemas/VisualStudio/TeamTest/2010`
+3. Returns `TestResultFormat.JUnit` if the root element name is `testsuites` or
+   `testsuite` (case-sensitive, no namespace required)
+4. Returns `TestResultFormat.Unknown` for any other document structure
+
+Using the XML namespace for TRX detection makes identification unambiguous — a document
+with a `TestRun` root element in any other namespace is not treated as TRX.
+
+## TRX Format
+
+TRX is the native test result format for Visual Studio and Azure DevOps. It is an XML
+format with the namespace `http://microsoft.com/schemas/VisualStudio/TeamTest/2010`.
+
+This satisfies requirements `TestResults-Trx-Serialize` and `TestResults-Trx-Deserialize`.
+
+### TRX Document Structure
+
+A TRX document has the following top-level structure:
+
+```text
+TestRun (xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010")
+├── Results
+│   └── UnitTestResult (one per test case)
+│       └── Output
+│           ├── StdOut
+│           ├── StdErr
+│           └── ErrorInfo
+│               ├── Message
+│               └── StackTrace
+├── TestDefinitions
+│   └── UnitTest (one per test case)
+│       ├── TestMethod
+│       └── Execution
+├── TestEntries
+│   └── TestEntry (one per test case)
+├── TestLists
+│   └── TestList (at least one, the default list)
+└── ResultSummary
+    └── Counters
+```
+
+### TRX Serialization
+
+When serializing a `TestResults` object to TRX:
+
+- The `TestRun` element receives the `id` and `name` attributes from `TestResults.Id`
+  and `TestResults.Name`
+- Each `TestResult` is written as a `UnitTestResult` element under `Results`, with
+  attributes for `testId`, `executionId`, `testName`, `computerName`, `startTime`,
+  `duration`, and `outcome`
+- Standard output is written to `Output/StdOut` if `SystemOutput` is non-empty
+- Standard error is written to `Output/StdErr` if `SystemError` is non-empty
+- Error information is written to `Output/ErrorInfo/Message` and
+  `Output/ErrorInfo/StackTrace` if `ErrorMessage` or `ErrorStackTrace` is non-empty
+- A corresponding `UnitTest` element is written under `TestDefinitions` with the
+  `testId`, `name`, and `storage` (from `CodeBase`) attributes, plus a `TestMethod`
+  child element carrying `className`
+- A `TestEntry` element is written under `TestEntries` linking `testId` and `executionId`
+- A single default `TestList` is included under `TestLists`
+- A `ResultSummary` element with outcome counters closes the document
+
+### TRX Deserialization
+
+When deserializing a TRX document to a `TestResults` object:
+
+- `TestResults.Id` and `TestResults.Name` are read from the `TestRun` attributes
+- Each `UnitTestResult` element under `Results` is mapped to a `TestResult`
+- `TestId`, `ExecutionId`, `Name`, `ComputerName`, `StartTime`, `Duration`, and
+  `Outcome` are read from the element attributes
+- `SystemOutput`, `SystemError`, `ErrorMessage`, and `ErrorStackTrace` are read from
+  the corresponding child elements under `Output`
+- `CodeBase` and `ClassName` are resolved by locating the matching `UnitTest` element
+  in `TestDefinitions` by `testId`
+
+## JUnit XML Format
+
+JUnit XML is a widely-adopted, cross-platform test result format supported by many
+CI/CD systems including Jenkins, GitLab CI, GitHub Actions, and CircleCI.
+
+This satisfies requirements `TestResults-Jun-Serialize` and `TestResults-Jun-Deserialize`.
+
+### JUnit Document Structure
+
+A JUnit document has the following top-level structure:
+
+```text
+testsuites
+└── testsuite (one per unique class name)
+    └── testcase (one per test case)
+        ├── failure   (present when outcome is Failed)
+        ├── error     (present when outcome is Error, Timeout, or Aborted)
+        └── skipped   (present when outcome is not executed)
+```
+
+A document with a single test suite may use `testsuite` as the root element directly,
+omitting the `testsuites` wrapper. Both forms are handled transparently during
+deserialization.
+
+### JUnit Serialization
+
+When serializing a `TestResults` object to JUnit XML:
+
+- Test results are **grouped by `ClassName`** into `testsuite` elements under a
+  `testsuites` root
+- Each `testsuite` carries `name`, `tests`, `failures`, `errors`, and `skipped`
+  aggregate attributes
+- Each `TestResult` is written as a `testcase` element with `name`, `classname`,
+  `time` (duration in seconds), and `timestamp` attributes
+- A `failure` child element (with `message` and `type` attributes and stack-trace text
+  content) is written when `Outcome` is `Failed`
+- An `error` child element is written when `Outcome` is `Error`, `Timeout`, or `Aborted`
+- A `skipped` child element is written when `IsExecuted()` returns `false`
+- Standard output is written to `system-out` and standard error to `system-err`
+  child elements if the respective properties are non-empty
+
+### JUnit Deserialization
+
+When deserializing a JUnit document to a `TestResults` object:
+
+- Each `testcase` element is mapped to a `TestResult`
+- `Name` and `ClassName` are read from the `name` and `classname` attributes
+- `Duration` is read from the `time` attribute (seconds as a decimal)
+- `StartTime` is read from the `timestamp` attribute if present; otherwise it defaults
+  to `DateTime.UtcNow`
+- The presence of a `failure` child element sets `Outcome` to `Failed` and populates
+  `ErrorMessage` and `ErrorStackTrace`
+- The presence of an `error` child element sets `Outcome` to `Error` and populates
+  `ErrorMessage` and `ErrorStackTrace`
+- The presence of a `skipped` child element sets `Outcome` to `NotExecuted`
+- If none of the above child elements are present, `Outcome` is set to `Passed`
+- `SystemOutput` and `SystemError` are read from `system-out` and `system-err` child
+  elements if present
+
+## Format Conversion
+
+The `Serializer.Deserialize()` method provides a single entry point for reading test
+result files regardless of their format. This satisfies requirement
+`TestResults-Ser-FormatConversion`.
+
+The conversion algorithm:
+
+1. Calls `Serializer.Identify()` to determine the format of the input document
+2. Delegates to `TrxSerializer.Deserialize()` for `TestResultFormat.Trx`
+3. Delegates to `JUnitSerializer.Deserialize()` for `TestResultFormat.JUnit`
+4. Throws an exception for `TestResultFormat.Unknown`
+
+This design means that callers do not need to know or specify the format — they simply
+pass the raw content and receive a `TestResults` object. Round-trip fidelity
+(serialize → deserialize → same data) is preserved for both formats, satisfying
+requirement `TestResults-Ser-RoundTrip`.

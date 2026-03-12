@@ -8,6 +8,8 @@
 needs-review:
   - "**/*.cs"
   - "!**/obj/**"
+  - "docs/design/*.md"
+  - "docs/reqstream/*.yaml"
 
 # Evidence source: review data and index.json are located in the root of the 'reviews'
 # branch of this repository, accessed through the GitHub public HTTPS raw content endpoint.
@@ -22,9 +24,13 @@ reviews:
     paths:
       - "src/DemaConsulting.TestResults/*.cs"
       - "!**/obj/**"
+      - "docs/design/model.md"
+      - "docs/reqstream/model.yaml"
 
   - id: TestResults-Serialization
     title: Review of TestResults Serialization
     paths:
       - "src/DemaConsulting.TestResults/IO/**/*.cs"
       - "!**/obj/**"
+      - "docs/design/serialization.md"
+      - "docs/reqstream/serialization.yaml"
