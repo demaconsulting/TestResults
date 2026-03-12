@@ -149,7 +149,7 @@ collection of `TestResult` objects along with run-level metadata.
 | `Id`       | `Guid`              | `Guid.NewGuid()` | Uniquely identifies this test run      |
 | `Name`     | `string`            | `string.Empty`   | Display name of the test run           |
 | `UserName` | `string`            | `string.Empty`   | User or identity that initiated the run|
-| `Results`  | `List<TestResult>`  | `new List<>()`   | Ordered collection of test case results|
+| `Results`  | `List<TestResult>`  | `[]`             | Ordered collection of test case results|
 
 `Id` is auto-generated on construction for the same reasons as `TestResult.TestId` — it
 ensures every run is uniquely identifiable in TRX output without requiring callers to

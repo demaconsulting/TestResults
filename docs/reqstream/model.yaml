@@ -30,6 +30,7 @@ sections:
               distinguishing between test logic failures and environmental or system errors, which
               is a key distinction in both TRX and JUnit formats.
             tests:
+              - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
               - JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement
               - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails
 
@@ -81,6 +82,7 @@ sections:
               started. This status is important for test frameworks that support asynchronous or
               deferred test execution and helps track test execution state.
             tests:
+              - TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue
               - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
               - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
