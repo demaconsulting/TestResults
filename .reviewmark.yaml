@@ -8,8 +8,6 @@
 needs-review:
   - "**/*.cs"
   - "!**/obj/**"
-  - "docs/design/*.md"
-  - "docs/reqstream/*.yaml"
 
 # Evidence source: review data and index.json are located in the root of the 'reviews'
 # branch of this repository, accessed through the GitHub public HTTPS raw content endpoint.
