@@ -49,9 +49,9 @@ sections:
           - id: TestResults-Run-Net10
             title: The library shall support .NET 10 runtime.
             justification: |
-              .NET 10 is the upcoming Long-Term Support (LTS) release scheduled for November 2025.
-              Supporting this framework ensures the library remains current and provides a clear
-              upgrade path for users as they migrate to future .NET versions.
+              .NET 10 is a Long-Term Support (LTS) release in the .NET platform roadmap. Supporting
+              this runtime ensures the library remains current and provides a clear upgrade path
+              for users as they adopt newer .NET versions.
             tests:
               - net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
