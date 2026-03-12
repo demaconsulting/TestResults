@@ -99,7 +99,7 @@ public static class JUnitSerializer
             new XAttribute("errors", suiteTests.Count(t => IsErrorOutcome(t.Outcome))),
             new XAttribute("skipped", suiteTests.Count(t => !t.Outcome.IsExecuted())),
             new XAttribute("time", suiteTests.Sum(t => t.Duration.TotalSeconds).ToString(TimeFormatString, CultureInfo.InvariantCulture)),
-            new XAttribute("timestamp", timestamp.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture)));
+            new XAttribute("timestamp", timestamp.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)));
 
         // Add test cases
         testSuite.Add(suiteTests.Select(CreateTestCaseElement));
@@ -245,13 +245,31 @@ public static class JUnitSerializer
     private static void ParseTestSuite(XElement testSuiteElement, TestResults results)
     {
         // Read the optional timestamp attribute from the testsuite element
-        var timestampStr = testSuiteElement.Attribute("timestamp")?.Value;
-        var startTime = timestampStr != null
-            ? DateTime.Parse(timestampStr, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
-            : (DateTime?)null;
+        var startTime = TryParseTimestamp(testSuiteElement.Attribute("timestamp")?.Value);
 
         var testCaseElements = testSuiteElement.Elements("testcase");
         results.Results.AddRange(testCaseElements.Select(e => ParseTestCase(e, startTime)));
+    }
+
+    /// <summary>
+    ///     Tries to parse an ISO 8601 timestamp string to a UTC DateTime
+    /// </summary>
+    /// <param name="timestampStr">The timestamp string to parse, or null/empty if not available</param>
+    /// <returns>The parsed UTC DateTime, or null if the string is absent or cannot be parsed</returns>
+    private static DateTime? TryParseTimestamp(string? timestampStr)
+    {
+        if (string.IsNullOrWhiteSpace(timestampStr))
+        {
+            return null;
+        }
+
+        return DateTimeOffset.TryParse(
+            timestampStr,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+            out var parsedTimestamp)
+            ? parsedTimestamp.UtcDateTime
+            : null;
     }
 
     /// <summary>

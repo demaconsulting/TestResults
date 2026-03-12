@@ -812,4 +812,118 @@ public sealed class JUnitSerializerTests
         var ex = Assert.ThrowsExactly<ArgumentException>(() => JUnitSerializer.Deserialize(whitespaceContents));
         Assert.AreEqual("junitContents", ex.ParamName);
     }
+
+    /// <summary>
+    ///     Test that serialization emits a UTC timestamp on testsuite with Z suffix
+    /// </summary>
+    /// <remarks>
+    ///     Tests that JUnitSerializer emits a UTC timestamp attribute on each testsuite element
+    ///     using the earliest StartTime in that suite, formatted as ISO 8601 with a trailing Z suffix
+    ///     to unambiguously identify the value as UTC.
+    /// </remarks>
+    [TestMethod]
+    public void JUnitSerializer_Serialize_WithStartTime_EmitsUtcTimestampAttribute()
+    {
+        // Arrange - test results with an explicit UTC start time
+        var startTime = new DateTime(2025, 6, 15, 10, 30, 0, DateTimeKind.Utc);
+        var results = new TestResults
+        {
+            Name = "TimestampTests",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "Test1",
+                    ClassName = "MyTestClass",
+                    StartTime = startTime,
+                    Duration = TimeSpan.FromSeconds(1.0),
+                    Outcome = TestOutcome.Passed
+                }
+            ]
+        };
+
+        // Act - Serialize the test results to JUnit XML
+        var xml = JUnitSerializer.Serialize(results);
+        Assert.IsNotNull(xml);
+
+        // Assert - Parse and verify the timestamp attribute is present in UTC format with Z suffix
+        var doc = XDocument.Parse(xml);
+        var testSuite = doc.Root?.Element("testsuite");
+        Assert.IsNotNull(testSuite);
+        var timestampAttr = testSuite.Attribute("timestamp")?.Value;
+        Assert.IsNotNull(timestampAttr);
+        Assert.AreEqual("2025-06-15T10:30:00Z", timestampAttr);
+    }
+
+    /// <summary>
+    ///     Test that deserialization reads the testsuite timestamp and applies it to test cases
+    /// </summary>
+    /// <remarks>
+    ///     Tests that JUnitSerializer correctly reads the optional timestamp attribute from
+    ///     each testsuite element and applies it as StartTime to all test cases in that suite.
+    ///     Also verifies that an absent timestamp leaves StartTime at its default (DateTime.UtcNow).
+    /// </remarks>
+    [TestMethod]
+    public void JUnitSerializer_Deserialize_WithTimestamp_SetsStartTimeOnTestCases()
+    {
+        // Arrange - JUnit XML with a timestamp on one suite and no timestamp on another
+        var junitXml = """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="TimestampTests">
+              <testsuite name="Class1" tests="1" failures="0" errors="0" skipped="0" time="1.000" timestamp="2025-06-15T10:30:00Z">
+                <testcase name="Test1" classname="Class1" time="1.000" />
+              </testsuite>
+              <testsuite name="Class2" tests="1" failures="0" errors="0" skipped="0" time="2.000">
+                <testcase name="Test2" classname="Class2" time="2.000" />
+              </testsuite>
+            </testsuites>
+            """;
+
+        // Act - Deserialize the test results
+        var before = DateTime.UtcNow;
+        var results = JUnitSerializer.Deserialize(junitXml);
+        var after = DateTime.UtcNow;
+
+        // Assert - Test1 should have the suite timestamp as its StartTime
+        Assert.IsNotNull(results);
+        Assert.HasCount(2, results.Results);
+        var test1 = results.Results[0];
+        Assert.AreEqual(new DateTime(2025, 6, 15, 10, 30, 0, DateTimeKind.Utc), test1.StartTime);
+
+        // Assert - Test2 should have a default StartTime (suite had no timestamp), close to UtcNow
+        var test2 = results.Results[1];
+        Assert.IsTrue(test2.StartTime >= before.AddSeconds(-1) && test2.StartTime <= after.AddSeconds(1));
+    }
+
+    /// <summary>
+    ///     Test that deserialization of a malformed timestamp does not throw
+    /// </summary>
+    /// <remarks>
+    ///     Tests that JUnitSerializer gracefully ignores a malformed timestamp attribute
+    ///     on the testsuite element, leaving StartTime at its default value rather than
+    ///     throwing an exception.
+    /// </remarks>
+    [TestMethod]
+    public void JUnitSerializer_Deserialize_InvalidTimestamp_DefaultsStartTime()
+    {
+        // Arrange - JUnit XML with a malformed timestamp
+        var junitXml = """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuites name="InvalidTimestampTests">
+              <testsuite name="MyTestClass" tests="1" failures="0" errors="0" skipped="0" time="1.000" timestamp="not-a-timestamp">
+                <testcase name="Test1" classname="MyTestClass" time="1.000" />
+              </testsuite>
+            </testsuites>
+            """;
+
+        // Act - Deserialize the test results (should not throw)
+        var before = DateTime.UtcNow;
+        var results = JUnitSerializer.Deserialize(junitXml);
+        var after = DateTime.UtcNow;
+
+        // Assert - StartTime should be at its default (close to UtcNow) because the timestamp could not be parsed
+        Assert.IsNotNull(results);
+        Assert.HasCount(1, results.Results);
+        Assert.IsTrue(results.Results[0].StartTime >= before.AddSeconds(-1) && results.Results[0].StartTime <= after.AddSeconds(1));
+    }
 }

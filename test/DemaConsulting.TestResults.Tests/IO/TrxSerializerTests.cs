@@ -387,4 +387,54 @@ public sealed class TrxSerializerTests
         var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(whitespaceContents));
         Assert.AreEqual("trxContents", ex.ParamName);
     }
+
+    /// <summary>
+    ///     Test that serialization emits the storage attribute on UnitTest matching CodeBase
+    /// </summary>
+    /// <remarks>
+    ///     Tests that TrxSerializer emits a storage attribute on the UnitTest element and that
+    ///     its value matches the TestResult.CodeBase property, consistent with the de-facto TRX
+    ///     schema where both UnitTest/@storage and TestMethod/@codeBase reference the test assembly.
+    /// </remarks>
+    [TestMethod]
+    public void TrxSerializer_Serialize_WithCodeBase_EmitsStorageAttributeOnUnitTest()
+    {
+        // Arrange - test results with a specific CodeBase
+        var suites = new TestResults
+        {
+            Name = "StorageTest",
+            UserName = "user",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "TestWithCodeBase",
+                    ClassName = "MyClass",
+                    CodeBase = "path/to/MyAssembly.dll",
+                    StartTime = new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc),
+                    Duration = TimeSpan.FromSeconds(1.0),
+                    Outcome = TestOutcome.Passed
+                }
+            ]
+        };
+
+        // Act - Serialize the test results
+        var result = TrxSerializer.Serialize(suites);
+        Assert.IsNotNull(result);
+
+        // Assert - Parse and verify the storage attribute on the UnitTest element
+        var doc = XDocument.Parse(result);
+        var nsMgr = new XmlNamespaceManager(new NameTable());
+        nsMgr.AddNamespace("trx", TrxNamespace);
+
+        var unitTest = doc.XPathSelectElement(
+            "/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@name='TestWithCodeBase']", nsMgr);
+        Assert.IsNotNull(unitTest);
+        Assert.AreEqual("path/to/MyAssembly.dll", unitTest.Attribute("storage")?.Value);
+
+        // Also verify TestMethod/@codeBase matches
+        var testMethod = unitTest.XPathSelectElement("trx:TestMethod", nsMgr);
+        Assert.IsNotNull(testMethod);
+        Assert.AreEqual("path/to/MyAssembly.dll", testMethod.Attribute("codeBase")?.Value);
+    }
 }

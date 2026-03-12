@@ -139,8 +139,8 @@ When serializing a `TestResults` object to JUnit XML:
 - Test results are **grouped by `ClassName`** into `testsuite` elements under a
   `testsuites` root
 - Each `testsuite` carries `name`, `tests`, `failures`, `errors`, `skipped`,
-  `time` (total duration in seconds), and `timestamp` (ISO 8601 start time of the
-  earliest test in the suite) aggregate attributes
+  `time` (total duration in seconds), and `timestamp` (ISO 8601 UTC start time,
+  formatted with a trailing `Z`, of the earliest test in the suite) aggregate attributes
 - Each `TestResult` is written as a `testcase` element with `name`, `classname`,
   and `time` (duration in seconds) attributes
 - A `failure` child element (with a `message` attribute and stack-trace text
