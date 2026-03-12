@@ -3,9 +3,10 @@
 # which test results count as evidence for a requirement. This is critical for platform and framework
 # requirements - removing these filters invalidates the evidence-based proof.
 #
-# Source filter prefixes:
+# Source filter prefixes follow the general pattern "<source>@TestName":
 #   windows@TestName  - proves the test passed on a Windows platform
 #   ubuntu@TestName   - proves the test passed on a Linux (Ubuntu) platform
+#   net481@TestName   - proves the test passed under the .NET Framework 4.8.1 runtime
 #   net8.0@TestName   - proves the test passed under the .NET 8 runtime
 #   net9.0@TestName   - proves the test passed under the .NET 9 runtime
 #   net10.0@TestName  - proves the test passed under the .NET 10 runtime
