@@ -19,7 +19,6 @@
 // SOFTWARE.
 
 using System.Globalization;
-using System.Text;
 using System.Xml.Linq;
 
 namespace DemaConsulting.TestResults.IO;
@@ -30,8 +29,14 @@ namespace DemaConsulting.TestResults.IO;
 public static class JUnitSerializer
 {
     /// <summary>
-    ///     Default suite name for tests without a class name
+    ///     Default suite name for tests without a class name.
     /// </summary>
+    /// <remarks>
+    ///     Tests with an empty <see cref="TestResult.ClassName"/> are grouped under this name during
+    ///     serialization, and the name is mapped back to an empty string during deserialization.
+    ///     As a consequence, a test with <see cref="TestResult.ClassName"/> equal to "DefaultSuite"
+    ///     cannot be round-tripped faithfully — it will be deserialized with an empty class name.
+    /// </remarks>
     private const string DefaultSuiteName = "DefaultSuite";
 
     /// <summary>
@@ -88,9 +93,7 @@ public static class JUnitSerializer
     {
         var className = string.IsNullOrEmpty(suiteGroup.Key) ? DefaultSuiteName : suiteGroup.Key;
         var suiteTests = suiteGroup.ToList();
-        var timestamp = suiteTests.Count > 0
-            ? suiteTests.Min(t => t.StartTime)
-            : DateTime.UtcNow;
+        var timestamp = suiteTests.Min(t => t.StartTime);
 
         var testSuite = new XElement("testsuite",
             new XAttribute("name", className),
@@ -372,14 +375,4 @@ public static class JUnitSerializer
         return (TestOutcome.Passed, string.Empty, string.Empty);
     }
 
-    /// <summary>
-    ///     String writer that uses UTF-8 encoding
-    /// </summary>
-    private sealed class Utf8StringWriter : StringWriter
-    {
-        /// <summary>
-        ///     Gets the UTF-8 encoding
-        /// </summary>
-        public override Encoding Encoding => Encoding.UTF8;
-    }
 }

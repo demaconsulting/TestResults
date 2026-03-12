@@ -65,8 +65,8 @@ TestRun (xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010")
 │               └── StackTrace
 ├── TestDefinitions
 │   └── UnitTest (one per test case)
-│       ├── TestMethod
-│       └── Execution
+│       ├── Execution
+│       └── TestMethod
 ├── TestEntries
 │   └── TestEntry (one per test case)
 ├── TestLists
@@ -79,8 +79,8 @@ TestRun (xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010")
 
 When serializing a `TestResults` object to TRX:
 
-- The `TestRun` element receives the `id` and `name` attributes from `TestResults.Id`
-  and `TestResults.Name`
+- The `TestRun` element receives the `id`, `name`, and `runUser` attributes from
+  `TestResults.Id`, `TestResults.Name`, and `TestResults.UserName`
 - Each `TestResult` is written as a `UnitTestResult` element under `Results`, with
   attributes for `testId`, `executionId`, `testName`, `computerName`, `startTime`,
   `duration`, and `outcome`
@@ -99,7 +99,8 @@ When serializing a `TestResults` object to TRX:
 
 When deserializing a TRX document to a `TestResults` object:
 
-- `TestResults.Id` and `TestResults.Name` are read from the `TestRun` attributes
+- `TestResults.Id`, `TestResults.Name`, and `TestResults.UserName` are read from the
+  `TestRun` attributes (`id`, `name`, and `runUser` respectively)
 - Each `UnitTestResult` element under `Results` is mapped to a `TestResult`
 - `TestId`, `ExecutionId`, `Name`, `ComputerName`, `StartTime`, `Duration`, and
   `Outcome` are read from the element attributes
@@ -125,7 +126,9 @@ testsuites
     └── testcase (one per test case)
         ├── failure   (present when outcome is Failed)
         ├── error     (present when outcome is Error, Timeout, or Aborted)
-        └── skipped   (present when outcome is not executed)
+        ├── skipped   (present when outcome is not executed)
+        ├── system-out (present when SystemOutput is non-empty)
+        └── system-err (present when SystemError is non-empty)
 ```
 
 A document with a single test suite may use `testsuite` as the root element directly,
@@ -147,7 +150,8 @@ When serializing a `TestResults` object to JUnit XML:
   content) is written when `Outcome` is `Failed`
 - An `error` child element (with a `message` attribute and stack-trace text
   content) is written when `Outcome` is `Error`, `Timeout`, or `Aborted`
-- A `skipped` child element is written when `IsExecuted()` returns `false`
+- A `skipped` child element is written when `IsExecuted()` returns `false`; if
+  `ErrorMessage` is non-empty it is written as a `message` attribute on the element
 - Standard output is written to `system-out` and standard error to `system-err`
   child elements if the respective properties are non-empty
 

@@ -19,7 +19,6 @@
 // SOFTWARE.
 
 using System.Globalization;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -357,24 +356,26 @@ public static class TrxSerializer
             "/trx:TestRun/trx:Results/trx:UnitTestResult",
             nsMgr);
 
-        results.Results.AddRange(resultElements.Select(e => ParseTestResult(doc, nsMgr, e)));
+        results.Results.AddRange(resultElements.Select(e => ParseTestResult(doc, e)));
     }
 
     /// <summary>
     ///     Parses a single UnitTestResult element
     /// </summary>
     /// <param name="doc">The XML document containing the TRX file</param>
-    /// <param name="nsMgr">The namespace manager with TRX namespace mappings</param>
     /// <param name="resultElement">The UnitTestResult element to parse</param>
     /// <returns>A TestResult object populated with data from the XML element</returns>
-    private static TestResult ParseTestResult(XDocument doc, XmlNamespaceManager nsMgr, XElement resultElement)
+    private static TestResult ParseTestResult(XDocument doc, XElement resultElement)
     {
         var testId = resultElement.Attribute("testId") ??
                      throw new InvalidOperationException(InvalidTrxFileMessage);
 
-        var methodElement = doc.XPathSelectElement(
-            $"/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@id='{testId.Value}']/trx:TestMethod",
-            nsMgr) ?? throw new InvalidOperationException(InvalidTrxFileMessage);
+        // Locate the TestMethod element using LINQ-to-XML to avoid XPath string interpolation
+        var methodElement = doc
+            .Descendants(TrxNamespace + "UnitTest")
+            .FirstOrDefault(e => e.Attribute("id")?.Value == testId.Value)
+            ?.Element(TrxNamespace + "TestMethod")
+            ?? throw new InvalidOperationException(InvalidTrxFileMessage);
 
         var outputElement = resultElement.Element(TrxNamespace + "Output");
         var errorInfoElement = outputElement?.Element(TrxNamespace + "ErrorInfo");
@@ -388,15 +389,22 @@ public static class TrxSerializer
             CodeBase = methodElement.Attribute("codeBase")?.Value ?? string.Empty,
             ClassName = methodElement.Attribute("className")?.Value ?? string.Empty,
             ComputerName = resultElement.Attribute("computerName")?.Value ?? string.Empty,
-            Outcome = (TestOutcome)Enum.Parse(typeof(TestOutcome), resultElement.Attribute("outcome")?.Value ?? "Failed"),
-            StartTime = DateTime.Parse(
-                resultElement.Attribute("startTime")?.Value ??
-                DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
+            Outcome = Enum.TryParse<TestOutcome>(resultElement.Attribute("outcome")?.Value, out var outcome)
+                ? outcome
+                : TestOutcome.Failed,
+            StartTime = DateTime.TryParse(
+                resultElement.Attribute("startTime")?.Value,
                 CultureInfo.InvariantCulture,
-                DateTimeStyles.AdjustToUniversal),
-            Duration = TimeSpan.Parse(
-                resultElement.Attribute("duration")?.Value ?? "0",
-                CultureInfo.InvariantCulture),
+                DateTimeStyles.AdjustToUniversal,
+                out var parsedStartTime)
+                ? parsedStartTime
+                : DateTime.UtcNow,
+            Duration = TimeSpan.TryParse(
+                resultElement.Attribute("duration")?.Value,
+                CultureInfo.InvariantCulture,
+                out var parsedDuration)
+                ? parsedDuration
+                : TimeSpan.Zero,
             SystemOutput = outputElement
                 ?.Element(TrxNamespace + "StdOut")
                 ?.Value ?? string.Empty,
@@ -410,16 +418,5 @@ public static class TrxSerializer
                 ?.Element(TrxNamespace + "StackTrace")
                 ?.Value ?? string.Empty
         };
-    }
-
-    /// <summary>
-    ///     String writer that uses UTF-8 encoding
-    /// </summary>
-    private sealed class Utf8StringWriter : StringWriter
-    {
-        /// <summary>
-        ///     Gets the UTF-8 encoding
-        /// </summary>
-        public override Encoding Encoding => Encoding.UTF8;
     }
 }
