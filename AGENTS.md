@@ -10,6 +10,7 @@ programmatically creating test result files in TRX and JUnit formats.
 - **Software Developer** - Writes production code in literate style
 - **Test Developer** - Creates unit tests following AAA pattern
 - **Code Quality Agent** - Enforces linting, static analysis, and security standards
+- **Code Review Agent** - Assists in performing formal file reviews
 - **Repo Consistency Agent** - Ensures downstream repositories remain consistent with template patterns
 
 ## Agent Selection Guide
@@ -22,6 +23,7 @@ programmatically creating test result files in TRX and JUnit formats.
 - Add or update requirements → **Requirements Agent**
 - Ensure test coverage linkage in `requirements.yaml` → **Requirements Agent**
 - Run security scanning or address CodeQL alerts → **Code Quality Agent**
+- Perform a formal file review → **Code Review Agent**
 - Propagate template changes → **Repo Consistency Agent**
 
 ## Tech Stack

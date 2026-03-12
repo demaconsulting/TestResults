@@ -1,0 +1,32 @@
+---
+# ReviewMark Configuration File
+# This file defines which files require review, where the evidence store is located,
+# and how files are grouped into named review-sets.
+
+# Patterns identifying all files that require review.
+# Processed in order; prefix a pattern with '!' to exclude.
+needs-review:
+  - "**/*.cs"
+  - "!**/obj/**"
+
+# Evidence source: review data and index.json are located in the 'reviews' branch
+# of this repository, accessed through the GitHub public HTTPS raw content access.
+# Note: The 'reviews' branch must be created and populated with review evidence PDFs
+# and an index.json before enforcement (--enforce flag) can be enabled in the pipeline.
+evidence-source:
+  type: url
+  location: https://raw.githubusercontent.com/demaconsulting/TestResults/reviews/index.json
+
+# Review sets grouping files by logical unit of review.
+reviews:
+  - id: TestResults-Model
+    title: Review of TestResults Model
+    paths:
+      - "src/DemaConsulting.TestResults/*.cs"
+      - "!**/obj/**"
+
+  - id: TestResults-Serialization
+    title: Review of TestResults Serialization
+    paths:
+      - "src/DemaConsulting.TestResults/IO/**/*.cs"
+      - "!**/obj/**"
