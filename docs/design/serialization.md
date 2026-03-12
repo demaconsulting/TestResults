@@ -32,7 +32,7 @@ document without fully deserializing it. This satisfies requirement
 
 The identification algorithm:
 
-1. Parses just enough of the XML to read the root element name and its namespace
+1. Parses the full XML document and reads the root element name and its namespace
 2. Returns `TestResultFormat.Trx` if the root element name is `TestRun` **and** the
    namespace URI is `http://microsoft.com/schemas/VisualStudio/TeamTest/2010`
 3. Returns `TestResultFormat.JUnit` if the root element name is `testsuites` or
