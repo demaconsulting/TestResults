@@ -39,6 +39,7 @@ cover all states that a test case may reach during execution.
 The *Category* column is consistent with the `TestOutcomeExtensions` helpers: only outcomes
 for which `IsExecuted()` returns `false` are labeled **Not executed**; outcomes that execute
 but do not count as passed or failed are labeled **Executed**.
+
 ## TestOutcome Extensions
 
 The `TestOutcomeExtensions` class provides three extension methods on `TestOutcome` that
