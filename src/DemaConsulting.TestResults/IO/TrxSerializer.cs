@@ -22,6 +22,7 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using System.Collections.Generic;
 
 namespace DemaConsulting.TestResults.IO;
 
@@ -356,26 +357,39 @@ public static class TrxSerializer
             "/trx:TestRun/trx:Results/trx:UnitTestResult",
             nsMgr);
 
-        results.Results.AddRange(resultElements.Select(e => ParseTestResult(doc, e)));
+        // Build a lookup from UnitTest/@id to its TestMethod element once to avoid O(N^2) scans
+        var testMethodsById = doc
+            .Descendants(TrxNamespace + "UnitTest")
+            .Select(unitTest => new
+            {
+                Id = unitTest.Attribute("id")?.Value,
+                Method = unitTest.Element(TrxNamespace + "TestMethod")
+            })
+            .Where(x => !string.IsNullOrEmpty(x.Id) && x.Method != null)
+            .ToDictionary(x => x.Id!, x => x.Method!);
+
+        results.Results.AddRange(resultElements.Select(e => ParseTestResult(e, testMethodsById)));
     }
 
     /// <summary>
     ///     Parses a single UnitTestResult element
     /// </summary>
-    /// <param name="doc">The XML document containing the TRX file</param>
     /// <param name="resultElement">The UnitTestResult element to parse</param>
+    /// <param name="testMethodsById">
+    ///     A lookup of UnitTest IDs to their corresponding TestMethod elements, built once per document.
+    /// </param>
     /// <returns>A TestResult object populated with data from the XML element</returns>
-    private static TestResult ParseTestResult(XDocument doc, XElement resultElement)
+    private static TestResult ParseTestResult(
+        XElement resultElement,
+        IReadOnlyDictionary<string, XElement> testMethodsById)
     {
         var testId = resultElement.Attribute("testId") ??
                      throw new InvalidOperationException(InvalidTrxFileMessage);
 
-        // Locate the TestMethod element using LINQ-to-XML to avoid XPath string interpolation
-        var methodElement = doc
-            .Descendants(TrxNamespace + "UnitTest")
-            .FirstOrDefault(e => e.Attribute("id")?.Value == testId.Value)
-            ?.Element(TrxNamespace + "TestMethod")
-            ?? throw new InvalidOperationException(InvalidTrxFileMessage);
+        if (!testMethodsById.TryGetValue(testId.Value, out var methodElement))
+        {
+            throw new InvalidOperationException(InvalidTrxFileMessage);
+        }
 
         var outputElement = resultElement.Element(TrxNamespace + "Output");
         var errorInfoElement = outputElement?.Element(TrxNamespace + "ErrorInfo");
