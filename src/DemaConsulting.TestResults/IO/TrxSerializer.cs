@@ -22,7 +22,6 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Collections.Generic;
 
 namespace DemaConsulting.TestResults.IO;
 
@@ -340,7 +339,7 @@ public static class TrxSerializer
     {
         var runElement = doc.XPathSelectElement("/trx:TestRun", nsMgr) ??
                          throw new InvalidOperationException(InvalidTrxFileMessage);
-        results.Id = Guid.Parse(runElement.Attribute("id")?.Value ?? Guid.NewGuid().ToString());
+        results.Id = Guid.TryParse(runElement.Attribute("id")?.Value, out var runId) ? runId : Guid.NewGuid();
         results.Name = runElement.Attribute("name")?.Value ?? string.Empty;
         results.UserName = runElement.Attribute("runUser")?.Value ?? string.Empty;
     }
@@ -396,9 +395,8 @@ public static class TrxSerializer
 
         return new TestResult
         {
-            TestId = Guid.Parse(testId.Value),
-            ExecutionId = Guid.Parse(
-                resultElement.Attribute("executionId")?.Value ?? Guid.NewGuid().ToString()),
+            TestId = Guid.TryParse(testId.Value, out var parsedTestId) ? parsedTestId : Guid.NewGuid(),
+            ExecutionId = Guid.TryParse(resultElement.Attribute("executionId")?.Value, out var parsedExecutionId) ? parsedExecutionId : Guid.NewGuid(),
             Name = methodElement.Attribute("name")?.Value ?? string.Empty,
             CodeBase = methodElement.Attribute("codeBase")?.Value ?? string.Empty,
             ClassName = methodElement.Attribute("className")?.Value ?? string.Empty,

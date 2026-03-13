@@ -83,7 +83,8 @@ When serializing a `TestResults` object to TRX:
   `TestResults.Id`, `TestResults.Name`, and `TestResults.UserName`
 - Each `TestResult` is written as a `UnitTestResult` element under `Results`, with
   attributes for `testId`, `executionId`, `testName`, `computerName`, `startTime`,
-  `duration`, and `outcome`
+  `endTime`, `duration`, `outcome`, `testType` (fixed GUID identifying the unit test
+  type), and `testListId` (referencing the standard "All Loaded Results" test list)
 - Standard output is written to `Output/StdOut` if `SystemOutput` is non-empty
 - Standard error is written to `Output/StdErr` if `SystemError` is non-empty
 - Error information is written to `Output/ErrorInfo/Message` and
@@ -91,7 +92,8 @@ When serializing a `TestResults` object to TRX:
 - A corresponding `UnitTest` element is written under `TestDefinitions` with the
   `testId`, `name`, and `storage` (from `CodeBase`) attributes, plus a `TestMethod`
   child element carrying `codeBase` (also from `CodeBase`), `className`, and `name`
-- A `TestEntry` element is written under `TestEntries` linking `testId` and `executionId`
+- A `TestEntry` element is written under `TestEntries` linking `testId`, `executionId`,
+  and `testListId`
 - A single default `TestList` is included under `TestLists`
 - A `ResultSummary` element with outcome counters closes the document
 
@@ -173,6 +175,22 @@ When deserializing a JUnit document to a `TestResults` object:
 - `SystemOutput` and `SystemError` are read from `system-out` and `system-err` child
   elements if present
 
+### JUnit Round-Trip Fidelity
+
+JUnit XML does not have distinct elements for every `TestOutcome` value, so two known
+fidelity limitations apply when round-tripping through JUnit:
+
+- **`Timeout` and `Aborted` outcomes are not preserved.** Both are serialized as an
+  `error` child element (since JUnit has no distinct timeout or aborted element), and
+  deserialize back as `TestOutcome.Error`. Callers that require precise outcome
+  preservation should use TRX.
+
+- **`ClassName = "DefaultSuite"` round-trips with an empty `ClassName`.** Tests without
+  a class name are grouped under the sentinel value `"DefaultSuite"` during
+  serialization. On deserialization, that sentinel is mapped back to an empty string.
+  Therefore a test whose `ClassName` is literally `"DefaultSuite"` will lose its class
+  name after a JUnit round-trip.
+
 ## Format Conversion
 
 The `Serializer.Deserialize()` method provides a single entry point for reading test
@@ -187,6 +205,8 @@ The conversion algorithm:
 4. Throws an exception for `TestResultFormat.Unknown`
 
 This design means that callers do not need to know or specify the format — they simply
-pass the raw content and receive a `TestResults` object. Round-trip fidelity
-(serialize → deserialize → same data) is preserved for both formats, satisfying
-requirement `TestResults-Ser-RoundTrip`.
+pass the raw content and receive a `TestResults` object.
+
+Round-trip fidelity (serialize → deserialize → same data) is fully preserved for the
+TRX format. For JUnit XML, two known limitations apply (see **JUnit Round-Trip Fidelity**
+above), satisfying requirement `TestResults-Ser-RoundTrip`.

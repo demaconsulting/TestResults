@@ -926,4 +926,80 @@ public sealed class JUnitSerializerTests
         Assert.HasCount(1, results.Results);
         Assert.IsTrue(results.Results[0].StartTime >= before && results.Results[0].StartTime <= after);
     }
+
+    /// <summary>
+    ///     Test that a Timeout outcome is deserialized as Error after a JUnit round-trip.
+    /// </summary>
+    /// <remarks>
+    ///     Proves that JUnit XML has no distinct timeout element; both Timeout and Error outcomes
+    ///     serialize to an <c>error</c> element, which deserializes back as
+    ///     <see cref="TestOutcome.Error"/>. Timeout is therefore not preserved through a JUnit
+    ///     round-trip.
+    /// </remarks>
+    [TestMethod]
+    public void JUnitSerializer_Serialize_ThenDeserialize_TimeoutOutcomeBecomesError()
+    {
+        // Arrange - a single test result with a Timeout outcome
+        var original = new TestResults
+        {
+            Name = "TimeoutFidelityTest",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "TimedOutTest",
+                    ClassName = "Suite.TimingClass",
+                    Outcome = TestOutcome.Timeout,
+                    Duration = TimeSpan.FromSeconds(30.0)
+                }
+            ]
+        };
+
+        // Act - serialize to JUnit XML and then deserialize back
+        var junitXml = JUnitSerializer.Serialize(original);
+        var deserialized = JUnitSerializer.Deserialize(junitXml);
+
+        // Assert - the Timeout outcome becomes Error because JUnit has no timeout element
+        Assert.IsNotNull(deserialized);
+        Assert.HasCount(1, deserialized.Results);
+        Assert.AreEqual(TestOutcome.Error, deserialized.Results[0].Outcome);
+    }
+
+    /// <summary>
+    ///     Test that an Aborted outcome is deserialized as Error after a JUnit round-trip.
+    /// </summary>
+    /// <remarks>
+    ///     Proves that JUnit XML has no distinct aborted element; both Aborted and Error outcomes
+    ///     serialize to an <c>error</c> element, which deserializes back as
+    ///     <see cref="TestOutcome.Error"/>. Aborted is therefore not preserved through a JUnit
+    ///     round-trip.
+    /// </remarks>
+    [TestMethod]
+    public void JUnitSerializer_Serialize_ThenDeserialize_AbortedOutcomeBecomesError()
+    {
+        // Arrange - a single test result with an Aborted outcome
+        var original = new TestResults
+        {
+            Name = "AbortedFidelityTest",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "AbortedTest",
+                    ClassName = "Suite.AbortedClass",
+                    Outcome = TestOutcome.Aborted,
+                    Duration = TimeSpan.FromSeconds(5.0)
+                }
+            ]
+        };
+
+        // Act - serialize to JUnit XML and then deserialize back
+        var junitXml = JUnitSerializer.Serialize(original);
+        var deserialized = JUnitSerializer.Deserialize(junitXml);
+
+        // Assert - the Aborted outcome becomes Error because JUnit has no aborted element
+        Assert.IsNotNull(deserialized);
+        Assert.HasCount(1, deserialized.Results);
+        Assert.AreEqual(TestOutcome.Error, deserialized.Results[0].Outcome);
+    }
 }

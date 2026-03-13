@@ -443,4 +443,83 @@ public sealed class SerializerTests
         var ex = Assert.ThrowsExactly<InvalidOperationException>(() => Serializer.Deserialize(unknownFormatXml));
         Assert.Contains("Unable to identify test result format", ex.Message);
     }
+
+    /// <summary>
+    ///     Tests that core test data is preserved when TRX results are round-tripped through JUnit.
+    /// </summary>
+    /// <remarks>
+    ///     Proves that test count, names, class names, and outcomes (for outcomes with a direct
+    ///     JUnit mapping) survive a TRX → JUnit conversion. This validates the cross-format
+    ///     conversion path used by callers that need to re-emit test results in JUnit format
+    ///     after reading a TRX file.
+    /// </remarks>
+    [TestMethod]
+    public void Serializer_TrxSerializedResults_RoundTripsViaJUnit_PreservesCoreTestData()
+    {
+        // Arrange - create test results with Passed, Failed, and NotExecuted outcomes
+        var original = new TestResults
+        {
+            Name = "CrossFormatRun",
+            UserName = "cross.format.user",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "PassedTest",
+                    ClassName = "Suite.PassedClass",
+                    CodeBase = "path/to/TestAssembly.dll",
+                    ComputerName = "BuildAgent01",
+                    Outcome = TestOutcome.Passed,
+                    StartTime = new DateTime(2025, 4, 1, 9, 0, 0, DateTimeKind.Utc),
+                    Duration = TimeSpan.FromSeconds(1.0)
+                },
+                new TestResult
+                {
+                    Name = "FailedTest",
+                    ClassName = "Suite.FailedClass",
+                    CodeBase = "path/to/TestAssembly.dll",
+                    ComputerName = "BuildAgent01",
+                    Outcome = TestOutcome.Failed,
+                    StartTime = new DateTime(2025, 4, 1, 9, 0, 2, DateTimeKind.Utc),
+                    Duration = TimeSpan.FromSeconds(0.5),
+                    ErrorMessage = "Assertion failed"
+                },
+                new TestResult
+                {
+                    Name = "SkippedTest",
+                    ClassName = "Suite.SkippedClass",
+                    CodeBase = "path/to/TestAssembly.dll",
+                    ComputerName = "BuildAgent01",
+                    Outcome = TestOutcome.NotExecuted,
+                    StartTime = new DateTime(2025, 4, 1, 9, 0, 4, DateTimeKind.Utc),
+                    Duration = TimeSpan.Zero
+                }
+            ]
+        };
+
+        // Act - serialize to TRX, deserialize back, then re-serialize to JUnit, then deserialize again
+        var trxContent = TrxSerializer.Serialize(original);
+        var fromTrx = Serializer.Deserialize(trxContent);
+        var junitContent = JUnitSerializer.Serialize(fromTrx);
+        var fromJUnit = Serializer.Deserialize(junitContent);
+
+        // Assert - core structure is preserved through the conversion chain
+        Assert.IsNotNull(fromJUnit);
+        Assert.HasCount(3, fromJUnit.Results);
+
+        // Assert - PassedTest core data is preserved
+        var passed = fromJUnit.Results.First(r => r.Name == "PassedTest");
+        Assert.AreEqual("Suite.PassedClass", passed.ClassName);
+        Assert.AreEqual(TestOutcome.Passed, passed.Outcome);
+
+        // Assert - FailedTest core data is preserved
+        var failed = fromJUnit.Results.First(r => r.Name == "FailedTest");
+        Assert.AreEqual("Suite.FailedClass", failed.ClassName);
+        Assert.AreEqual(TestOutcome.Failed, failed.Outcome);
+
+        // Assert - SkippedTest core data is preserved
+        var skipped = fromJUnit.Results.First(r => r.Name == "SkippedTest");
+        Assert.AreEqual("Suite.SkippedClass", skipped.ClassName);
+        Assert.AreEqual(TestOutcome.NotExecuted, skipped.Outcome);
+    }
 }

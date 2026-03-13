@@ -26,6 +26,7 @@ sections:
               - Serializer_Deserialize_TrxContent_ReturnsTestResults
               - Serializer_Deserialize_JUnitContent_ReturnsTestResults
               - JUnitSerializer_Serialize_ThenDeserialize_PreservesTestData
+              - Serializer_TrxSerializedResults_RoundTripsViaJUnit_PreservesCoreTestData
 
           - id: TestResults-Ser-RoundTrip
             title: The library shall preserve test data during round-trip serialization.
@@ -36,6 +37,7 @@ sections:
               test result lifecycle.
             tests:
               - JUnitSerializer_Serialize_ThenDeserialize_PreservesTestData
+              - TrxSerializer_Serialize_ThenDeserialize_PreservesTestData
               - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
               - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults
 
