@@ -63,7 +63,7 @@ sections:
               pass or fail result. This status is important for test frameworks that support
               inconclusive results and helps distinguish ambiguous test executions from failures.
             tests:
-              - TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
               - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
           - id: TestResults-Mdl-AbortedOutcome
@@ -82,7 +82,7 @@ sections:
               started. This status is important for test frameworks that support asynchronous or
               deferred test execution and helps track test execution state.
             tests:
-              - TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
               - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
               - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 

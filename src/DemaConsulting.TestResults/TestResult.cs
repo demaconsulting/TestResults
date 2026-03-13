@@ -21,7 +21,7 @@
 namespace DemaConsulting.TestResults;
 
 /// <summary>
-///     TestResult class
+///     Represents the result of a single test case execution.
 /// </summary>
 public sealed class TestResult
 {

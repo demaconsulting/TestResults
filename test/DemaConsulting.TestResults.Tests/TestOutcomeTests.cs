@@ -76,7 +76,7 @@ public class TestOutcomeTests
     ///     Test the IsExecuted method for all outcomes
     /// </summary>
     [TestMethod]
-    public void TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue()
+    public void TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult()
     {
         Assert.IsTrue(TestOutcome.Error.IsExecuted());
         Assert.IsTrue(TestOutcome.Failed.IsExecuted());
