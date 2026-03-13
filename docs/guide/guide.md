@@ -1115,22 +1115,9 @@ The library targets:
 It uses modern C# features and follows current .NET best practices. The library has **zero runtime dependencies**,
 making it easy to integrate into any .NET project.
 
-## How do I report bugs or request features?
+## What are the known limitations?
 
-- **Report a Bug**: [Create an issue on GitHub](https://github.com/demaconsulting/TestResults/issues/new?labels=bug)
-- **Request a Feature**: [Create an issue on GitHub](https://github.com/demaconsulting/TestResults/issues/new?labels=enhancement)
-- **Ask Questions**: [Start a discussion on GitHub](https://github.com/demaconsulting/TestResults/discussions)
-
-## Where can I find more information?
-
-- **GitHub Repository**: <https://github.com/demaconsulting/TestResults>
-- **NuGet Package**: <https://www.nuget.org/packages/DemaConsulting.TestResults>
-- **Architecture Documentation**: [ARCHITECTURE.md](https://github.com/demaconsulting/TestResults/blob/main/ARCHITECTURE.md)
-- **Contributing Guide**: [CONTRIBUTING.md](https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md)
-
-# Known Limitations
-
-## JUnit Round-Trip Fidelity
+### JUnit Round-Trip Fidelity
 
 JUnit XML does not have distinct elements for every `TestOutcome` value. When
 round-tripping test results through JUnit format, two known limitations apply:
@@ -1146,11 +1133,24 @@ round-tripping test results through JUnit format, two known limitations apply:
   Therefore a test whose `ClassName` is literally `"DefaultSuite"` will lose its class
   name after a JUnit round-trip.
 
-## TRX Round-Trip Fidelity
+### TRX Round-Trip Fidelity
 
 Round-trip fidelity is **fully preserved** for the TRX format. Serializing a
 `TestResults` object to TRX and deserializing it back produces an identical object.
 Choose TRX when full fidelity is required.
+
+## How do I report bugs or request features?
+
+- **Report a Bug**: [Create an issue on GitHub](https://github.com/demaconsulting/TestResults/issues/new?labels=bug)
+- **Request a Feature**: [Create an issue on GitHub](https://github.com/demaconsulting/TestResults/issues/new?labels=enhancement)
+- **Ask Questions**: [Start a discussion on GitHub](https://github.com/demaconsulting/TestResults/discussions)
+
+## Where can I find more information?
+
+- **GitHub Repository**: <https://github.com/demaconsulting/TestResults>
+- **NuGet Package**: <https://www.nuget.org/packages/DemaConsulting.TestResults>
+- **Architecture Documentation**: [ARCHITECTURE.md](https://github.com/demaconsulting/TestResults/blob/main/ARCHITECTURE.md)
+- **Contributing Guide**: [CONTRIBUTING.md](https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md)
 
 # Next Steps
 
