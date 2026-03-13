@@ -473,13 +473,15 @@ public static class TrxSerializer
     /// <remarks>
     ///     <para>
     ///         <c>Enum.TryParse</c> accepts both named values (<c>"Passed"</c>, <c>"Failed"</c>, …) and bare
-    ///         numeric strings (<c>"0"</c>, <c>"999"</c>, …).  A bare numeric string that happens to fall
+    ///         numeric strings (<c>"0"</c>, <c>"999"</c>, …). A bare numeric string that happens to fall
     ///         outside the defined enum range would produce an undefined enum value, which would
     ///         violate the invariant that every parsed result has a known outcome.
     ///     </para>
     ///     <para>
-    ///         The <c>Enum.IsDefined</c> check rejects numeric strings and any other value that does not
-    ///         correspond to a named, defined member of <see cref="TestOutcome"/>.
+    ///         The <c>Enum.IsDefined</c> check rejects any value that does not correspond to a named,
+    ///         defined member of <see cref="TestOutcome"/>. This includes numeric strings whose numeric
+    ///         value does not match any defined member; numeric strings that do map to a defined member
+    ///         are accepted.
     ///     </para>
     ///     <para>
     ///         TRX format limitation: unrecognized outcome values fall back silently to
@@ -490,7 +492,7 @@ public static class TrxSerializer
     private static TestOutcome ParseTestOutcome(string? value)
     {
         // Try to parse the raw string into a TestOutcome enum member.
-        // Only accept the result when it is a defined, named member (reject numeric strings).
+        // Only accept the result when it is a defined, named member of the enum.
         if (Enum.TryParse<TestOutcome>(value, ignoreCase: true, out var outcome) &&
             Enum.IsDefined(typeof(TestOutcome), outcome))
         {
