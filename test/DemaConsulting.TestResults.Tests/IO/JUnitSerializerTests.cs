@@ -890,9 +890,9 @@ public sealed class JUnitSerializerTests
         var test1 = results.Results[0];
         Assert.AreEqual(new DateTime(2025, 6, 15, 10, 30, 0, DateTimeKind.Utc), test1.StartTime);
 
-        // Assert - Test2 should have a default StartTime (suite had no timestamp), close to UtcNow
+        // Assert - Test2 should have a default StartTime (suite had no timestamp), between before and after
         var test2 = results.Results[1];
-        Assert.IsTrue(test2.StartTime >= before.AddSeconds(-1) && test2.StartTime <= after.AddSeconds(1));
+        Assert.IsTrue(test2.StartTime >= before && test2.StartTime <= after);
     }
 
     /// <summary>
@@ -921,9 +921,9 @@ public sealed class JUnitSerializerTests
         var results = JUnitSerializer.Deserialize(junitXml);
         var after = DateTime.UtcNow;
 
-        // Assert - StartTime should be at its default (close to UtcNow) because the timestamp could not be parsed
+        // Assert - StartTime should be at its default (between before and after) because the timestamp could not be parsed
         Assert.IsNotNull(results);
         Assert.HasCount(1, results.Results);
-        Assert.IsTrue(results.Results[0].StartTime >= before.AddSeconds(-1) && results.Results[0].StartTime <= after.AddSeconds(1));
+        Assert.IsTrue(results.Results[0].StartTime >= before && results.Results[0].StartTime <= after);
     }
 }
