@@ -115,6 +115,9 @@ When deserializing a TRX document to a `TestResults` object:
 - `Name`, `CodeBase`, and `ClassName` are resolved by locating the matching `UnitTest`
   element in `TestDefinitions` by matching `UnitTestResult/@testId` against
   `UnitTest/@id`, then reading from the `TestMethod` child element
+- Throws `InvalidOperationException` if the document structure is invalid: a
+  `UnitTestResult` that references a non-existent `testId`, or the `TestDefinitions`
+  section contains duplicate `UnitTest/@id` values
 
 ## JUnit XML Format
 
@@ -169,8 +172,9 @@ When serializing a `TestResults` object to JUnit XML:
 
 When deserializing a JUnit document to a `TestResults` object:
 
-- Each `testsuite` element carries an optional `timestamp` attribute (ISO 8601); when
-  present it is used as the `StartTime` for all test cases in that suite
+- Each `testsuite` element carries an optional `timestamp` attribute (ISO 8601 UTC); when
+  present it is used as the `StartTime` for all test cases in that suite; when absent or
+  malformed, `StartTime` defaults to the time of deserialization
 - Each `testcase` element is mapped to a `TestResult`
 - `Name` and `ClassName` are read from the `name` and `classname` attributes
 - `Duration` is read from the `time` attribute (seconds as a decimal)

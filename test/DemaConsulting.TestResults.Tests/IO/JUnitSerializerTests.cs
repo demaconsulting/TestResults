@@ -1002,4 +1002,35 @@ public sealed class JUnitSerializerTests
         Assert.HasCount(1, deserialized.Results);
         Assert.AreEqual(TestOutcome.Error, deserialized.Results[0].Outcome);
     }
+
+    /// <summary>
+    ///     Tests that a bare testsuite root element (without a testsuites wrapper) is deserialized correctly.
+    /// </summary>
+    /// <remarks>
+    ///     Proves that the deserializer handles both the common two-level structure
+    ///     (<c>testsuites</c> → <c>testsuite</c> → <c>testcase</c>) and the bare single-level
+    ///     structure (<c>testsuite</c> → <c>testcase</c>) that some JUnit producers emit.
+    /// </remarks>
+    [TestMethod]
+    public void JUnitSerializer_Deserialize_BareTestSuiteRoot_DeserializesCorrectly()
+    {
+        // Arrange - JUnit XML with a bare testsuite root (no testsuites wrapper)
+        var junitXml = """
+            <?xml version="1.0" encoding="utf-8"?>
+            <testsuite name="MyTestClass" tests="1" failures="0" errors="0" skipped="0" time="1.500">
+              <testcase name="Test1" classname="MyTestClass" time="1.500" />
+            </testsuite>
+            """;
+
+        // Act - Deserialize the test results
+        var results = JUnitSerializer.Deserialize(junitXml);
+
+        // Assert - one test result should be deserialized correctly
+        Assert.IsNotNull(results);
+        Assert.HasCount(1, results.Results);
+        Assert.AreEqual("Test1", results.Results[0].Name);
+        Assert.AreEqual("MyTestClass", results.Results[0].ClassName);
+        Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
+        Assert.AreEqual(TimeSpan.FromSeconds(1.5), results.Results[0].Duration);
+    }
 }

@@ -381,7 +381,7 @@ public static class TrxSerializer
 
         foreach (var unitTest in doc.Descendants(TrxNamespace + "UnitTest"))
         {
-            var id = unitTest.Attribute("id")?.Value;
+            var id = unitTest.Attribute("id")?.Value ?? string.Empty;
             var method = unitTest.Element(TrxNamespace + "TestMethod");
 
             // Skip entries that are missing the id or the TestMethod child
@@ -391,12 +391,12 @@ public static class TrxSerializer
             }
 
             // Duplicate UnitTest/@id values are a structural error in the TRX file
-            if (lookup.ContainsKey(id!))
+            if (lookup.ContainsKey(id))
             {
                 throw new InvalidOperationException(InvalidTrxFileMessage);
             }
 
-            lookup.Add(id!, method);
+            lookup.Add(id, method);
         }
 
         return lookup;
@@ -425,6 +425,8 @@ public static class TrxSerializer
         var outputElement = resultElement.Element(TrxNamespace + "Output");
         var errorInfoElement = outputElement?.Element(TrxNamespace + "ErrorInfo");
 
+        // Use Guid.NewGuid() fallback to accommodate minor nonconformance in third-party TRX files
+        // that use non-standard or missing GUID values
         return new TestResult
         {
             TestId = Guid.TryParse(testId.Value, out var parsedTestId) ? parsedTestId : Guid.NewGuid(),

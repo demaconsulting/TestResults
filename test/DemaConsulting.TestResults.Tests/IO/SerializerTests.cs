@@ -522,4 +522,30 @@ public sealed class SerializerTests
         Assert.AreEqual("Suite.SkippedClass", skipped.ClassName);
         Assert.AreEqual(TestOutcome.NotExecuted, skipped.Outcome);
     }
+
+    /// <summary>
+    ///     Tests that Identify returns Unknown for a TestRun element in the wrong XML namespace.
+    /// </summary>
+    /// <remarks>
+    ///     Proves that the TRX discriminator requires both the correct root element name
+    ///     (<c>TestRun</c>) and the correct namespace URI. A document with a <c>TestRun</c>
+    ///     root in a different namespace is not a TRX file and should be reported as Unknown.
+    /// </remarks>
+    [TestMethod]
+    public void Serializer_Identify_TestRunInWrongNamespace_ReturnsUnknown()
+    {
+        // Arrange - XML with TestRun root but no TRX namespace
+        var xml = """
+            <?xml version="1.0" encoding="utf-8"?>
+            <TestRun id="1234" name="SomeName">
+              <Results />
+            </TestRun>
+            """;
+
+        // Act
+        var format = Serializer.Identify(xml);
+
+        // Assert - without the correct namespace this is not a valid TRX file
+        Assert.AreEqual(TestResultFormat.Unknown, format);
+    }
 }
