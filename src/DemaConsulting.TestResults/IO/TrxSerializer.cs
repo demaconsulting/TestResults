@@ -439,7 +439,7 @@ public static class TrxSerializer
             StartTime = DateTime.TryParse(
                 resultElement.Attribute("startTime")?.Value,
                 CultureInfo.InvariantCulture,
-                DateTimeStyles.AdjustToUniversal,
+                DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
                 out var parsedStartTime)
                 ? parsedStartTime
                 : DateTime.UtcNow,
