@@ -32,12 +32,14 @@ document without fully deserializing it. This satisfies requirement
 
 The identification algorithm:
 
-1. Parses the full XML document and reads the root element name and its namespace
-2. Returns `TestResultFormat.Trx` if the root element name is `TestRun` **and** the
+1. Returns `TestResultFormat.Unknown` immediately if the input is null or whitespace
+2. Attempts to parse the full XML document; returns `TestResultFormat.Unknown` if
+   parsing fails with an `XmlException` (the input is not valid XML)
+3. Returns `TestResultFormat.Trx` if the root element name is `TestRun` **and** the
    namespace URI is `http://microsoft.com/schemas/VisualStudio/TeamTest/2010`
-3. Returns `TestResultFormat.JUnit` if the root element name is `testsuites` or
+4. Returns `TestResultFormat.JUnit` if the root element name is `testsuites` or
    `testsuite` (case-sensitive, no namespace required)
-4. Returns `TestResultFormat.Unknown` for any other document structure
+5. Returns `TestResultFormat.Unknown` for any other document structure
 
 Using the XML namespace for TRX detection makes identification unambiguous — a document
 with a `TestRun` root element in any other namespace is not treated as TRX.
@@ -85,6 +87,8 @@ When serializing a `TestResults` object to TRX:
   attributes for `testId`, `executionId`, `testName`, `computerName`, `startTime`,
   `endTime`, `duration`, `outcome`, `testType` (fixed GUID identifying the unit test
   type), and `testListId` (referencing the standard "All Loaded Results" test list)
+- An `Output` element is always written for each `UnitTestResult`; its child
+  elements `StdOut`, `StdErr`, and `ErrorInfo` are written conditionally
 - Standard output is written to `Output/StdOut` if `SystemOutput` is non-empty
 - Standard error is written to `Output/StdErr` if `SystemError` is non-empty
 - Error information is written to `Output/ErrorInfo/Message` and
@@ -104,12 +108,13 @@ When deserializing a TRX document to a `TestResults` object:
 - `TestResults.Id`, `TestResults.Name`, and `TestResults.UserName` are read from the
   `TestRun` attributes (`id`, `name`, and `runUser` respectively)
 - Each `UnitTestResult` element under `Results` is mapped to a `TestResult`
-- `TestId`, `ExecutionId`, `Name`, `ComputerName`, `StartTime`, `Duration`, and
-  `Outcome` are read from the element attributes
+- `TestId`, `ExecutionId`, `ComputerName`, `StartTime`, `Duration`, and
+  `Outcome` are read from the `UnitTestResult` element attributes
 - `SystemOutput`, `SystemError`, `ErrorMessage`, and `ErrorStackTrace` are read from
   the corresponding child elements under `Output`
-- `CodeBase` and `ClassName` are resolved by locating the matching `UnitTest` element
-  in `TestDefinitions` by `testId`
+- `Name`, `CodeBase`, and `ClassName` are resolved by locating the matching `UnitTest`
+  element in `TestDefinitions` by matching `UnitTestResult/@testId` against
+  `UnitTest/@id`, then reading from the `TestMethod` child element
 
 ## JUnit XML Format
 
@@ -141,6 +146,7 @@ deserialization.
 
 When serializing a `TestResults` object to JUnit XML:
 
+- The `testsuites` root element receives a `name` attribute set from `TestResults.Name`
 - Test results are **grouped by `ClassName`** into `testsuite` elements under a
   `testsuites` root
 - Each `testsuite` carries `name`, `tests`, `failures`, `errors`, `skipped`,
@@ -148,10 +154,12 @@ When serializing a `TestResults` object to JUnit XML:
   formatted with a trailing `Z`, of the earliest test in the suite) aggregate attributes
 - Each `TestResult` is written as a `testcase` element with `name`, `classname`,
   and `time` (duration in seconds) attributes
-- A `failure` child element (with a `message` attribute and stack-trace text
-  content) is written when `Outcome` is `Failed`
-- An `error` child element (with a `message` attribute and stack-trace text
-  content) is written when `Outcome` is `Error`, `Timeout`, or `Aborted`
+- A `failure` child element is written when `Outcome` is `Failed`; the `message`
+  attribute is set from `ErrorMessage` when non-empty, and the element text content
+  is set from `ErrorStackTrace` when non-empty
+- An `error` child element is written when `Outcome` is `Error`, `Timeout`, or
+  `Aborted`; the `message` attribute and text content follow the same convention as
+  `failure`
 - A `skipped` child element is written when `IsExecuted()` returns `false`; if
   `ErrorMessage` is non-empty it is written as a `message` attribute on the element
 - Standard output is written to `system-out` and standard error to `system-err`

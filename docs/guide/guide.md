@@ -1128,6 +1128,30 @@ making it easy to integrate into any .NET project.
 - **Architecture Documentation**: [ARCHITECTURE.md](https://github.com/demaconsulting/TestResults/blob/main/ARCHITECTURE.md)
 - **Contributing Guide**: [CONTRIBUTING.md](https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md)
 
+# Known Limitations
+
+## JUnit Round-Trip Fidelity
+
+JUnit XML does not have distinct elements for every `TestOutcome` value. When
+round-tripping test results through JUnit format, two known limitations apply:
+
+- **`Timeout` and `Aborted` outcomes are not preserved.** Both are serialized as an
+  `<error>` child element (since JUnit has no distinct timeout or aborted element) and
+  deserialize back as `TestOutcome.Error`. If precise outcome preservation is required,
+  use the TRX format instead.
+
+- **`ClassName = "DefaultSuite"` round-trips with an empty `ClassName`.** Tests
+  without a class name are grouped under the sentinel value `"DefaultSuite"` during
+  serialization. On deserialization, that sentinel is mapped back to an empty string.
+  Therefore a test whose `ClassName` is literally `"DefaultSuite"` will lose its class
+  name after a JUnit round-trip.
+
+## TRX Round-Trip Fidelity
+
+Round-trip fidelity is **fully preserved** for the TRX format. Serializing a
+`TestResults` object to TRX and deserializing it back produces an identical object.
+Choose TRX when full fidelity is required.
+
 # Next Steps
 
 Now that you've learned how to use the TestResults library, you can:

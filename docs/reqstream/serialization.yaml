@@ -41,6 +41,19 @@ sections:
               - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
               - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults
 
+          - id: TestResults-Ser-InvalidInput
+            title: The library shall handle invalid or malformed input gracefully.
+            justification: |
+              Robust error handling ensures the library does not crash or produce undefined
+              behavior when given invalid XML, unrecognised format, or malformed field values.
+              Rather than throwing unexpected exceptions, the library returns safe defaults
+              (Unknown format, fallback values) or throws documented exceptions as specified
+              by each method's contract.
+            tests:
+              - Serializer_Identify_EmptyContent_ReturnsUnknown
+              - Serializer_Identify_InvalidXml_ReturnsUnknown
+              - JUnitSerializer_Deserialize_InvalidTimestamp_DefaultsStartTime
+
         sections:
           - title: TRX Serialization
             requirements:
@@ -97,3 +110,14 @@ sections:
                   - JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus
                   - JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput
                   - JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests
+
+              - id: TestResults-Jun-FidelityLimitations
+                title: The library shall document the known JUnit round-trip fidelity limitations.
+                justification: |
+                  JUnit XML does not have distinct elements for Timeout, Aborted, or DefaultSuite
+                  class names. These limitations must be documented so callers can choose TRX when
+                  full fidelity is required.
+                tests:
+                  - JUnitSerializer_Serialize_ThenDeserialize_TimeoutOutcomeBecomesError
+                  - JUnitSerializer_Serialize_ThenDeserialize_AbortedOutcomeBecomesError
+                  - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails

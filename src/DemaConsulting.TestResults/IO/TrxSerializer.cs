@@ -166,6 +166,7 @@ public static class TrxSerializer
     /// <returns>An XElement containing StdOut, StdErr, and ErrorInfo child elements as appropriate</returns>
     private static XElement CreateOutputElement(TestResult test)
     {
+        // Output element is always written; child elements are written conditionally
         var outputElement = new XElement(TrxNamespace + "Output");
 
         // Add stdout if present
@@ -401,6 +402,8 @@ public static class TrxSerializer
             CodeBase = methodElement.Attribute("codeBase")?.Value ?? string.Empty,
             ClassName = methodElement.Attribute("className")?.Value ?? string.Empty,
             ComputerName = resultElement.Attribute("computerName")?.Value ?? string.Empty,
+            // TRX format limitation: unrecognised outcome values fall back to Failed
+            // to preserve the invariant that a parsed result always has a known outcome.
             Outcome = Enum.TryParse<TestOutcome>(resultElement.Attribute("outcome")?.Value, out var outcome)
                 ? outcome
                 : TestOutcome.Failed,
