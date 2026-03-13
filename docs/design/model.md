@@ -7,9 +7,10 @@ It is deliberately free of serialization concerns — it knows nothing about TRX
 XML — so that it can serve as a neutral interchange format between different serializers
 and consumers.
 
-The model consists of three types:
+The model consists of four types:
 
 - `TestOutcome` — an enumeration of all possible test execution outcomes
+- `TestOutcomeExtensions` — extension methods that classify a `TestOutcome` into logical categories
 - `TestResult` — a single test case result, including timing, output, and error information
 - `TestResults` — a collection of `TestResult` objects representing a complete test run
 

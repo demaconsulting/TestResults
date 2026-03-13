@@ -20,15 +20,17 @@ reviews:
   - id: TestResults-Model
     title: Review of TestResults Model
     paths:
-      - "src/DemaConsulting.TestResults/*.cs"
-      - "!**/obj/**"
-      - "docs/design/model.md"
       - "docs/reqstream/model.yaml"
+      - "docs/design/model.md"
+      - "src/DemaConsulting.TestResults/*.cs"
+      - "test/DemaConsulting.TestResults.Tests/*.cs"
+      - "!**/obj/**"
 
   - id: TestResults-Serialization
     title: Review of TestResults Serialization
     paths:
-      - "src/DemaConsulting.TestResults/IO/**/*.cs"
-      - "!**/obj/**"
-      - "docs/design/serialization.md"
       - "docs/reqstream/serialization.yaml"
+      - "docs/design/serialization.md"
+      - "src/DemaConsulting.TestResults/IO/**/*.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/**/*.cs"
+      - "!**/obj/**"

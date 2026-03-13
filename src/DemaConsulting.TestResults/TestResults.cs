@@ -21,7 +21,7 @@
 namespace DemaConsulting.TestResults;
 
 /// <summary>
-///     TestResults class
+///     Represents a collection of test results for a complete test run.
 /// </summary>
 public sealed class TestResults
 {

@@ -21,7 +21,7 @@
 namespace DemaConsulting.TestResults;
 
 /// <summary>
-///     TestOutcome enum
+///     Defines the possible outcomes for a test case execution.
 /// </summary>
 public enum TestOutcome
 {
