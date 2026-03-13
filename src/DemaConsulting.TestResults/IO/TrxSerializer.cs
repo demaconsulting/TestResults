@@ -358,17 +358,48 @@ public static class TrxSerializer
             nsMgr);
 
         // Build a lookup from UnitTest/@id to its TestMethod element once to avoid O(N^2) scans
-        var testMethodsById = doc
-            .Descendants(TrxNamespace + "UnitTest")
-            .Select(unitTest => new
-            {
-                Id = unitTest.Attribute("id")?.Value,
-                Method = unitTest.Element(TrxNamespace + "TestMethod")
-            })
-            .Where(x => !string.IsNullOrEmpty(x.Id) && x.Method != null)
-            .ToDictionary(x => x.Id!, x => x.Method!);
+        var testMethodsById = BuildTestMethodLookup(doc);
 
         results.Results.AddRange(resultElements.Select(e => ParseTestResult(e, testMethodsById)));
+    }
+
+    /// <summary>
+    ///     Builds a lookup dictionary from <c>UnitTest/@id</c> to its <c>TestMethod</c> element.
+    /// </summary>
+    /// <param name="doc">The XML document containing the TRX file</param>
+    /// <returns>A dictionary mapping each <c>UnitTest/@id</c> value to its corresponding <c>TestMethod</c> element</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the TRX contains duplicate <c>UnitTest/@id</c> values</exception>
+    /// <remarks>
+    ///     TRX files describe each test in a <c>UnitTest</c> element under <c>TestDefinitions</c>.
+    ///     Each <c>UnitTest</c> carries an <c>@id</c> GUID that <c>UnitTestResult</c> elements reference
+    ///     via their <c>@testId</c> attribute.  Building this lookup once per document allows
+    ///     <see cref="ParseTestResult"/> to resolve the <c>@testId</c> in O(1) rather than O(N).
+    /// </remarks>
+    private static Dictionary<string, XElement> BuildTestMethodLookup(XDocument doc)
+    {
+        var lookup = new Dictionary<string, XElement>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var unitTest in doc.Descendants(TrxNamespace + "UnitTest"))
+        {
+            var id = unitTest.Attribute("id")?.Value;
+            var method = unitTest.Element(TrxNamespace + "TestMethod");
+
+            // Skip entries that are missing the id or the TestMethod child
+            if (string.IsNullOrEmpty(id) || method == null)
+            {
+                continue;
+            }
+
+            // Duplicate UnitTest/@id values are a structural error in the TRX file
+            if (lookup.ContainsKey(id!))
+            {
+                throw new InvalidOperationException(InvalidTrxFileMessage);
+            }
+
+            lookup.Add(id!, method);
+        }
+
+        return lookup;
     }
 
     /// <summary>
@@ -402,11 +433,7 @@ public static class TrxSerializer
             CodeBase = methodElement.Attribute("codeBase")?.Value ?? string.Empty,
             ClassName = methodElement.Attribute("className")?.Value ?? string.Empty,
             ComputerName = resultElement.Attribute("computerName")?.Value ?? string.Empty,
-            // TRX format limitation: unrecognized outcome values fall back to Failed
-            // to preserve the invariant that a parsed result always has a known outcome.
-            Outcome = Enum.TryParse<TestOutcome>(resultElement.Attribute("outcome")?.Value, out var outcome)
-                ? outcome
-                : TestOutcome.Failed,
+            Outcome = ParseTestOutcome(resultElement.Attribute("outcome")?.Value),
             StartTime = DateTime.TryParse(
                 resultElement.Attribute("startTime")?.Value,
                 CultureInfo.InvariantCulture,
@@ -433,5 +460,44 @@ public static class TrxSerializer
                 ?.Element(TrxNamespace + "StackTrace")
                 ?.Value ?? string.Empty
         };
+    }
+
+    /// <summary>
+    ///     Parses a TRX outcome attribute string into a <see cref="TestOutcome"/> value.
+    /// </summary>
+    /// <param name="value">The raw string value of the <c>outcome</c> attribute, or <c>null</c> if absent</param>
+    /// <returns>
+    ///     The matching <see cref="TestOutcome"/> enum member, or <see cref="TestOutcome.Failed"/>
+    ///     when the value is absent, unrecognized, or a bare numeric string.
+    /// </returns>
+    /// <remarks>
+    ///     <para>
+    ///         <c>Enum.TryParse</c> accepts both named values (<c>"Passed"</c>, <c>"Failed"</c>, …) and bare
+    ///         numeric strings (<c>"0"</c>, <c>"999"</c>, …).  A bare numeric string that happens to fall
+    ///         outside the defined enum range would produce an undefined enum value, which would
+    ///         violate the invariant that every parsed result has a known outcome.
+    ///     </para>
+    ///     <para>
+    ///         The <c>Enum.IsDefined</c> check rejects numeric strings and any other value that does not
+    ///         correspond to a named, defined member of <see cref="TestOutcome"/>.
+    ///     </para>
+    ///     <para>
+    ///         TRX format limitation: unrecognized outcome values fall back silently to
+    ///         <see cref="TestOutcome.Failed"/> to preserve the invariant that a parsed result
+    ///         always has a known outcome.
+    ///     </para>
+    /// </remarks>
+    private static TestOutcome ParseTestOutcome(string? value)
+    {
+        // Try to parse the raw string into a TestOutcome enum member.
+        // Only accept the result when it is a defined, named member (reject numeric strings).
+        if (Enum.TryParse<TestOutcome>(value, ignoreCase: true, out var outcome) &&
+            Enum.IsDefined(typeof(TestOutcome), outcome))
+        {
+            return outcome;
+        }
+
+        // TRX format limitation: absent or unrecognized outcome values fall back to Failed.
+        return TestOutcome.Failed;
     }
 }
