@@ -22,6 +22,7 @@ reviews:
     paths:
       - "src/DemaConsulting.TestResults/*.cs"
       - "!**/obj/**"
+      - "test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs"
       - "docs/design/model.md"
       - "docs/reqstream/model.yaml"
 
@@ -30,5 +31,9 @@ reviews:
     paths:
       - "src/DemaConsulting.TestResults/IO/**/*.cs"
       - "!**/obj/**"
+      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
       - "docs/design/serialization.md"
       - "docs/reqstream/serialization.yaml"
