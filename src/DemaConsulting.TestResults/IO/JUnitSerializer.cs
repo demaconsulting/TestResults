@@ -19,7 +19,6 @@
 // SOFTWARE.
 
 using System.Globalization;
-using System.Text;
 using System.Xml.Linq;
 
 namespace DemaConsulting.TestResults.IO;
@@ -30,8 +29,14 @@ namespace DemaConsulting.TestResults.IO;
 public static class JUnitSerializer
 {
     /// <summary>
-    ///     Default suite name for tests without a class name
+    ///     Default suite name for tests without a class name.
     /// </summary>
+    /// <remarks>
+    ///     Tests with an empty <see cref="TestResult.ClassName"/> are grouped under this name during
+    ///     serialization, and the name is mapped back to an empty string during deserialization.
+    ///     As a consequence, a test with <see cref="TestResult.ClassName"/> equal to "DefaultSuite"
+    ///     cannot be round-tripped faithfully — it will be deserialized with an empty class name.
+    /// </remarks>
     private const string DefaultSuiteName = "DefaultSuite";
 
     /// <summary>
@@ -88,6 +93,7 @@ public static class JUnitSerializer
     {
         var className = string.IsNullOrEmpty(suiteGroup.Key) ? DefaultSuiteName : suiteGroup.Key;
         var suiteTests = suiteGroup.ToList();
+        var timestamp = suiteTests.Min(t => t.StartTime);
 
         var testSuite = new XElement("testsuite",
             new XAttribute("name", className),
@@ -95,7 +101,8 @@ public static class JUnitSerializer
             new XAttribute("failures", suiteTests.Count(t => t.Outcome == TestOutcome.Failed)),
             new XAttribute("errors", suiteTests.Count(t => IsErrorOutcome(t.Outcome))),
             new XAttribute("skipped", suiteTests.Count(t => !t.Outcome.IsExecuted())),
-            new XAttribute("time", suiteTests.Sum(t => t.Duration.TotalSeconds).ToString(TimeFormatString, CultureInfo.InvariantCulture)));
+            new XAttribute("time", suiteTests.Sum(t => t.Duration.TotalSeconds).ToString(TimeFormatString, CultureInfo.InvariantCulture)),
+            new XAttribute("timestamp", timestamp.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)));
 
         // Add test cases
         testSuite.Add(suiteTests.Select(CreateTestCaseElement));
@@ -240,16 +247,41 @@ public static class JUnitSerializer
     /// <param name="results">The TestResults object to populate with test case data</param>
     private static void ParseTestSuite(XElement testSuiteElement, TestResults results)
     {
+        // Read the optional timestamp attribute from the testsuite element
+        var startTime = TryParseTimestamp(testSuiteElement.Attribute("timestamp")?.Value);
+
         var testCaseElements = testSuiteElement.Elements("testcase");
-        results.Results.AddRange(testCaseElements.Select(ParseTestCase));
+        results.Results.AddRange(testCaseElements.Select(e => ParseTestCase(e, startTime)));
+    }
+
+    /// <summary>
+    ///     Tries to parse an ISO 8601 timestamp string to a UTC DateTime
+    /// </summary>
+    /// <param name="timestampStr">The timestamp string to parse, or null/empty if not available</param>
+    /// <returns>The parsed UTC DateTime, or null if the string is absent or cannot be parsed</returns>
+    private static DateTime? TryParseTimestamp(string? timestampStr)
+    {
+        if (string.IsNullOrWhiteSpace(timestampStr))
+        {
+            return null;
+        }
+
+        return DateTimeOffset.TryParse(
+            timestampStr,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+            out var parsedTimestamp)
+            ? parsedTimestamp.UtcDateTime
+            : null;
     }
 
     /// <summary>
     ///     Parses a test case element
     /// </summary>
     /// <param name="testCaseElement">The testcase XML element to parse</param>
+    /// <param name="startTime">The start time from the enclosing testsuite element, or null if not available</param>
     /// <returns>A TestResult object populated with data from the XML element</returns>
-    private static TestResult ParseTestCase(XElement testCaseElement)
+    private static TestResult ParseTestCase(XElement testCaseElement, DateTime? startTime)
     {
         // Parse basic test case attributes
         var name = testCaseElement.Attribute("name")?.Value ?? string.Empty;
@@ -264,7 +296,7 @@ public static class JUnitSerializer
         var systemError = testCaseElement.Element("system-err")?.Value ?? string.Empty;
 
         // Create test result
-        return new TestResult
+        var result = new TestResult
         {
             Name = name,
             ClassName = className == DefaultSuiteName ? string.Empty : className,
@@ -275,6 +307,14 @@ public static class JUnitSerializer
             SystemOutput = systemOutput,
             SystemError = systemError
         };
+
+        // Apply start time from testsuite if available
+        if (startTime.HasValue)
+        {
+            result.StartTime = startTime.Value;
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -335,14 +375,4 @@ public static class JUnitSerializer
         return (TestOutcome.Passed, string.Empty, string.Empty);
     }
 
-    /// <summary>
-    ///     String writer that uses UTF-8 encoding
-    /// </summary>
-    private sealed class Utf8StringWriter : StringWriter
-    {
-        /// <summary>
-        ///     Gets the UTF-8 encoding
-        /// </summary>
-        public override Encoding Encoding => Encoding.UTF8;
-    }
 }

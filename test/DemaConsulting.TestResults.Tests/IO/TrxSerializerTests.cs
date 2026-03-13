@@ -387,4 +387,188 @@ public sealed class TrxSerializerTests
         var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(whitespaceContents));
         Assert.AreEqual("trxContents", ex.ParamName);
     }
+
+    /// <summary>
+    ///     Test that serialization emits the storage attribute on UnitTest matching CodeBase
+    /// </summary>
+    /// <remarks>
+    ///     Tests that TrxSerializer emits a storage attribute on the UnitTest element and that
+    ///     its value matches the TestResult.CodeBase property, consistent with the de-facto TRX
+    ///     schema where both UnitTest/@storage and TestMethod/@codeBase reference the test assembly.
+    /// </remarks>
+    [TestMethod]
+    public void TrxSerializer_Serialize_WithCodeBase_EmitsStorageAttributeOnUnitTest()
+    {
+        // Arrange - test results with a specific CodeBase
+        var suites = new TestResults
+        {
+            Name = "StorageTest",
+            UserName = "user",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "TestWithCodeBase",
+                    ClassName = "MyClass",
+                    CodeBase = "path/to/MyAssembly.dll",
+                    StartTime = new DateTime(2025, 2, 18, 3, 0, 0, 0, DateTimeKind.Utc),
+                    Duration = TimeSpan.FromSeconds(1.0),
+                    Outcome = TestOutcome.Passed
+                }
+            ]
+        };
+
+        // Act - Serialize the test results
+        var result = TrxSerializer.Serialize(suites);
+        Assert.IsNotNull(result);
+
+        // Assert - Parse and verify the storage attribute on the UnitTest element
+        var doc = XDocument.Parse(result);
+        var nsMgr = new XmlNamespaceManager(new NameTable());
+        nsMgr.AddNamespace("trx", TrxNamespace);
+
+        var unitTest = doc.XPathSelectElement(
+            "/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@name='TestWithCodeBase']", nsMgr);
+        Assert.IsNotNull(unitTest);
+        Assert.AreEqual("path/to/MyAssembly.dll", unitTest.Attribute("storage")?.Value);
+
+        // Also verify TestMethod/@codeBase matches
+        var testMethod = unitTest.XPathSelectElement("trx:TestMethod", nsMgr);
+        Assert.IsNotNull(testMethod);
+        Assert.AreEqual("path/to/MyAssembly.dll", testMethod.Attribute("codeBase")?.Value);
+    }
+
+    /// <summary>
+    ///     Tests that serializing TestResults to TRX and deserializing back preserves all key data.
+    /// </summary>
+    /// <remarks>
+    ///     Proves that serializing TestResults to TRX and deserializing back preserves all key data
+    ///     including run metadata, test properties, outcomes, timing, and output/error information.
+    /// </remarks>
+    [TestMethod]
+    public void TrxSerializer_Serialize_ThenDeserialize_PreservesTestData()
+    {
+        // Arrange - create test results with multiple outcomes and rich data
+        var startTime = new DateTime(2025, 3, 10, 8, 0, 0, DateTimeKind.Utc);
+        var original = new TestResults
+        {
+            Name = "RoundTripRun",
+            UserName = "round.trip.user",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "PassedTest",
+                    ClassName = "Suite.PassedClass",
+                    CodeBase = "path/to/TestAssembly.dll",
+                    ComputerName = "BuildAgent01",
+                    Outcome = TestOutcome.Passed,
+                    StartTime = startTime,
+                    Duration = TimeSpan.FromSeconds(1.5),
+                    SystemOutput = "All good",
+                    SystemError = string.Empty,
+                    ErrorMessage = string.Empty,
+                    ErrorStackTrace = string.Empty
+                },
+                new TestResult
+                {
+                    Name = "FailedTest",
+                    ClassName = "Suite.FailedClass",
+                    CodeBase = "path/to/TestAssembly.dll",
+                    ComputerName = "BuildAgent01",
+                    Outcome = TestOutcome.Failed,
+                    StartTime = startTime.AddSeconds(2),
+                    Duration = TimeSpan.FromSeconds(0.75),
+                    SystemOutput = string.Empty,
+                    SystemError = "err output",
+                    ErrorMessage = "Expected 1 but was 2",
+                    ErrorStackTrace = "at Suite.FailedClass.FailedTest() line 42"
+                },
+                new TestResult
+                {
+                    Name = "ErrorTest",
+                    ClassName = "Suite.ErrorClass",
+                    CodeBase = "path/to/TestAssembly.dll",
+                    ComputerName = "BuildAgent01",
+                    Outcome = TestOutcome.Error,
+                    StartTime = startTime.AddSeconds(4),
+                    Duration = TimeSpan.FromSeconds(0.25),
+                    SystemOutput = string.Empty,
+                    SystemError = string.Empty,
+                    ErrorMessage = "NullReferenceException",
+                    ErrorStackTrace = "at Suite.ErrorClass.ErrorTest() line 17"
+                },
+                new TestResult
+                {
+                    Name = "SkippedTest",
+                    ClassName = "Suite.SkippedClass",
+                    CodeBase = "path/to/TestAssembly.dll",
+                    ComputerName = "BuildAgent01",
+                    Outcome = TestOutcome.NotExecuted,
+                    StartTime = startTime.AddSeconds(6),
+                    Duration = TimeSpan.Zero,
+                    SystemOutput = string.Empty,
+                    SystemError = string.Empty,
+                    ErrorMessage = string.Empty,
+                    ErrorStackTrace = string.Empty
+                }
+            ]
+        };
+
+        // Act - serialize to TRX and then deserialize back
+        var trxContent = TrxSerializer.Serialize(original);
+        var deserialized = TrxSerializer.Deserialize(trxContent);
+
+        // Assert - run metadata is preserved
+        Assert.IsNotNull(deserialized);
+        Assert.AreEqual(original.Name, deserialized.Name);
+        Assert.AreEqual(original.UserName, deserialized.UserName);
+        Assert.HasCount(4, deserialized.Results);
+
+        // Assert - PassedTest properties are preserved
+        var passed = deserialized.Results[0];
+        Assert.AreEqual("PassedTest", passed.Name);
+        Assert.AreEqual("Suite.PassedClass", passed.ClassName);
+        Assert.AreEqual("path/to/TestAssembly.dll", passed.CodeBase);
+        Assert.AreEqual("BuildAgent01", passed.ComputerName);
+        Assert.AreEqual(TestOutcome.Passed, passed.Outcome);
+        Assert.AreEqual(startTime, passed.StartTime);
+        Assert.IsTrue(Math.Abs((passed.Duration - TimeSpan.FromSeconds(1.5)).TotalSeconds) < 0.001);
+        Assert.AreEqual("All good", passed.SystemOutput);
+        Assert.AreEqual(string.Empty, passed.SystemError);
+        Assert.AreEqual(string.Empty, passed.ErrorMessage);
+        Assert.AreEqual(string.Empty, passed.ErrorStackTrace);
+
+        // Assert - FailedTest properties are preserved
+        var failed = deserialized.Results[1];
+        Assert.AreEqual("FailedTest", failed.Name);
+        Assert.AreEqual("Suite.FailedClass", failed.ClassName);
+        Assert.AreEqual("path/to/TestAssembly.dll", failed.CodeBase);
+        Assert.AreEqual("BuildAgent01", failed.ComputerName);
+        Assert.AreEqual(TestOutcome.Failed, failed.Outcome);
+        Assert.AreEqual(startTime.AddSeconds(2), failed.StartTime);
+        Assert.IsTrue(Math.Abs((failed.Duration - TimeSpan.FromSeconds(0.75)).TotalSeconds) < 0.001);
+        Assert.AreEqual(string.Empty, failed.SystemOutput);
+        Assert.AreEqual("err output", failed.SystemError);
+        Assert.AreEqual("Expected 1 but was 2", failed.ErrorMessage);
+        Assert.AreEqual("at Suite.FailedClass.FailedTest() line 42", failed.ErrorStackTrace);
+
+        // Assert - ErrorTest properties are preserved
+        var error = deserialized.Results[2];
+        Assert.AreEqual("ErrorTest", error.Name);
+        Assert.AreEqual("Suite.ErrorClass", error.ClassName);
+        Assert.AreEqual(TestOutcome.Error, error.Outcome);
+        Assert.AreEqual(startTime.AddSeconds(4), error.StartTime);
+        Assert.IsTrue(Math.Abs((error.Duration - TimeSpan.FromSeconds(0.25)).TotalSeconds) < 0.001);
+        Assert.AreEqual("NullReferenceException", error.ErrorMessage);
+        Assert.AreEqual("at Suite.ErrorClass.ErrorTest() line 17", error.ErrorStackTrace);
+
+        // Assert - SkippedTest properties are preserved
+        var skipped = deserialized.Results[3];
+        Assert.AreEqual("SkippedTest", skipped.Name);
+        Assert.AreEqual("Suite.SkippedClass", skipped.ClassName);
+        Assert.AreEqual(TestOutcome.NotExecuted, skipped.Outcome);
+        Assert.AreEqual(startTime.AddSeconds(6), skipped.StartTime);
+        Assert.IsTrue(Math.Abs(skipped.Duration.TotalSeconds) < 0.001);
+    }
 }

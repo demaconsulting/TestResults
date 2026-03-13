@@ -59,7 +59,12 @@ public static class Serializer
     ///     Identifies the test result format based on the contents
     /// </summary>
     /// <param name="contents">The test result file contents</param>
-    /// <returns>The identified test result format</returns>
+    /// <returns>
+    ///     The identified test result format, or <see cref="TestResultFormat.Unknown"/> if the
+    ///     input is null, whitespace, not valid XML, or does not match a known format. Malformed
+    ///     XML and unrecognized XML formats are both reported as <see cref="TestResultFormat.Unknown"/>,
+    ///     and this method does not throw.
+    /// </returns>
     public static TestResultFormat Identify(string contents)
     {
         // Validate input is not null or whitespace

@@ -19,7 +19,6 @@
 // SOFTWARE.
 
 using System.Globalization;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -167,6 +166,7 @@ public static class TrxSerializer
     /// <returns>An XElement containing StdOut, StdErr, and ErrorInfo child elements as appropriate</returns>
     private static XElement CreateOutputElement(TestResult test)
     {
+        // Output element is always written; child elements are written conditionally
         var outputElement = new XElement(TrxNamespace + "Output");
 
         // Add stdout if present
@@ -235,6 +235,7 @@ public static class TrxSerializer
             definitionsElement.Add(
                 new XElement(TrxNamespace + "UnitTest",
                     new XAttribute("name", test.Name),
+                    new XAttribute("storage", test.CodeBase),
                     new XAttribute("id", test.TestId),
                     new XElement(TrxNamespace + "Execution",
                         new XAttribute("id", test.ExecutionId)),
@@ -339,7 +340,7 @@ public static class TrxSerializer
     {
         var runElement = doc.XPathSelectElement("/trx:TestRun", nsMgr) ??
                          throw new InvalidOperationException(InvalidTrxFileMessage);
-        results.Id = Guid.Parse(runElement.Attribute("id")?.Value ?? Guid.NewGuid().ToString());
+        results.Id = Guid.TryParse(runElement.Attribute("id")?.Value, out var runId) ? runId : Guid.NewGuid();
         results.Name = runElement.Attribute("name")?.Value ?? string.Empty;
         results.UserName = runElement.Attribute("runUser")?.Value ?? string.Empty;
     }
@@ -356,46 +357,98 @@ public static class TrxSerializer
             "/trx:TestRun/trx:Results/trx:UnitTestResult",
             nsMgr);
 
-        results.Results.AddRange(resultElements.Select(e => ParseTestResult(doc, nsMgr, e)));
+        // Build a lookup from UnitTest/@id to its TestMethod element once to avoid O(N^2) scans
+        var testMethodsById = BuildTestMethodLookup(doc);
+
+        results.Results.AddRange(resultElements.Select(e => ParseTestResult(e, testMethodsById)));
+    }
+
+    /// <summary>
+    ///     Builds a lookup dictionary from <c>UnitTest/@id</c> to its <c>TestMethod</c> element.
+    /// </summary>
+    /// <param name="doc">The XML document containing the TRX file</param>
+    /// <returns>A dictionary mapping each <c>UnitTest/@id</c> value to its corresponding <c>TestMethod</c> element</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the TRX contains duplicate <c>UnitTest/@id</c> values</exception>
+    /// <remarks>
+    ///     TRX files describe each test in a <c>UnitTest</c> element under <c>TestDefinitions</c>.
+    ///     Each <c>UnitTest</c> carries an <c>@id</c> GUID that <c>UnitTestResult</c> elements reference
+    ///     via their <c>@testId</c> attribute.  Building this lookup once per document allows
+    ///     <see cref="ParseTestResult"/> to resolve the <c>@testId</c> in O(1) rather than O(N).
+    /// </remarks>
+    private static Dictionary<string, XElement> BuildTestMethodLookup(XDocument doc)
+    {
+        var lookup = new Dictionary<string, XElement>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var unitTest in doc.Descendants(TrxNamespace + "UnitTest"))
+        {
+            var id = unitTest.Attribute("id")?.Value ?? string.Empty;
+            var method = unitTest.Element(TrxNamespace + "TestMethod");
+
+            // Skip entries that are missing the id or the TestMethod child
+            if (string.IsNullOrEmpty(id) || method == null)
+            {
+                continue;
+            }
+
+            // Duplicate UnitTest/@id values are a structural error in the TRX file
+            if (lookup.ContainsKey(id))
+            {
+                throw new InvalidOperationException(InvalidTrxFileMessage);
+            }
+
+            lookup.Add(id, method);
+        }
+
+        return lookup;
     }
 
     /// <summary>
     ///     Parses a single UnitTestResult element
     /// </summary>
-    /// <param name="doc">The XML document containing the TRX file</param>
-    /// <param name="nsMgr">The namespace manager with TRX namespace mappings</param>
     /// <param name="resultElement">The UnitTestResult element to parse</param>
+    /// <param name="testMethodsById">
+    ///     A lookup of UnitTest IDs to their corresponding TestMethod elements, built once per document.
+    /// </param>
     /// <returns>A TestResult object populated with data from the XML element</returns>
-    private static TestResult ParseTestResult(XDocument doc, XmlNamespaceManager nsMgr, XElement resultElement)
+    private static TestResult ParseTestResult(
+        XElement resultElement,
+        IReadOnlyDictionary<string, XElement> testMethodsById)
     {
         var testId = resultElement.Attribute("testId") ??
                      throw new InvalidOperationException(InvalidTrxFileMessage);
 
-        var methodElement = doc.XPathSelectElement(
-            $"/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@id='{testId.Value}']/trx:TestMethod",
-            nsMgr) ?? throw new InvalidOperationException(InvalidTrxFileMessage);
+        if (!testMethodsById.TryGetValue(testId.Value, out var methodElement))
+        {
+            throw new InvalidOperationException(InvalidTrxFileMessage);
+        }
 
         var outputElement = resultElement.Element(TrxNamespace + "Output");
         var errorInfoElement = outputElement?.Element(TrxNamespace + "ErrorInfo");
 
+        // Use Guid.NewGuid() fallback to accommodate minor nonconformance in third-party TRX files
+        // that use non-standard or missing GUID values
         return new TestResult
         {
-            TestId = Guid.Parse(testId.Value),
-            ExecutionId = Guid.Parse(
-                resultElement.Attribute("executionId")?.Value ?? Guid.NewGuid().ToString()),
+            TestId = Guid.TryParse(testId.Value, out var parsedTestId) ? parsedTestId : Guid.NewGuid(),
+            ExecutionId = Guid.TryParse(resultElement.Attribute("executionId")?.Value, out var parsedExecutionId) ? parsedExecutionId : Guid.NewGuid(),
             Name = methodElement.Attribute("name")?.Value ?? string.Empty,
             CodeBase = methodElement.Attribute("codeBase")?.Value ?? string.Empty,
             ClassName = methodElement.Attribute("className")?.Value ?? string.Empty,
             ComputerName = resultElement.Attribute("computerName")?.Value ?? string.Empty,
-            Outcome = (TestOutcome)Enum.Parse(typeof(TestOutcome), resultElement.Attribute("outcome")?.Value ?? "Failed"),
-            StartTime = DateTime.Parse(
-                resultElement.Attribute("startTime")?.Value ??
-                DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
+            Outcome = ParseTestOutcome(resultElement.Attribute("outcome")?.Value),
+            StartTime = DateTime.TryParse(
+                resultElement.Attribute("startTime")?.Value,
                 CultureInfo.InvariantCulture,
-                DateTimeStyles.AdjustToUniversal),
-            Duration = TimeSpan.Parse(
-                resultElement.Attribute("duration")?.Value ?? "0",
-                CultureInfo.InvariantCulture),
+                DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal,
+                out var parsedStartTime)
+                ? parsedStartTime
+                : DateTime.UtcNow,
+            Duration = TimeSpan.TryParse(
+                resultElement.Attribute("duration")?.Value,
+                CultureInfo.InvariantCulture,
+                out var parsedDuration)
+                ? parsedDuration
+                : TimeSpan.Zero,
             SystemOutput = outputElement
                 ?.Element(TrxNamespace + "StdOut")
                 ?.Value ?? string.Empty,
@@ -412,13 +465,45 @@ public static class TrxSerializer
     }
 
     /// <summary>
-    ///     String writer that uses UTF-8 encoding
+    ///     Parses a TRX outcome attribute string into a <see cref="TestOutcome"/> value.
     /// </summary>
-    private sealed class Utf8StringWriter : StringWriter
+    /// <param name="value">The raw string value of the <c>outcome</c> attribute, or <c>null</c> if absent</param>
+    /// <returns>
+    ///     The matching <see cref="TestOutcome"/> enum member, or <see cref="TestOutcome.Failed"/>
+    ///     when the value is absent, cannot be parsed, or parses to a value that is not a defined
+    ///     member of <see cref="TestOutcome"/> (including numeric strings whose numeric value does
+    ///     not correspond to any defined member).
+    /// </returns>
+    /// <remarks>
+    ///     <para>
+    ///         <c>Enum.TryParse</c> accepts both named values (<c>"Passed"</c>, <c>"Failed"</c>, …) and bare
+    ///         numeric strings (<c>"0"</c>, <c>"999"</c>, …). A bare numeric string that happens to fall
+    ///         outside the defined enum range would produce an undefined enum value, which would
+        ///         violate the invariant that every parsed result has a known outcome.
+    ///     </para>
+    ///     <para>
+    ///         The <c>Enum.IsDefined</c> check rejects any value that does not correspond to a named,
+    ///         defined member of <see cref="TestOutcome"/>. This includes numeric strings whose numeric
+    ///         value does not match any defined member; numeric strings that do map to a defined member
+    ///         are accepted.
+    ///     </para>
+    ///     <para>
+    ///         TRX format limitation: unrecognized outcome values fall back silently to
+    ///         <see cref="TestOutcome.Failed"/> to preserve the invariant that a parsed result
+    ///         always has a known outcome.
+    ///     </para>
+    /// </remarks>
+    private static TestOutcome ParseTestOutcome(string? value)
     {
-        /// <summary>
-        ///     Gets the UTF-8 encoding
-        /// </summary>
-        public override Encoding Encoding => Encoding.UTF8;
+        // Try to parse the raw string into a TestOutcome enum member.
+        // Only accept the result when it is a defined, named member of the enum.
+        if (Enum.TryParse<TestOutcome>(value, ignoreCase: true, out var outcome) &&
+            Enum.IsDefined(typeof(TestOutcome), outcome))
+        {
+            return outcome;
+        }
+
+        // TRX format limitation: absent or unrecognized outcome values fall back to Failed.
+        return TestOutcome.Failed;
     }
 }

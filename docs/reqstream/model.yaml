@@ -1,0 +1,120 @@
+---
+sections:
+  - title: TestResults Library Requirements
+    sections:
+      - title: Model
+        requirements:
+          - id: TestResults-Mdl-PassedOutcome
+            title: The library shall support the Passed test outcome.
+            justification: |
+              The Passed outcome represents a successful test execution and is the most common test
+              result status. Supporting this outcome is fundamental to accurately representing test
+              results in both TRX and JUnit formats.
+            tests:
+              - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
+
+          - id: TestResults-Mdl-FailedOutcome
+            title: The library shall support the Failed test outcome.
+            justification: |
+              The Failed outcome indicates a test that executed but did not meet its success criteria.
+              This is a critical status for identifying regressions and quality issues, making it
+              essential for any test result representation.
+            tests:
+              - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+
+          - id: TestResults-Mdl-ErrorOutcome
+            title: The library shall support the Error test outcome.
+            justification: |
+              The Error outcome represents tests that encountered an unexpected error or exception
+              during execution, distinct from a normal test failure. This status is important for
+              distinguishing between test logic failures and environmental or system errors, which
+              is a key distinction in both TRX and JUnit formats.
+            tests:
+              - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+              - JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement
+              - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails
+
+          - id: TestResults-Mdl-TimeoutOutcome
+            title: The library shall support the Timeout test outcome.
+            justification: |
+              The Timeout outcome represents tests that exceeded their allotted execution time and
+              were terminated. This status is important for identifying performance issues and tests
+              that hang or run indefinitely, which is critical for maintaining efficient test suites.
+            tests:
+              - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
+              - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+
+          - id: TestResults-Mdl-NotExecutedOutcome
+            title: The library shall support the NotExecuted test outcome.
+            justification: |
+              The NotExecuted outcome represents tests that were not run, which maps to the skipped
+              status in JUnit format. This status provides granular control over test execution
+              tracking and is important for accurate test result reporting in both TRX and JUnit formats.
+            tests:
+              - TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse
+              - JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement
+              - JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus
+              - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
+
+          - id: TestResults-Mdl-InconclusiveOutcome
+            title: The library shall support the Inconclusive test outcome.
+            justification: |
+              The Inconclusive outcome represents tests that executed but did not produce a definitive
+              pass or fail result. This status is important for test frameworks that support
+              inconclusive results and helps distinguish ambiguous test executions from failures.
+            tests:
+              - TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue
+              - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
+
+          - id: TestResults-Mdl-AbortedOutcome
+            title: The library shall support the Aborted test outcome.
+            justification: |
+              The Aborted outcome represents tests that were terminated before completion, typically
+              due to external intervention or system issues. This status is important for tracking
+              test execution integrity and identifying when tests are interrupted abnormally.
+            tests:
+              - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+
+          - id: TestResults-Mdl-PendingOutcome
+            title: The library shall support the Pending test outcome.
+            justification: |
+              The Pending outcome represents tests that are scheduled for execution but have not yet
+              started. This status is important for test frameworks that support asynchronous or
+              deferred test execution and helps track test execution state.
+            tests:
+              - TestOutcome_IsExecuted_InconclusiveOutcome_ReturnsTrue
+              - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
+              - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
+
+          - id: TestResults-Mdl-WarningOutcome
+            title: The library shall support the Warning test outcome.
+            justification: |
+              The Warning outcome represents tests that passed but produced warnings or minor issues.
+              This status allows test frameworks to report tests that completed successfully but may
+              require attention, supporting a more nuanced test result classification.
+            tests:
+              - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
+
+          - id: TestResults-Mdl-TestOutput
+            title: The library shall support capturing test output streams.
+            justification: |
+              Capturing standard output and error streams from tests is essential for debugging
+              test failures and understanding test behavior. This capability enables developers to
+              review console output, diagnostic messages, and error logs directly within test results.
+            tests:
+              - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
+              - JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput
+              - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
+              - Serializer_Deserialize_JUnitWithSystemOutput_ParsesCorrectly
+
+          - id: TestResults-Mdl-ErrorInfo
+            title: The library shall support capturing error messages and stack traces.
+            justification: |
+              Error messages and stack traces are critical for diagnosing test failures. They provide
+              developers with immediate context about what went wrong and where, enabling faster
+              debugging and resolution of issues.
+            tests:
+              - JUnitSerializer_Serialize_FailedTest_IncludesFailureElement
+              - TrxSerializer_Serialize_StackTraceWithoutMessage_IncludesStackTraceElement
+              - JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails
+              - TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults
