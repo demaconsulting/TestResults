@@ -470,14 +470,16 @@ public static class TrxSerializer
     /// <param name="value">The raw string value of the <c>outcome</c> attribute, or <c>null</c> if absent</param>
     /// <returns>
     ///     The matching <see cref="TestOutcome"/> enum member, or <see cref="TestOutcome.Failed"/>
-    ///     when the value is absent, unrecognized, or a bare numeric string.
+    ///     when the value is absent, cannot be parsed, or parses to a value that is not a defined
+    ///     member of <see cref="TestOutcome"/> (including numeric strings whose numeric value does
+    ///     not correspond to any defined member).
     /// </returns>
     /// <remarks>
     ///     <para>
     ///         <c>Enum.TryParse</c> accepts both named values (<c>"Passed"</c>, <c>"Failed"</c>, …) and bare
     ///         numeric strings (<c>"0"</c>, <c>"999"</c>, …). A bare numeric string that happens to fall
     ///         outside the defined enum range would produce an undefined enum value, which would
-    ///         violate the invariant that every parsed result has a known outcome.
+        ///         violate the invariant that every parsed result has a known outcome.
     ///     </para>
     ///     <para>
     ///         The <c>Enum.IsDefined</c> check rejects any value that does not correspond to a named,
