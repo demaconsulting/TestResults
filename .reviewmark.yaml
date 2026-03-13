@@ -23,8 +23,8 @@ reviews:
       - "docs/reqstream/model.yaml"
       - "docs/design/model.md"
       - "src/DemaConsulting.TestResults/*.cs"
-      - "!**/obj/**"
       - "test/DemaConsulting.TestResults.Tests/*.cs"
+      - "!**/obj/**"
 
   - id: TestResults-Serialization
     title: Review of TestResults Serialization
@@ -32,5 +32,5 @@ reviews:
       - "docs/reqstream/serialization.yaml"
       - "docs/design/serialization.md"
       - "src/DemaConsulting.TestResults/IO/**/*.cs"
-      - "!**/obj/**"
       - "test/DemaConsulting.TestResults.Tests/IO/**/*.cs"
+      - "!**/obj/**"
