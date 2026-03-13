@@ -61,9 +61,9 @@ public static class Serializer
     /// <param name="contents">The test result file contents</param>
     /// <returns>
     ///     The identified test result format, or <see cref="TestResultFormat.Unknown"/> if the
-    ///     input is null, whitespace, not valid XML, or does not match a known format.
-    ///     This method never throws; callers that need to distinguish "not XML" from
-    ///     "unknown format" should call <see cref="Deserialize"/> directly.
+    ///     input is null, whitespace, not valid XML, or does not match a known format. Malformed
+    ///     XML and unrecognized XML formats are both reported as <see cref="TestResultFormat.Unknown"/>,
+    ///     and this method does not throw.
     /// </returns>
     public static TestResultFormat Identify(string contents)
     {
