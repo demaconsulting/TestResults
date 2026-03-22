@@ -5,139 +5,191 @@ tools: [edit, read, search, execute]
 user-invocable: true
 ---
 
-# Test Developer - TestResults
+# Test Developer Agent - TestResults
 
-Develop comprehensive unit tests following best practices.
+Develop comprehensive unit and integration tests with emphasis on requirements coverage and
+Continuous Compliance verification.
+
+## Reporting
+
+If detailed documentation of testing activities is needed,
+create a report using the filename pattern `AGENT_REPORT_testing.md` to document test strategies, coverage analysis,
+and validation results.
 
 ## When to Invoke This Agent
 
-Invoke the test-developer for:
+Use the Test Developer Agent for:
 
-- Creating unit tests for individual components
-- Improving test coverage
-- Refactoring existing tests for clarity
+- Creating unit tests for new functionality
+- Writing integration tests for component interactions
+- Improving test coverage for compliance requirements
+- Implementing AAA (Arrange-Act-Assert) pattern tests
+- Generating platform-specific test evidence
+- Upgrading legacy test suites to modern standards
 
-## Responsibilities
+## Primary Responsibilities
 
-### AAA Pattern (Arrange-Act-Assert)
+### Comprehensive Test Coverage Strategy
 
-All tests must follow the AAA pattern with clear sections:
+#### Requirements Coverage (MANDATORY)
+
+- **All requirements MUST have linked tests** - Enforced by ReqStream
+- **Platform-specific tests** must generate evidence with source filters
+- **Test result formats** must be compatible (TRX, JUnit XML)
+- **Coverage tracking** for audit and compliance purposes
+
+#### Test Type Strategy
+
+- **Unit Tests**: Individual component/function behavior
+- **Integration Tests**: Component interaction and data flow
+- **Platform Tests**: Platform-specific functionality validation
+- **Validation Tests**: Self-validation and compliance verification
+
+### AAA Pattern Implementation (MANDATORY)
+
+All tests MUST follow Arrange-Act-Assert pattern for clarity and maintainability:
 
 ```csharp
 [TestMethod]
-public void ClassName_MethodUnderTest_Scenario_ExpectedBehavior()
+public void TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml()
 {
-    // Arrange - Set up test conditions
-    var input = "test data";
-    var expected = "expected result";
-    var component = new Component();
+    // Arrange - Set up test data
+    var testResults = new TestResultsCollection();
+    testResults.Add(new TestResult { Name = "TestMethod", Outcome = TestOutcome.Passed });
 
-    // Act - Execute the behavior being tested
-    var actual = component.Method(input);
+    // Act - Execute the system under test
+    var xml = TrxSerializer.Serialize(testResults);
 
-    // Assert - Verify the results
-    Assert.AreEqual(expected, actual);
+    // Assert - Verify expected outcomes
+    Assert.IsNotNull(xml);
+    Assert.IsTrue(xml.Contains("<UnitTestResult"));
 }
 ```
 
-### Test Documentation
+### Test Naming Standards
 
-- Test name clearly states what is being tested and the scenario
-- Comments document:
-  - What is being tested (the behavior/requirement)
-  - What the assertions prove (the expected outcome)
-  - Any non-obvious setup or conditions
+#### C# Test Naming
 
-### Test Quality
+```csharp
+// Pattern: ClassName_MethodUnderTest_Scenario_ExpectedBehavior
+TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml()
+TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults()
+JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml()
+```
 
-- Tests should be independent and isolated
-- Each test verifies one behavior/scenario
-- Use meaningful test data (avoid magic values)
-- Clear failure messages for assertions
-- Consider edge cases and error conditions
+## Quality Gate Verification
 
-### Tests and Requirements
+### Test Quality Standards
 
-- **All requirements MUST have linked tests** - this is enforced in CI
-- **Not all tests need requirements** - tests may be created for:
-  - Exploring corner cases not explicitly stated in requirements
-  - Testing design decisions and implementation details
-  - Failure-testing and error handling scenarios
-  - Verifying internal behavior beyond requirement scope
+- [ ] All tests follow AAA pattern consistently
+- [ ] Test names clearly describe scenario and expected outcome
+- [ ] Each test validates single, specific behavior
+- [ ] Both happy path and edge cases covered
+- [ ] Platform-specific tests generate appropriate evidence
+- [ ] Test results in standard formats (TRX, JUnit XML)
 
-### Test Source Filters
+### Requirements Traceability
 
-Test links in `requirements.yaml` can include a source filter prefix to restrict which test results count as
-evidence. These filters are critical for platform and framework requirements - **do not remove them**.
+- [ ] Tests linked to specific requirements in requirements.yaml
+- [ ] Source filters applied for platform-specific requirements  
+- [ ] Test coverage adequate for all stated requirements
+- [ ] ReqStream validation passes with linked tests
 
-- `windows@TestName` - proves the test passed on a Windows platform
-- `ubuntu@TestName` - proves the test passed on a Linux (Ubuntu) platform
-- `net8.0@TestName` - proves the test passed under the .NET 8 runtime
-- `net9.0@TestName` - proves the test passed under the .NET 9 runtime
-- `net10.0@TestName` - proves the test passed under the .NET 10 runtime
+### Test Framework Standards
 
-Removing a source filter means a test result from any environment can satisfy the requirement, which invalidates
-the evidence-based proof that the library works on a specific platform or framework.
+#### C# Testing (MSTest V4)
 
-### TestResults-Specific
+```csharp
+[TestClass]
+public class TrxSerializerTests
+{
+    [TestMethod]
+    public void TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml()
+    {
+        // AAA implementation
+    }
+    
+    [TestMethod]
+    public void TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults()
+    {
+        // AAA implementation
+    }
+}
+```
 
-- Unit tests live in `test/` directory
-- Use MSTest V4 testing framework
-- Follow existing naming conventions in the test suite
+## Cross-Agent Coordination
 
-### MSTest V4 Best Practices
+### Hand-off to Other Agents
 
-Common anti-patterns to avoid (not exhaustive):
+- If test quality gates and coverage metrics need verification, then call the @code-quality agent with the **request**
+  to verify test quality gates and coverage metrics with **context** of current test results and **goal** of meeting
+  coverage requirements.
+- If test linkage needs to satisfy requirements traceability, then call the @requirements agent with the **request**
+  to ensure test linkage satisfies requirements traceability with **context** of test coverage and
+  **additional instructions** for maintaining traceability compliance.
+- If testable code structure improvements are needed, then call the @software-developer agent with the **request** to
+  improve testable code structure with **context** of testing challenges and **goal** of enhanced testability.
 
-1. **Avoid Assertions in Catch Blocks (MSTEST0058)** - Instead of wrapping code in try/catch and asserting in the
-   catch block, use `Assert.ThrowsExactly<T>()`:
+## Testing Infrastructure Requirements
 
-   ```csharp
-   var ex = Assert.ThrowsExactly<ArgumentNullException>(() => SomeWork());
-   Assert.Contains("Some message", ex.Message);
-   ```
+### Required Testing Tools
 
-2. **Avoid using Assert.IsTrue / Assert.IsFalse for equality checks** - Use `Assert.AreEqual` /
-   `Assert.AreNotEqual` instead, as it provides better failure messages:
+```xml
+<!-- .NET Testing Dependencies -->
+<PackageReference Include="Microsoft.NET.Test.Sdk" />
+<PackageReference Include="MSTest.TestAdapter" />
+<PackageReference Include="MSTest.TestFramework" />
+<PackageReference Include="coverlet.collector" />
+```
 
-   ```csharp
-   // ❌ Bad: Assert.IsTrue(result == expected);
-   // ✅ Good: Assert.AreEqual(expected, result);
-   ```
+### Test Result Generation
 
-3. **Avoid non-public test classes and methods** - Test classes and `[TestMethod]` methods must be `public` or
-   they will be silently ignored:
+```bash
+# Generate test results with coverage
+dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory TestResults
 
-   ```csharp
-   // ❌ Bad: internal class MyTests
-   // ✅ Good: public class MyTests
-   ```
+# Platform-specific test execution
+dotnet test --configuration Release --framework net8.0 --logger "trx;LogFileName=net8-tests.trx"
+```
 
-4. **Avoid Assert.IsTrue(collection.Count == N)** - Use `Assert.HasCount` for count assertions:
+### CI/CD Integration
 
-   ```csharp
-   // ❌ Bad: Assert.IsTrue(collection.Count == 3);
-   // ✅ Good: Assert.HasCount(3, collection);
-   ```
+```yaml
+# Typical CI pipeline test stage  
+- name: Run Tests
+  run: |
+    dotnet test --configuration Release \
+               --collect:"XPlat Code Coverage" \
+               --logger trx \
+               --results-directory TestResults \
+               --verbosity normal
+    
+- name: Upload Test Results
+  uses: actions/upload-artifact@v8
+  with:
+    name: test-results
+    path: TestResults/**/*.trx
+```
 
-5. **Avoid Assert.IsTrue for string prefix checks** - Use `Assert.StartsWith` instead of wrapping
-   `string.StartsWith` in `Assert.IsTrue`, as it produces clearer failure messages that show the expected prefix
-   and actual value:
+## Compliance Verification Checklist
 
-   ```csharp
-   // ❌ Bad: Assert.IsTrue(value.StartsWith("prefix"));
-   // ✅ Good: Assert.StartsWith("prefix", value);
-   ```
+### Before Completing Test Work
 
-## Defer To
+1. **AAA Pattern**: All tests follow Arrange-Act-Assert structure consistently
+2. **Naming**: Test names clearly describe scenario and expected behavior
+3. **Coverage**: Requirements coverage adequate, platform tests have source filters
+4. **Quality**: Tests pass consistently, no flaky or unreliable tests
+5. **Documentation**: Test intent and coverage clearly documented
+6. **Integration**: Test results compatible with ReqStream and CI/CD pipeline
+7. **Standards**: Follows MSTest testing patterns and conventions
 
-- **Requirements Agent**: For test strategy and coverage requirements
-- **Software Developer Agent**: For production code issues
-- **Technical Writer Agent**: For test documentation in markdown
-- **Code Quality Agent**: For test linting and static analysis
+## Don't Do These Things
 
-## Don't
-
-- Write tests that test multiple behaviors in one test
-- Skip test documentation
-- Create brittle tests with tight coupling to implementation details
+- **Never skip AAA pattern** in test structure (mandatory for consistency)
+- **Never create tests without clear names** (must describe scenario/expectation)
+- **Never write flaky tests** that pass/fail inconsistently
+- **Never test implementation details** (test behavior, not internal mechanics)
+- **Never skip edge cases** and error conditions
+- **Never create tests without requirements linkage** (for compliance requirements)
+- **Never ignore platform-specific test evidence** requirements
+- **Never commit failing tests** (all tests must pass before merge)

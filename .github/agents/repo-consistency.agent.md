@@ -57,7 +57,7 @@ The agent reviews the following areas for consistency with the template:
 
 #### Quality Configuration
 
-- **Linting Rules**: `.cspell.yaml`, `.markdownlint-cli2.yaml`, `.yamllint.yaml`
+- **Linting Rules**: `.cspell.json`, `.markdownlint-cli2.jsonc`, `.yamllint.yaml`
   - Note: Spelling exceptions will be repository-specific
 - **Editor Config**: `.editorconfig` settings (file-scoped namespaces, 4-space indent, UTF-8+BOM, LF endings)
 - **Code Style**: C# code style rules and analyzer configuration
@@ -75,11 +75,10 @@ The agent reviews the following areas for consistency with the template:
 
 - **Document Structure**: `docs/` directory with:
   - `guide/` (user guide)
-  - `requirements/` (auto-generated)
-  - `justifications/` (auto-generated)
-  - `tracematrix/` (auto-generated)
-  - `buildnotes/` (auto-generated)
-  - `quality/` (auto-generated)
+  - `requirements_doc/` (auto-generated)
+  - `requirements_report/` (auto-generated)
+  - `build_notes/` (auto-generated)
+  - `code_quality/` (auto-generated)
 - **Definition Files**: `definition.yaml` files for document generation
 
 ### Tracking Template Evolution

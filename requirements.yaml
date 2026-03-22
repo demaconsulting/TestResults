@@ -8,4 +8,5 @@ includes:
   - docs/reqstream/model.yaml
   - docs/reqstream/serialization.yaml
   - docs/reqstream/runtime.yaml
+  - docs/reqstream/platform-requirements.yaml
   - docs/reqstream/ots-software.yaml

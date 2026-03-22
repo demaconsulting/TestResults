@@ -1,7 +1,7 @@
 ---
 # ReviewMark Configuration File
 # This file defines which files require review, where the evidence store is located,
-# and how files are grouped into named review-sets.
+# and how files are grouped into named review-sets following software unit boundaries.
 
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
@@ -15,6 +15,8 @@ needs-review:
 
 # Evidence source: review data and index.json are located in the root of the 'reviews'
 # branch of this repository, accessed through the GitHub public HTTPS raw content endpoint.
+# Note: The 'reviews' branch must be created and populated with review evidence PDFs
+# and an index.json before enforcement (--enforce flag) can be enabled in the pipeline.
 evidence-source:
   type: url
   location: https://raw.githubusercontent.com/demaconsulting/TestResults/reviews/index.json

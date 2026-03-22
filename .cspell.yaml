@@ -59,17 +59,15 @@ words:
   - pandoctool
   - Pylint
   - Qube
-  - reqstream
   - ReqStream
   - reviewmark
   - ReviewMark
+  - build_notes
   - code_quality
   - code_review_plan
   - code_review_report
   - requirements_doc
   - requirements_report
-  - reviewplan
-  - reviewreport
   - trace_matrix
   - Sarif
   - sarifmark
