@@ -28,6 +28,7 @@ reviews:
     title: Review of TestResults TestOutcome Unit
     paths:
       - "docs/reqstream/unit-test-outcome.yaml"
+      - "docs/design/test-outcome.md"
       - "src/DemaConsulting.TestResults/TestOutcome.cs"
       - "test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs"
 
@@ -35,6 +36,7 @@ reviews:
     title: Review of TestResults TestResult Unit
     paths:
       - "docs/reqstream/unit-test-result.yaml"
+      - "docs/design/test-result.md"
       - "src/DemaConsulting.TestResults/TestResult.cs"
       - "test/DemaConsulting.TestResults.Tests/TestResultTests.cs"
 
@@ -42,6 +44,7 @@ reviews:
     title: Review of TestResults TestResults Unit
     paths:
       - "docs/reqstream/unit-test-results.yaml"
+      - "docs/design/test-results.md"
       - "src/DemaConsulting.TestResults/TestResults.cs"
       - "test/DemaConsulting.TestResults.Tests/TestResultsTests.cs"
 
@@ -49,6 +52,7 @@ reviews:
     title: Review of TestResults Serializer Unit
     paths:
       - "docs/reqstream/unit-serializer.yaml"
+      - "docs/design/serializer.md"
       - "src/DemaConsulting.TestResults/IO/Serializer.cs"
       - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
@@ -57,6 +61,7 @@ reviews:
     title: Review of TestResults TrxSerializer Unit
     paths:
       - "docs/reqstream/unit-trx-serializer.yaml"
+      - "docs/design/trx-serializer.md"
       - "src/DemaConsulting.TestResults/IO/TrxSerializer.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
@@ -66,6 +71,7 @@ reviews:
     title: Review of TestResults JUnitSerializer Unit
     paths:
       - "docs/reqstream/unit-junit-serializer.yaml"
+      - "docs/design/junit-serializer.md"
       - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
 
