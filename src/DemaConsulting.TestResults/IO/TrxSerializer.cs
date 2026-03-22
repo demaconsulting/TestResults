@@ -479,7 +479,7 @@ public static class TrxSerializer
     ///         <c>Enum.TryParse</c> accepts both named values (<c>"Passed"</c>, <c>"Failed"</c>, …) and bare
     ///         numeric strings (<c>"0"</c>, <c>"999"</c>, …). A bare numeric string that happens to fall
     ///         outside the defined enum range would produce an undefined enum value, which would
-        ///         violate the invariant that every parsed result has a known outcome.
+    ///         violate the invariant that every parsed result has a known outcome.
     ///     </para>
     ///     <para>
     ///         The <c>Enum.IsDefined</c> check rejects any value that does not correspond to a named,

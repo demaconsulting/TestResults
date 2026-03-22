@@ -52,7 +52,7 @@ This library is ideal for:
 
 # Continuous Compliance
 
-The TestResults library follows the [Continuous Compliance][continuous-compliance] methodology,
+The TestResults library follows the [Continuous Compliance](https://github.com/demaconsulting/ContinuousCompliance) methodology,
 which ensures compliance evidence is generated automatically on every CI run.
 
 ## Key Practices
@@ -1165,6 +1165,3 @@ Now that you've learned how to use the TestResults library, you can:
 5. **Get support**: Ask questions in [GitHub Discussions](https://github.com/demaconsulting/TestResults/discussions)
 
 Happy testing! 🎉
-
-<!-- Link References -->
-[continuous-compliance]: https://github.com/demaconsulting/ContinuousCompliance

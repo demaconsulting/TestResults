@@ -1,36 +1,94 @@
 ---
 # ReviewMark Configuration File
 # This file defines which files require review, where the evidence store is located,
-# and how files are grouped into named review-sets.
+# and how files are grouped into named review-sets following software unit boundaries.
 
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
 needs-review:
-  - "**/*.cs"
-  - "!**/obj/**"
+  - "**/*.cs"                    # All C# source and test files
+  - "docs/reqstream/**/*.yaml"   # Requirements files
+  - "!**/obj/**"                 # Exclude build output
+  - "!**/bin/**"                 # Exclude build output
+  - "!node_modules/**"           # Exclude npm dependencies
+  - "!**/.venv/**"               # Exclude Python virtual environment
 
 # Evidence source: review data and index.json are located in the root of the 'reviews'
 # branch of this repository, accessed through the GitHub public HTTPS raw content endpoint.
+# Note: The 'reviews' branch must be created and populated with review evidence PDFs
+# and an index.json before enforcement (--enforce flag) can be enabled in the pipeline.
 evidence-source:
   type: url
   location: https://raw.githubusercontent.com/demaconsulting/TestResults/reviews/index.json
 
 # Review sets grouping files by logical unit of review.
 reviews:
-  - id: TestResults-Model
-    title: Review of TestResults Model
+  # Software unit reviews - one per class
+  - id: TestResults-TestOutcome
+    title: Review of TestResults TestOutcome Unit
     paths:
-      - "docs/reqstream/model.yaml"
-      - "docs/design/model.md"
-      - "src/DemaConsulting.TestResults/*.cs"
-      - "test/DemaConsulting.TestResults.Tests/*.cs"
-      - "!**/obj/**"
+      - "docs/reqstream/unit-test-outcome.yaml"
+      - "docs/design/test-outcome.md"
+      - "src/DemaConsulting.TestResults/TestOutcome.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs"
 
-  - id: TestResults-Serialization
-    title: Review of TestResults Serialization
+  - id: TestResults-TestResult
+    title: Review of TestResults TestResult Unit
     paths:
-      - "docs/reqstream/serialization.yaml"
-      - "docs/design/serialization.md"
-      - "src/DemaConsulting.TestResults/IO/**/*.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/**/*.cs"
-      - "!**/obj/**"
+      - "docs/reqstream/unit-test-result.yaml"
+      - "docs/design/test-result.md"
+      - "src/DemaConsulting.TestResults/TestResult.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestResultTests.cs"
+
+  - id: TestResults-TestResults
+    title: Review of TestResults TestResults Unit
+    paths:
+      - "docs/reqstream/unit-test-results.yaml"
+      - "docs/design/test-results.md"
+      - "src/DemaConsulting.TestResults/TestResults.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestResultsTests.cs"
+
+  - id: TestResults-Serializer
+    title: Review of TestResults Serializer Unit
+    paths:
+      - "docs/reqstream/unit-serializer.yaml"
+      - "docs/design/serializer.md"
+      - "src/DemaConsulting.TestResults/IO/Serializer.cs"
+      - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
+
+  - id: TestResults-TrxSerializer
+    title: Review of TestResults TrxSerializer Unit
+    paths:
+      - "docs/reqstream/unit-trx-serializer.yaml"
+      - "docs/design/trx-serializer.md"
+      - "src/DemaConsulting.TestResults/IO/TrxSerializer.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
+
+  - id: TestResults-JUnitSerializer
+    title: Review of TestResults JUnitSerializer Unit
+    paths:
+      - "docs/reqstream/unit-junit-serializer.yaml"
+      - "docs/design/junit-serializer.md"
+      - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
+
+  # Platform and OTS dependency reviews
+  - id: Platform-Runtime
+    title: Review of Platform and Runtime Support Requirements
+    paths:
+      - "docs/reqstream/runtime.yaml"
+      - "docs/reqstream/platform-requirements.yaml"
+
+  - id: OTS-Dependencies
+    title: Review of Off-The-Shelf Software Dependencies
+    paths:
+      - "docs/reqstream/ots-mstest.yaml"
+      - "docs/reqstream/ots-reqstream.yaml"
+      - "docs/reqstream/ots-buildmark.yaml"
+      - "docs/reqstream/ots-versionmark.yaml"
+      - "docs/reqstream/ots-sarifmark.yaml"
+      - "docs/reqstream/ots-sonarmark.yaml"
+      - "docs/reqstream/ots-reviewmark.yaml"
