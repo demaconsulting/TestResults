@@ -154,6 +154,26 @@ public class TestResultTests
     }
 
     /// <summary>
+    ///     Tests that <see cref="TestResult.StartTime" /> defaults to approximately the current UTC time
+    /// </summary>
+    [TestMethod]
+    public void TestResult_StartTime_Default_IsApproximatelyNow()
+    {
+        // Arrange - capture the time before and after creating a TestResult
+        var before = DateTime.UtcNow;
+
+        // Act
+        var result = new TestResult();
+
+        var after = DateTime.UtcNow;
+
+        // Assert - StartTime should be between before and after timestamps
+        Assert.IsTrue(
+            result.StartTime >= before && result.StartTime <= after,
+            $"StartTime {result.StartTime} should be between {before} and {after}");
+    }
+
+    /// <summary>
     ///     Tests that <see cref="TestResult.Duration" /> defaults to <see cref="TimeSpan.Zero" />
     /// </summary>
     [TestMethod]
