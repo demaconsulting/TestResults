@@ -53,7 +53,15 @@ The conversion algorithm:
 This design means that callers do not need to know or specify the format — they simply
 pass the raw content and receive a `TestResults` object.
 
-Round-trip fidelity (serialize → deserialize → same data) is fully preserved for the
-TRX format. For JUnit XML, two known limitations apply (see **JUnit Round-Trip Fidelity**
-in the JUnitSerializer design document), satisfying requirement
-`TestResults-Ser-RoundTrip`.
+## Utf8StringWriter Helper
+
+The `Utf8StringWriter` class is an internal helper that extends `StringWriter` to
+report UTF-8 as its encoding. When `XmlWriter` or `XmlSerializer` writes to a
+`StringWriter`, it reads the writer's `Encoding` property to determine which XML
+declaration encoding to emit. The default `StringWriter` reports UTF-16 (the
+.NET string encoding), which would cause serializers to write `encoding="utf-16"` in the
+XML declaration even when the resulting string is later converted to UTF-8 bytes.
+`Utf8StringWriter` overrides the `Encoding` property to return `Encoding.UTF8`, so
+the XML declaration correctly declares `encoding="UTF-8"`. It is used by both
+`TrxSerializer.Serialize()` and `JUnitSerializer.Serialize()`.
+
