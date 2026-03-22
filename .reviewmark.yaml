@@ -23,20 +23,66 @@ evidence-source:
 
 # Review sets grouping files by logical unit of review.
 reviews:
-  - id: TestResults-Model
-    title: Review of TestResults Model
+  # Software unit reviews - one per class
+  - id: TestResults-TestOutcome
+    title: Review of TestResults TestOutcome Unit
     paths:
-      - "docs/reqstream/model.yaml"
-      - "docs/design/model.md"
-      - "src/DemaConsulting.TestResults/*.cs"
-      - "test/DemaConsulting.TestResults.Tests/*.cs"
-      - "!**/obj/**"
+      - "docs/reqstream/unit-test-outcome.yaml"
+      - "src/DemaConsulting.TestResults/TestOutcome.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs"
 
-  - id: TestResults-Serialization
-    title: Review of TestResults Serialization
+  - id: TestResults-TestResult
+    title: Review of TestResults TestResult Unit
     paths:
-      - "docs/reqstream/serialization.yaml"
-      - "docs/design/serialization.md"
-      - "src/DemaConsulting.TestResults/IO/**/*.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/**/*.cs"
-      - "!**/obj/**"
+      - "docs/reqstream/unit-test-result.yaml"
+      - "src/DemaConsulting.TestResults/TestResult.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestResultTests.cs"
+
+  - id: TestResults-TestResults
+    title: Review of TestResults TestResults Unit
+    paths:
+      - "docs/reqstream/unit-test-results.yaml"
+      - "src/DemaConsulting.TestResults/TestResults.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestResultsTests.cs"
+
+  - id: TestResults-Serializer
+    title: Review of TestResults Serializer Unit
+    paths:
+      - "docs/reqstream/unit-serializer.yaml"
+      - "src/DemaConsulting.TestResults/IO/Serializer.cs"
+      - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
+
+  - id: TestResults-TrxSerializer
+    title: Review of TestResults TrxSerializer Unit
+    paths:
+      - "docs/reqstream/unit-trx-serializer.yaml"
+      - "src/DemaConsulting.TestResults/IO/TrxSerializer.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
+
+  - id: TestResults-JUnitSerializer
+    title: Review of TestResults JUnitSerializer Unit
+    paths:
+      - "docs/reqstream/unit-junit-serializer.yaml"
+      - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
+
+  # Platform and OTS dependency reviews
+  - id: Platform-Runtime
+    title: Review of Platform and Runtime Support Requirements
+    paths:
+      - "docs/reqstream/runtime.yaml"
+      - "docs/reqstream/platform-requirements.yaml"
+
+  - id: OTS-Dependencies
+    title: Review of Off-The-Shelf Software Dependencies
+    paths:
+      - "docs/reqstream/ots-mstest.yaml"
+      - "docs/reqstream/ots-reqstream.yaml"
+      - "docs/reqstream/ots-buildmark.yaml"
+      - "docs/reqstream/ots-versionmark.yaml"
+      - "docs/reqstream/ots-sarifmark.yaml"
+      - "docs/reqstream/ots-sonarmark.yaml"
+      - "docs/reqstream/ots-reviewmark.yaml"
