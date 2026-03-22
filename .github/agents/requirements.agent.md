@@ -1,6 +1,8 @@
 ---
-name: Requirements Agent
-description: Develops requirements and ensures appropriate test coverage - knows which requirements need unit/integration/self-validation tests
+name: requirements
+description: Develops requirements and ensures appropriate test coverage.
+tools: [edit, read, search, execute]
+user-invocable: true
 ---
 
 # Requirements Agent - TestResults

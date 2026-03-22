@@ -22,6 +22,9 @@ coverage/
 # Node.js dependencies
 node_modules/
 
+# Python virtual environment
+.venv/
+
 # Generated documentation
 docs/*.pdf
 docs/guide/*.html

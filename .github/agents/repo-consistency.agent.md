@@ -1,6 +1,8 @@
 ---
-name: Repo Consistency Agent
-description: Ensures downstream repositories remain consistent with the TemplateDotNetLibrary template patterns and best practices
+name: repo-consistency
+description: Ensures downstream repositories remain consistent with the TemplateDotNetLibrary template patterns and best practices.
+tools: [read, search, github]
+user-invocable: true
 ---
 
 # Repo Consistency Agent - TestResults
@@ -55,7 +57,7 @@ The agent reviews the following areas for consistency with the template:
 
 #### Quality Configuration
 
-- **Linting Rules**: `.cspell.json`, `.markdownlint-cli2.jsonc`, `.yamllint.yaml`
+- **Linting Rules**: `.cspell.yaml`, `.markdownlint-cli2.yaml`, `.yamllint.yaml`
   - Note: Spelling exceptions will be repository-specific
 - **Editor Config**: `.editorconfig` settings (file-scoped namespaces, 4-space indent, UTF-8+BOM, LF endings)
 - **Code Style**: C# code style rules and analyzer configuration
@@ -118,7 +120,7 @@ maintain long-term consistency.
 ### What NOT to Flag
 
 - Project-specific naming (tool names, package IDs, repository URLs)
-- Project-specific spell check exceptions in `.cspell.json`
+- Project-specific spell check exceptions in `.cspell.yaml`
 - Workflow variations for specific project needs
 - Additional requirements or features beyond the template
 - Project-specific dependencies

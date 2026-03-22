@@ -5,26 +5,26 @@ programmatically creating test result files in TRX and JUnit formats.
 
 ## Available Specialized Agents
 
-- **Requirements Agent** - Develops requirements and ensures test coverage linkage
-- **Technical Writer** - Creates accurate documentation following regulatory best practices
-- **Software Developer** - Writes production code in literate style
-- **Test Developer** - Creates unit tests following AAA pattern
-- **Code Quality Agent** - Enforces linting, static analysis, and security standards
-- **Code Review Agent** - Assists in performing formal file reviews
-- **Repo Consistency Agent** - Ensures downstream repositories remain consistent with template patterns
+- **requirements** - Develops requirements and ensures test coverage linkage
+- **technical-writer** - Creates accurate documentation following regulatory best practices
+- **software-developer** - Writes production code in literate style
+- **test-developer** - Creates unit tests following AAA pattern
+- **code-quality** - Enforces linting, static analysis, and security standards
+- **code-review** - Assists in performing formal file reviews
+- **repo-consistency** - Ensures downstream repositories remain consistent with template patterns
 
 ## Agent Selection Guide
 
-- Fix a bug → **Software Developer**
-- Add a new feature → **Requirements Agent** → **Software Developer** → **Test Developer**
-- Write a test → **Test Developer**
-- Fix linting or static analysis issues → **Code Quality Agent**
-- Update documentation → **Technical Writer**
-- Add or update requirements → **Requirements Agent**
-- Ensure test coverage linkage in `requirements.yaml` → **Requirements Agent**
-- Run security scanning or address CodeQL alerts → **Code Quality Agent**
-- Perform a formal file review → **Code Review Agent**
-- Propagate template changes → **Repo Consistency Agent**
+- Fix a bug → **software-developer**
+- Add a new feature → **requirements** → **software-developer** → **test-developer**
+- Write a test → **test-developer**
+- Fix linting or static analysis issues → **code-quality**
+- Update documentation → **technical-writer**
+- Add or update requirements → **requirements**
+- Ensure test coverage linkage in `requirements.yaml` → **requirements**
+- Run security scanning or address CodeQL alerts → **code-quality**
+- Perform a formal file review → **code-review**
+- Propagate template changes → **repo-consistency**
 
 ## Tech Stack
 
@@ -34,7 +34,7 @@ programmatically creating test result files in TRX and JUnit formats.
 
 - **`requirements.yaml`** - All requirements with test linkage (enforced via `dotnet reqstream --enforce`)
 - **`.editorconfig`** - Code style (file-scoped namespaces, 4-space indent, UTF-8, LF endings)
-- **`.cspell.json`, `.markdownlint-cli2.jsonc`, `.yamllint.yaml`** - Linting configs
+- **`.cspell.yaml`, `.markdownlint-cli2.yaml`, `.yamllint.yaml`** - Linting configs
 
 ## Requirements
 

@@ -6,8 +6,12 @@
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
 needs-review:
-  - "**/*.cs"
-  - "!**/obj/**"
+  - "**/*.cs"                    # All C# source and test files
+  - "docs/reqstream/**/*.yaml"   # Requirements files
+  - "!**/obj/**"                 # Exclude build output
+  - "!**/bin/**"                 # Exclude build output
+  - "!node_modules/**"           # Exclude npm dependencies
+  - "!**/.venv/**"               # Exclude Python virtual environment
 
 # Evidence source: review data and index.json are located in the root of the 'reviews'
 # branch of this repository, accessed through the GitHub public HTTPS raw content endpoint.

@@ -1,6 +1,8 @@
 ---
-name: Technical Writer
-description: Ensures documentation is accurate and complete - knowledgeable about regulatory documentation and special document types
+name: technical-writer
+description: Ensures documentation is accurate and complete.
+tools: [edit, read, search, execute]
+user-invocable: true
 ---
 
 # Technical Writer - TestResults
@@ -41,7 +43,7 @@ Invoke the technical-writer for:
 #### Linting Requirements
 
 - **markdownlint**: Style and structure compliance
-- **cspell**: Spelling (add technical terms to `.cspell.json`)
+- **cspell**: Spelling (add technical terms to `.cspell.yaml`)
 - **yamllint**: YAML file validation
 
 ### Regulatory Documentation

@@ -1,6 +1,8 @@
 ---
-name: Software Developer
-description: Writes production code and self-validation tests - targets design-for-testability and literate programming style
+name: software-developer
+description: Writes production code and self-validation tests.
+tools: [edit, read, search, execute, github]
+user-invocable: true
 ---
 
 # Software Developer - TestResults
