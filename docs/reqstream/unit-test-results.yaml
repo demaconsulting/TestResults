@@ -18,5 +18,6 @@ sections:
           - TestResults_Id_Default_IsNotEmpty
           - TestResults_Id_TwoInstances_AreUnique
           - TestResults_Name_Default_IsEmpty
+          - TestResults_UserName_Default_IsEmpty
           - TestResults_Results_Default_IsNotNull
           - TestResults_Results_Default_IsEmpty
