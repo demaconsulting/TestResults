@@ -571,4 +571,59 @@ public sealed class TrxSerializerTests
         Assert.AreEqual(startTime.AddSeconds(6), skipped.StartTime);
         Assert.IsTrue(Math.Abs(skipped.Duration.TotalSeconds) < 0.001);
     }
+
+    /// <summary>
+    ///     Test that Deserialize throws InvalidOperationException for TRX with duplicate UnitTest IDs
+    /// </summary>
+    [TestMethod]
+    public void TrxSerializer_Deserialize_DuplicateUnitTestId_ThrowsInvalidOperationException()
+    {
+        // Arrange - TRX with two UnitTest elements sharing the same id
+        var trxWithDuplicateIds =
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+              <Results>
+                <UnitTestResult testId="aaaaaaaa-0000-0000-0000-000000000001" executionId="aaaaaaaa-0000-0000-0000-000000000010" testName="Test1" outcome="Passed" />
+              </Results>
+              <TestDefinitions>
+                <UnitTest name="Test1" id="aaaaaaaa-0000-0000-0000-000000000001">
+                  <TestMethod className="MyClass" name="Test1" />
+                </UnitTest>
+                <UnitTest name="Test1Dup" id="aaaaaaaa-0000-0000-0000-000000000001">
+                  <TestMethod className="MyClass" name="Test1Dup" />
+                </UnitTest>
+              </TestDefinitions>
+            </TestRun>
+            """;
+
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidOperationException>(() => TrxSerializer.Deserialize(trxWithDuplicateIds));
+    }
+
+    /// <summary>
+    ///     Test that Deserialize throws InvalidOperationException when a UnitTestResult references a non-existent testId
+    /// </summary>
+    [TestMethod]
+    public void TrxSerializer_Deserialize_NonExistentTestId_ThrowsInvalidOperationException()
+    {
+        // Arrange - TRX where the UnitTestResult/@testId has no matching UnitTest/@id
+        var trxWithMissingTestId =
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+              <Results>
+                <UnitTestResult testId="aaaaaaaa-0000-0000-0000-000000000099" executionId="aaaaaaaa-0000-0000-0000-000000000010" testName="Test1" outcome="Passed" />
+              </Results>
+              <TestDefinitions>
+                <UnitTest name="Test1" id="aaaaaaaa-0000-0000-0000-000000000001">
+                  <TestMethod className="MyClass" name="Test1" />
+                </UnitTest>
+              </TestDefinitions>
+            </TestRun>
+            """;
+
+        // Act & Assert
+        Assert.ThrowsExactly<InvalidOperationException>(() => TrxSerializer.Deserialize(trxWithMissingTestId));
+    }
 }

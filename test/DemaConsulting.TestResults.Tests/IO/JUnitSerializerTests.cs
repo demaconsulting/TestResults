@@ -1033,4 +1033,82 @@ public sealed class JUnitSerializerTests
         Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
         Assert.AreEqual(TimeSpan.FromSeconds(1.5), results.Results[0].Duration);
     }
+
+    /// <summary>
+    ///     Test that a NotRunnable outcome serializes as a skipped element
+    /// </summary>
+    [TestMethod]
+    public void JUnitSerializer_Serialize_NotRunnableOutcome_IncludesSkippedElement()
+    {
+        // Arrange - test result with NotRunnable outcome
+        var results = new TestResults
+        {
+            Name = "NotRunnableTests",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "NotRunnableTest",
+                    ClassName = "MyTestClass",
+                    Duration = TimeSpan.Zero,
+                    Outcome = TestOutcome.NotRunnable,
+                    ErrorMessage = "Test is not runnable"
+                }
+            ]
+        };
+
+        // Act
+        var xml = JUnitSerializer.Serialize(results);
+        Assert.IsNotNull(xml);
+
+        // Assert - skipped element is present with message and skipped counter is incremented
+        var doc = XDocument.Parse(xml);
+        var testSuite = doc.Root?.Element("testsuite");
+        Assert.IsNotNull(testSuite);
+        Assert.AreEqual("1", testSuite.Attribute("skipped")?.Value);
+        var testCase = testSuite.Element("testcase");
+        Assert.IsNotNull(testCase);
+        var skipped = testCase.Element("skipped");
+        Assert.IsNotNull(skipped);
+        Assert.AreEqual("Test is not runnable", skipped.Attribute("message")?.Value);
+    }
+
+    /// <summary>
+    ///     Test that a Pending outcome serializes as a skipped element
+    /// </summary>
+    [TestMethod]
+    public void JUnitSerializer_Serialize_PendingOutcome_IncludesSkippedElement()
+    {
+        // Arrange - test result with Pending outcome
+        var results = new TestResults
+        {
+            Name = "PendingTests",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "PendingTest",
+                    ClassName = "MyTestClass",
+                    Duration = TimeSpan.Zero,
+                    Outcome = TestOutcome.Pending,
+                    ErrorMessage = "Test is pending"
+                }
+            ]
+        };
+
+        // Act
+        var xml = JUnitSerializer.Serialize(results);
+        Assert.IsNotNull(xml);
+
+        // Assert - skipped element is present with message and skipped counter is incremented
+        var doc = XDocument.Parse(xml);
+        var testSuite = doc.Root?.Element("testsuite");
+        Assert.IsNotNull(testSuite);
+        Assert.AreEqual("1", testSuite.Attribute("skipped")?.Value);
+        var testCase = testSuite.Element("testcase");
+        Assert.IsNotNull(testCase);
+        var skipped = testCase.Element("skipped");
+        Assert.IsNotNull(skipped);
+        Assert.AreEqual("Test is pending", skipped.Attribute("message")?.Value);
+    }
 }

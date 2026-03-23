@@ -47,7 +47,8 @@ Returns `true` when the outcome falls into the *passed* category:
 - `Warning`
 
 All other outcomes return `false`. This satisfies requirements
-`TestResults-Mdl-PassedOutcome`, `TestResults-Mdl-WarningOutcome`.
+`TestResults-Mdl-PassedOutcome`, `TestResults-Mdl-PassedButRunAbortedOutcome`,
+`TestResults-Mdl-WarningOutcome`.
 
 ### IsFailed()
 
@@ -72,4 +73,6 @@ Returns `false` (i.e., the test was **not** executed) for the following outcomes
 
 Returns `true` for all other outcomes, including `Inconclusive`, `InProgress`, and
 `Disconnected`. This satisfies requirements `TestResults-Mdl-NotExecutedOutcome`,
-`TestResults-Mdl-PendingOutcome`, `TestResults-Mdl-InconclusiveOutcome`.
+`TestResults-Mdl-NotRunnableOutcome`, `TestResults-Mdl-PendingOutcome`,
+`TestResults-Mdl-InconclusiveOutcome`, `TestResults-Mdl-CompletedOutcome`,
+`TestResults-Mdl-InProgressOutcome`, `TestResults-Mdl-DisconnectedOutcome`.

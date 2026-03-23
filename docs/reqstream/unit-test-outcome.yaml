@@ -97,3 +97,53 @@ sections:
           require attention, supporting a more nuanced test result classification.
         tests:
           - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
+
+      - id: TestResults-Mdl-PassedButRunAbortedOutcome
+        title: The library shall support the PassedButRunAborted test outcome.
+        justification: |
+          The PassedButRunAborted outcome represents tests that passed individually but were part
+          of a test run that was subsequently aborted. This status is important for distinguishing
+          between tests that succeeded before an abort and those that failed, maintaining accurate
+          test result classification in TRX format.
+        tests:
+          - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
+          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+
+      - id: TestResults-Mdl-NotRunnableOutcome
+        title: The library shall support the NotRunnable test outcome.
+        justification: |
+          The NotRunnable outcome represents tests that could not be executed due to configuration
+          issues, missing dependencies, or other environmental problems. This status is important
+          for identifying test infrastructure issues distinct from skipped tests, which is a key
+          distinction in TRX format.
+        tests:
+          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+
+      - id: TestResults-Mdl-CompletedOutcome
+        title: The library shall support the Completed test outcome.
+        justification: |
+          The Completed outcome represents tests that finished execution, used by some test
+          frameworks to indicate completion without specifying pass or fail. This status is
+          important for compatibility with test frameworks that use this terminology and is
+          referenced in TRX ResultSummary elements.
+        tests:
+          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+
+      - id: TestResults-Mdl-InProgressOutcome
+        title: The library shall support the InProgress test outcome.
+        justification: |
+          The InProgress outcome represents tests that are currently executing. This status is
+          important for test frameworks that report real-time test execution status and allows
+          tracking of long-running tests or tests that may have hung during execution.
+        tests:
+          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+
+      - id: TestResults-Mdl-DisconnectedOutcome
+        title: The library shall support the Disconnected test outcome.
+        justification: |
+          The Disconnected outcome represents tests where the test agent became disconnected during
+          execution. This status is important for distributed test execution scenarios and helps
+          distinguish between test failures and infrastructure failures, which is critical for
+          accurate test result analysis in enterprise environments.
+        tests:
+          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult

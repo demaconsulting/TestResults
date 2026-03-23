@@ -5,7 +5,7 @@ tools: [edit, read, search, execute, github]
 user-invocable: true
 ---
 
-# Software Developer Agent - TestResults
+# Software Developer Agent
 
 Develop production code with emphasis on testability, clarity, and compliance integration.
 
@@ -112,6 +112,13 @@ Before completing any code changes, verify:
 - **Security Scanning**: CodeQL integration for vulnerability detection
 - **Documentation**: XML docs generation for API documentation
 
+### Code Quality Tools Integration
+
+- **SonarQube/SonarCloud**: Continuous code quality monitoring
+- **Build Integration**: Warnings as errors enforcement
+- **IDE Integration**: Real-time feedback on code quality issues
+- **CI/CD Integration**: Automated quality gate enforcement
+
 ## Cross-Agent Coordination
 
 ### Hand-off to Other Agents
@@ -182,24 +189,3 @@ public ProcessingResult ProcessUserData(UserData userData)
 - Implement functionality without requirement traceability
 - Ignore static analysis or security scanning results
 - Write monolithic functions with multiple responsibilities
-
-## Subagent Delegation
-
-If new requirement creation or test strategy is needed, call the @requirements agent with the **request** to define
-requirements or test strategy and the **context** of the feature being developed.
-
-If unit or integration tests are needed, call the @test-developer agent with the **request** to write the tests and
-the **context** of the code to be tested.
-
-If documentation updates are needed, call the @technical-writer agent with the **request** to update the
-documentation and the **context** of what has changed.
-
-If linting, formatting, or static analysis issues arise, call the @code-quality agent with the **request** to
-resolve the issues and the **context** of the errors encountered.
-
-## Don't
-
-- Write code without explanatory comments
-- Create large monolithic functions
-- Skip XML documentation
-- Ignore the literate programming style

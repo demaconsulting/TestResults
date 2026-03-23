@@ -5,7 +5,7 @@ tools: [edit, read, search, execute]
 user-invocable: true
 ---
 
-# Test Developer Agent - TestResults
+# Test Developer Agent
 
 Develop comprehensive unit and integration tests with emphasis on requirements coverage and
 Continuous Compliance verification.
@@ -165,10 +165,67 @@ dotnet test --configuration Release --framework net8.0 --logger "trx;LogFileName
                --verbosity normal
     
 - name: Upload Test Results
-  uses: actions/upload-artifact@v8
+  uses: actions/upload-artifact@v7
   with:
     name: test-results
     path: TestResults/**/*.trx
+```
+
+## Test Development Patterns
+
+### Comprehensive Test Coverage
+
+```csharp
+[TestClass]  
+public class CalculatorTests
+{
+    [TestMethod]
+    public void Calculator_Add_PositiveNumbers_ReturnsSum()
+    {
+        // Happy path test
+    }
+    
+    [TestMethod]
+    public void Calculator_Add_NegativeNumbers_ReturnsSum() 
+    {
+        // Edge case test
+    }
+    
+    [TestMethod]
+    public void Calculator_Divide_ByZero_ThrowsException()
+    {
+        // Error condition test
+    }
+    
+    [TestMethod]
+    public void Calculator_Divide_MaxValues_HandlesOverflow()
+    {
+        // Boundary condition test  
+    }
+}
+```
+
+### Mock and Dependency Testing
+
+```csharp
+[TestMethod]
+public void OrderService_ProcessOrder_ValidOrder_CallsPaymentService()
+{
+    // Arrange - Setup mocks and dependencies
+    var mockPaymentService = Substitute.For<IPaymentService>();
+    var mockInventoryService = Substitute.For<IInventoryService>(); 
+    var orderService = new OrderService(mockPaymentService, mockInventoryService);
+    
+    var testOrder = new Order { ProductId = 1, Quantity = 2, CustomerId = 123 };
+    
+    // Act - Execute the system under test
+    var result = orderService.ProcessOrder(testOrder);
+    
+    // Assert - Verify interactions and outcomes
+    Assert.IsTrue(result.Success);
+    mockPaymentService.Received(1).ProcessPayment(Arg.Any<Payment>());
+    mockInventoryService.Received(1).ReserveItems(1, 2);
+}
 ```
 
 ## Compliance Verification Checklist

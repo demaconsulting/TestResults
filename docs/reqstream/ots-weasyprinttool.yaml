@@ -1,0 +1,24 @@
+---
+# WeasyPrintTool OTS Software Requirements
+#
+# Requirements for the WeasyPrintTool PDF generation tool.
+#
+# TODO: Self-validation support for demaconsulting.weasyprinttool is being worked on.
+#       Once available, uncomment the requirement below and link to the
+#       appropriate self-validation tests.
+
+sections:
+  - title: OTS Software Requirements
+    sections:
+      - title: WeasyPrintTool Requirements
+        # TODO: Add requirement when demaconsulting.weasyprinttool supports --validate
+        # requirements:
+        #   - id: TestResults-OTS-WeasyPrintTool
+        #     title: WeasyPrintTool shall convert HTML documentation to PDF release artifacts.
+        #     justification: |
+        #       DemaConsulting.WeasyPrintTool wraps the WeasyPrint HTML-to-PDF converter to produce
+        #       the design documentation and requirements PDF artifacts included in each release.
+        #       It runs in the documentation-generation job of the CI pipeline on Windows.
+        #     tags: [ots]
+        #     tests:
+        #       - WeasyPrintTool_PdfGeneration

@@ -5,7 +5,7 @@ tools: [edit, read, search, execute]
 user-invocable: true
 ---
 
-# Technical Writer Agent - TestResults
+# Technical Writer Agent
 
 Create and maintain clear, accurate, and
 compliance-ready documentation following regulatory best practices and Continuous Compliance standards.
@@ -72,12 +72,35 @@ docs/
 - **Version Control**: Proper change tracking and approval workflows
 - **Audience Targeting**: Appropriate detail level for intended readers
 
+#### Compliance-Ready Structure
+
+```markdown
+# Document Title
+
+## Purpose
+
+[Why this document exists, what problem it solves]
+
+## Scope  
+
+[What is covered, what is explicitly out of scope]
+
+## References
+
+[Links to related requirements, specifications, standards]
+
+# [Content sections organized logically]
+```
+
 #### Content Longevity Principles
 
 **Avoid Transitory Information**: Long-term documentation should not include information that becomes stale quickly:
 
 - **❌ Avoid**: Tool version numbers, specific counts (requirements, tests, files), current dates, "latest" references
+- **❌ Examples**: "Currently using Node.js 18.2.1", "The system has 47 requirements", "As of March 2024"
 - **✅ Instead**: Reference auto-generated reports, use relative descriptions, focus on stable concepts
+- **✅ Examples**: "See build_notes.md for current tool versions", "The requirements are organized by subsystem",
+  "The architecture follows..."
 
 **Exception**: Include transitory information only when documenting specific releases, version history, or
 when the temporal context is the document's purpose.
@@ -91,6 +114,7 @@ when the temporal context is the document's purpose.
 ```markdown
 <!-- Use absolute URLs for external links - these documents are published/distributed -->
 For more information, see [Continuous Compliance](https://github.com/demaconsulting/ContinuousCompliance).
+Visit our website at https://docs.example.com/project-name
 ```
 
 **CRITICAL**: Published documents (README.md and
@@ -135,6 +159,8 @@ docs/
     definition.yaml    # Pandoc content definition
     title.txt          # Document metadata
     introduction.md    # Document introduction
+    sections/          # Individual content sections
+      sub-section.md   # Sub-section document
 ```
 
 #### Integration with CI/CD Pipeline
@@ -161,6 +187,14 @@ graph TD
     C --> D[Data Layer]
     D --> E[Database]
 ```
+
+### Benefits of Mermaid Integration
+
+- **Version Control**: Diagrams stored as text, enabling proper diff tracking
+- **Maintainability**: Easy to update diagrams alongside code changes
+- **Consistency**: Standardized diagram styling across all documentation
+- **Tooling Support**: Rendered automatically in GitHub, documentation sites, and modern editors
+- **Accessibility**: Text-based format supports screen readers and accessibility tools
 
 ## Quality Gate Verification
 

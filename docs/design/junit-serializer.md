@@ -75,7 +75,8 @@ When deserializing a JUnit document to a `TestResults` object:
 ### JUnit Round-Trip Fidelity
 
 JUnit XML does not have distinct elements for every `TestOutcome` value, so two known
-fidelity limitations apply when round-tripping through JUnit:
+fidelity limitations apply when round-tripping through JUnit. This satisfies requirement
+`TestResults-Ser-RoundTrip` for JUnit, subject to these limitations:
 
 - **`Timeout` and `Aborted` outcomes are not preserved.** Both are serialized as an
   `error` child element (since JUnit has no distinct timeout or aborted element), and

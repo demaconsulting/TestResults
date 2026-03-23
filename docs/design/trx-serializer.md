@@ -79,3 +79,10 @@ When deserializing a TRX document to a `TestResults` object:
 - Throws `InvalidOperationException` if the document structure is invalid: a
   `UnitTestResult` that references a non-existent `testId`, or the `TestDefinitions`
   section contains duplicate `UnitTest/@id` values
+
+### TRX Round-Trip Fidelity
+
+Round-trip fidelity (serialize → deserialize → same data) is fully preserved for the
+TRX format. All `TestResults` and `TestResult` properties that are written during
+serialization are read back identically during deserialization. This satisfies
+requirement `TestResults-Ser-RoundTrip` for TRX.

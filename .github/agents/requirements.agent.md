@@ -5,7 +5,7 @@ tools: [edit, read, search, execute]
 user-invocable: true
 ---
 
-# Requirements Agent - TestResults
+# Requirements Agent
 
 Develop and maintain high-quality requirements with comprehensive test coverage linkage following Continuous
 Compliance methodology for automated evidence generation and audit compliance.
@@ -31,13 +31,13 @@ Use the Requirements Agent for:
 ### Core Principles
 
 The @requirements agent implements the Continuous Compliance methodology
-<https://github.com/demaconsulting/ContinuousCompliance>, which provides automated compliance evidence generation
-through structured requirements management:
+<https://github.com/demaconsulting/ContinuousCompliance>, which provides automated compliance evidence
+generation through structured requirements management:
 
 - **📚 Complete Methodology Documentation:** <https://github.com/demaconsulting/ContinuousCompliance>
 - **📋 Detailed Requirements Guidelines:**
   <https://raw.githubusercontent.com/demaconsulting/ContinuousCompliance/refs/heads/main/docs/requirements.md>
-- **🔧 [ReqStream Tool Documentation]:** <https://github.com/demaconsulting/ReqStream>
+- **🔧 ReqStream Tool Documentation:** <https://github.com/demaconsulting/ReqStream>
 
 #### Automated Evidence Generation
 
@@ -69,22 +69,49 @@ Organize requirements into separate files under `docs/reqstream/` to enable inde
 
 #### Subsystem-Level Requirements
 
-- **File Pattern**: `{subsystem}.yaml` (e.g., `model.yaml`, `serialization.yaml`)
+- **File Pattern**: `{subsystem}-subsystem.yaml` (e.g., `auth-subsystem.yaml`)
 - **Content Focus**: High-level subsystem behavior, interfaces, and integration requirements
 - **Review Scope**: Architectural and subsystem design reviews
+- **Team Assignment**: Can be reviewed independently by subsystem teams
+
+#### Software Unit Requirements  
+
+- **File Pattern**: `{subsystem}-{class}-class.yaml` (e.g., `auth-passwordvalidator-class.yaml`)
+- **Content Focus**: Individual class behavior, method contracts, and invariants
+- **Review Scope**: Code-level implementation reviews
+- **Team Assignment**: Enable focused class-level review processes
 
 #### OTS Software Requirements
 
-- **File Pattern**: `ots-{component}.yaml` (e.g., `ots-software.yaml`)
+- **File Pattern**: `ots-{component}.yaml` (e.g., `ots-systemtextjson.yaml`)
 - **Content Focus**: Required functionality from third-party components, libraries, and frameworks
 - **Review Scope**: Dependency validation and integration testing reviews
-- **Section Structure**: Must use "OTS Software Requirements" as top-level section with component subsections
+- **Team Assignment**: Can be reviewed by teams responsible for external dependency management
+- **Section Structure**: Must use "OTS Software Requirements" as top-level section with component subsections:
 
-#### Platform Requirements
+```yaml
+sections:
+  - title: OTS Software Requirements
+    sections:
+      - title: System.Text.Json
+        requirements:
+          - id: Project-SystemTextJson-ReadJson
+            title: System.Text.Json shall be able to read JSON files.
+            # ... requirements for this OTS component
+      - title: NUnit
+        requirements:
+          - id: Project-NUnit-ParameterizedTests
+            title: NUnit shall support parameterized test methods.
+            # ... requirements for this OTS component
+```
 
-- **File Pattern**: `platform-requirements.yaml` or similar
-- **Content Focus**: Platform and runtime support requirements
-- **Note**: TestResults uses source filters for platform-specific evidence
+#### Benefits for Continuous Compliance
+
+- **Parallel Review Workflows**: Multiple teams can review different subsystems, classes, and OTS components simultaneously
+- **Granular Status Tracking**: Review status maintained at subsystem, class, and OTS dependency level
+- **Scalable Organization**: Supports large projects without requirement file conflicts
+- **Independent Evidence**: Each file provides focused compliance evidence
+- **Dependency Management**: OTS requirements enable systematic third-party component validation
 
 ### Continuous Compliance Enforcement
 
@@ -102,6 +129,7 @@ requirements management operates on these enforcement principles:
 
 - **Pipeline Enforcement**: CI/CD fails on any requirements without test coverage
 - **Documentation Generation**: Automated requirements reports for audit compliance
+- **Regulatory Support**: Meets FDA, DO-178C, ISO 26262, and other regulatory standards
 - **Continuous Monitoring**: Every build verifies requirements compliance status
 
 #### Compliance Documentation
@@ -163,7 +191,21 @@ Before completing any requirements work, verify:
 
 ## ReqStream Tool Integration
 
-### Essential ReqStream Commands
+### ReqStream Overview
+
+ReqStream is the core tool for implementing Continuous Compliance requirements management:
+
+**🔧 ReqStream Repository:** <https://github.com/demaconsulting/ReqStream>
+
+#### Key Capabilities
+
+- **Traceability Enforcement**: `dotnet reqstream --enforce` validates all requirements have test coverage
+- **Multi-Format Support**: Handles TRX, JUnit XML, and other test result formats
+- **Report Generation**: Creates requirements reports, justifications, and trace matrices
+- **Source Filtering**: Validates platform-specific testing requirements
+- **CI/CD Integration**: Provides exit codes for pipeline quality gates
+
+#### Essential ReqStream Commands
 
 ```bash
 # Validate requirements traceability (use in CI/CD)
@@ -176,19 +218,38 @@ dotnet reqstream --requirements requirements.yaml --report docs/requirements_doc
 dotnet reqstream --requirements requirements.yaml --justifications docs/requirements_doc/justifications.md
 
 # Generate trace matrix
-dotnet reqstream --requirements requirements.yaml --tests "test-results/**/*.trx" --tracematrix docs/requirements_report/trace_matrix.md
+dotnet reqstream --requirements requirements.yaml --tests "test-results/**/*.trx" --matrix docs/requirements_report/trace_matrix.md
 ```
 
-### Standard File Structure
+### Required Tools & Configuration
+
+- **ReqStream**: Core requirements traceability and enforcement (`dotnet tool install DemaConsulting.ReqStream`)
+- **yamllint**: YAML structure validation for requirements files  
+- **cspell**: Spell-checking for requirement text and justifications
+
+### Standard File Structure for Review-Set Organization
 
 ```text
 requirements.yaml                    # Root requirements file with includes only
 docs/
   reqstream/                        # Organized requirements files for independent review
-    model.yaml                      # TestResults model requirements
-    serialization.yaml              # Serialization requirements
-    runtime.yaml                    # Runtime requirements
-    ots-software.yaml               # OTS software requirements
+    # System-level requirements
+    system-requirements.yaml        
+    
+    # Subsystem requirements (enable subsystem review-sets)
+    auth-subsystem.yaml            # Authentication subsystem requirements  
+    data-subsystem.yaml            # Data management subsystem requirements
+    ui-subsystem.yaml              # User interface subsystem requirements
+    
+    # Software unit requirements (enable class-level review-sets)
+    auth-passwordvalidator-class.yaml   # PasswordValidator class requirements
+    data-repository-class.yaml          # Repository pattern class requirements
+    ui-controller-class.yaml            # UI Controller class requirements
+    
+    # OTS Software requirements (enable dependency review-sets)
+    ots-systemtextjson.yaml            # System.Text.Json OTS requirements
+    ots-nunit.yaml                     # NUnit framework OTS requirements
+    ots-entityframework.yaml           # Entity Framework OTS requirements
     
   requirements_doc/                 # Pandoc document folder for requirements publication
     definition.yaml                 # Document content definition
@@ -201,6 +262,92 @@ docs/
     title.txt                       # Document metadata
     trace_matrix.md                 # Auto-generated trace matrix
 ```
+
+#### Review-Set Benefits
+
+This file organization enables independent review workflows:
+
+- **Subsystem Reviews**: Each subsystem file can be reviewed independently by different teams
+- **Software Unit Reviews**: Class-level requirements enable focused code reviews
+- **OTS Dependency Reviews**: Third-party component requirements enable systematic dependency validation
+- **Parallel Development**: Teams can work on requirements without conflicts
+- **Granular Tracking**: Review status tracking per subsystem, software unit, and OTS dependency
+- **Scalable Organization**: Supports large projects with multiple development teams
+
+#### Root Requirements File Structure
+
+```yaml
+# requirements.yaml - Root configuration with includes only
+includes:
+  # System and subsystem requirements
+  - docs/reqstream/system-requirements.yaml
+  - docs/reqstream/auth-subsystem.yaml
+  - docs/reqstream/data-subsystem.yaml
+  - docs/reqstream/ui-subsystem.yaml
+  # Software unit requirements (classes)
+  - docs/reqstream/auth-passwordvalidator-class.yaml
+  - docs/reqstream/data-repository-class.yaml
+  - docs/reqstream/ui-controller-class.yaml
+  # OTS Software requirements (third-party components)
+  - docs/reqstream/ots-systemtextjson.yaml
+  - docs/reqstream/ots-nunit.yaml
+  - docs/reqstream/ots-entityframework.yaml
+```
+
+## Continuous Compliance Best Practices
+
+### Requirements Quality Standards
+
+Following Continuous Compliance requirements guidelines
+<https://raw.githubusercontent.com/demaconsulting/ContinuousCompliance/refs/heads/main/docs/requirements.md>:
+
+#### 1. **Observable Behavior Focus**
+
+- Requirements specify WHAT the system shall do, not HOW it should be implemented
+- Focus on externally observable characteristics and behavior
+- Avoid implementation details, design constraints, or technology choices
+
+#### 2. **Testable Acceptance Criteria**
+
+- Each requirement must have clear, measurable acceptance criteria
+- Requirements must be verifiable through automated or manual testing
+- Ambiguous or untestable requirements cause compliance failures
+
+#### 3. **Comprehensive Justification**
+
+- Business rationale explaining why the requirement exists
+- Regulatory or standard references where applicable
+- Risk mitigation or quality improvement justification
+
+#### 4. **Semantic Requirement IDs**
+
+- Use meaningful IDs: `TestProject-CommandLine-DisplayHelp` instead of `REQ-042`
+- Follow `Project-Section-ShortDesc` pattern for clarity
+- Enable better requirement organization and traceability
+
+### Platform-Specific Requirements
+
+Critical for regulatory compliance in multi-platform environments:
+
+#### Source Filter Implementation
+
+```yaml
+requirements:
+  - id: Platform-Windows-Compatibility
+    title: Windows Platform Support
+    description: The software shall operate on Windows 10 and later versions
+    tests:
+      - windows@PlatformTests.TestWindowsCompatibility  # MUST run on Windows
+      
+  - id: Target-IAR-Build  
+    title: IAR Compiler Compatibility
+    description: The firmware shall compile successfully with IAR C compiler
+    tests:
+      - iar@CompilerTests.TestIarBuild  # MUST use IAR toolchain
+```
+
+**WARNING**: Source filters are REQUIRED for platform-specific compliance evidence.
+Removing them invalidates regulatory audit trails.
 
 ## Cross-Agent Coordination
 
@@ -238,10 +385,3 @@ docs/
 - Skip justification text (required for compliance audits)
 - Change test code directly (delegate to @test-developer agent)
 - Modify CI/CD enforcement thresholds without compliance review
-
-## Don't
-
-- Mix requirements with implementation details
-- Create requirements without test linkage
-- Expect all tests to be linked to requirements (some tests exist for other purposes)
-- Change code directly (delegate to developer agents)
