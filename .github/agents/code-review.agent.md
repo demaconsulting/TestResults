@@ -5,7 +5,7 @@ tools: [read, search, github]
 user-invocable: true
 ---
 
-# Code Review Agent - TestResults
+# Code Review Agent
 
 Coordinate and execute comprehensive code reviews with emphasis on structured compliance verification and
 file review status requirements.
