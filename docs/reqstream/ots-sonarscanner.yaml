@@ -2,23 +2,24 @@
 # SonarScanner OTS Software Requirements
 #
 # Requirements for the SonarScanner for .NET code analysis tool.
+#
+# TODO: Self-validation support for dotnet-sonarscanner is being worked on.
+#       Once available, uncomment the requirements below and link to the
+#       appropriate self-validation tests.
 
-sections:
-  - title: OTS Software Requirements
-    sections:
-      - title: SonarScanner Requirements
-        requirements:
-          - id: TestResults-OTS-SonarScanner
-            title: SonarScanner shall upload code analysis results to SonarCloud.
-            justification: |
-              dotnet-sonarscanner wraps the build process (begin/end) to collect and upload
-              code coverage, static analysis, and quality metrics to SonarCloud. SonarMark
-              then retrieves those results from SonarCloud to generate the quality report. A
-              successful SonarMark quality-gate retrieval is evidence that SonarScanner
-              executed correctly and uploaded results to SonarCloud.
-            tags: [ots]
-            tests:
-              - SonarMark_QualityGateRetrieval
-              - SonarMark_IssuesRetrieval
-              - SonarMark_HotSpotsRetrieval
-              - SonarMark_MarkdownReportGeneration
+# sections:
+#   - title: OTS Software Requirements
+#     sections:
+#       - title: SonarScanner Requirements
+#         requirements:
+#           - id: TestResults-OTS-SonarScanner
+#             title: SonarScanner shall upload code analysis results to SonarCloud.
+#             justification: |
+#               dotnet-sonarscanner wraps the build process (begin/end) to collect and upload
+#               code coverage, static analysis, and quality metrics to SonarCloud. SonarMark
+#               then retrieves those results from SonarCloud to generate the quality report. A
+#               successful SonarMark quality-gate retrieval is evidence that SonarScanner
+#               executed correctly and uploaded results to SonarCloud.
+#             tags: [ots]
+#             tests:
+#               # TODO: Add self-validation tests when dotnet-sonarscanner supports --validate
