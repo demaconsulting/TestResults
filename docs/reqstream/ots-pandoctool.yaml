@@ -1,0 +1,22 @@
+---
+# PandocTool OTS Software Requirements
+#
+# Requirements for the PandocTool document conversion tool.
+
+sections:
+  - title: OTS Software Requirements
+    sections:
+      - title: PandocTool Requirements
+        requirements:
+          - id: TestResults-OTS-PandocTool
+            title: PandocTool shall convert markdown documentation to HTML for PDF generation.
+            justification: |
+              DemaConsulting.PandocTool wraps the Pandoc document converter to transform markdown
+              design and requirements documents into HTML files used as input for WeasyPrint PDF
+              generation. It runs in the documentation-generation job of the CI pipeline on
+              Windows. VersionMark self-validation runs in the same CI job, so passing VersionMark
+              tests on Windows are evidence that PandocTool executed without error.
+            tags: [ots]
+            tests:
+              - "windows@VersionMark_CapturesVersions"
+              - "windows@VersionMark_GeneratesMarkdownReport"
