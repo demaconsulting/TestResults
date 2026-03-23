@@ -18,4 +18,8 @@ sections:
               --enforce proves all requirements are covered and that ReqStream is functioning.
             tags: [ots]
             tests:
+              - ReqStream_RequirementsProcessing
+              - ReqStream_TraceMatrix
+              - ReqStream_ReportExport
+              - ReqStream_TagsFiltering
               - ReqStream_EnforcementMode

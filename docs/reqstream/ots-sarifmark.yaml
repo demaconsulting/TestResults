@@ -19,3 +19,4 @@ sections:
             tests:
               - SarifMark_SarifReading
               - SarifMark_MarkdownReportGeneration
+              - SarifMark_Enforcement

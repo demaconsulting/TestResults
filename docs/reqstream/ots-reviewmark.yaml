@@ -17,5 +17,11 @@ sections:
               results, so a successful pipeline run is evidence that ReviewMark executed without error.
             tags: [ots]
             tests:
+              - ReviewMark_VersionDisplay
+              - ReviewMark_HelpDisplay
               - ReviewMark_ReviewPlanGeneration
               - ReviewMark_ReviewReportGeneration
+              - ReviewMark_IndexScan
+              - ReviewMark_WorkingDirectoryOverride
+              - ReviewMark_Enforce
+              - ReviewMark_Elaborate
