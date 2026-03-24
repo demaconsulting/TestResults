@@ -273,6 +273,8 @@ We welcome contributions! Please see our [Contributing Guide][contributing] for 
 
 This project is licensed under the MIT License - see the [LICENSE][link-license] file for details.
 
+By contributing to this project, you agree that your contributions will be licensed under the MIT License.
+
 ## Support
 
 - 📝 [Report a Bug](https://github.com/demaconsulting/TestResults/issues/new?labels=bug)
