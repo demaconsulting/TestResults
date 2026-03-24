@@ -10,8 +10,8 @@
 sections:
   - title: OTS Software Requirements
     sections:
+      # TODO: Add requirement when demaconsulting.pandoctool supports --validate
       - title: PandocTool Requirements
-        # TODO: Add requirement when demaconsulting.pandoctool supports --validate
         # requirements:
         #   - id: TestResults-OTS-PandocTool
         #     title: PandocTool shall convert markdown documentation to HTML for PDF generation.

@@ -10,8 +10,8 @@
 sections:
   - title: OTS Software Requirements
     sections:
+      # TODO: Add requirement when dotnet-sonarscanner supports --validate
       - title: SonarScanner Requirements
-        # TODO: Add requirement when dotnet-sonarscanner supports --validate
         # requirements:
         #   - id: TestResults-OTS-SonarScanner
         #     title: SonarScanner shall upload code analysis results to SonarCloud.

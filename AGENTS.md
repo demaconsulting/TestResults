@@ -177,6 +177,93 @@ This repository follows continuous compliance practices from DEMA Consulting Con
 
 For detailed requirements format, test linkage patterns, and ReqStream integration, call the @requirements agent.
 
+## MSTest Best Practices
+
+When writing or reviewing tests, follow these MSTest V4 best practices to avoid common antipatterns.
+
+### Antipatterns to Avoid
+
+#### MSTEST0058 — Assertions in Catch Blocks
+
+Do not place assertions in catch blocks. Use `Assert.ThrowsExactly()` instead:
+
+```csharp
+// ❌ Bad: Assertion in catch block
+try
+{
+    SomeMethod();
+    Assert.Fail("Expected exception");
+}
+catch (InvalidOperationException)
+{
+    // passes silently
+}
+
+// ✅ Good: Use Assert.ThrowsExactly
+Assert.ThrowsExactly<InvalidOperationException>(() => SomeMethod());
+```
+
+#### Prefer Specific Assertions Over Assert.IsTrue/IsFalse
+
+Using `Assert.IsTrue`/`Assert.IsFalse` for equality checks produces poor failure messages. Use specific assertions:
+
+```csharp
+// ❌ Bad: Poor failure message
+Assert.IsTrue(result == 42);
+Assert.IsFalse(result != 42);
+
+// ✅ Good: Rich failure message with expected/actual values
+Assert.AreEqual(42, result);
+Assert.AreNotEqual(0, result);
+```
+
+#### Use Assert.HasCount for Collections
+
+Do not use `Assert.IsTrue` for collection count checks:
+
+```csharp
+// ❌ Bad: Poor failure message
+Assert.IsTrue(collection.Count == 3);
+
+// ✅ Good: Rich failure message
+Assert.HasCount(3, collection);
+```
+
+#### Use Assert.StartsWith for Prefix Checks
+
+Do not use `Assert.IsTrue(value.StartsWith(...))` — use the dedicated assertion:
+
+```csharp
+// ❌ Bad: Poor failure message
+Assert.IsTrue(value.StartsWith("prefix"));
+
+// ✅ Good: Rich failure message showing expected prefix and actual value
+Assert.StartsWith("prefix", value);
+```
+
+#### Non-Public Test Classes and Methods Are Silently Ignored
+
+MSTest silently ignores non-public test classes and test methods — no warning or error is produced:
+
+```csharp
+// ❌ Bad: Silently ignored by the test runner
+class MyTests  // missing public modifier
+{
+    [TestMethod]
+    void TestSomething()  // missing public modifier
+    { }
+}
+
+// ✅ Good: Properly visible to the test runner
+[TestClass]
+public class MyTests
+{
+    [TestMethod]
+    public void TestSomething()
+    { }
+}
+```
+
 ## Agent Report Files
 
 When agents need to write report files to communicate with each other or the user, follow these guidelines:

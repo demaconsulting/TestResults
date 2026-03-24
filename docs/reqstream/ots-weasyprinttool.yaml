@@ -10,8 +10,8 @@
 sections:
   - title: OTS Software Requirements
     sections:
+      # TODO: Add requirement when demaconsulting.weasyprinttool supports --validate
       - title: WeasyPrintTool Requirements
-        # TODO: Add requirement when demaconsulting.weasyprinttool supports --validate
         # requirements:
         #   - id: TestResults-OTS-WeasyPrintTool
         #     title: WeasyPrintTool shall convert HTML documentation to PDF release artifacts.
