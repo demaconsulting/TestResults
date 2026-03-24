@@ -59,6 +59,7 @@ words:
   - pandoctool
   - Pylint
   - Qube
+  - reqstream
   - ReqStream
   - reviewmark
   - ReviewMark
