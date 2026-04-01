@@ -108,6 +108,7 @@ public static class TestOutcomeExtensions
     /// <returns>True if the outcome indicates a pass</returns>
     public static bool IsPassed(this TestOutcome outcome)
     {
+        // Return true for outcomes indicating successful test completion
         return outcome switch
         {
             TestOutcome.Passed => true,
@@ -124,6 +125,7 @@ public static class TestOutcomeExtensions
     /// <returns>True if the outcome indicates a fail</returns>
     public static bool IsFailed(this TestOutcome outcome)
     {
+        // Return true for outcomes indicating test execution errors or failures
         return outcome switch
         {
             TestOutcome.Failed => true,
@@ -141,6 +143,7 @@ public static class TestOutcomeExtensions
     /// <returns>True if the outcome indicates the test was executed</returns>
     public static bool IsExecuted(this TestOutcome outcome)
     {
+        // Return false only for outcomes where the test never started execution
         return outcome switch
         {
             TestOutcome.NotRunnable => false,

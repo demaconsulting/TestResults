@@ -11,15 +11,15 @@ sections:
   - title: OTS Software Requirements
     sections:
       # TODO: Add requirement when demaconsulting.pandoctool supports --validate
+      # requirements:
+      #   - id: TestResults-OTS-PandocTool
+      #     title: PandocTool shall convert markdown documentation to HTML for PDF generation.
+      #     justification: |
+      #       DemaConsulting.PandocTool wraps the Pandoc document converter to transform markdown
+      #       design and requirements documents into HTML files used as input for WeasyPrint PDF
+      #       generation. It runs in the documentation-generation job of the CI pipeline on
+      #       Windows.
+      #     tags: [ots]
+      #     tests:
+      #       - PandocTool_DocumentConversion
       - title: PandocTool Requirements
-        # requirements:
-        #   - id: TestResults-OTS-PandocTool
-        #     title: PandocTool shall convert markdown documentation to HTML for PDF generation.
-        #     justification: |
-        #       DemaConsulting.PandocTool wraps the Pandoc document converter to transform markdown
-        #       design and requirements documents into HTML files used as input for WeasyPrint PDF
-        #       generation. It runs in the documentation-generation job of the CI pipeline on
-        #       Windows.
-        #     tags: [ots]
-        #     tests:
-        #       - PandocTool_DocumentConversion

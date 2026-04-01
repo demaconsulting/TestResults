@@ -208,6 +208,7 @@ public static class JUnitSerializer
     /// <returns>Test Results</returns>
     /// <exception cref="ArgumentNullException">Thrown when junitContents is null</exception>
     /// <exception cref="ArgumentException">Thrown when junitContents is whitespace</exception>
+    /// <exception cref="System.Xml.XmlException">Thrown when junitContents is not well-formed XML</exception>
     /// <exception cref="InvalidOperationException">Thrown when the XML structure is invalid</exception>
     public static TestResults Deserialize(string junitContents)
     {

@@ -306,6 +306,7 @@ public static class TrxSerializer
     /// <returns>Test Results</returns>
     /// <exception cref="ArgumentNullException">Thrown when trxContents is null</exception>
     /// <exception cref="ArgumentException">Thrown when trxContents is whitespace</exception>
+    /// <exception cref="System.Xml.XmlException">Thrown when trxContents is not well-formed XML</exception>
     /// <exception cref="InvalidOperationException">Thrown when the TRX structure is invalid</exception>
     public static TestResults Deserialize(string trxContents)
     {

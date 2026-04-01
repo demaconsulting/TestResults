@@ -34,6 +34,9 @@ public class TestOutcomeTests
     [TestMethod]
     public void TestOutcome_IsPassed_PassedOutcome_ReturnsTrue()
     {
+        // Arrange - all TestOutcome enum values
+
+        // Act and Assert - verify only Passed, PassedButRunAborted, and Warning return true
         Assert.IsFalse(TestOutcome.Error.IsPassed());
         Assert.IsFalse(TestOutcome.Failed.IsPassed());
         Assert.IsFalse(TestOutcome.Timeout.IsPassed());
@@ -56,6 +59,9 @@ public class TestOutcomeTests
     [TestMethod]
     public void TestOutcome_IsFailed_FailedOutcome_ReturnsTrue()
     {
+        // Arrange - all TestOutcome enum values
+
+        // Act and Assert - verify only Error, Failed, Timeout, and Aborted return true
         Assert.IsTrue(TestOutcome.Error.IsFailed());
         Assert.IsTrue(TestOutcome.Failed.IsFailed());
         Assert.IsTrue(TestOutcome.Timeout.IsFailed());
@@ -78,6 +84,9 @@ public class TestOutcomeTests
     [TestMethod]
     public void TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult()
     {
+        // Arrange - all TestOutcome enum values
+
+        // Act and Assert - verify NotRunnable, NotExecuted, and Pending return false
         Assert.IsTrue(TestOutcome.Error.IsExecuted());
         Assert.IsTrue(TestOutcome.Failed.IsExecuted());
         Assert.IsTrue(TestOutcome.Timeout.IsExecuted());
