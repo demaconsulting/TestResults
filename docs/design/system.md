@@ -12,43 +12,33 @@ The TestResults library uses a layered architecture:
 
 ```mermaid
 graph TD
-    A[Calling Code]
+    CallingCode[Calling Code]
 
     subgraph IO["IO Subsystem (Serialization)"]
-        B[Serializer facade]
-        C[TrxSerializer]
-        D[JUnitSerializer]
+        Serializer[Serializer facade]
+        TrxSerializer[TrxSerializer]
+        JUnitSerializer[JUnitSerializer]
     end
 
     subgraph Model["Model Layer"]
-        E[TestResults]
-        F[TestResult]
-        G[TestOutcome]
+        TestResults[TestResults]
+        TestResult[TestResult]
+        TestOutcome[TestOutcome]
     end
 
-    A --> B
-    B --> C
-    B --> D
-    C --> E
-    D --> E
-    E --> F
-    F --> G
+    CallingCode --> Serializer
+    Serializer --> TrxSerializer
+    Serializer --> JUnitSerializer
+    TrxSerializer --> TestResults
+    JUnitSerializer --> TestResults
+    TestResults --> TestResult
+    TestResult --> TestOutcome
 ```
 
 ## Software Items
 
-The TestResults system contains the following software items:
-
-```text
-TestResults Library (System)
-├── IO (Subsystem)
-│   ├── Serializer (Unit)
-│   ├── TrxSerializer (Unit)
-│   └── JUnitSerializer (Unit)
-├── TestOutcome (Unit)
-├── TestResult (Unit)
-└── TestResults (Unit)
-```
+The software items in the TestResults system are described in the
+[introduction](introduction.md#software-structure).
 
 ## External Interfaces
 
