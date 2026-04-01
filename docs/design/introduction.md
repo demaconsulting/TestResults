@@ -50,23 +50,20 @@ This document describes the intent and structure of that code; any discrepancy b
 this document and the code should be resolved by updating this document to reflect the
 actual implementation, or by raising a defect against the code.
 
-[user-guide]: https://github.com/demaconsulting/TestResults
-[requirements-doc]: https://github.com/demaconsulting/TestResults
-
 ## Software Structure
 
 The TestResults library is organized as follows:
 
-| Item | Type | Description |
-| ---- | ---- | ----------- |
-| TestResults Library | System | Complete test result I/O library |
-| IO | Subsystem | Serialization and format detection |
-| Serializer | Unit | Format-detection facade |
-| TrxSerializer | Unit | TRX format read/write |
-| JUnitSerializer | Unit | JUnit XML format read/write |
-| TestOutcome | Unit | Test outcome enumeration |
-| TestResult | Unit | Single test result data |
-| TestResults | Unit | Collection of test results |
+```text
+TestResults Library (System)
+├── IO (Subsystem)
+│   ├── Serializer (Unit)
+│   ├── TrxSerializer (Unit)
+│   └── JUnitSerializer (Unit)
+├── TestOutcome (Unit)
+├── TestResult (Unit)
+└── TestResults (Unit)
+```
 
 ## Folder Layout
 
@@ -74,12 +71,15 @@ The source code is organized to mirror the design documentation structure:
 
 ```text
 src/DemaConsulting.TestResults/
-├── IO/                    (IO Subsystem)
-│   ├── Serializer.cs
-│   ├── SerializerHelpers.cs
-│   ├── TrxSerializer.cs
-│   └── JUnitSerializer.cs
-├── TestOutcome.cs
-├── TestResult.cs
-└── TestResults.cs
+├── IO/                          — IO Subsystem
+│   ├── Serializer.cs            — Format-detection facade
+│   ├── SerializerHelpers.cs     — Internal UTF-8 writer helper
+│   ├── TrxSerializer.cs         — TRX format read/write
+│   └── JUnitSerializer.cs       — JUnit XML format read/write
+├── TestOutcome.cs               — Test outcome enumeration
+├── TestResult.cs                — Single test result data
+└── TestResults.cs               — Collection of test results
 ```
+
+[user-guide]: https://github.com/demaconsulting/TestResults
+[requirements-doc]: https://github.com/demaconsulting/TestResults

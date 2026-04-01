@@ -10,38 +10,45 @@ format-specific serialization implementations.
 
 The TestResults library uses a layered architecture:
 
-```text
-┌─────────────────────────────────────────────────┐
-│                 Calling Code                    │
-├─────────────────────────────────────────────────┤
-│              IO Subsystem (Serialization)        │
-│  ┌─────────────┐  ┌──────────────┐  ┌────────┐  │
-│  │  Serializer │  │TrxSerializer │  │JUnit   │  │
-│  │  (facade)   │  │              │  │Ser.    │  │
-│  └─────────────┘  └──────────────┘  └────────┘  │
-├─────────────────────────────────────────────────┤
-│              Model Layer                        │
-│  ┌─────────────┐  ┌──────────────┐  ┌────────┐  │
-│  │ TestResults │  │  TestResult  │  │TestOut │  │
-│  │ (collection)│  │  (one test)  │  │come    │  │
-│  └─────────────┘  └──────────────┘  └────────┘  │
-└─────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    A[Calling Code]
+
+    subgraph IO["IO Subsystem (Serialization)"]
+        B[Serializer facade]
+        C[TrxSerializer]
+        D[JUnitSerializer]
+    end
+
+    subgraph Model["Model Layer"]
+        E[TestResults]
+        F[TestResult]
+        G[TestOutcome]
+    end
+
+    A --> B
+    B --> C
+    B --> D
+    C --> E
+    D --> E
+    E --> F
+    F --> G
 ```
 
 ## Software Items
 
 The TestResults system contains the following software items:
 
-| Item | Type | Description |
-| ---- | ---- | ----------- |
-| TestResults Library | System | Complete test result I/O library |
-| IO | Subsystem | Serialization and format detection |
-| Serializer | Unit | Format-detection facade |
-| TrxSerializer | Unit | TRX format read/write |
-| JUnitSerializer | Unit | JUnit XML format read/write |
-| TestOutcome | Unit | Test outcome enumeration |
-| TestResult | Unit | Single test result data |
-| TestResults | Unit | Collection of test results |
+```text
+TestResults Library (System)
+├── IO (Subsystem)
+│   ├── Serializer (Unit)
+│   ├── TrxSerializer (Unit)
+│   └── JUnitSerializer (Unit)
+├── TestOutcome (Unit)
+├── TestResult (Unit)
+└── TestResults (Unit)
+```
 
 ## External Interfaces
 

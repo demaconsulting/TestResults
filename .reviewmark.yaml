@@ -35,39 +35,15 @@ reviews:
   - id: TestResults-Design
     title: Review of TestResults Design Documentation
     paths:
-      - "docs/design/introduction.md"
-      - "docs/design/system.md"
-      - "docs/design/test-outcome.md"
-      - "docs/design/test-result.md"
-      - "docs/design/test-results.md"
-      - "docs/design/io/io.md"
-      - "docs/design/io/serializer.md"
-      - "docs/design/io/trx-serializer.md"
-      - "docs/design/io/junit-serializer.md"
+      - "docs/design/**/*.md"
+      - "docs/reqstream/system.yaml"
+      - "docs/reqstream/platform-requirements.yaml"
 
   - id: TestResults-AllRequirements
     title: Review of All TestResults Requirements
     paths:
       - "requirements.yaml"
-      - "docs/reqstream/system.yaml"
-      - "docs/reqstream/platform-requirements.yaml"
-      - "docs/reqstream/test-outcome.yaml"
-      - "docs/reqstream/test-result.yaml"
-      - "docs/reqstream/test-results.yaml"
-      - "docs/reqstream/io/io.yaml"
-      - "docs/reqstream/io/serializer.yaml"
-      - "docs/reqstream/io/trx-serializer.yaml"
-      - "docs/reqstream/io/junit-serializer.yaml"
-      - "docs/reqstream/ots/mstest.yaml"
-      - "docs/reqstream/ots/reqstream.yaml"
-      - "docs/reqstream/ots/buildmark.yaml"
-      - "docs/reqstream/ots/versionmark.yaml"
-      - "docs/reqstream/ots/sarifmark.yaml"
-      - "docs/reqstream/ots/sonarmark.yaml"
-      - "docs/reqstream/ots/reviewmark.yaml"
-      - "docs/reqstream/ots/sonarscanner.yaml"
-      - "docs/reqstream/ots/pandoctool.yaml"
-      - "docs/reqstream/ots/weasyprinttool.yaml"
+      - "docs/reqstream/**/*.yaml"
 
   - id: TestResults-IO
     title: Review of TestResults IO Subsystem
