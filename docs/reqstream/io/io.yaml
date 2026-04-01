@@ -1,0 +1,10 @@
+---
+# IO Subsystem Requirements
+# This file covers the IO subsystem of the TestResults library.
+# Unit-level requirements are in the individual unit files:
+#   - serializer.yaml
+#   - trx-serializer.yaml
+#   - junit-serializer.yaml
+
+sections:
+  - title: IO Subsystem Requirements

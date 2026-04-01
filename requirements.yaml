@@ -1,24 +1,26 @@
 ---
 # TestResults Library Requirements
 #
-# Root requirements file - includes all unit, platform, and OTS requirements
+# Root requirements file - includes all unit, platform, and OTS requirements.
+# Organized by subsystem: model units, IO subsystem, system/platform, and OTS.
 
 includes:
-  - docs/reqstream/unit-test-outcome.yaml
-  - docs/reqstream/unit-test-result.yaml
-  - docs/reqstream/unit-test-results.yaml
-  - docs/reqstream/unit-serializer.yaml
-  - docs/reqstream/unit-trx-serializer.yaml
-  - docs/reqstream/unit-junit-serializer.yaml
-  - docs/reqstream/runtime.yaml
+  - docs/reqstream/test-outcome.yaml
+  - docs/reqstream/test-result.yaml
+  - docs/reqstream/test-results.yaml
+  - docs/reqstream/io/io.yaml
+  - docs/reqstream/io/serializer.yaml
+  - docs/reqstream/io/trx-serializer.yaml
+  - docs/reqstream/io/junit-serializer.yaml
+  - docs/reqstream/system.yaml
   - docs/reqstream/platform-requirements.yaml
-  - docs/reqstream/ots-mstest.yaml
-  - docs/reqstream/ots-reqstream.yaml
-  - docs/reqstream/ots-buildmark.yaml
-  - docs/reqstream/ots-versionmark.yaml
-  - docs/reqstream/ots-sarifmark.yaml
-  - docs/reqstream/ots-sonarmark.yaml
-  - docs/reqstream/ots-reviewmark.yaml
-  - docs/reqstream/ots-sonarscanner.yaml
-  - docs/reqstream/ots-pandoctool.yaml
-  - docs/reqstream/ots-weasyprinttool.yaml
+  - docs/reqstream/ots/mstest.yaml
+  - docs/reqstream/ots/reqstream.yaml
+  - docs/reqstream/ots/buildmark.yaml
+  - docs/reqstream/ots/versionmark.yaml
+  - docs/reqstream/ots/sarifmark.yaml
+  - docs/reqstream/ots/sonarmark.yaml
+  - docs/reqstream/ots/reviewmark.yaml
+  - docs/reqstream/ots/sonarscanner.yaml
+  - docs/reqstream/ots/pandoctool.yaml
+  - docs/reqstream/ots/weasyprinttool.yaml
