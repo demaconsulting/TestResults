@@ -52,3 +52,34 @@ actual implementation, or by raising a defect against the code.
 
 [user-guide]: https://github.com/demaconsulting/TestResults
 [requirements-doc]: https://github.com/demaconsulting/TestResults
+
+## Software Structure
+
+The TestResults library is organized as follows:
+
+| Item | Type | Description |
+| ---- | ---- | ----------- |
+| TestResults Library | System | Complete test result I/O library |
+| IO | Subsystem | Serialization and format detection |
+| Serializer | Unit | Format-detection facade |
+| TrxSerializer | Unit | TRX format read/write |
+| JUnitSerializer | Unit | JUnit XML format read/write |
+| TestOutcome | Unit | Test outcome enumeration |
+| TestResult | Unit | Single test result data |
+| TestResults | Unit | Collection of test results |
+
+## Folder Layout
+
+The source code is organized to mirror the design documentation structure:
+
+```text
+src/DemaConsulting.TestResults/
+├── IO/                    (IO Subsystem)
+│   ├── Serializer.cs
+│   ├── SerializerHelpers.cs
+│   ├── TrxSerializer.cs
+│   └── JUnitSerializer.cs
+├── TestOutcome.cs
+├── TestResult.cs
+└── TestResults.cs
+```

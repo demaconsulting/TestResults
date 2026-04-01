@@ -3,15 +3,15 @@
 # This file defines which files require review, where the evidence store is located,
 # and how files are grouped into named review-sets following software unit boundaries.
 
-# Patterns identifying all files that require review.
-# Processed in order; prefix a pattern with '!' to exclude.
 needs-review:
-  - "**/*.cs"                    # All C# source and test files
-  - "docs/reqstream/**/*.yaml"   # Requirements files
-  - "!**/obj/**"                 # Exclude build output
-  - "!**/bin/**"                 # Exclude build output
-  - "!node_modules/**"           # Exclude npm dependencies
-  - "!**/.venv/**"               # Exclude Python virtual environment
+  - "requirements.yaml"
+  - "**/*.cs"
+  - "docs/design/**/*.md"
+  - "docs/reqstream/**/*.yaml"
+  - "!**/obj/**"
+  - "!**/bin/**"
+  - "!node_modules/**"
+  - "!**/.venv/**"
 
 # Evidence source: review data and index.json are located in the root of the 'reviews'
 # branch of this repository, accessed through the GitHub public HTTPS raw content endpoint.
@@ -23,11 +23,76 @@ evidence-source:
 
 # Review sets grouping files by logical unit of review.
 reviews:
-  # Software unit reviews - one per class
+  - id: TestResults-System
+    title: Review of TestResults System
+    paths:
+      - "requirements.yaml"
+      - "docs/reqstream/system.yaml"
+      - "docs/reqstream/platform-requirements.yaml"
+      - "docs/design/introduction.md"
+      - "docs/design/system.md"
+
+  - id: TestResults-Design
+    title: Review of TestResults Design Documentation
+    paths:
+      - "docs/design/introduction.md"
+      - "docs/design/system.md"
+      - "docs/design/test-outcome.md"
+      - "docs/design/test-result.md"
+      - "docs/design/test-results.md"
+      - "docs/design/io/io.md"
+      - "docs/design/io/serializer.md"
+      - "docs/design/io/trx-serializer.md"
+      - "docs/design/io/junit-serializer.md"
+
+  - id: TestResults-AllRequirements
+    title: Review of All TestResults Requirements
+    paths:
+      - "requirements.yaml"
+      - "docs/reqstream/system.yaml"
+      - "docs/reqstream/platform-requirements.yaml"
+      - "docs/reqstream/test-outcome.yaml"
+      - "docs/reqstream/test-result.yaml"
+      - "docs/reqstream/test-results.yaml"
+      - "docs/reqstream/io/io.yaml"
+      - "docs/reqstream/io/serializer.yaml"
+      - "docs/reqstream/io/trx-serializer.yaml"
+      - "docs/reqstream/io/junit-serializer.yaml"
+      - "docs/reqstream/ots/mstest.yaml"
+      - "docs/reqstream/ots/reqstream.yaml"
+      - "docs/reqstream/ots/buildmark.yaml"
+      - "docs/reqstream/ots/versionmark.yaml"
+      - "docs/reqstream/ots/sarifmark.yaml"
+      - "docs/reqstream/ots/sonarmark.yaml"
+      - "docs/reqstream/ots/reviewmark.yaml"
+      - "docs/reqstream/ots/sonarscanner.yaml"
+      - "docs/reqstream/ots/pandoctool.yaml"
+      - "docs/reqstream/ots/weasyprinttool.yaml"
+
+  - id: TestResults-IO
+    title: Review of TestResults IO Subsystem
+    paths:
+      - "docs/reqstream/io/io.yaml"
+      - "docs/reqstream/io/serializer.yaml"
+      - "docs/reqstream/io/trx-serializer.yaml"
+      - "docs/reqstream/io/junit-serializer.yaml"
+      - "docs/design/io/io.md"
+      - "docs/design/io/serializer.md"
+      - "docs/design/io/trx-serializer.md"
+      - "docs/design/io/junit-serializer.md"
+      - "src/DemaConsulting.TestResults/IO/Serializer.cs"
+      - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
+      - "src/DemaConsulting.TestResults/IO/TrxSerializer.cs"
+      - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
+
   - id: TestResults-TestOutcome
     title: Review of TestResults TestOutcome Unit
     paths:
-      - "docs/reqstream/unit-test-outcome.yaml"
+      - "docs/reqstream/test-outcome.yaml"
       - "docs/design/test-outcome.md"
       - "src/DemaConsulting.TestResults/TestOutcome.cs"
       - "test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs"
@@ -35,7 +100,7 @@ reviews:
   - id: TestResults-TestResult
     title: Review of TestResults TestResult Unit
     paths:
-      - "docs/reqstream/unit-test-result.yaml"
+      - "docs/reqstream/test-result.yaml"
       - "docs/design/test-result.md"
       - "src/DemaConsulting.TestResults/TestResult.cs"
       - "test/DemaConsulting.TestResults.Tests/TestResultTests.cs"
@@ -43,7 +108,7 @@ reviews:
   - id: TestResults-TestResults
     title: Review of TestResults TestResults Unit
     paths:
-      - "docs/reqstream/unit-test-results.yaml"
+      - "docs/reqstream/test-results.yaml"
       - "docs/design/test-results.md"
       - "src/DemaConsulting.TestResults/TestResults.cs"
       - "test/DemaConsulting.TestResults.Tests/TestResultsTests.cs"
@@ -51,8 +116,8 @@ reviews:
   - id: TestResults-Serializer
     title: Review of TestResults Serializer Unit
     paths:
-      - "docs/reqstream/unit-serializer.yaml"
-      - "docs/design/serializer.md"
+      - "docs/reqstream/io/serializer.yaml"
+      - "docs/design/io/serializer.md"
       - "src/DemaConsulting.TestResults/IO/Serializer.cs"
       - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
@@ -60,35 +125,36 @@ reviews:
   - id: TestResults-TrxSerializer
     title: Review of TestResults TrxSerializer Unit
     paths:
-      - "docs/reqstream/unit-trx-serializer.yaml"
-      - "docs/design/trx-serializer.md"
+      - "docs/reqstream/io/trx-serializer.yaml"
+      - "docs/design/io/trx-serializer.md"
       - "src/DemaConsulting.TestResults/IO/TrxSerializer.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
 
   - id: TestResults-JUnitSerializer
     title: Review of TestResults JUnitSerializer Unit
     paths:
-      - "docs/reqstream/unit-junit-serializer.yaml"
-      - "docs/design/junit-serializer.md"
+      - "docs/reqstream/io/junit-serializer.yaml"
+      - "docs/design/io/junit-serializer.md"
       - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
 
-  # Platform and OTS dependency reviews
   - id: Platform-Runtime
-    title: Review of Platform and Runtime Support Requirements
+    title: Review of Platform and Runtime Requirements
     paths:
-      - "docs/reqstream/runtime.yaml"
+      - "docs/reqstream/system.yaml"
       - "docs/reqstream/platform-requirements.yaml"
 
   - id: OTS-Dependencies
-    title: Review of Off-The-Shelf Software Dependencies
+    title: Review of OTS Software Dependencies
     paths:
-      - "docs/reqstream/ots-mstest.yaml"
-      - "docs/reqstream/ots-reqstream.yaml"
-      - "docs/reqstream/ots-buildmark.yaml"
-      - "docs/reqstream/ots-versionmark.yaml"
-      - "docs/reqstream/ots-sarifmark.yaml"
-      - "docs/reqstream/ots-sonarmark.yaml"
-      - "docs/reqstream/ots-reviewmark.yaml"
+      - "docs/reqstream/ots/mstest.yaml"
+      - "docs/reqstream/ots/reqstream.yaml"
+      - "docs/reqstream/ots/buildmark.yaml"
+      - "docs/reqstream/ots/versionmark.yaml"
+      - "docs/reqstream/ots/sarifmark.yaml"
+      - "docs/reqstream/ots/sonarmark.yaml"
+      - "docs/reqstream/ots/reviewmark.yaml"
+      - "docs/reqstream/ots/sonarscanner.yaml"
+      - "docs/reqstream/ots/pandoctool.yaml"
+      - "docs/reqstream/ots/weasyprinttool.yaml"
