@@ -1,40 +1,46 @@
 # Agent Quick Reference
 
-Project-specific guidance for agents working on TestResults - a lightweight C# library for
-programmatically creating test result files in TRX and JUnit formats.
+Comprehensive guidance for AI agents working on repositories following Continuous Compliance practices.
+
+## Standards Application (ALL Agents Must Follow)
+
+Before performing any work, agents must read and apply the relevant standards from `.github/standards/`:
+
+- **`csharp-language.md`** - For C# code development (literate programming, XML docs, dependency injection)
+- **`csharp-testing.md`** - For C# test development (AAA pattern, naming, MSTest anti-patterns)
+- **`design-documentation.md`** - For design documentation (software structure diagrams, system.md, subsystem organization)
+- **`reqstream-usage.md`** - For requirements management (traceability, semantic IDs, source filters)
+- **`reviewmark-usage.md`** - For file review management (review-sets, file patterns, enforcement)
+- **`software-items.md`** - For software categorization (system/subsystem/unit/OTS classification)
+- **`technical-documentation.md`** - For documentation creation and maintenance (structure, Pandoc, README best practices)
+
+Load only the standards relevant to your specific task scope and apply their
+quality checks and guidelines throughout your work.
+
+## Agent Delegation Guidelines
+
+The default agent should handle simple, straightforward tasks directly.
+Delegate to specialized agents only for specific scenarios:
+
+- **Light development work** (small fixes, simple features) → Call developer agent
+- **Light quality checking** (linting, basic validation) → Call quality agent
+- **Formal feature implementation** (complex, multi-step) → Call the `implementation` agent
+- **Formal bug resolution** (complex debugging, systematic fixes) → Call the `implementation` agent
+- **Formal reviews** (compliance verification, detailed analysis) → Call code-review agent
+- **Template consistency** (downstream repository alignment) → Call repo-consistency agent
 
 ## Available Specialized Agents
 
-- **requirements** - Develops requirements and ensures test coverage linkage
-- **technical-writer** - Creates accurate documentation following regulatory best practices
-- **software-developer** - Writes production code and self-validation tests with emphasis on design-for-testability
-- **test-developer** - Creates unit tests following AAA pattern
-- **code-quality** - Enforces linting, static analysis, and security standards; maintains lint scripts infrastructure
-- **code-review** - Assists in performing formal file reviews
-- **repo-consistency** - Ensures downstream repositories remain consistent with template patterns
-
-## Agent Selection
-
-- To fix a bug, call the @software-developer agent with the **context** of the bug details and **goal** of resolving
-  the issue while maintaining code quality.
-- To add a new feature, call the @requirements agent with the **request** to define feature requirements and **context**
-  of business needs and **goal** of comprehensive requirement specification.
-- To write or fix tests, call the @test-developer agent with the **context** of the functionality to be tested and
-  **goal** of achieving comprehensive test coverage.
-- To update documentation, call the @technical-writer agent with the **context** of changes requiring documentation and
-  **goal** of maintaining current and accurate documentation.
-- To manage requirements and traceability, call the @requirements agent with the **context** of requirement changes and
-  **goal** of maintaining compliance traceability.
-- To resolve quality or linting issues, call the @code-quality agent with the **context** of quality gate failures and
-  **goal** of achieving compliance standards.
-- To update linting tools or scripts, call the @code-quality agent with the **context** of tool requirements and
-  **goal** of maintaining quality infrastructure.
-- To address security alerts or scanning issues, call the @code-quality agent with the **context** of security findings
-  and **goal** of resolving vulnerabilities.
-- To perform file reviews, call the @code-review agent with the **context** of files requiring review and **goal** of
-  compliance verification.
-- To ensure template consistency, call the @repo-consistency agent with the **context** of downstream repository
-  and **goal** of maintaining template alignment.
+- **code-review** - Agent for performing formal reviews using standardized
+  review processes
+- **developer** - General-purpose software development agent that applies
+  appropriate standards based on the work being performed
+- **implementation** - Orchestrator agent that manages quality implementations
+  through a formal state machine workflow
+- **quality** - Quality assurance agent that grades developer work against DEMA
+  Consulting standards and Continuous Compliance practices
+- **repo-consistency** - Ensures downstream repositories remain consistent with
+  the TemplateDotNetLibrary template patterns and best practices
 
 ## Quality Gate Enforcement (ALL Agents Must Verify)
 
@@ -84,15 +90,17 @@ compliance gates on every CI/CD run instead of as a last-mile activity.
 - **BuildMark**: Tool version documentation
 - **VersionMark**: Version tracking across CI/CD jobs
 
-## Project Structure
+## Project Structure Template
 
 - `docs/` - Documentation and compliance artifacts
+  - `design/` - Detailed design documents
+    - `introduction.md` - System/Subsystem/Unit breakdown for this repository
   - `reqstream/` - Subsystem requirements YAML files (included by root requirements.yaml)
   - Auto-generated reports (requirements, justifications, trace matrix)
-- `src/` - Source code files
-- `test/` - Test files
+- `src/{ProjectName}/` - Source code projects
+- `test/{ProjectName}.Tests/` - Test projects
 - `.github/workflows/` - CI/CD pipeline definitions (build.yaml, build_on_push.yaml, release.yaml)
-- Configuration files: `.editorconfig`, `nuget.config`, `.reviewmark.yaml`, etc.
+- Configuration files: `.editorconfig`, `.clang-format`, `nuget.config`, `.reviewmark.yaml`, etc.
 
 ## Key Configuration Files
 
@@ -100,10 +108,11 @@ compliance gates on every CI/CD run instead of as a last-mile activity.
 
 - **`lint.sh` / `lint.bat`** - Cross-platform comprehensive linting scripts
 - **`.editorconfig`** - Code formatting rules
+- **`.clang-format`** - C/C++ formatting (if applicable)
 - **`.cspell.yaml`** - Spell-check configuration and technical term dictionary
 - **`.markdownlint-cli2.yaml`** - Markdown linting rules
 - **`.yamllint.yaml`** - YAML linting configuration
-- **`nuget.config`** - NuGet package sources
+- **`nuget.config`** - NuGet package sources (if .NET)
 - **`package.json`** - Node.js dependencies for linting tools
 
 ### Compliance Files
@@ -136,38 +145,10 @@ All stages must pass before merge. Pipeline fails immediately on:
 - Outdated file reviews
 - Missing documentation
 
-## TestResults-Specific Context
-
-- C# 12, .NET 8.0/9.0/10.0, dotnet CLI, NuGet
-- **`requirements.yaml`** - All requirements with test linkage (enforced via `dotnet reqstream --enforce`)
-- **`.editorconfig`** - Code style (file-scoped namespaces, 4-space indent, UTF-8, LF endings)
-- **`.cspell.yaml`, `.markdownlint-cli2.yaml`, `.yamllint.yaml`** - Linting configs
-
-## Requirements
-
-- All requirements MUST be linked to tests
-- Not all tests need to be linked to requirements (tests may exist for corner cases, design testing, failure-testing, etc.)
-- Enforced in CI: `dotnet reqstream --requirements requirements.yaml --tests "artifacts/**/*.trx" --enforce`
-- When adding features: add requirement + link to test
-
-## Test Source Filters
-
-Test links in `requirements.yaml` can include a source filter prefix to restrict which test results count as
-evidence. This is critical for platform and framework requirements - **do not remove these filters**.
-
-- `windows@TestName` - proves the test passed on a Windows platform
-- `ubuntu@TestName` - proves the test passed on a Linux (Ubuntu) platform
-- `net8.0@TestName` - proves the test passed under the .NET 8 runtime
-- `net9.0@TestName` - proves the test passed under the .NET 9 runtime
-- `net10.0@TestName` - proves the test passed under the .NET 10 runtime
-
-Without the source filter, a test result from any platform/framework satisfies the requirement. Adding the filter
-ensures the CI evidence comes specifically from the required environment.
-
 ## Continuous Compliance Requirements
 
-This repository follows continuous compliance practices from DEMA Consulting Continuous Compliance
-<https://github.com/demaconsulting/ContinuousCompliance>.
+This repository follows continuous compliance practices from DEMA Consulting
+Continuous Compliance <https://github.com/demaconsulting/ContinuousCompliance>.
 
 ### Core Requirements Traceability Rules
 
@@ -175,103 +156,15 @@ This repository follows continuous compliance practices from DEMA Consulting Con
 - **NOT all tests need requirement links** - Tests may exist for corner cases, design validation, failure scenarios
 - **Source filters are critical** - Platform/framework requirements need specific test evidence
 
-For detailed requirements format, test linkage patterns, and ReqStream integration, call the @requirements agent.
-
-## MSTest Best Practices
-
-When writing or reviewing tests, follow these MSTest V4 best practices to avoid common antipatterns.
-
-### Antipatterns to Avoid
-
-#### MSTEST0058 — Assertions in Catch Blocks
-
-Do not place assertions in catch blocks. Use `Assert.ThrowsExactly()` instead:
-
-```csharp
-// ❌ Bad: Assertion in catch block
-try
-{
-    SomeMethod();
-    Assert.Fail("Expected exception");
-}
-catch (InvalidOperationException)
-{
-    // passes silently
-}
-
-// ✅ Good: Use Assert.ThrowsExactly
-Assert.ThrowsExactly<InvalidOperationException>(() => SomeMethod());
-```
-
-#### Prefer Specific Assertions Over Assert.IsTrue/IsFalse
-
-Using `Assert.IsTrue`/`Assert.IsFalse` for equality checks produces poor failure messages. Use specific assertions:
-
-```csharp
-// ❌ Bad: Poor failure message
-Assert.IsTrue(result == 42);
-Assert.IsFalse(result != 42);
-
-// ✅ Good: Rich failure message with expected/actual values
-Assert.AreEqual(42, result);
-Assert.AreNotEqual(0, result);
-```
-
-#### Use Assert.HasCount for Collections
-
-Do not use `Assert.IsTrue` for collection count checks:
-
-```csharp
-// ❌ Bad: Poor failure message
-Assert.IsTrue(collection.Count == 3);
-
-// ✅ Good: Rich failure message
-Assert.HasCount(3, collection);
-```
-
-#### Use Assert.StartsWith for Prefix Checks
-
-Do not use `Assert.IsTrue(value.StartsWith(...))` — use the dedicated assertion:
-
-```csharp
-// ❌ Bad: Poor failure message
-Assert.IsTrue(value.StartsWith("prefix"));
-
-// ✅ Good: Rich failure message showing expected prefix and actual value
-Assert.StartsWith("prefix", value);
-```
-
-#### Non-Public Test Classes and Methods Are Silently Ignored
-
-MSTest silently ignores non-public test classes and test methods — no warning or error is produced:
-
-```csharp
-// ❌ Bad: Silently ignored by the test runner
-class MyTests  // missing public modifier
-{
-    [TestMethod]
-    void TestSomething()  // missing public modifier
-    { }
-}
-
-// ✅ Good: Properly visible to the test runner
-[TestClass]
-public class MyTests
-{
-    [TestMethod]
-    public void TestSomething()
-    { }
-}
-```
+For detailed requirements format, test linkage patterns, and ReqStream
+integration, call the developer agent with requirements management context.
 
 ## Agent Report Files
 
-When agents need to write report files to communicate with each other or the user, follow these guidelines:
+Upon completion, create a report file at `.agent-logs/{agent-name}-{subject}-{unique-id}.md` that includes:
 
-- **Naming Convention**: Use the pattern `AGENT_REPORT_xxxx.md` (e.g., `AGENT_REPORT_analysis.md`,
-  `AGENT_REPORT_results.md`)
-- **Purpose**: These files are for temporary inter-agent communication and should not be committed
-- **Exclusions**: Files matching `AGENT_REPORT_*.md` are automatically:
-  - Excluded from git (via .gitignore)
-  - Excluded from markdown linting
-  - Excluded from spell checking
+- A concise summary of the work performed
+- Any important decisions made and their rationale
+- Follow-up items, open questions, or TODOs
+
+Store agent logs in the `.agent-logs/` folder so they are ignored via `.gitignore` and excluded from linting and commits.
