@@ -8,7 +8,3 @@
 
 sections:
   - title: IO Subsystem Requirements
-    text: |
-      The IO subsystem provides serialization and deserialization of test results
-      in various formats. It consists of the Serializer facade and format-specific
-      serializer implementations for TRX and JUnit XML formats.
