@@ -8,6 +8,7 @@ includes:
   - docs/reqstream/test-outcome.yaml
   - docs/reqstream/test-result.yaml
   - docs/reqstream/test-results.yaml
+  - docs/reqstream/io/io.yaml
   - docs/reqstream/io/serializer.yaml
   - docs/reqstream/io/trx-serializer.yaml
   - docs/reqstream/io/junit-serializer.yaml

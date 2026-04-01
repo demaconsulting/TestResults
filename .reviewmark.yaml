@@ -64,6 +64,7 @@ reviews:
       - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
+      - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
 
   - id: TestResults-TestOutcome
     title: Review of TestResults TestOutcome Unit
