@@ -5,12 +5,14 @@ resource-path:
 input-files:
   - docs/design/title.txt
   - docs/design/introduction.md
+  - docs/design/system.md
   - docs/design/test-outcome.md
   - docs/design/test-result.md
   - docs/design/test-results.md
-  - docs/design/serializer.md
-  - docs/design/trx-serializer.md
-  - docs/design/junit-serializer.md
+  - docs/design/io/io.md
+  - docs/design/io/serializer.md
+  - docs/design/io/trx-serializer.md
+  - docs/design/io/junit-serializer.md
 template: template.html
 table-of-contents: true
 number-sections: true
