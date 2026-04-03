@@ -44,7 +44,7 @@ reviews:
     title: Review of All TestResults Requirements
     paths:
       - "requirements.yaml"
-      - "docs/reqstream/**/*.yaml"
+      - "docs/reqstream/test-results/**/*.yaml"
 
   - id: TestResults-IO
     title: Review of TestResults IO Subsystem

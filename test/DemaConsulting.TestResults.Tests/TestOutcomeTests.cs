@@ -34,6 +34,9 @@ public class TestOutcomeTests
     [TestMethod]
     public void TestOutcome_IsPassed_PassedOutcome_ReturnsTrue()
     {
+        // Arrange - no setup required; testing enum extension directly
+
+        // Act and Assert - verify each outcome returns the expected IsPassed result
         Assert.IsFalse(TestOutcome.Error.IsPassed());
         Assert.IsFalse(TestOutcome.Failed.IsPassed());
         Assert.IsFalse(TestOutcome.Timeout.IsPassed());
@@ -56,6 +59,9 @@ public class TestOutcomeTests
     [TestMethod]
     public void TestOutcome_IsFailed_FailedOutcome_ReturnsTrue()
     {
+        // Arrange - no setup required; testing enum extension directly
+
+        // Act and Assert - verify each outcome returns the expected IsFailed result
         Assert.IsTrue(TestOutcome.Error.IsFailed());
         Assert.IsTrue(TestOutcome.Failed.IsFailed());
         Assert.IsTrue(TestOutcome.Timeout.IsFailed());
@@ -78,6 +84,9 @@ public class TestOutcomeTests
     [TestMethod]
     public void TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult()
     {
+        // Arrange - no setup required; testing enum extension directly
+
+        // Act and Assert - verify each outcome returns the expected IsExecuted result
         Assert.IsTrue(TestOutcome.Error.IsExecuted());
         Assert.IsTrue(TestOutcome.Failed.IsExecuted());
         Assert.IsTrue(TestOutcome.Timeout.IsExecuted());
@@ -100,6 +109,9 @@ public class TestOutcomeTests
     [TestMethod]
     public void TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse()
     {
+        // Arrange - no setup required; testing enum extension directly
+
+        // Act and Assert - verify NotExecuted outcome returns false
         Assert.IsFalse(TestOutcome.NotExecuted.IsExecuted());
     }
 }

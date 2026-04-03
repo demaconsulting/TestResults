@@ -108,6 +108,7 @@ public static class TestOutcomeExtensions
     /// <returns>True if the outcome indicates a pass</returns>
     public static bool IsPassed(this TestOutcome outcome)
     {
+        // Treat outcomes where the test logic completed without failure as passed
         return outcome switch
         {
             TestOutcome.Passed => true,
@@ -124,6 +125,7 @@ public static class TestOutcomeExtensions
     /// <returns>True if the outcome indicates a fail</returns>
     public static bool IsFailed(this TestOutcome outcome)
     {
+        // Treat outcomes representing an abnormal termination or assertion failure as failed
         return outcome switch
         {
             TestOutcome.Failed => true,
@@ -141,6 +143,7 @@ public static class TestOutcomeExtensions
     /// <returns>True if the outcome indicates the test was executed</returns>
     public static bool IsExecuted(this TestOutcome outcome)
     {
+        // Treat outcomes where the test was never attempted as not executed
         return outcome switch
         {
             TestOutcome.NotRunnable => false,
