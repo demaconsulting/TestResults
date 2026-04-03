@@ -1,4 +1,4 @@
-# System Design
+# TestResults System Design
 
 ## Overview
 
@@ -38,7 +38,7 @@ graph TD
 ## Software Items
 
 The software items in the TestResults system are described in the
-[introduction](introduction.md#software-structure).
+[introduction](../introduction.md#software-structure).
 
 ## External Interfaces
 
@@ -60,6 +60,28 @@ The TestResults library exposes the following public API entry points:
 
 ## Related Requirements
 
-System-level requirements are in [docs/reqstream/system.yaml](../reqstream/system.yaml).
+System-level requirements are in
+[docs/reqstream/test-results/test-results.yaml](../../reqstream/test-results/test-results.yaml).
 Platform requirements are in
-[docs/reqstream/platform-requirements.yaml](../reqstream/platform-requirements.yaml).
+[docs/reqstream/test-results/platform-requirements.yaml](../../reqstream/test-results/platform-requirements.yaml).
+
+## TestResults Class
+
+The `TestResults` class represents a complete test run — a named collection of
+`TestResult` objects along with run-level metadata.
+
+### Properties
+
+| Property   | Type                | Default          | Description                            |
+|------------|---------------------|------------------|----------------------------------------|
+| `Id`       | `Guid`              | `Guid.NewGuid()` | Uniquely identifies this test run      |
+| `Name`     | `string`            | `string.Empty`   | Display name of the test run           |
+| `UserName` | `string`            | `string.Empty`   | User or identity that initiated the run|
+| `Results`  | `List<TestResult>`  | `[]`             | Ordered collection of test case results|
+
+`Id` is auto-generated on construction for the same reasons as `TestResult.TestId` — it
+ensures every run is uniquely identifiable in TRX output without requiring callers to
+supply an identifier.
+
+`Results` is initialized to an empty list, so callers can simply add items without
+first checking for null.
