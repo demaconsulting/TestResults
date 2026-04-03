@@ -108,7 +108,7 @@
   - `Serializer_Identify_TrxContent_ReturnsTrx`
   - `Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit`
   - `Serializer_Deserialize_NullContents_ThrowsArgumentNullException`
-  - And 13+ other properly named tests
+  - And 12+ other properly named tests
 - **Requirements Coverage:** Tests are properly linked to requirements in `serializer.yaml`:
   - `TestResults-Ser-FormatIdentify` requirement: Tests verify format identification for TRX, JUnit (testsuites and testsuite), empty, null, whitespace, invalid XML, and unrecognized formats
   - `TestResults-Ser-FormatConversion` requirement: Tests verify deserialization of TRX and JUnit content, plus round-trip conversion

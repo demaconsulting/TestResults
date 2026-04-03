@@ -737,7 +737,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Deserialize_MissingTimeAttribute_DefaultsToZero()
     {
-        // Deserialize the test results object without time attribute
+        // Arrange and Act - Deserialize the test results object without time attribute
         var results = JUnitSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
