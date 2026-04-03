@@ -8,6 +8,7 @@ needs-review:
   - "**/*.cs"
   - "docs/design/**/*.md"
   - "docs/reqstream/**/*.yaml"
+  - "!docs/reqstream/ots/**"
   - "!**/obj/**"
   - "!**/bin/**"
   - "!node_modules/**"
@@ -90,8 +91,8 @@ reviews:
       - "src/DemaConsulting.TestResults/TestResults.cs"
       - "test/DemaConsulting.TestResults.Tests/TestResultsTests.cs"
 
-  - id: TestResults-Serializer
-    title: Review of TestResults Serializer Unit
+  - id: TestResults-IO-Serializer
+    title: Review of TestResults IO Serializer Unit
     paths:
       - "docs/reqstream/test-results/io/serializer.yaml"
       - "docs/design/test-results/io/serializer.md"
@@ -99,8 +100,8 @@ reviews:
       - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
 
-  - id: TestResults-TrxSerializer
-    title: Review of TestResults TrxSerializer Unit
+  - id: TestResults-IO-TrxSerializer
+    title: Review of TestResults IO TrxSerializer Unit
     paths:
       - "docs/reqstream/test-results/io/trx-serializer.yaml"
       - "docs/design/test-results/io/trx-serializer.md"
@@ -108,8 +109,8 @@ reviews:
       - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
 
-  - id: TestResults-JUnitSerializer
-    title: Review of TestResults JUnitSerializer Unit
+  - id: TestResults-IO-JUnitSerializer
+    title: Review of TestResults IO JUnitSerializer Unit
     paths:
       - "docs/reqstream/test-results/io/junit-serializer.yaml"
       - "docs/design/test-results/io/junit-serializer.md"
@@ -121,17 +122,3 @@ reviews:
     paths:
       - "docs/reqstream/test-results/test-results.yaml"
       - "docs/reqstream/test-results/platform-requirements.yaml"
-
-  - id: OTS-Dependencies
-    title: Review of OTS Software Dependencies
-    paths:
-      - "docs/reqstream/ots/mstest.yaml"
-      - "docs/reqstream/ots/reqstream.yaml"
-      - "docs/reqstream/ots/buildmark.yaml"
-      - "docs/reqstream/ots/versionmark.yaml"
-      - "docs/reqstream/ots/sarifmark.yaml"
-      - "docs/reqstream/ots/sonarmark.yaml"
-      - "docs/reqstream/ots/reviewmark.yaml"
-      - "docs/reqstream/ots/sonarscanner.yaml"
-      - "docs/reqstream/ots/pandoctool.yaml"
-      - "docs/reqstream/ots/weasyprinttool.yaml"
