@@ -533,7 +533,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("BuildAgent01", passed.ComputerName);
         Assert.AreEqual(TestOutcome.Passed, passed.Outcome);
         Assert.AreEqual(startTime, passed.StartTime);
-        Assert.IsTrue(Math.Abs((passed.Duration - TimeSpan.FromSeconds(1.5)).TotalSeconds) < 0.001);
+        Assert.IsLessThan(0.001, Math.Abs((passed.Duration - TimeSpan.FromSeconds(1.5)).TotalSeconds));
         Assert.AreEqual("All good", passed.SystemOutput);
         Assert.AreEqual(string.Empty, passed.SystemError);
         Assert.AreEqual(string.Empty, passed.ErrorMessage);
@@ -547,7 +547,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("BuildAgent01", failed.ComputerName);
         Assert.AreEqual(TestOutcome.Failed, failed.Outcome);
         Assert.AreEqual(startTime.AddSeconds(2), failed.StartTime);
-        Assert.IsTrue(Math.Abs((failed.Duration - TimeSpan.FromSeconds(0.75)).TotalSeconds) < 0.001);
+        Assert.IsLessThan(0.001, Math.Abs((failed.Duration - TimeSpan.FromSeconds(0.75)).TotalSeconds));
         Assert.AreEqual(string.Empty, failed.SystemOutput);
         Assert.AreEqual("err output", failed.SystemError);
         Assert.AreEqual("Expected 1 but was 2", failed.ErrorMessage);
@@ -559,7 +559,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("Suite.ErrorClass", error.ClassName);
         Assert.AreEqual(TestOutcome.Error, error.Outcome);
         Assert.AreEqual(startTime.AddSeconds(4), error.StartTime);
-        Assert.IsTrue(Math.Abs((error.Duration - TimeSpan.FromSeconds(0.25)).TotalSeconds) < 0.001);
+        Assert.IsLessThan(0.001, Math.Abs((error.Duration - TimeSpan.FromSeconds(0.25)).TotalSeconds));
         Assert.AreEqual("NullReferenceException", error.ErrorMessage);
         Assert.AreEqual("at Suite.ErrorClass.ErrorTest() line 17", error.ErrorStackTrace);
 
@@ -569,7 +569,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("Suite.SkippedClass", skipped.ClassName);
         Assert.AreEqual(TestOutcome.NotExecuted, skipped.Outcome);
         Assert.AreEqual(startTime.AddSeconds(6), skipped.StartTime);
-        Assert.IsTrue(Math.Abs(skipped.Duration.TotalSeconds) < 0.001);
+        Assert.IsLessThan(0.001, Math.Abs(skipped.Duration.TotalSeconds));
     }
 
     /// <summary>

@@ -412,7 +412,7 @@ public static class TrxSerializer
     /// <returns>A TestResult object populated with data from the XML element</returns>
     private static TestResult ParseTestResult(
         XElement resultElement,
-        IReadOnlyDictionary<string, XElement> testMethodsById)
+        Dictionary<string, XElement> testMethodsById)
     {
         var testId = resultElement.Attribute("testId") ??
                      throw new InvalidOperationException(InvalidTrxFileMessage);
@@ -498,7 +498,7 @@ public static class TrxSerializer
         // Try to parse the raw string into a TestOutcome enum member.
         // Only accept the result when it is a defined, named member of the enum.
         if (Enum.TryParse<TestOutcome>(value, ignoreCase: true, out var outcome) &&
-            Enum.IsDefined(typeof(TestOutcome), outcome))
+            Enum.IsDefined<TestOutcome>(outcome))
         {
             return outcome;
         }
