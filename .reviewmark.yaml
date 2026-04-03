@@ -50,22 +50,8 @@ reviews:
     title: Review of TestResults IO Subsystem
     paths:
       - "docs/reqstream/test-results/io/io.yaml"
-      - "docs/reqstream/test-results/io/serializer.yaml"
-      - "docs/reqstream/test-results/io/trx-serializer.yaml"
-      - "docs/reqstream/test-results/io/junit-serializer.yaml"
       - "docs/design/test-results/io/io.md"
-      - "docs/design/test-results/io/serializer.md"
-      - "docs/design/test-results/io/trx-serializer.md"
-      - "docs/design/test-results/io/junit-serializer.md"
-      - "src/DemaConsulting.TestResults/IO/Serializer.cs"
-      - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
-      - "src/DemaConsulting.TestResults/IO/TrxSerializer.cs"
-      - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/IOTests.cs"
 
   - id: TestResults-TestOutcome
     title: Review of TestResults TestOutcome Unit
