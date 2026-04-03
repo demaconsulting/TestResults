@@ -36,4 +36,4 @@ The IO subsystem depends on:
 ## Related Requirements
 
 Requirements for the IO subsystem are in
-[docs/reqstream/test-results/io/](../../reqstream/test-results/io/).
+[docs/reqstream/test-results/io/](../../../reqstream/test-results/io/).

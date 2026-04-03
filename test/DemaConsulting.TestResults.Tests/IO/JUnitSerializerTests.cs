@@ -151,7 +151,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement()
     {
-        // Construct test results with an error test
+        // Arrange - Construct test results with an error test
         var results = new TestResults
         {
             Name = "ErrorTests",
@@ -169,11 +169,11 @@ public sealed class JUnitSerializerTests
             ]
         };
 
-        // Serialize the test results
+        // Act - Serialize the test results
         var xml = JUnitSerializer.Serialize(results);
         Assert.IsNotNull(xml);
 
-        // Parse and verify the XML structure
+        // Assert - Parse and verify the XML structure
         var doc = XDocument.Parse(xml);
         var testSuite = doc.Root?.Element("testsuite");
         Assert.IsNotNull(testSuite);
@@ -181,7 +181,7 @@ public sealed class JUnitSerializerTests
         Assert.AreEqual("0", testSuite.Attribute("failures")?.Value);
         Assert.AreEqual("1", testSuite.Attribute("errors")?.Value);
 
-        // Verify test case with error
+        // Assert - Verify test case with error
         var testCase = testSuite.Element("testcase");
         Assert.IsNotNull(testCase);
         var error = testCase.Element("error");
@@ -196,7 +196,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement()
     {
-        // Construct test results with a skipped test
+        // Arrange - Construct test results with a skipped test
         var results = new TestResults
         {
             Name = "SkippedTests",
@@ -213,11 +213,11 @@ public sealed class JUnitSerializerTests
             ]
         };
 
-        // Serialize the test results
+        // Act - Serialize the test results
         var xml = JUnitSerializer.Serialize(results);
         Assert.IsNotNull(xml);
 
-        // Parse and verify the XML structure
+        // Assert - Parse and verify the XML structure
         var doc = XDocument.Parse(xml);
         var testSuite = doc.Root?.Element("testsuite");
         Assert.IsNotNull(testSuite);
@@ -226,7 +226,7 @@ public sealed class JUnitSerializerTests
         Assert.AreEqual("0", testSuite.Attribute("errors")?.Value);
         Assert.AreEqual("1", testSuite.Attribute("skipped")?.Value);
 
-        // Verify test case with skipped element
+        // Assert - Verify test case with skipped element
         var testCase = testSuite.Element("testcase");
         Assert.IsNotNull(testCase);
         var skipped = testCase.Element("skipped");
@@ -240,7 +240,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr()
     {
-        // Construct test results with system output
+        // Arrange - Construct test results with system output
         var results = new TestResults
         {
             Name = "OutputTests",
@@ -258,21 +258,21 @@ public sealed class JUnitSerializerTests
             ]
         };
 
-        // Serialize the test results
+        // Act - Serialize the test results
         var xml = JUnitSerializer.Serialize(results);
         Assert.IsNotNull(xml);
 
-        // Parse and verify the XML structure
+        // Assert - Parse and verify the XML structure
         var doc = XDocument.Parse(xml);
         var testCase = doc.Root?.Element("testsuite")?.Element("testcase");
         Assert.IsNotNull(testCase);
 
-        // Verify system-out element
+        // Assert - Verify system-out element
         var systemOut = testCase.Element("system-out");
         Assert.IsNotNull(systemOut);
         Assert.AreEqual("Standard output message", systemOut.Value);
 
-        // Verify system-err element
+        // Assert - Verify system-err element
         var systemErr = testCase.Element("system-err");
         Assert.IsNotNull(systemErr);
         Assert.AreEqual("Standard error message", systemErr.Value);
@@ -284,7 +284,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName()
     {
-        // Construct test results with multiple tests
+        // Arrange - Construct test results with multiple tests
         var results = new TestResults
         {
             Name = "MultipleTests",
@@ -315,27 +315,27 @@ public sealed class JUnitSerializerTests
             ]
         };
 
-        // Serialize the test results
+        // Act - Serialize the test results
         var xml = JUnitSerializer.Serialize(results);
         Assert.IsNotNull(xml);
 
-        // Parse and verify the XML structure
+        // Assert - Parse and verify the XML structure
         var doc = XDocument.Parse(xml);
         var root = doc.Root;
         Assert.IsNotNull(root);
 
-        // Verify two test suites (one for each class)
+        // Assert - Verify two test suites (one for each class)
         var testSuites = root.Elements("testsuite").ToList();
         Assert.HasCount(2, testSuites);
 
-        // Verify first test suite (Class1)
+        // Assert - Verify first test suite (Class1)
         var suite1 = testSuites[0];
         Assert.AreEqual("Class1", suite1.Attribute("name")?.Value);
         Assert.AreEqual("2", suite1.Attribute("tests")?.Value);
         Assert.AreEqual("1", suite1.Attribute("failures")?.Value);
         Assert.AreEqual("1.500", suite1.Attribute("time")?.Value);
 
-        // Verify second test suite (Class2)
+        // Assert - Verify second test suite (Class2)
         var suite2 = testSuites[1];
         Assert.AreEqual("Class2", suite2.Attribute("name")?.Value);
         Assert.AreEqual("1", suite2.Attribute("tests")?.Value);
@@ -349,7 +349,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Serialize_EmptyClassName_UsesDefaultSuite()
     {
-        // Construct test results with empty class name
+        // Arrange - Construct test results with empty class name
         var results = new TestResults
         {
             Name = "EmptyClassTests",
@@ -365,11 +365,11 @@ public sealed class JUnitSerializerTests
             ]
         };
 
-        // Serialize the test results
+        // Act - Serialize the test results
         var xml = JUnitSerializer.Serialize(results);
         Assert.IsNotNull(xml);
 
-        // Parse and verify the XML structure
+        // Assert - Parse and verify the XML structure
         var doc = XDocument.Parse(xml);
         var testSuite = doc.Root?.Element("testsuite");
         Assert.IsNotNull(testSuite);
@@ -386,10 +386,10 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Serialize_UsageExample_ProducesValidJUnitXml()
     {
-        // Create a TestResults instance matching the usage example
+        // Arrange - Create a TestResults instance matching the usage example
         var results = new TestResults { Name = "SomeTests" };
 
-        // Add some results
+        // Arrange - Add some results
         results.Results.Add(
             new TestResult
             {
@@ -412,34 +412,34 @@ public sealed class JUnitSerializerTests
                 ErrorStackTrace = "at SomeTestClass.Test2() in Test.cs:line 15"
             });
 
-        // Serialize the results
+        // Act - Serialize the results
         var xml = JUnitSerializer.Serialize(results);
         Assert.IsNotNull(xml);
 
-        // Parse and verify the structure matches expected JUnit format
+        // Assert - Parse and verify the structure matches expected JUnit format
         var doc = XDocument.Parse(xml);
         var root = doc.Root;
         Assert.IsNotNull(root);
         Assert.AreEqual("testsuites", root.Name.LocalName);
         Assert.AreEqual("SomeTests", root.Attribute("name")?.Value);
 
-        // Verify test suite
+        // Assert - Verify test suite
         var testSuite = root.Element("testsuite");
         Assert.IsNotNull(testSuite);
         Assert.AreEqual("SomeTestClass", testSuite.Attribute("name")?.Value);
         Assert.AreEqual("2", testSuite.Attribute("tests")?.Value);
         Assert.AreEqual("1", testSuite.Attribute("failures")?.Value);
 
-        // Verify both test cases are present
+        // Assert - Verify both test cases are present
         var testCases = testSuite.Elements("testcase").ToList();
         Assert.HasCount(2, testCases);
 
-        // Verify passed test
+        // Assert - Verify passed test
         var passedTest = testCases.FirstOrDefault(tc => tc.Attribute("name")?.Value == "Test1");
         Assert.IsNotNull(passedTest);
         Assert.IsNull(passedTest.Element("failure"));
 
-        // Verify failed test
+        // Assert - Verify failed test
         var failedTest = testCases.FirstOrDefault(tc => tc.Attribute("name")?.Value == "Test2");
         Assert.IsNotNull(failedTest);
         var failure = failedTest.Element("failure");
@@ -490,7 +490,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails()
     {
-        // Deserialize the test results object with a failed test
+        // Arrange and Act - Deserialize the test results object with a failed test
         var results = JUnitSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -504,11 +504,11 @@ public sealed class JUnitSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert results information
+        // Assert - Verify results information
         Assert.AreEqual("FailureTests", results.Name);
         Assert.HasCount(1, results.Results);
 
-        // Assert test result information
+        // Assert - Verify test result information
         var result = results.Results[0];
         Assert.AreEqual("Test2", result.Name);
         Assert.AreEqual("MyTestClass", result.ClassName);
@@ -523,7 +523,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails()
     {
-        // Deserialize the test results object with an error test
+        // Arrange and Act - Deserialize the test results object with an error test
         var results = JUnitSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -537,7 +537,7 @@ public sealed class JUnitSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert test result information
+        // Assert - Verify test result information
         var result = results.Results[0];
         Assert.AreEqual("Test3", result.Name);
         Assert.AreEqual(TestOutcome.Error, result.Outcome);
@@ -551,7 +551,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus()
     {
-        // Deserialize the test results object with a skipped test
+        // Arrange and Act - Deserialize the test results object with a skipped test
         var results = JUnitSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -565,7 +565,7 @@ public sealed class JUnitSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert test result information
+        // Assert - Verify test result information
         var result = results.Results[0];
         Assert.AreEqual("Test4", result.Name);
         Assert.AreEqual(TestOutcome.NotExecuted, result.Outcome);
@@ -578,7 +578,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput()
     {
-        // Deserialize the test results object with system output
+        // Arrange and Act - Deserialize the test results object with system output
         var results = JUnitSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -593,7 +593,7 @@ public sealed class JUnitSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert test result information
+        // Assert - Verify test result information
         var result = results.Results[0];
         Assert.AreEqual("Test5", result.Name);
         Assert.AreEqual("Standard output message", result.SystemOutput);
@@ -606,7 +606,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Deserialize_MultipleTestSuites_ReturnsAllTests()
     {
-        // Deserialize the test results object with multiple test suites
+        // Arrange and Act - Deserialize the test results object with multiple test suites
         var results = JUnitSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -624,22 +624,22 @@ public sealed class JUnitSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert results information
+        // Assert - Verify results information
         Assert.AreEqual("MultipleTests", results.Name);
         Assert.HasCount(3, results.Results);
 
-        // Verify first test
+        // Assert - Verify first test
         var test1 = results.Results[0];
         Assert.AreEqual("Test1", test1.Name);
         Assert.AreEqual("Class1", test1.ClassName);
         Assert.AreEqual(TestOutcome.Passed, test1.Outcome);
 
-        // Verify second test
+        // Assert - Verify second test
         var test2 = results.Results[1];
         Assert.AreEqual("Test2", test2.Name);
         Assert.AreEqual(TestOutcome.Failed, test2.Outcome);
 
-        // Verify third test
+        // Assert - Verify third test
         var test3 = results.Results[2];
         Assert.AreEqual("Test3", test3.Name);
         Assert.AreEqual("Class2", test3.ClassName);
@@ -652,7 +652,7 @@ public sealed class JUnitSerializerTests
     [TestMethod]
     public void JUnitSerializer_Deserialize_DefaultSuite_ReturnsEmptyClassName()
     {
-        // Deserialize the test results object with DefaultSuite
+        // Arrange and Act - Deserialize the test results object with DefaultSuite
         var results = JUnitSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -664,7 +664,7 @@ public sealed class JUnitSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert test result information - DefaultSuite should be converted to empty string
+        // Assert - Verify test result information - DefaultSuite should be converted to empty string
         var result = results.Results[0];
         Assert.AreEqual("Test1", result.Name);
         Assert.AreEqual(string.Empty, result.ClassName);

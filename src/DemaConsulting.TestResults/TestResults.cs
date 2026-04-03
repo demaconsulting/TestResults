@@ -25,23 +25,31 @@ namespace DemaConsulting.TestResults;
 /// </summary>
 public sealed class TestResults
 {
+    // Identity and metadata — unique identifier and human-readable name for the run
+
     /// <summary>
-    ///     Gets or sets the ID of the test results
+    ///     Gets or sets the ID of the test results.
+    ///     Defaults to a newly generated <see cref="Guid" /> so every test run is uniquely identifiable.
     /// </summary>
     public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
-    ///     Gets or sets the name of the tests
+    ///     Gets or sets the name of the tests.
+    ///     Defaults to <see cref="string.Empty" /> so the property is always non-null.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the name of the user account running the tests
+    ///     Gets or sets the name of the user account running the tests.
+    ///     Defaults to <see cref="string.Empty" /> so the property is always non-null.
     /// </summary>
     public string UserName { get; set; } = string.Empty;
 
+    // Results collection — the ordered list of individual test outcomes for this run
+
     /// <summary>
-    ///     Gets or sets the list containing each TestResult
+    ///     Gets or sets the list containing each <see cref="TestResult" />.
+    ///     Defaults to an empty list so callers can add results without null-checking first.
     /// </summary>
     public List<TestResult> Results { get; set; } = [];
 }
