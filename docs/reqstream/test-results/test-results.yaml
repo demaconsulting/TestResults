@@ -1,4 +1,9 @@
 ---
+# System-Level and Model Requirements for the TestResults Library
+#
+# This file combines system-level runtime requirements and the model unit
+# requirements for the TestResults class.
+#
 # Test links can include a source filter prefix (e.g. "windows@", "ubuntu@", "net8.0@") to restrict
 # which test results count as evidence for a requirement. This is critical for platform and framework
 # requirements - removing these filters invalidates the evidence-based proof.
@@ -56,3 +61,20 @@ sections:
             tests:
               - net10.0@TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
               - net10.0@JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+
+  - title: TestResults Unit Requirements
+    requirements:
+      - id: TestResults-Mdl-Collection
+        title: The TestResults class shall represent a named collection of test results for a complete test run.
+        justification: |
+          A test run typically consists of many individual test results that must be grouped together
+          with identifying metadata such as a name and a unique identifier. The TestResults collection
+          provides this grouping, enabling serializers and consumers to treat a full test run as a
+          single unit while preserving all individual results.
+        tests:
+          - TestResults_Id_Default_IsNotEmpty
+          - TestResults_Id_TwoInstances_AreUnique
+          - TestResults_Name_Default_IsEmpty
+          - TestResults_UserName_Default_IsEmpty
+          - TestResults_Results_Default_IsNotNull
+          - TestResults_Results_Default_IsEmpty
