@@ -39,16 +39,16 @@ public sealed class IOTests
     [TestMethod]
     public void IO_Identify_TrxContent_ReturnsTrx()
     {
-        // Arrange - Minimal TRX content
+        // Arrange: Minimal TRX content
         const string content = """
             <?xml version="1.0"?>
             <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" />
             """;
 
-        // Act
+        // Act: identify the format of the TRX content
         var format = Serializer.Identify(content);
 
-        // Assert
+        // Assert: format should be identified as TRX
         Assert.AreEqual(TestResultFormat.Trx, format);
     }
 
@@ -62,13 +62,13 @@ public sealed class IOTests
     [TestMethod]
     public void IO_Identify_JUnitContent_ReturnsJUnit()
     {
-        // Arrange - Minimal JUnit content
+        // Arrange: Minimal JUnit content
         const string content = "<testsuites />";
 
-        // Act
+        // Act: identify the format of the JUnit content
         var format = Serializer.Identify(content);
 
-        // Assert
+        // Assert: format should be identified as JUnit
         Assert.AreEqual(TestResultFormat.JUnit, format);
     }
 
@@ -82,7 +82,7 @@ public sealed class IOTests
     [TestMethod]
     public void IO_Deserialize_TrxContent_ReturnsTestResults()
     {
-        // Arrange - Minimal TRX content with one test result
+        // Arrange: Minimal TRX content with one test result
         const string content = """
             <?xml version="1.0"?>
             <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="da21858f-2c78-442a-8ea6-51fe73762e0e" name="Test Run" runUser="User">
@@ -100,10 +100,10 @@ public sealed class IOTests
             </TestRun>
             """;
 
-        // Act
+        // Act: deserialize the TRX content
         var results = Serializer.Deserialize(content);
 
-        // Assert
+        // Assert: deserialized results should contain one test result
         Assert.IsNotNull(results);
         Assert.HasCount(1, results.Results);
         Assert.AreEqual("Test1", results.Results[0].Name);
@@ -120,7 +120,7 @@ public sealed class IOTests
     [TestMethod]
     public void IO_Deserialize_JUnitContent_ReturnsTestResults()
     {
-        // Arrange - Minimal JUnit content with one test result
+        // Arrange: Minimal JUnit content with one test result
         const string content = """
             <?xml version="1.0"?>
             <testsuites name="MySuite">
@@ -130,10 +130,10 @@ public sealed class IOTests
             </testsuites>
             """;
 
-        // Act
+        // Act: deserialize the JUnit content
         var results = Serializer.Deserialize(content);
 
-        // Assert
+        // Assert: deserialized results should contain one test result
         Assert.IsNotNull(results);
         Assert.HasCount(1, results.Results);
         Assert.AreEqual("Test1", results.Results[0].Name);

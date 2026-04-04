@@ -5,6 +5,7 @@
 
 needs-review:
   - "requirements.yaml"
+  - "README.md"
   - "**/*.cs"
   - "docs/design/**/*.md"
   - "docs/reqstream/**/*.yaml"
@@ -24,14 +25,21 @@ evidence-source:
 
 # Review sets grouping files by logical unit of review.
 reviews:
-  - id: TestResults-System
-    title: Review of TestResults System
+  - id: Purpose
+    title: Review of TestResults Purpose and Promises
     paths:
-      - "requirements.yaml"
+      - "README.md"
       - "docs/reqstream/test-results/test-results.yaml"
-      - "docs/reqstream/test-results/platform-requirements.yaml"
       - "docs/design/introduction.md"
       - "docs/design/test-results/test-results.md"
+
+  - id: TestResults-Architecture
+    title: Review of TestResults Architecture
+    paths:
+      - "docs/reqstream/test-results/test-results.yaml"
+      - "docs/design/introduction.md"
+      - "docs/design/test-results/test-results.md"
+      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
 
   - id: TestResults-Design
     title: Review of TestResults Design Documentation
@@ -104,9 +112,3 @@ reviews:
       - "docs/design/test-results/io/junit-serializer.md"
       - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
-
-  - id: Platform-Runtime
-    title: Review of Platform and Runtime Requirements
-    paths:
-      - "docs/reqstream/test-results/test-results.yaml"
-      - "docs/reqstream/test-results/platform-requirements.yaml"

@@ -185,13 +185,13 @@ public sealed class TrxSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert results information
+        // Assert: results information
         Assert.AreEqual(Guid.Parse("0ef15ada-c28f-4755-8d4c-5b68d1f9dda6"), results.Id);
         Assert.AreEqual("Basic", results.Name);
         Assert.AreEqual("user", results.UserName);
         Assert.HasCount(1, results.Results);
 
-        // Assert test result information
+        // Assert: test result information
         var result = results.Results[0];
         Assert.AreEqual(Guid.Parse("ec83398d-3b21-4dc4-b55c-c0ee2e81c074"), result.TestId);
         Assert.AreEqual(Guid.Parse("735286a7-f9ed-404f-8871-300f9266eac9"), result.ExecutionId);
@@ -256,13 +256,13 @@ public sealed class TrxSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert results information
+        // Assert: results information
         Assert.AreEqual(Guid.Parse("0704cd18-88b1-43f7-868e-ad02bfda887d"), results.Id);
         Assert.AreEqual("Basic", results.Name);
         Assert.AreEqual("user", results.UserName);
         Assert.HasCount(2, results.Results);
 
-        // Assert test1 result information
+        // Assert: test1 result information
         var result1 = results.Results[0];
         Assert.AreEqual(Guid.Parse("57debb4d-6784-482d-93d0-75dca3d3f556"), result1.TestId);
         Assert.AreEqual(Guid.Parse("cebd9f31-adec-4a7d-862b-598c52f1b9cf"), result1.ExecutionId);
@@ -275,7 +275,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("Output", result1.SystemOutput);
         Assert.AreEqual(TestOutcome.Passed, result1.Outcome);
 
-        // Assert test2 result information
+        // Assert: test2 result information
         var result2 = results.Results[1];
         Assert.AreEqual(Guid.Parse("eb73087a-1def-4776-ba71-c56cd5a1bb1c"), result2.TestId);
         Assert.AreEqual(Guid.Parse("ceb08c73-796f-4924-ad35-098a3fbb802b"), result2.ExecutionId);
@@ -338,10 +338,10 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Serialize_NullResults_ThrowsArgumentNullException()
     {
-        // Arrange - null test results
+        // Arrange: null test results
         TestResults? nullResults = null;
 
-        // Act & Assert
+        // Act: attempt to serialize null test results (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentNullException>(() => TrxSerializer.Serialize(nullResults!));
         Assert.AreEqual("results", ex.ParamName);
     }
@@ -352,10 +352,10 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Deserialize_NullContents_ThrowsArgumentNullException()
     {
-        // Arrange - null contents
+        // Arrange: null contents
         string? nullContents = null;
 
-        // Act & Assert
+        // Act: attempt to deserialize null contents (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentNullException>(() => TrxSerializer.Deserialize(nullContents!));
         Assert.AreEqual("trxContents", ex.ParamName);
     }
@@ -366,10 +366,10 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Deserialize_EmptyContents_ThrowsArgumentException()
     {
-        // Arrange - empty string
+        // Arrange: empty string
         var emptyContents = string.Empty;
 
-        // Act & Assert
+        // Act: attempt to deserialize empty string (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(emptyContents));
         Assert.AreEqual("trxContents", ex.ParamName);
     }
@@ -380,10 +380,10 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Deserialize_WhitespaceContents_ThrowsArgumentException()
     {
-        // Arrange - whitespace string
+        // Arrange: whitespace string
         var whitespaceContents = "   \n\t  ";
 
-        // Act & Assert
+        // Act: attempt to deserialize whitespace string (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentException>(() => TrxSerializer.Deserialize(whitespaceContents));
         Assert.AreEqual("trxContents", ex.ParamName);
     }
@@ -399,7 +399,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Serialize_WithCodeBase_EmitsStorageAttributeOnUnitTest()
     {
-        // Arrange - test results with a specific CodeBase
+        // Arrange: test results with a specific CodeBase
         var suites = new TestResults
         {
             Name = "StorageTest",
@@ -418,11 +418,11 @@ public sealed class TrxSerializerTests
             ]
         };
 
-        // Act - Serialize the test results
+        // Act: Serialize the test results
         var result = TrxSerializer.Serialize(suites);
         Assert.IsNotNull(result);
 
-        // Assert - Parse and verify the storage attribute on the UnitTest element
+        // Assert: Parse and verify the storage attribute on the UnitTest element
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
         nsMgr.AddNamespace("trx", TrxNamespace);
@@ -448,7 +448,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Serialize_ThenDeserialize_PreservesTestData()
     {
-        // Arrange - create test results with multiple outcomes and rich data
+        // Arrange: create test results with multiple outcomes and rich data
         var startTime = new DateTime(2025, 3, 10, 8, 0, 0, DateTimeKind.Utc);
         var original = new TestResults
         {
@@ -515,17 +515,17 @@ public sealed class TrxSerializerTests
             ]
         };
 
-        // Act - serialize to TRX and then deserialize back
+        // Act: serialize to TRX and then deserialize back
         var trxContent = TrxSerializer.Serialize(original);
         var deserialized = TrxSerializer.Deserialize(trxContent);
 
-        // Assert - run metadata is preserved
+        // Assert: run metadata is preserved
         Assert.IsNotNull(deserialized);
         Assert.AreEqual(original.Name, deserialized.Name);
         Assert.AreEqual(original.UserName, deserialized.UserName);
         Assert.HasCount(4, deserialized.Results);
 
-        // Assert - PassedTest properties are preserved
+        // Assert: PassedTest properties are preserved
         var passed = deserialized.Results[0];
         Assert.AreEqual("PassedTest", passed.Name);
         Assert.AreEqual("Suite.PassedClass", passed.ClassName);
@@ -539,7 +539,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual(string.Empty, passed.ErrorMessage);
         Assert.AreEqual(string.Empty, passed.ErrorStackTrace);
 
-        // Assert - FailedTest properties are preserved
+        // Assert: FailedTest properties are preserved
         var failed = deserialized.Results[1];
         Assert.AreEqual("FailedTest", failed.Name);
         Assert.AreEqual("Suite.FailedClass", failed.ClassName);
@@ -553,7 +553,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("Expected 1 but was 2", failed.ErrorMessage);
         Assert.AreEqual("at Suite.FailedClass.FailedTest() line 42", failed.ErrorStackTrace);
 
-        // Assert - ErrorTest properties are preserved
+        // Assert: ErrorTest properties are preserved
         var error = deserialized.Results[2];
         Assert.AreEqual("ErrorTest", error.Name);
         Assert.AreEqual("Suite.ErrorClass", error.ClassName);
@@ -563,7 +563,7 @@ public sealed class TrxSerializerTests
         Assert.AreEqual("NullReferenceException", error.ErrorMessage);
         Assert.AreEqual("at Suite.ErrorClass.ErrorTest() line 17", error.ErrorStackTrace);
 
-        // Assert - SkippedTest properties are preserved
+        // Assert: SkippedTest properties are preserved
         var skipped = deserialized.Results[3];
         Assert.AreEqual("SkippedTest", skipped.Name);
         Assert.AreEqual("Suite.SkippedClass", skipped.ClassName);
@@ -578,7 +578,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Deserialize_DuplicateUnitTestId_ThrowsInvalidOperationException()
     {
-        // Arrange - TRX with two UnitTest elements sharing the same id
+        // Arrange: TRX with two UnitTest elements sharing the same id
         var trxWithDuplicateIds =
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -597,7 +597,7 @@ public sealed class TrxSerializerTests
             </TestRun>
             """;
 
-        // Act & Assert
+        // Act: attempt to deserialize the TRX with duplicate IDs (combined with Assert)
         Assert.ThrowsExactly<InvalidOperationException>(() => TrxSerializer.Deserialize(trxWithDuplicateIds));
     }
 
@@ -607,7 +607,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Deserialize_NonExistentTestId_ThrowsInvalidOperationException()
     {
-        // Arrange - TRX where the UnitTestResult/@testId has no matching UnitTest/@id
+        // Arrange: TRX where the UnitTestResult/@testId has no matching UnitTest/@id
         var trxWithMissingTestId =
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -623,7 +623,7 @@ public sealed class TrxSerializerTests
             </TestRun>
             """;
 
-        // Act & Assert
+        // Act: attempt to deserialize the TRX with non-existent testId (combined with Assert)
         Assert.ThrowsExactly<InvalidOperationException>(() => TrxSerializer.Deserialize(trxWithMissingTestId));
     }
 }

@@ -14,10 +14,8 @@ sections:
           test failures and understanding test behavior. This capability enables developers to
           review console output, diagnostic messages, and error logs directly within test results.
         tests:
-          - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
-          - JUnitSerializer_Deserialize_TestWithOutput_ReturnsSystemOutput
-          - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-          - Serializer_Deserialize_JUnitWithSystemOutput_ParsesCorrectly
+          - TestResult_SystemOutput_Default_IsEmpty
+          - TestResult_SystemError_Default_IsEmpty
 
       - id: TestResults-Mdl-ErrorInfo
         title: The library shall support capturing error messages and stack traces.
@@ -26,7 +24,5 @@ sections:
           developers with immediate context about what went wrong and where, enabling faster
           debugging and resolution of issues.
         tests:
-          - JUnitSerializer_Serialize_FailedTest_IncludesFailureElement
-          - TrxSerializer_Serialize_StackTraceWithoutMessage_IncludesStackTraceElement
-          - JUnitSerializer_Deserialize_FailedTest_ReturnsFailureDetails
-          - TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults
+          - TestResult_ErrorMessage_Default_IsEmpty
+          - TestResult_ErrorStackTrace_Default_IsEmpty

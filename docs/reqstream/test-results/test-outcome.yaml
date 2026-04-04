@@ -34,8 +34,6 @@ sections:
           is a key distinction in both TRX and JUnit formats.
         tests:
           - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
-          - JUnitSerializer_Serialize_ErrorTest_IncludesErrorElement
-          - JUnitSerializer_Deserialize_ErrorTest_ReturnsErrorDetails
 
       - id: TestResults-Mdl-TimeoutOutcome
         title: The library shall support the Timeout test outcome.
@@ -44,7 +42,6 @@ sections:
           were terminated. This status is important for identifying performance issues and tests
           that hang or run indefinitely, which is critical for maintaining efficient test suites.
         tests:
-          - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
           - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
       - id: TestResults-Mdl-NotExecutedOutcome
@@ -55,9 +52,6 @@ sections:
           tracking and is important for accurate test result reporting in both TRX and JUnit formats.
         tests:
           - TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse
-          - JUnitSerializer_Serialize_SkippedTest_IncludesSkippedElement
-          - JUnitSerializer_Deserialize_SkippedTest_ReturnsSkippedStatus
-          - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
       - id: TestResults-Mdl-InconclusiveOutcome
         title: The library shall support the Inconclusive test outcome.
@@ -67,7 +61,6 @@ sections:
           inconclusive results and helps distinguish ambiguous test executions from failures.
         tests:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
-          - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
       - id: TestResults-Mdl-AbortedOutcome
         title: The library shall support the Aborted test outcome.
@@ -87,7 +80,6 @@ sections:
         tests:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
           - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
-          - TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults
 
       - id: TestResults-Mdl-WarningOutcome
         title: The library shall support the Warning test outcome.

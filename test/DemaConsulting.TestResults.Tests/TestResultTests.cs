@@ -34,12 +34,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_TestId_Default_IsNotEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - TestId should be auto-generated and not the empty GUID
+        // Assert: TestId should be auto-generated and not the empty GUID
         Assert.AreNotEqual(Guid.Empty, result.TestId);
     }
 
@@ -50,13 +50,13 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_TestId_TwoInstances_AreUnique()
     {
-        // Arrange - create two independent TestResult instances
+        // Arrange: create two independent TestResult instances
 
-        // Act
+        // Act: create two independent TestResult instances
         var result1 = new TestResult();
         var result2 = new TestResult();
 
-        // Assert - each instance should have a distinct TestId
+        // Assert: each instance should have a distinct TestId
         Assert.AreNotEqual(result1.TestId, result2.TestId);
     }
 
@@ -66,12 +66,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_ExecutionId_Default_IsNotEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - ExecutionId should be auto-generated and not the empty GUID
+        // Assert: ExecutionId should be auto-generated and not the empty GUID
         Assert.AreNotEqual(Guid.Empty, result.ExecutionId);
     }
 
@@ -82,13 +82,13 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_ExecutionId_TwoInstances_AreUnique()
     {
-        // Arrange - create two independent TestResult instances
+        // Arrange: create two independent TestResult instances
 
-        // Act
+        // Act: create two independent TestResult instances
         var result1 = new TestResult();
         var result2 = new TestResult();
 
-        // Assert - each instance should have a distinct ExecutionId
+        // Assert: each instance should have a distinct ExecutionId
         Assert.AreNotEqual(result1.ExecutionId, result2.ExecutionId);
     }
 
@@ -98,12 +98,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_Name_Default_IsEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - Name should default to string.Empty
+        // Assert: Name should default to string.Empty
         Assert.AreEqual(string.Empty, result.Name);
     }
 
@@ -113,12 +113,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_CodeBase_Default_IsEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - CodeBase should default to string.Empty
+        // Assert: CodeBase should default to string.Empty
         Assert.AreEqual(string.Empty, result.CodeBase);
     }
 
@@ -128,12 +128,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_ClassName_Default_IsEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - ClassName should default to string.Empty
+        // Assert: ClassName should default to string.Empty
         Assert.AreEqual(string.Empty, result.ClassName);
     }
 
@@ -143,13 +143,13 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_ComputerName_Default_IsEnvironmentMachineName()
     {
-        // Arrange - record the expected machine name before construction
+        // Arrange: record the expected machine name before construction
         var expectedComputerName = Environment.MachineName;
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - ComputerName should match the environment's machine name
+        // Assert: ComputerName should match the environment's machine name
         Assert.AreEqual(expectedComputerName, result.ComputerName);
     }
 
@@ -159,15 +159,15 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_StartTime_Default_IsApproximatelyNow()
     {
-        // Arrange - capture the time before and after creating a TestResult
+        // Arrange: capture the time before and after creating a TestResult
         var before = DateTime.UtcNow;
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
         var after = DateTime.UtcNow;
 
-        // Assert - StartTime should be between before and after timestamps
+        // Assert: StartTime should be between before and after timestamps
         Assert.IsTrue(
             result.StartTime >= before && result.StartTime <= after,
             $"StartTime {result.StartTime} should be between {before} and {after}");
@@ -179,12 +179,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_Duration_Default_IsZero()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - Duration should default to TimeSpan.Zero
+        // Assert: Duration should default to TimeSpan.Zero
         Assert.AreEqual(TimeSpan.Zero, result.Duration);
     }
 
@@ -194,12 +194,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_SystemOutput_Default_IsEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - SystemOutput should default to string.Empty
+        // Assert: SystemOutput should default to string.Empty
         Assert.AreEqual(string.Empty, result.SystemOutput);
     }
 
@@ -209,12 +209,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_SystemError_Default_IsEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - SystemError should default to string.Empty
+        // Assert: SystemError should default to string.Empty
         Assert.AreEqual(string.Empty, result.SystemError);
     }
 
@@ -224,12 +224,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_Outcome_Default_IsNotExecuted()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - Outcome should default to TestOutcome.NotExecuted
+        // Assert: Outcome should default to TestOutcome.NotExecuted
         Assert.AreEqual(TestOutcome.NotExecuted, result.Outcome);
     }
 
@@ -239,12 +239,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_ErrorMessage_Default_IsEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - ErrorMessage should default to string.Empty
+        // Assert: ErrorMessage should default to string.Empty
         Assert.AreEqual(string.Empty, result.ErrorMessage);
     }
 
@@ -254,12 +254,12 @@ public class TestResultTests
     [TestMethod]
     public void TestResult_ErrorStackTrace_Default_IsEmpty()
     {
-        // Arrange - create a new TestResult with default property values
+        // Arrange: create a new TestResult with default property values
 
-        // Act
+        // Act: create a new TestResult instance
         var result = new TestResult();
 
-        // Assert - ErrorStackTrace should default to string.Empty
+        // Assert: ErrorStackTrace should default to string.Empty
         Assert.AreEqual(string.Empty, result.ErrorStackTrace);
     }
 }
