@@ -4,7 +4,7 @@
 
 The IO subsystem provides serialization and deserialization of test result data
 in multiple formats. It acts as the interface between the in-memory
-[TestResults](../test-results-library.md) model and external test result files.
+[TestResults](../test-results.md) model and external test result files.
 
 ## Subsystem Structure
 
@@ -13,6 +13,7 @@ The IO subsystem consists of the following units:
 | Unit | File | Description |
 | ---- | ---- | ----------- |
 | [Serializer](serializer.md) | `IO/Serializer.cs` | Format-detection facade |
+| [SerializerHelpers](serializer-helpers.md) | `IO/SerializerHelpers.cs` | Internal UTF-8 writer helper |
 | [TrxSerializer](trx-serializer.md) | `IO/TrxSerializer.cs` | TRX format implementation |
 | [JUnitSerializer](junit-serializer.md) | `IO/JUnitSerializer.cs` | JUnit XML format implementation |
 
@@ -29,7 +30,7 @@ The IO subsystem is responsible for:
 
 The IO subsystem depends on:
 
-- **Model layer**: [TestResults](../test-results-library.md), [TestResult](../test-result.md),
+- **Model units**: [TestResults](../test-results.md), [TestResult](../test-result.md),
   [TestOutcome](../test-outcome.md)
 - **External**: `System.Xml.Linq` for XML processing
 

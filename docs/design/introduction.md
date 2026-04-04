@@ -91,6 +91,3 @@ src/DemaConsulting.TestResults/
 
 [user-guide]: https://github.com/demaconsulting/TestResults
 [requirements-doc]: https://github.com/demaconsulting/TestResults
-
-[user-guide]: https://github.com/demaconsulting/TestResults
-[requirements-doc]: https://github.com/demaconsulting/TestResults

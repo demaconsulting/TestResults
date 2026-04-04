@@ -2,7 +2,7 @@
 
 The `TestOutcome` enumeration and its companion `TestOutcomeExtensions` class define
 the full set of outcome values recognized by the library and provide extension methods
-that classify those values into the logical categories used by the serialization layer
+that classify those values into the logical categories used by the IO subsystem
 and by consumers who need to aggregate or summarize results.
 
 ## TestOutcome Enumeration
@@ -35,7 +35,7 @@ but do not count as passed or failed are labeled **Executed**.
 ## TestOutcome Extensions
 
 The `TestOutcomeExtensions` class provides three extension methods on `TestOutcome` that
-classify an outcome into the three logical categories used by the serialization layer and
+classify an outcome into the three logical categories used by the IO subsystem and
 by consumers who need to aggregate or summarize results.
 
 ### IsPassed()

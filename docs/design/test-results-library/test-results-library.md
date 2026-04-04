@@ -14,31 +14,56 @@ The TestResults Library uses a layered architecture:
 graph TD
     CallingCode[Calling Code]
 
-    subgraph IO["IO Subsystem (Serialization)"]
-        Serializer[Serializer facade]
+    subgraph IO["IO Subsystem"]
+        Serializer[Serializer]
+        SerializerHelpers[SerializerHelpers]
         TrxSerializer[TrxSerializer]
         JUnitSerializer[JUnitSerializer]
     end
 
-    subgraph Model["Model Layer"]
+    subgraph Model["Model Units"]
         TestResults[TestResults]
         TestResult[TestResult]
         TestOutcome[TestOutcome]
     end
 
     CallingCode --> Serializer
+    Serializer --> SerializerHelpers
     Serializer --> TrxSerializer
     Serializer --> JUnitSerializer
+    TrxSerializer --> SerializerHelpers
+    JUnitSerializer --> SerializerHelpers
     TrxSerializer --> TestResults
     JUnitSerializer --> TestResults
     TestResults --> TestResult
     TestResult --> TestOutcome
 ```
 
-## Software Items
+## Subsystems and Units
 
-The software items in the TestResults Library are described in the
-[introduction](../introduction.md#software-structure).
+The TestResults Library contains one subsystem and three top-level units:
+
+### IO Subsystem
+
+The [IO subsystem](io/io.md) handles reading and writing test result files. It comprises
+four units:
+
+| Unit | Design | Description |
+| ---- | ------ | ----------- |
+| [Serializer](io/serializer.md) | `io/serializer.md` | Format-detection facade |
+| [SerializerHelpers](io/serializer-helpers.md) | `io/serializer-helpers.md` | Internal UTF-8 writer helper |
+| [TrxSerializer](io/trx-serializer.md) | `io/trx-serializer.md` | TRX format read/write |
+| [JUnitSerializer](io/junit-serializer.md) | `io/junit-serializer.md` | JUnit XML format read/write |
+
+### Top-Level Units
+
+The three model units are outside any subsystem:
+
+| Unit | Design | Description |
+| ---- | ------ | ----------- |
+| [TestOutcome](test-outcome.md) | `test-outcome.md` | Enumeration of possible test outcomes |
+| [TestResult](test-result.md) | `test-result.md` | Single test execution result |
+| [TestResults](test-results.md) | `test-results.md` | Named collection of test results |
 
 ## External Interfaces
 
@@ -64,24 +89,3 @@ System-level requirements are in
 [docs/reqstream/test-results-library/test-results-library.yaml](../../reqstream/test-results-library/test-results-library.yaml).
 Platform requirements are in
 [docs/reqstream/test-results-library/platform-requirements.yaml](../../reqstream/test-results-library/platform-requirements.yaml).
-
-## TestResults Class
-
-The `TestResults` class represents a complete test run — a named collection of
-`TestResult` objects along with run-level metadata.
-
-### Properties
-
-| Property   | Type                | Default          | Description                            |
-|------------|---------------------|------------------|----------------------------------------|
-| `Id`       | `Guid`              | `Guid.NewGuid()` | Uniquely identifies this test run      |
-| `Name`     | `string`            | `string.Empty`   | Display name of the test run           |
-| `UserName` | `string`            | `string.Empty`   | User or identity that initiated the run|
-| `Results`  | `List<TestResult>`  | `[]`             | Ordered collection of test case results|
-
-`Id` is auto-generated on construction for the same reasons as `TestResult.TestId` — it
-ensures every run is uniquely identifiable in TRX output without requiring callers to
-supply an identifier.
-
-`Results` is initialized to an empty list, so callers can simply add items without
-first checking for null.
