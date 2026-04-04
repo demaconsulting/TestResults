@@ -90,11 +90,16 @@ reviews:
     paths:
       - "docs/reqstream/test-results-library/io/serializer.yaml"
       - "docs/design/test-results-library/io/serializer.md"
-      - "docs/design/test-results-library/io/serializer-helpers.md"
       - "src/DemaConsulting.TestResults/IO/Serializer.cs"
-      - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
       - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
       - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
+
+  - id: TestResults-IO-SerializerHelpers
+    title: Review of TestResults IO SerializerHelpers Unit
+    paths:
+      - "docs/reqstream/test-results-library/io/serializer-helpers.yaml"
+      - "docs/design/test-results-library/io/serializer-helpers.md"
+      - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
 
   - id: TestResults-IO-TrxSerializer
     title: Review of TestResults IO TrxSerializer Unit

@@ -3,6 +3,7 @@
 # This file covers the IO subsystem of the TestResults library.
 # Unit-level requirements are in the individual unit files:
 #   - serializer.yaml
+#   - serializer-helpers.yaml
 #   - trx-serializer.yaml
 #   - junit-serializer.yaml
 
@@ -48,6 +49,7 @@ sections:
         children:
           - TestResults-Trx-Serialize
           - TestResults-JUnit-Serialize
+          - TestResults-SerializerHelpers-Utf8Encoding
         tests:
           - IO_Serialize_TestResults_ProducesTrxContent
           - IO_Serialize_TestResults_ProducesJUnitContent
