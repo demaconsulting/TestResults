@@ -17,7 +17,7 @@ sections:
           reading it, and the subsystem must provide this capability reliably so that
           higher-level code can route files to the appropriate deserializer.
         children:
-          - TestResults-Ser-FormatIdentify
+          - TestResults-Serializer-FormatIdentify
         tests:
           - IO_Identify_TrxContent_ReturnsTrx
           - IO_Identify_JUnitContent_ReturnsJUnit
@@ -30,9 +30,9 @@ sections:
           integrate with the two dominant test result formats used across .NET and cross-platform
           CI/CD toolchains.
         children:
-          - TestResults-Ser-FormatConversion
+          - TestResults-Serializer-FormatConversion
           - TestResults-Trx-Deserialize
-          - TestResults-Jun-Deserialize
+          - TestResults-JUnit-Deserialize
         tests:
           - IO_Deserialize_TrxContent_ReturnsTestResults
           - IO_Deserialize_JUnitContent_ReturnsTestResults
@@ -47,7 +47,7 @@ sections:
           CI/CD toolchains.
         children:
           - TestResults-Trx-Serialize
-          - TestResults-Jun-Serialize
+          - TestResults-JUnit-Serialize
         tests:
           - IO_Serialize_TestResults_ProducesTrxContent
           - IO_Serialize_TestResults_ProducesJUnitContent

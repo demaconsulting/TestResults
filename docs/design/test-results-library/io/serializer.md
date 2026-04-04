@@ -21,7 +21,7 @@ The `TestResultFormat` enumeration identifies the file format of a test result d
 
 The `Serializer.Identify()` method determines the format of a serialized test result
 document without fully deserializing it. This satisfies requirement
-`TestResults-Ser-FormatIdentify`.
+`TestResults-Serializer-FormatIdentify`.
 
 The identification algorithm:
 
@@ -41,7 +41,7 @@ with a `TestRun` root element in any other namespace is not treated as TRX.
 
 The `Serializer.Deserialize()` method provides a single entry point for reading test
 result files regardless of their format. This satisfies requirement
-`TestResults-Ser-FormatConversion`.
+`TestResults-Serializer-FormatConversion`.
 
 The conversion algorithm:
 

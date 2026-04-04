@@ -7,7 +7,7 @@
 sections:
   - title: JUnitSerializer Unit Requirements
     requirements:
-      - id: TestResults-Jun-Serialize
+      - id: TestResults-JUnit-Serialize
         title: The library shall support serializing test results to JUnit XML format.
         justification: |
           JUnit XML is a widely-adopted, cross-platform test result format supported by many CI/CD
@@ -22,7 +22,7 @@ sections:
           - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
           - JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName
 
-      - id: TestResults-Jun-Deserialize
+      - id: TestResults-JUnit-Deserialize
         title: The library shall support deserializing JUnit XML test result files.
         justification: |
           Deserializing JUnit XML enables reading test results from a wide variety of testing
