@@ -1,6 +1,6 @@
 # Introduction
 
-This document describes the internal design of the TestResults C# library. It provides a
+This document describes the internal design of the TestResults Library. It provides a
 structured account of the key components, their responsibilities, and how they interact to
 deliver the library's capabilities.
 
@@ -8,21 +8,28 @@ deliver the library's capabilities.
 
 The purpose of this document is to:
 
-- Describe the design decisions and structure of the TestResults library
+- Describe the design decisions and structure of the TestResults Library
 - Provide a reference for developers contributing to or reviewing the library
 - Establish traceability between requirements and the components that fulfil them
-- Document the model and serialization layers in sufficient detail to support code review
+- Document the model units and IO subsystem in sufficient detail to support code review
 
 ## Scope
 
-This document covers the design of two primary layers within the TestResults library:
+This document covers the design of the TestResults Library, organised by the following
+system/subsystem/unit hierarchy:
 
-- The **model layer**: the platform-agnostic object representation of test results,
-  including the `TestOutcome` enumeration, the `TestResult` class, and the `TestResults`
-  class
-- The **serialization layer**: the components responsible for reading and writing test
-  result files in TRX (Visual Studio Test Results) and JUnit XML formats, including the
-  `Serializer` format-detection facade, `TrxSerializer`, and `JUnitSerializer`
+- The **TestResults Library** (System): a .NET library for reading and writing test result
+  files in multiple formats
+- The **IO Subsystem**: the components responsible for reading and writing test result
+  files in TRX and JUnit XML formats, comprising four units:
+  - `Serializer` — format-detection facade
+  - `SerializerHelpers` — internal UTF-8 writer helper used by both serializers
+  - `TrxSerializer` — TRX (Visual Studio Test Results) format read/write
+  - `JUnitSerializer` — JUnit XML format read/write
+- The **model units** (top-level, outside the IO subsystem):
+  - `TestOutcome` — enumeration of all possible test outcomes
+  - `TestResult` — single test execution result
+  - `TestResults` — named collection of test results for a complete test run
 
 This document does not cover installation, end-user usage patterns, or the CI/CD pipeline
 configuration. Those topics are addressed in the [User Guide][user-guide] and the
@@ -52,12 +59,13 @@ actual implementation, or by raising a defect against the code.
 
 ## Software Structure
 
-The TestResults library is organized as follows:
+The TestResults Library is organised into one subsystem and three top-level units:
 
 ```text
 TestResults Library (System)
 ├── IO (Subsystem)
 │   ├── Serializer (Unit)
+│   ├── SerializerHelpers (Unit)
 │   ├── TrxSerializer (Unit)
 │   └── JUnitSerializer (Unit)
 ├── TestOutcome (Unit)
@@ -67,19 +75,22 @@ TestResults Library (System)
 
 ## Folder Layout
 
-The source code is organized to mirror the design documentation structure:
+The source code is organised to mirror the design documentation structure:
 
 ```text
 src/DemaConsulting.TestResults/
 ├── IO/                          — IO Subsystem
-│   ├── Serializer.cs            — Format-detection facade
-│   ├── SerializerHelpers.cs     — Internal UTF-8 writer helper
-│   ├── TrxSerializer.cs         — TRX format read/write
-│   └── JUnitSerializer.cs       — JUnit XML format read/write
-├── TestOutcome.cs               — Test outcome enumeration
-├── TestResult.cs                — Single test result data
-└── TestResults.cs               — Collection of test results
+│   ├── Serializer.cs            — Format-detection facade (Serializer unit)
+│   ├── SerializerHelpers.cs     — Internal UTF-8 writer helper (SerializerHelpers unit)
+│   ├── TrxSerializer.cs         — TRX format read/write (TrxSerializer unit)
+│   └── JUnitSerializer.cs       — JUnit XML format read/write (JUnitSerializer unit)
+├── TestOutcome.cs               — Test outcome enumeration (TestOutcome unit)
+├── TestResult.cs                — Single test result data (TestResult unit)
+└── TestResults.cs               — Collection of test results (TestResults unit)
 ```
+
+[user-guide]: https://github.com/demaconsulting/TestResults
+[requirements-doc]: https://github.com/demaconsulting/TestResults
 
 [user-guide]: https://github.com/demaconsulting/TestResults
 [requirements-doc]: https://github.com/demaconsulting/TestResults
