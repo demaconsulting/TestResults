@@ -16,7 +16,7 @@ A lightweight C# library for programmatically creating test result files in TRX 
 - ✨ **Simple API** - Intuitive and easy-to-use object model
 - 🎯 **Type-Safe** - Strongly-typed C# classes for test results
 - 🪶 **Lightweight** - Minimal external dependencies
-- 🔄 **Multi-Target** - Supports .NET 8, 9, and 10
+- 🔄 **Multi-Target** - Supports .NET Standard 2.0, .NET 8, 9, and 10
 - 📦 **NuGet Ready** - Easy integration via NuGet package
 - 📊 **Multiple Formats** - Supports both TRX and JUnit XML formats
 - ✅ **Compatible** - Works with Visual Studio, Azure DevOps, and CI/CD systems

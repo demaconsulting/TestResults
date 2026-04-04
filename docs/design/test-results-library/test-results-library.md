@@ -26,7 +26,6 @@ graph TD
     TestOutcome[TestOutcome]
 
     CallingCode --> Serializer
-    Serializer --> SerializerHelpers
     Serializer --> TrxSerializer
     Serializer --> JUnitSerializer
     TrxSerializer --> SerializerHelpers
