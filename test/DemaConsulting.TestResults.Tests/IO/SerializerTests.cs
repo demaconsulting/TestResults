@@ -392,7 +392,7 @@ public sealed class SerializerTests
         // Arrange: null contents
         string? nullContents = null;
 
-        // Act: attempt to identify null contents (combined with Assert)
+        // Act: attempt to deserialize null contents (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentNullException>(() => Serializer.Deserialize(nullContents!));
         Assert.AreEqual("contents", ex.ParamName);
     }
@@ -406,7 +406,7 @@ public sealed class SerializerTests
         // Arrange: empty string
         var emptyContents = string.Empty;
 
-        // Act: attempt to identify empty string (combined with Assert)
+        // Act: attempt to deserialize empty string (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(emptyContents));
         Assert.AreEqual("contents", ex.ParamName);
     }
@@ -420,7 +420,7 @@ public sealed class SerializerTests
         // Arrange: whitespace string
         var whitespaceContents = "   \n\t  ";
 
-        // Act: attempt to identify whitespace string (combined with Assert)
+        // Act: attempt to deserialize whitespace string (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(whitespaceContents));
         Assert.AreEqual("contents", ex.ParamName);
     }
@@ -439,7 +439,7 @@ public sealed class SerializerTests
             </UnknownRoot>
             """;
 
-        // Act: attempt to identify valid XML with unknown format (combined with Assert)
+        // Act: attempt to deserialize valid XML with unknown format (combined with Assert)
         var ex = Assert.ThrowsExactly<InvalidOperationException>(() => Serializer.Deserialize(unknownFormatXml));
         Assert.Contains("Unable to identify test result format", ex.Message);
     }

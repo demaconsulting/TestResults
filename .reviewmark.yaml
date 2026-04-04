@@ -39,7 +39,6 @@ reviews:
       - "docs/reqstream/test-results/test-results.yaml"
       - "docs/design/introduction.md"
       - "docs/design/test-results/test-results.md"
-      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
 
   - id: TestResults-Design
     title: Review of TestResults Design Documentation

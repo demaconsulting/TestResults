@@ -15,7 +15,9 @@ sections:
           review console output, diagnostic messages, and error logs directly within test results.
         tests:
           - TestResult_SystemOutput_Default_IsEmpty
+          - TestResult_SystemOutput_Set_RetainsValue
           - TestResult_SystemError_Default_IsEmpty
+          - TestResult_SystemError_Set_RetainsValue
 
       - id: TestResults-Mdl-ErrorInfo
         title: The library shall support capturing error messages and stack traces.
@@ -25,4 +27,6 @@ sections:
           debugging and resolution of issues.
         tests:
           - TestResult_ErrorMessage_Default_IsEmpty
+          - TestResult_ErrorMessage_Set_RetainsValue
           - TestResult_ErrorStackTrace_Default_IsEmpty
+          - TestResult_ErrorStackTrace_Set_RetainsValue

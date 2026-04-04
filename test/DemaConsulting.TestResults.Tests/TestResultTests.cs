@@ -204,6 +204,22 @@ public class TestResultTests
     }
 
     /// <summary>
+    ///     Tests that <see cref="TestResult.SystemOutput" /> retains an assigned value
+    /// </summary>
+    [TestMethod]
+    public void TestResult_SystemOutput_Set_RetainsValue()
+    {
+        // Arrange: create a new TestResult instance
+        var result = new TestResult();
+
+        // Act: assign a non-empty value to SystemOutput
+        result.SystemOutput = "test output line 1";
+
+        // Assert: SystemOutput should retain the assigned value
+        Assert.AreEqual("test output line 1", result.SystemOutput);
+    }
+
+    /// <summary>
     ///     Tests that <see cref="TestResult.SystemError" /> defaults to an empty string
     /// </summary>
     [TestMethod]
@@ -216,6 +232,22 @@ public class TestResultTests
 
         // Assert: SystemError should default to string.Empty
         Assert.AreEqual(string.Empty, result.SystemError);
+    }
+
+    /// <summary>
+    ///     Tests that <see cref="TestResult.SystemError" /> retains an assigned value
+    /// </summary>
+    [TestMethod]
+    public void TestResult_SystemError_Set_RetainsValue()
+    {
+        // Arrange: create a new TestResult instance
+        var result = new TestResult();
+
+        // Act: assign a non-empty value to SystemError
+        result.SystemError = "error output line 1";
+
+        // Assert: SystemError should retain the assigned value
+        Assert.AreEqual("error output line 1", result.SystemError);
     }
 
     /// <summary>
@@ -249,6 +281,22 @@ public class TestResultTests
     }
 
     /// <summary>
+    ///     Tests that <see cref="TestResult.ErrorMessage" /> retains an assigned value
+    /// </summary>
+    [TestMethod]
+    public void TestResult_ErrorMessage_Set_RetainsValue()
+    {
+        // Arrange: create a new TestResult instance
+        var result = new TestResult();
+
+        // Act: assign a non-empty value to ErrorMessage
+        result.ErrorMessage = "Expected 1 but was 2";
+
+        // Assert: ErrorMessage should retain the assigned value
+        Assert.AreEqual("Expected 1 but was 2", result.ErrorMessage);
+    }
+
+    /// <summary>
     ///     Tests that <see cref="TestResult.ErrorStackTrace" /> defaults to an empty string
     /// </summary>
     [TestMethod]
@@ -261,5 +309,21 @@ public class TestResultTests
 
         // Assert: ErrorStackTrace should default to string.Empty
         Assert.AreEqual(string.Empty, result.ErrorStackTrace);
+    }
+
+    /// <summary>
+    ///     Tests that <see cref="TestResult.ErrorStackTrace" /> retains an assigned value
+    /// </summary>
+    [TestMethod]
+    public void TestResult_ErrorStackTrace_Set_RetainsValue()
+    {
+        // Arrange: create a new TestResult instance
+        var result = new TestResult();
+
+        // Act: assign a non-empty stack trace to ErrorStackTrace
+        result.ErrorStackTrace = "at MyClass.MyMethod() in MyClass.cs:line 42";
+
+        // Assert: ErrorStackTrace should retain the assigned value
+        Assert.AreEqual("at MyClass.MyMethod() in MyClass.cs:line 42", result.ErrorStackTrace);
     }
 }
