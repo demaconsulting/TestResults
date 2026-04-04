@@ -573,6 +573,42 @@ public sealed class TrxSerializerTests
     }
 
     /// <summary>
+    ///     Test that TrxSerializer serializes to a string with an XML declaration declaring UTF-8 encoding
+    /// </summary>
+    /// <remarks>
+    ///     Proves that the Utf8StringWriter helper used internally by TrxSerializer produces output
+    ///     with an explicit <c>encoding="utf-8"</c> XML declaration, ensuring consuming tools
+    ///     interpret the content correctly.
+    /// </remarks>
+    [TestMethod]
+    public void TrxSerializer_Serialize_IncludesXmlDeclarationWithUtf8Encoding()
+    {
+        // Arrange: minimal test results
+        var results = new TestResults
+        {
+            Name = "EncodingTest",
+            Results =
+            [
+                new TestResult
+                {
+                    Name = "Test",
+                    ClassName = "Class",
+                    Duration = TimeSpan.Zero,
+                    Outcome = TestOutcome.Passed
+                }
+            ]
+        };
+
+        // Act: serialize to string
+        var xml = TrxSerializer.Serialize(results);
+
+        // Assert: XML declaration with UTF-8 encoding is present
+        Assert.IsTrue(
+            xml.StartsWith("<?xml version=\"1.0\" encoding=\"utf-8\"", StringComparison.OrdinalIgnoreCase),
+            "Expected XML declaration with encoding=\"utf-8\" at start of output");
+    }
+
+    /// <summary>
     ///     Test that Deserialize throws InvalidOperationException for TRX with duplicate UnitTest IDs
     /// </summary>
     [TestMethod]

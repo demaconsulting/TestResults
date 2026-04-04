@@ -16,5 +16,5 @@ sections:
           the string is later converted to bytes for storage or transmission. The
           Utf8StringWriter helper ensures all serializers produce correctly declared output.
         tests:
-          - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-          - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
+          - TrxSerializer_Serialize_IncludesXmlDeclarationWithUtf8Encoding
+          - JUnitSerializer_Serialize_IncludesXmlDeclarationWithUtf8Encoding
