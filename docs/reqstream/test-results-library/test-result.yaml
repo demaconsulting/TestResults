@@ -7,7 +7,7 @@
 sections:
   - title: TestResult Unit Requirements
     requirements:
-      - id: TestResults-Mdl-TestOutput
+      - id: TestResults-Model-TestOutput
         title: The library shall support capturing test output streams.
         justification: |
           Capturing standard output and error streams from tests is essential for debugging
@@ -19,7 +19,7 @@ sections:
           - TestResult_SystemError_Default_IsEmpty
           - TestResult_SystemError_Set_RetainsValue
 
-      - id: TestResults-Mdl-ErrorInfo
+      - id: TestResults-Model-ErrorInfo
         title: The library shall support capturing error messages and stack traces.
         justification: |
           Error messages and stack traces are critical for diagnosing test failures. They provide

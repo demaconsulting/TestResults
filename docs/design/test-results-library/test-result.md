@@ -46,7 +46,7 @@ in the common case where the test is being recorded on the same machine that ran
 
 The default outcome of `NotExecuted` is intentional: a `TestResult` that has been
 constructed but not yet populated with execution data is considered not executed. This
-satisfies requirement `TestResults-Mdl-NotExecutedOutcome`.
+satisfies requirement `TestResults-Model-NotExecutedOutcome`.
 
 ### Output Properties
 
@@ -55,5 +55,5 @@ satisfies requirement `TestResults-Mdl-NotExecutedOutcome`.
 | `SystemOutput` | `string` | `string.Empty` | Content written to standard output       |
 | `SystemError`  | `string` | `string.Empty` | Content written to standard error        |
 
-Capturing output streams satisfies requirement `TestResults-Mdl-TestOutput`. Error
-messages and stack traces satisfy requirement `TestResults-Mdl-ErrorInfo`.
+Capturing output streams satisfies requirement `TestResults-Model-TestOutput`. Error
+messages and stack traces satisfy requirement `TestResults-Model-ErrorInfo`.

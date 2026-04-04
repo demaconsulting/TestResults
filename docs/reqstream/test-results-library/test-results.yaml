@@ -10,7 +10,7 @@
 sections:
   - title: TestResults Unit Requirements
     requirements:
-      - id: TestResults-Mdl-Collection
+      - id: TestResults-Model-Collection
         title: The TestResults class shall represent a named collection of test results for a complete test run.
         justification: |
           A test run typically consists of many individual test results that must be grouped together

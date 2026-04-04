@@ -18,23 +18,23 @@ sections:
           callers to work with test results without knowing the source format, and enables
           conversion between formats via the IO subsystem.
         children:
-          - TestResults-Mdl-Collection
-          - TestResults-Mdl-TestOutput
-          - TestResults-Mdl-ErrorInfo
-          - TestResults-Mdl-PassedOutcome
-          - TestResults-Mdl-FailedOutcome
-          - TestResults-Mdl-ErrorOutcome
-          - TestResults-Mdl-TimeoutOutcome
-          - TestResults-Mdl-NotExecutedOutcome
-          - TestResults-Mdl-InconclusiveOutcome
-          - TestResults-Mdl-AbortedOutcome
-          - TestResults-Mdl-PendingOutcome
-          - TestResults-Mdl-WarningOutcome
-          - TestResults-Mdl-PassedButRunAbortedOutcome
-          - TestResults-Mdl-NotRunnableOutcome
-          - TestResults-Mdl-CompletedOutcome
-          - TestResults-Mdl-InProgressOutcome
-          - TestResults-Mdl-DisconnectedOutcome
+          - TestResults-Model-Collection
+          - TestResults-Model-TestOutput
+          - TestResults-Model-ErrorInfo
+          - TestResults-Model-PassedOutcome
+          - TestResults-Model-FailedOutcome
+          - TestResults-Model-ErrorOutcome
+          - TestResults-Model-TimeoutOutcome
+          - TestResults-Model-NotExecutedOutcome
+          - TestResults-Model-InconclusiveOutcome
+          - TestResults-Model-AbortedOutcome
+          - TestResults-Model-PendingOutcome
+          - TestResults-Model-WarningOutcome
+          - TestResults-Model-PassedButRunAbortedOutcome
+          - TestResults-Model-NotRunnableOutcome
+          - TestResults-Model-CompletedOutcome
+          - TestResults-Model-InProgressOutcome
+          - TestResults-Model-DisconnectedOutcome
         tests:
           - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
       - id: TestResultsLibrary-Architecture-InMemoryModel

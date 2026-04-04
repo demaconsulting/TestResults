@@ -7,7 +7,7 @@
 sections:
   - title: TestOutcome Unit Requirements
     requirements:
-      - id: TestResults-Mdl-PassedOutcome
+      - id: TestResults-Model-PassedOutcome
         title: The library shall support the Passed test outcome.
         justification: |
           The Passed outcome represents a successful test execution and is the most common test
@@ -16,7 +16,7 @@ sections:
         tests:
           - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
 
-      - id: TestResults-Mdl-FailedOutcome
+      - id: TestResults-Model-FailedOutcome
         title: The library shall support the Failed test outcome.
         justification: |
           The Failed outcome indicates a test that executed but did not meet its success criteria.
@@ -25,7 +25,7 @@ sections:
         tests:
           - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-      - id: TestResults-Mdl-ErrorOutcome
+      - id: TestResults-Model-ErrorOutcome
         title: The library shall support the Error test outcome.
         justification: |
           The Error outcome represents tests that encountered an unexpected error or exception
@@ -35,7 +35,7 @@ sections:
         tests:
           - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-      - id: TestResults-Mdl-TimeoutOutcome
+      - id: TestResults-Model-TimeoutOutcome
         title: The library shall support the Timeout test outcome.
         justification: |
           The Timeout outcome represents tests that exceeded their allotted execution time and
@@ -44,7 +44,7 @@ sections:
         tests:
           - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-      - id: TestResults-Mdl-NotExecutedOutcome
+      - id: TestResults-Model-NotExecutedOutcome
         title: The library shall support the NotExecuted test outcome.
         justification: |
           The NotExecuted outcome represents tests that were not run, which maps to the skipped
@@ -53,7 +53,7 @@ sections:
         tests:
           - TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse
 
-      - id: TestResults-Mdl-InconclusiveOutcome
+      - id: TestResults-Model-InconclusiveOutcome
         title: The library shall support the Inconclusive test outcome.
         justification: |
           The Inconclusive outcome represents tests that executed but did not produce a definitive
@@ -62,7 +62,7 @@ sections:
         tests:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Mdl-AbortedOutcome
+      - id: TestResults-Model-AbortedOutcome
         title: The library shall support the Aborted test outcome.
         justification: |
           The Aborted outcome represents tests that were terminated before completion, typically
@@ -71,7 +71,7 @@ sections:
         tests:
           - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
 
-      - id: TestResults-Mdl-PendingOutcome
+      - id: TestResults-Model-PendingOutcome
         title: The library shall support the Pending test outcome.
         justification: |
           The Pending outcome represents tests that are scheduled for execution but have not yet
@@ -81,7 +81,7 @@ sections:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
           - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
 
-      - id: TestResults-Mdl-WarningOutcome
+      - id: TestResults-Model-WarningOutcome
         title: The library shall support the Warning test outcome.
         justification: |
           The Warning outcome represents tests that passed but produced warnings or minor issues.
@@ -90,7 +90,7 @@ sections:
         tests:
           - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
 
-      - id: TestResults-Mdl-PassedButRunAbortedOutcome
+      - id: TestResults-Model-PassedButRunAbortedOutcome
         title: The library shall support the PassedButRunAborted test outcome.
         justification: |
           The PassedButRunAborted outcome represents tests that passed individually but were part
@@ -101,7 +101,7 @@ sections:
           - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Mdl-NotRunnableOutcome
+      - id: TestResults-Model-NotRunnableOutcome
         title: The library shall support the NotRunnable test outcome.
         justification: |
           The NotRunnable outcome represents tests that could not be executed due to configuration
@@ -111,7 +111,7 @@ sections:
         tests:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Mdl-CompletedOutcome
+      - id: TestResults-Model-CompletedOutcome
         title: The library shall support the Completed test outcome.
         justification: |
           The Completed outcome represents tests that finished execution, used by some test
@@ -121,7 +121,7 @@ sections:
         tests:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Mdl-InProgressOutcome
+      - id: TestResults-Model-InProgressOutcome
         title: The library shall support the InProgress test outcome.
         justification: |
           The InProgress outcome represents tests that are currently executing. This status is
@@ -130,7 +130,7 @@ sections:
         tests:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Mdl-DisconnectedOutcome
+      - id: TestResults-Model-DisconnectedOutcome
         title: The library shall support the Disconnected test outcome.
         justification: |
           The Disconnected outcome represents tests where the test agent became disconnected during
