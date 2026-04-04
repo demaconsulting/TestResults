@@ -26,7 +26,7 @@ evidence-source:
 # Review sets grouping files by logical unit of review.
 reviews:
   - id: Purpose
-    title: Review of TestResults Library Purpose and Promises
+    title: Review that Advertised Features Match System Design
     paths:
       - "README.md"
       - "docs/reqstream/test-results-library/test-results-library.yaml"
