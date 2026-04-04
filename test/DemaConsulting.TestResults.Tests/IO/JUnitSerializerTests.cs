@@ -749,7 +749,7 @@ public sealed class JUnitSerializerTests
             """);
         Assert.IsNotNull(results);
 
-        // Assert test result information - duration should default to zero
+        // Assert: test result information - duration should default to zero
         var result = results.Results[0];
         Assert.AreEqual("TestWithoutTime", result.Name);
         Assert.AreEqual("MyTestClass", result.ClassName);
