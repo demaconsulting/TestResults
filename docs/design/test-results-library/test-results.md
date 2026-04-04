@@ -21,7 +21,7 @@ subsystem after deserializing a test result file, and passed to it when serializ
 `Id` is auto-generated on construction so that every `TestResults` instance is uniquely
 identifiable in TRX output without requiring callers to supply an identifier.
 
-`Results` is initialised to an empty list, so callers can simply add items without
+`Results` is initialized to an empty list, so callers can simply add items without
 first checking for null.
 
 ## Related Requirements

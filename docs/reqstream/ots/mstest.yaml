@@ -13,17 +13,3 @@ sections:
     sections:
       # TODO: Add requirement when proper MSTest self-validation tests are available
       - title: MSTest Requirements
-        # requirements:
-        #   - id: TestResults-OTS-MSTest
-        #     title: MSTest shall execute unit tests and report results.
-        #     justification: |
-        #       MSTest (MSTest.TestFramework and MSTest.TestAdapter) is the unit-testing framework used
-        #       by the project. It discovers and runs all test methods and writes TRX result files that
-        #       feed into coverage reporting and requirements traceability. Passing tests confirm the
-        #       framework is functioning correctly.
-        #     tags: [ots]
-        #     tests:
-        #       - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
-        #       - TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults
-        #       - JUnitSerializer_Serialize_PassedTest_ProducesValidJUnitXml
-        #       - JUnitSerializer_Deserialize_BasicJUnitXml_ReturnsTestResults

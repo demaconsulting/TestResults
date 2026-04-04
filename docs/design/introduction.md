@@ -15,7 +15,7 @@ The purpose of this document is to:
 
 ## Scope
 
-This document covers the design of the TestResults Library, organised by the following
+This document covers the design of the TestResults Library, organized by the following
 system/subsystem/unit hierarchy:
 
 - The **TestResults Library** (System): a .NET library for reading and writing test result
@@ -59,7 +59,7 @@ actual implementation, or by raising a defect against the code.
 
 ## Software Structure
 
-The TestResults Library is organised into one subsystem and three top-level units:
+The TestResults Library is organized into one subsystem and three top-level units:
 
 ```text
 TestResults Library (System)
@@ -75,7 +75,7 @@ TestResults Library (System)
 
 ## Folder Layout
 
-The source code is organised to mirror the design documentation structure:
+The source code is organized to mirror the design documentation structure:
 
 ```text
 src/DemaConsulting.TestResults/

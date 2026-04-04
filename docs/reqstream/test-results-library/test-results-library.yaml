@@ -4,7 +4,7 @@
 # The TestResults Library provides a format-agnostic in-memory model for test results
 # and supports reading and writing test result files in TRX and JUnit XML formats.
 #
-# System-level requirements describe the externally observable behaviour of the library
+# System-level requirements describe the externally observable behavior of the library
 # as a whole. Subsystem and unit requirements are in the individual files under this folder.
 
 sections:

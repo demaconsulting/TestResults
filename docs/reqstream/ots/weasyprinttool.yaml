@@ -12,13 +12,3 @@ sections:
     sections:
       # TODO: Add requirement when demaconsulting.weasyprinttool supports --validate
       - title: WeasyPrintTool Requirements
-        # requirements:
-        #   - id: TestResults-OTS-WeasyPrintTool
-        #     title: WeasyPrintTool shall convert HTML documentation to PDF release artifacts.
-        #     justification: |
-        #       DemaConsulting.WeasyPrintTool wraps the WeasyPrint HTML-to-PDF converter to produce
-        #       the design documentation and requirements PDF artifacts included in each release.
-        #       It runs in the documentation-generation job of the CI pipeline on Windows.
-        #     tags: [ots]
-        #     tests:
-        #       - WeasyPrintTool_PdfGeneration

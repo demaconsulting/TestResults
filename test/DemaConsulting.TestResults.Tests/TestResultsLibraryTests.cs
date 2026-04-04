@@ -26,7 +26,7 @@ namespace DemaConsulting.TestResults.Tests;
 ///     System-level tests for the TestResults Library.
 /// </summary>
 /// <remarks>
-///     These tests verify the end-to-end system behaviour of the TestResults Library
+///     These tests verify the end-to-end system behavior of the TestResults Library
 ///     from the perspective of a library consumer. They prove the three system-level
 ///     architectural requirements:
 ///     <list type="bullet">
