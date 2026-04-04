@@ -139,4 +139,62 @@ public sealed class IOTests
         Assert.AreEqual("Test1", results.Results[0].Name);
         Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
     }
+
+    /// <summary>
+    ///     Test that the IO subsystem can serialize TestResults to TRX content
+    /// </summary>
+    /// <remarks>
+    ///     Tests that the IO subsystem correctly serializes an in-memory TestResults object
+    ///     to TRX-format content. Proves that the subsystem end-to-end flow works for TRX output.
+    /// </remarks>
+    [TestMethod]
+    public void IO_Serialize_TestResults_ProducesTrxContent()
+    {
+        // Arrange: in-memory TestResults with one passing test
+        var results = new TestResults
+        {
+            Name = "MySuite",
+            Results =
+            [
+                new TestResult { Name = "Test1", Outcome = TestOutcome.Passed }
+            ]
+        };
+
+        // Act: serialize the TestResults to TRX content
+        var content = TrxSerializer.Serialize(results);
+
+        // Assert: serialized content should be valid TRX XML containing the test data
+        Assert.IsNotNull(content);
+        Assert.IsTrue(content.Contains("TestRun"), "Expected TRX XML to contain 'TestRun'");
+        Assert.IsTrue(content.Contains("Test1"), "Expected TRX XML to contain 'Test1'");
+    }
+
+    /// <summary>
+    ///     Test that the IO subsystem can serialize TestResults to JUnit content
+    /// </summary>
+    /// <remarks>
+    ///     Tests that the IO subsystem correctly serializes an in-memory TestResults object
+    ///     to JUnit-format content. Proves that the subsystem end-to-end flow works for JUnit output.
+    /// </remarks>
+    [TestMethod]
+    public void IO_Serialize_TestResults_ProducesJUnitContent()
+    {
+        // Arrange: in-memory TestResults with one passing test
+        var results = new TestResults
+        {
+            Name = "MySuite",
+            Results =
+            [
+                new TestResult { Name = "Test1", Outcome = TestOutcome.Passed }
+            ]
+        };
+
+        // Act: serialize the TestResults to JUnit content
+        var content = JUnitSerializer.Serialize(results);
+
+        // Assert: serialized content should be valid JUnit XML containing the test data
+        Assert.IsNotNull(content);
+        Assert.IsTrue(content.Contains("testsuites"), "Expected JUnit XML to contain 'testsuites'");
+        Assert.IsTrue(content.Contains("Test1"), "Expected JUnit XML to contain 'Test1'");
+    }
 }

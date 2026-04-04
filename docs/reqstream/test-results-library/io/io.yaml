@@ -30,3 +30,15 @@ sections:
         tests:
           - IO_Deserialize_TrxContent_ReturnsTestResults
           - IO_Deserialize_JUnitContent_ReturnsTestResults
+
+      - id: TestResults-IO-Serialize
+        title: The IO subsystem shall serialize test results to supported file formats.
+        justification: |
+          Serializing an in-memory model to file formats is the symmetric counterpart of
+          deserialization and is an equal core responsibility of the IO subsystem. Supporting
+          both TRX and JUnit XML output ensures the library can produce test result files
+          compatible with the two dominant formats used across .NET and cross-platform
+          CI/CD toolchains.
+        tests:
+          - IO_Serialize_TestResults_ProducesTrxContent
+          - IO_Serialize_TestResults_ProducesJUnitContent
