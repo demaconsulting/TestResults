@@ -27,8 +27,11 @@ sections:
           Most .NET developers use Windows as their primary development environment.
         tests:
           # Tests link to "windows" to ensure results come from Windows platform
+          - "windows@TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults"
           - "windows@TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent"
           - "windows@TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent"
+          - "windows@TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel"
+          - "windows@TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel"
 
       - id: TestResults-Platform-Linux
         title: The library shall build and run on Linux platforms.
@@ -37,8 +40,11 @@ sections:
           Many modern deployment environments use Linux containers.
         tests:
           # Tests link to "ubuntu" to ensure results come from Linux platform
+          - "ubuntu@TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults"
           - "ubuntu@TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent"
           - "ubuntu@TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent"
+          - "ubuntu@TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel"
+          - "ubuntu@TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel"
 
       - id: TestResults-Platform-MacOS
         title: The library shall build and run on macOS platforms.
@@ -47,8 +53,11 @@ sections:
           A significant portion of .NET developers use macOS as their primary development environment.
         tests:
           # Tests link to "macos" to ensure results come from macOS platform
+          - "macos@TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults"
           - "macos@TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent"
           - "macos@TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent"
+          - "macos@TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel"
+          - "macos@TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel"
 
   - title: Runtime Support
     requirements:
@@ -59,8 +68,11 @@ sections:
           this framework ensures the library can be used in stable, enterprise environments that
           require long-term maintenance guarantees.
         tests:
+          - net8.0@TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
           - net8.0@TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
           - net8.0@TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
+          - net8.0@TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
+          - net8.0@TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
 
       - id: TestResults-Runtime-Net9
         title: The library shall support .NET 9 runtime.
@@ -70,8 +82,11 @@ sections:
           to benefit from the newest capabilities while maintaining compatibility with current
           development practices.
         tests:
+          - net9.0@TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
           - net9.0@TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
           - net9.0@TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
+          - net9.0@TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
+          - net9.0@TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
 
       - id: TestResults-Runtime-NetStd20
         title: The library shall support the .NET Standard 2.0 target framework.
@@ -81,8 +96,11 @@ sections:
           Supporting this target framework ensures the library can be integrated into a broader
           range of .NET projects, including those targeting .NET Framework and older .NET Core versions.
         tests:
+          - net481@TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
           - net481@TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
           - net481@TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
+          - net481@TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
+          - net481@TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
 
       - id: TestResults-Runtime-Net10
         title: The library shall support .NET 10 runtime.
@@ -91,5 +109,8 @@ sections:
           this runtime ensures the library remains current and provides a clear upgrade path
           for users as they adopt newer .NET versions.
         tests:
+          - net10.0@TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
           - net10.0@TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
           - net10.0@TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
+          - net10.0@TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
+          - net10.0@TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
