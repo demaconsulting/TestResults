@@ -20,8 +20,8 @@ Categorize all software into four primary groups:
 
 **Naming**: When names collide in hierarchy, add descriptive suffix to higher-level entity:
 
-- System: Application/Library/System  
-- Subsystem: Subsystem
+- System: Application/Library/System (e.g. TestResults → TestResultsLibrary)
+- Subsystem: Subsystem (e.g. Linter → LinterSubsystem)
 
 # Categorization Guidelines
 
