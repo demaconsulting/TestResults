@@ -8,3 +8,25 @@
 
 sections:
   - title: IO Subsystem Requirements
+    requirements:
+      - id: TestResults-IO-Identify
+        title: The IO subsystem shall identify the format of test result files.
+        justification: |
+          Automatic format identification is the primary entry point into the IO subsystem.
+          Callers need to determine whether a file is in TRX or JUnit XML format before
+          reading it, and the subsystem must provide this capability reliably so that
+          higher-level code can route files to the appropriate deserializer.
+        tests:
+          - IO_Identify_TrxContent_ReturnsTrx
+          - IO_Identify_JUnitContent_ReturnsJUnit
+
+      - id: TestResults-IO-Deserialize
+        title: The IO subsystem shall deserialize test results from supported file formats.
+        justification: |
+          Deserializing test result files into the in-memory model is the core responsibility
+          of the IO subsystem. Supporting both TRX and JUnit XML ensures the library can
+          integrate with the two dominant test result formats used across .NET and cross-platform
+          CI/CD toolchains.
+        tests:
+          - IO_Deserialize_TrxContent_ReturnsTestResults
+          - IO_Deserialize_JUnitContent_ReturnsTestResults
