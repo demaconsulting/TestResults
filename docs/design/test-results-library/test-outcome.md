@@ -2,7 +2,7 @@
 
 The `TestOutcome` enumeration and its companion `TestOutcomeExtensions` class define
 the full set of outcome values recognized by the library and provide extension methods
-that classify those values into the logical categories used by the serialization layer
+that classify those values into the logical categories used by the IO subsystem
 and by consumers who need to aggregate or summarize results.
 
 ## TestOutcome Enumeration
@@ -35,7 +35,7 @@ but do not count as passed or failed are labeled **Executed**.
 ## TestOutcome Extensions
 
 The `TestOutcomeExtensions` class provides three extension methods on `TestOutcome` that
-classify an outcome into the three logical categories used by the serialization layer and
+classify an outcome into the three logical categories used by the IO subsystem and
 by consumers who need to aggregate or summarize results.
 
 ### IsPassed()
@@ -47,8 +47,8 @@ Returns `true` when the outcome falls into the *passed* category:
 - `Warning`
 
 All other outcomes return `false`. This satisfies requirements
-`TestResults-Mdl-PassedOutcome`, `TestResults-Mdl-PassedButRunAbortedOutcome`,
-`TestResults-Mdl-WarningOutcome`.
+`TestResults-Model-PassedOutcome`, `TestResults-Model-PassedButRunAbortedOutcome`,
+`TestResults-Model-WarningOutcome`.
 
 ### IsFailed()
 
@@ -60,8 +60,8 @@ Returns `true` when the outcome falls into the *failed* category:
 - `Aborted`
 
 All other outcomes return `false`. This satisfies requirements
-`TestResults-Mdl-FailedOutcome`, `TestResults-Mdl-ErrorOutcome`,
-`TestResults-Mdl-TimeoutOutcome`, `TestResults-Mdl-AbortedOutcome`.
+`TestResults-Model-FailedOutcome`, `TestResults-Model-ErrorOutcome`,
+`TestResults-Model-TimeoutOutcome`, `TestResults-Model-AbortedOutcome`.
 
 ### IsExecuted()
 
@@ -72,7 +72,7 @@ Returns `false` (i.e., the test was **not** executed) for the following outcomes
 - `Pending`
 
 Returns `true` for all other outcomes, including `Inconclusive`, `InProgress`, and
-`Disconnected`. This satisfies requirements `TestResults-Mdl-NotExecutedOutcome`,
-`TestResults-Mdl-NotRunnableOutcome`, `TestResults-Mdl-PendingOutcome`,
-`TestResults-Mdl-InconclusiveOutcome`, `TestResults-Mdl-CompletedOutcome`,
-`TestResults-Mdl-InProgressOutcome`, `TestResults-Mdl-DisconnectedOutcome`.
+`Disconnected`. This satisfies requirements `TestResults-Model-NotExecutedOutcome`,
+`TestResults-Model-NotRunnableOutcome`, `TestResults-Model-PendingOutcome`,
+`TestResults-Model-InconclusiveOutcome`, `TestResults-Model-CompletedOutcome`,
+`TestResults-Model-InProgressOutcome`, `TestResults-Model-DisconnectedOutcome`.

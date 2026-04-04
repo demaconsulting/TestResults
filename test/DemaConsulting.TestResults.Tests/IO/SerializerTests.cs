@@ -389,10 +389,10 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_NullContents_ThrowsArgumentNullException()
     {
-        // Arrange - null contents
+        // Arrange: null contents
         string? nullContents = null;
 
-        // Act & Assert
+        // Act: attempt to deserialize null contents (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentNullException>(() => Serializer.Deserialize(nullContents!));
         Assert.AreEqual("contents", ex.ParamName);
     }
@@ -403,10 +403,10 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_EmptyContents_ThrowsArgumentException()
     {
-        // Arrange - empty string
+        // Arrange: empty string
         var emptyContents = string.Empty;
 
-        // Act & Assert
+        // Act: attempt to deserialize empty string (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(emptyContents));
         Assert.AreEqual("contents", ex.ParamName);
     }
@@ -417,10 +417,10 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_WhitespaceContents_ThrowsArgumentException()
     {
-        // Arrange - whitespace string
+        // Arrange: whitespace string
         var whitespaceContents = "   \n\t  ";
 
-        // Act & Assert
+        // Act: attempt to deserialize whitespace string (combined with Assert)
         var ex = Assert.ThrowsExactly<ArgumentException>(() => Serializer.Deserialize(whitespaceContents));
         Assert.AreEqual("contents", ex.ParamName);
     }
@@ -431,7 +431,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_UnknownFormat_ThrowsInvalidOperationException()
     {
-        // Arrange - valid XML but unknown format
+        // Arrange: valid XML but unknown format
         var unknownFormatXml = """
             <?xml version="1.0"?>
             <UnknownRoot>
@@ -439,7 +439,7 @@ public sealed class SerializerTests
             </UnknownRoot>
             """;
 
-        // Act & Assert
+        // Act: attempt to deserialize valid XML with unknown format (combined with Assert)
         var ex = Assert.ThrowsExactly<InvalidOperationException>(() => Serializer.Deserialize(unknownFormatXml));
         Assert.Contains("Unable to identify test result format", ex.Message);
     }
@@ -456,7 +456,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_TrxSerializedResults_RoundTripsViaJUnit_PreservesCoreTestData()
     {
-        // Arrange - create test results with Passed, Failed, and NotExecuted outcomes
+        // Arrange: create test results with Passed, Failed, and NotExecuted outcomes
         var original = new TestResults
         {
             Name = "CrossFormatRun",
@@ -497,27 +497,27 @@ public sealed class SerializerTests
             ]
         };
 
-        // Act - serialize to TRX, deserialize back, then re-serialize to JUnit, then deserialize again
+        // Act: serialize to TRX, deserialize back, then re-serialize to JUnit, then deserialize again
         var trxContent = TrxSerializer.Serialize(original);
         var fromTrx = Serializer.Deserialize(trxContent);
         var junitContent = JUnitSerializer.Serialize(fromTrx);
         var fromJUnit = Serializer.Deserialize(junitContent);
 
-        // Assert - core structure is preserved through the conversion chain
+        // Assert: core structure is preserved through the conversion chain
         Assert.IsNotNull(fromJUnit);
         Assert.HasCount(3, fromJUnit.Results);
 
-        // Assert - PassedTest core data is preserved
+        // Assert: PassedTest core data is preserved
         var passed = fromJUnit.Results.First(r => r.Name == "PassedTest");
         Assert.AreEqual("Suite.PassedClass", passed.ClassName);
         Assert.AreEqual(TestOutcome.Passed, passed.Outcome);
 
-        // Assert - FailedTest core data is preserved
+        // Assert: FailedTest core data is preserved
         var failed = fromJUnit.Results.First(r => r.Name == "FailedTest");
         Assert.AreEqual("Suite.FailedClass", failed.ClassName);
         Assert.AreEqual(TestOutcome.Failed, failed.Outcome);
 
-        // Assert - SkippedTest core data is preserved
+        // Assert: SkippedTest core data is preserved
         var skipped = fromJUnit.Results.First(r => r.Name == "SkippedTest");
         Assert.AreEqual("Suite.SkippedClass", skipped.ClassName);
         Assert.AreEqual(TestOutcome.NotExecuted, skipped.Outcome);
@@ -534,7 +534,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_TestRunInWrongNamespace_ReturnsUnknown()
     {
-        // Arrange - XML with TestRun root but no TRX namespace
+        // Arrange: XML with TestRun root but no TRX namespace
         var xml = """
             <?xml version="1.0" encoding="utf-8"?>
             <TestRun id="1234" name="SomeName">
@@ -542,10 +542,10 @@ public sealed class SerializerTests
             </TestRun>
             """;
 
-        // Act
+        // Act: attempt to identify format of the XML content
         var format = Serializer.Identify(xml);
 
-        // Assert - without the correct namespace this is not a valid TRX file
+        // Assert: without the correct namespace this is not a valid TRX file
         Assert.AreEqual(TestResultFormat.Unknown, format);
     }
 }

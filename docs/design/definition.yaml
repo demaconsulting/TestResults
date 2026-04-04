@@ -5,13 +5,15 @@ resource-path:
 input-files:
   - docs/design/title.txt
   - docs/design/introduction.md
-  - docs/design/test-results/test-results.md
-  - docs/design/test-results/test-outcome.md
-  - docs/design/test-results/test-result.md
-  - docs/design/test-results/io/io.md
-  - docs/design/test-results/io/serializer.md
-  - docs/design/test-results/io/trx-serializer.md
-  - docs/design/test-results/io/junit-serializer.md
+  - docs/design/test-results-library/test-results-library.md
+  - docs/design/test-results-library/test-outcome.md
+  - docs/design/test-results-library/test-result.md
+  - docs/design/test-results-library/test-results.md
+  - docs/design/test-results-library/io/io.md
+  - docs/design/test-results-library/io/serializer.md
+  - docs/design/test-results-library/io/serializer-helpers.md
+  - docs/design/test-results-library/io/trx-serializer.md
+  - docs/design/test-results-library/io/junit-serializer.md
 template: template.html
 table-of-contents: true
 number-sections: true

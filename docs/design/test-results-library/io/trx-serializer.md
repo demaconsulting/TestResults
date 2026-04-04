@@ -85,4 +85,4 @@ When deserializing a TRX document to a `TestResults` object:
 Round-trip fidelity (serialize → deserialize → same data) is fully preserved for the
 TRX format. All `TestResults` and `TestResult` properties that are written during
 serialization are read back identically during deserialization. This satisfies
-requirement `TestResults-Ser-RoundTrip` for TRX.
+requirement `TestResults-Serializer-RoundTrip` for TRX.

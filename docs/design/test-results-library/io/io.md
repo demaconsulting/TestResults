@@ -13,6 +13,7 @@ The IO subsystem consists of the following units:
 | Unit | File | Description |
 | ---- | ---- | ----------- |
 | [Serializer](serializer.md) | `IO/Serializer.cs` | Format-detection facade |
+| [SerializerHelpers](serializer-helpers.md) | `IO/SerializerHelpers.cs` | Internal UTF-8 writer helper |
 | [TrxSerializer](trx-serializer.md) | `IO/TrxSerializer.cs` | TRX format implementation |
 | [JUnitSerializer](junit-serializer.md) | `IO/JUnitSerializer.cs` | JUnit XML format implementation |
 
@@ -29,11 +30,11 @@ The IO subsystem is responsible for:
 
 The IO subsystem depends on:
 
-- **Model layer**: [TestResults](../test-results.md), [TestResult](../test-result.md),
+- **Model units**: [TestResults](../test-results.md), [TestResult](../test-result.md),
   [TestOutcome](../test-outcome.md)
 - **External**: `System.Xml.Linq` for XML processing
 
 ## Related Requirements
 
 Requirements for the IO subsystem are in
-[docs/reqstream/test-results/io/](../../../reqstream/test-results/io/).
+[docs/reqstream/test-results-library/io/](../../../reqstream/test-results-library/io/).

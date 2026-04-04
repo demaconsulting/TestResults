@@ -1,0 +1,64 @@
+---
+# System-Level Requirements for the TestResults Library
+#
+# The TestResults Library provides a format-agnostic in-memory model for test results
+# and supports reading and writing test result files in TRX and JUnit XML formats.
+#
+# System-level requirements describe the externally observable behavior of the library
+# as a whole. Subsystem and unit requirements are in the individual files under this folder.
+
+sections:
+  - title: TestResults Library System Requirements
+    requirements:
+      - id: TestResultsLibrary-Architecture-FormatAgnosticModel
+        title: The TestResults Library shall represent test results using a format-agnostic in-memory model.
+        justification: |
+          The library separates the representation of test results (the in-memory model: TestResults,
+          TestResult, TestOutcome) from their serialized form (TRX or JUnit XML). This allows
+          callers to work with test results without knowing the source format, and enables
+          conversion between formats via the IO subsystem.
+        children:
+          - TestResults-Model-Collection
+          - TestResults-Model-TestOutput
+          - TestResults-Model-ErrorInfo
+          - TestResults-Model-PassedOutcome
+          - TestResults-Model-FailedOutcome
+          - TestResults-Model-ErrorOutcome
+          - TestResults-Model-TimeoutOutcome
+          - TestResults-Model-NotExecutedOutcome
+          - TestResults-Model-InconclusiveOutcome
+          - TestResults-Model-AbortedOutcome
+          - TestResults-Model-PendingOutcome
+          - TestResults-Model-WarningOutcome
+          - TestResults-Model-PassedButRunAbortedOutcome
+          - TestResults-Model-NotRunnableOutcome
+          - TestResults-Model-CompletedOutcome
+          - TestResults-Model-InProgressOutcome
+          - TestResults-Model-DisconnectedOutcome
+        tests:
+          - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
+      - id: TestResultsLibrary-Architecture-InMemoryModel
+        title: The TestResults Library shall deserialize test result files into a navigable in-memory collection.
+        justification: |
+          The library's primary system promise is to translate serialized test result files into
+          a structured in-memory model that callers can navigate, query, and transform. This is
+          the architectural contract between the IO subsystem and the model layer, and between
+          the library and its consumers.
+        children:
+          - TestResults-IO-Deserialize
+        tests:
+          - TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
+          - TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
+      - id: TestResultsLibrary-Architecture-SerializeModel
+        title: The TestResults Library shall serialize an in-memory collection into test result files.
+        justification: |
+          The library must be able to write an in-memory model to a serialized file format.
+          This is the reverse direction of the deserialization requirement, and together they
+          form the complete read/write contract of the library. Supporting both TRX and JUnit
+          XML ensures the library can produce output compatible with the two dominant test result
+          formats used across .NET and cross-platform CI/CD toolchains.
+        children:
+          - TestResults-IO-Serialize
+        tests:
+          - TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
+          - TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent

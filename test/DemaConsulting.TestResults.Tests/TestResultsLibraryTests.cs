@@ -19,70 +19,67 @@
 // SOFTWARE.
 
 using DemaConsulting.TestResults.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DemaConsulting.TestResults.Tests.IO;
+namespace DemaConsulting.TestResults.Tests;
 
 /// <summary>
-///     Tests for the IO subsystem
+///     System-level tests for the TestResults Library.
 /// </summary>
+/// <remarks>
+///     These tests verify the end-to-end system behavior of the TestResults Library
+///     from the perspective of a library consumer. They prove the three system-level
+///     architectural requirements:
+///     <list type="bullet">
+///         <item>The library provides a format-agnostic in-memory model.</item>
+///         <item>The library deserializes test result files into a navigable in-memory collection.</item>
+///         <item>The library serializes an in-memory collection into test result files.</item>
+///     </list>
+/// </remarks>
 [TestClass]
-public sealed class IOTests
+public sealed class TestResultsLibraryTests
 {
     /// <summary>
-    ///     Test that the IO subsystem can identify TRX content
+    ///     Test that the TestResults Library provides a format-agnostic in-memory model.
     /// </summary>
     /// <remarks>
-    ///     Tests that the IO subsystem correctly identifies TRX-format content.
-    ///     Proves that the subsystem can distinguish TRX from other formats.
+    ///     Tests that the in-memory model (TestResults, TestResult, TestOutcome) can represent
+    ///     test results independently of any file format. Proves that the model is format-agnostic
+    ///     and can be constructed, populated, and navigated without any serialization involved.
     /// </remarks>
     [TestMethod]
-    public void IO_Identify_TrxContent_ReturnsTrx()
+    public void TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults()
     {
-        // Arrange: Minimal TRX content
-        const string content = """
-            <?xml version="1.0"?>
-            <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" />
-            """;
+        // Arrange: create an in-memory model without involving any file format
+        var results = new TestResults
+        {
+            Name = "MySuite",
+            Results =
+            [
+                new TestResult { Name = "Test1", Outcome = TestOutcome.Passed },
+                new TestResult { Name = "Test2", Outcome = TestOutcome.Failed }
+            ]
+        };
 
-        // Act: identify the format of the TRX content
-        var format = Serializer.Identify(content);
-
-        // Assert: format should be identified as TRX
-        Assert.AreEqual(TestResultFormat.Trx, format);
+        // Act: navigate the model (combined with Assert)
+        Assert.AreEqual("MySuite", results.Name);
+        Assert.HasCount(2, results.Results);
+        Assert.AreEqual("Test1", results.Results[0].Name);
+        Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
+        Assert.AreEqual("Test2", results.Results[1].Name);
+        Assert.AreEqual(TestOutcome.Failed, results.Results[1].Outcome);
     }
 
     /// <summary>
-    ///     Test that the IO subsystem can identify JUnit content
+    ///     Test that the TestResults Library deserializes TRX content into a navigable in-memory model.
     /// </summary>
     /// <remarks>
-    ///     Tests that the IO subsystem correctly identifies JUnit-format content.
-    ///     Proves that the subsystem can distinguish JUnit from other formats.
+    ///     Tests the end-to-end flow from TRX file content to the in-memory model. Proves that a
+    ///     library consumer can read a TRX file and navigate the resulting model.
     /// </remarks>
     [TestMethod]
-    public void IO_Identify_JUnitContent_ReturnsJUnit()
+    public void TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel()
     {
-        // Arrange: Minimal JUnit content
-        const string content = "<testsuites />";
-
-        // Act: identify the format of the JUnit content
-        var format = Serializer.Identify(content);
-
-        // Assert: format should be identified as JUnit
-        Assert.AreEqual(TestResultFormat.JUnit, format);
-    }
-
-    /// <summary>
-    ///     Test that the IO subsystem can deserialize TRX content
-    /// </summary>
-    /// <remarks>
-    ///     Tests that the IO subsystem correctly deserializes TRX-format content into TestResults.
-    ///     Proves that the subsystem end-to-end flow works for TRX files.
-    /// </remarks>
-    [TestMethod]
-    public void IO_Deserialize_TrxContent_ReturnsTestResults()
-    {
-        // Arrange: Minimal TRX content with one test result
+        // Arrange: TRX content representing one passing test
         const string content = """
             <?xml version="1.0"?>
             <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="da21858f-2c78-442a-8ea6-51fe73762e0e" name="Test Run" runUser="User">
@@ -100,10 +97,10 @@ public sealed class IOTests
             </TestRun>
             """;
 
-        // Act: deserialize the TRX content
+        // Act: deserialize the TRX content into the in-memory model
         var results = Serializer.Deserialize(content);
 
-        // Assert: deserialized results should contain one test result
+        // Assert: the model is navigable and contains the expected data
         Assert.IsNotNull(results);
         Assert.HasCount(1, results.Results);
         Assert.AreEqual("Test1", results.Results[0].Name);
@@ -111,16 +108,16 @@ public sealed class IOTests
     }
 
     /// <summary>
-    ///     Test that the IO subsystem can deserialize JUnit content
+    ///     Test that the TestResults Library deserializes JUnit content into a navigable in-memory model.
     /// </summary>
     /// <remarks>
-    ///     Tests that the IO subsystem correctly deserializes JUnit-format content into TestResults.
-    ///     Proves that the subsystem end-to-end flow works for JUnit files.
+    ///     Tests the end-to-end flow from JUnit XML file content to the in-memory model. Proves that a
+    ///     library consumer can read a JUnit file and navigate the resulting model.
     /// </remarks>
     [TestMethod]
-    public void IO_Deserialize_JUnitContent_ReturnsTestResults()
+    public void TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel()
     {
-        // Arrange: Minimal JUnit content with one test result
+        // Arrange: JUnit content representing one passing test
         const string content = """
             <?xml version="1.0"?>
             <testsuites name="MySuite">
@@ -130,10 +127,10 @@ public sealed class IOTests
             </testsuites>
             """;
 
-        // Act: deserialize the JUnit content
+        // Act: deserialize the JUnit content into the in-memory model
         var results = Serializer.Deserialize(content);
 
-        // Assert: deserialized results should contain one test result
+        // Assert: the model is navigable and contains the expected data
         Assert.IsNotNull(results);
         Assert.HasCount(1, results.Results);
         Assert.AreEqual("Test1", results.Results[0].Name);
@@ -141,16 +138,16 @@ public sealed class IOTests
     }
 
     /// <summary>
-    ///     Test that the IO subsystem can serialize TestResults to TRX content
+    ///     Test that the TestResults Library serializes an in-memory model to TRX content.
     /// </summary>
     /// <remarks>
-    ///     Tests that the IO subsystem correctly serializes an in-memory TestResults object
-    ///     to TRX-format content. Proves that the subsystem end-to-end flow works for TRX output.
+    ///     Tests the end-to-end flow from an in-memory model to TRX file content. Proves that a
+    ///     library consumer can write an in-memory model to a TRX file.
     /// </remarks>
     [TestMethod]
-    public void IO_Serialize_TestResults_ProducesTrxContent()
+    public void TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent()
     {
-        // Arrange: in-memory TestResults with one passing test
+        // Arrange: create an in-memory model with one passing test
         var results = new TestResults
         {
             Name = "MySuite",
@@ -160,26 +157,26 @@ public sealed class IOTests
             ]
         };
 
-        // Act: serialize the TestResults to TRX content
+        // Act: serialize the in-memory model to TRX content
         var content = TrxSerializer.Serialize(results);
 
-        // Assert: serialized content should be valid TRX XML containing the test data
+        // Assert: the content is valid TRX XML containing the expected data
         Assert.IsNotNull(content);
         Assert.IsTrue(content.Contains("TestRun"), "Expected TRX XML to contain 'TestRun'");
         Assert.IsTrue(content.Contains("Test1"), "Expected TRX XML to contain 'Test1'");
     }
 
     /// <summary>
-    ///     Test that the IO subsystem can serialize TestResults to JUnit content
+    ///     Test that the TestResults Library serializes an in-memory model to JUnit content.
     /// </summary>
     /// <remarks>
-    ///     Tests that the IO subsystem correctly serializes an in-memory TestResults object
-    ///     to JUnit-format content. Proves that the subsystem end-to-end flow works for JUnit output.
+    ///     Tests the end-to-end flow from an in-memory model to JUnit XML file content. Proves that a
+    ///     library consumer can write an in-memory model to a JUnit XML file.
     /// </remarks>
     [TestMethod]
-    public void IO_Serialize_TestResults_ProducesJUnitContent()
+    public void TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent()
     {
-        // Arrange: in-memory TestResults with one passing test
+        // Arrange: create an in-memory model with one passing test
         var results = new TestResults
         {
             Name = "MySuite",
@@ -189,10 +186,10 @@ public sealed class IOTests
             ]
         };
 
-        // Act: serialize the TestResults to JUnit content
+        // Act: serialize the in-memory model to JUnit content
         var content = JUnitSerializer.Serialize(results);
 
-        // Assert: serialized content should be valid JUnit XML containing the test data
+        // Assert: the content is valid JUnit XML containing the expected data
         Assert.IsNotNull(content);
         Assert.IsTrue(content.Contains("testsuites"), "Expected JUnit XML to contain 'testsuites'");
         Assert.IsTrue(content.Contains("Test1"), "Expected JUnit XML to contain 'Test1'");

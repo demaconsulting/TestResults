@@ -42,29 +42,29 @@ public class TrxExampleTests
     [TestMethod]
     public void TrxExampleTests_Deserialize_Example1Trx_ReturnsAllTestResults()
     {
-        // Arrange - Load the first example TRX file from embedded resources
+        // Arrange: Load the first example TRX file from embedded resources
         var trxContent = TestHelpers.GetEmbeddedResource(
             "DemaConsulting.TestResults.Tests.IO.Examples.example1.trx");
 
-        // Act - Deserialize the TRX content
+        // Act: Deserialize the TRX content
         var results = TrxSerializer.Deserialize(trxContent);
 
-        // Assert - Verify we got all 6 test results
+        // Assert: Verify we got all 6 test results
         Assert.HasCount(6, results.Results);
 
-        // Assert - Verify first test result (Passed)
+        // Assert: Verify first test result (Passed)
         Assert.AreEqual("test1", results.Results[0].Name);
         Assert.AreEqual("test1", results.Results[0].ClassName);
         Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
         Assert.AreEqual(44.7811567, results.Results[0].Duration.TotalSeconds, 0.001);
 
-        // Assert - Verify second test result (Inconclusive)
+        // Assert: Verify second test result (Inconclusive)
         Assert.AreEqual("test2", results.Results[1].Name);
         Assert.AreEqual("test2", results.Results[1].ClassName);
         Assert.AreEqual(TestOutcome.Inconclusive, results.Results[1].Outcome);
         Assert.AreEqual(44.7811567, results.Results[1].Duration.TotalSeconds, 0.001);
 
-        // Assert - Verify third test result (Failed with error details)
+        // Assert: Verify third test result (Failed with error details)
         Assert.AreEqual("test3", results.Results[2].Name);
         Assert.AreEqual("test3", results.Results[2].ClassName);
         Assert.AreEqual(TestOutcome.Failed, results.Results[2].Outcome);
@@ -73,7 +73,7 @@ public class TrxExampleTests
         Assert.Contains("This unit test failed for a bad reason", results.Results[2].ErrorMessage);
         Assert.Contains(@"at test3() in c:\tests\test3.js:line 1", results.Results[2].ErrorStackTrace);
 
-        // Assert - Verify fourth test result (Timeout with error details)
+        // Assert: Verify fourth test result (Timeout with error details)
         Assert.AreEqual("test4", results.Results[3].Name);
         Assert.AreEqual("test4", results.Results[3].ClassName);
         Assert.AreEqual(TestOutcome.Timeout, results.Results[3].Outcome);
@@ -82,13 +82,13 @@ public class TrxExampleTests
         Assert.Contains("This unit test failed because it timed out", results.Results[3].ErrorMessage);
         Assert.Contains(@"at test4() in c:\tests\test4.js:line 1", results.Results[3].ErrorStackTrace);
 
-        // Assert - Verify fifth test result (Pending)
+        // Assert: Verify fifth test result (Pending)
         Assert.AreEqual("test5", results.Results[4].Name);
         Assert.AreEqual("test5", results.Results[4].ClassName);
         Assert.AreEqual(TestOutcome.Pending, results.Results[4].Outcome);
         Assert.AreEqual(0.0, results.Results[4].Duration.TotalSeconds, 0.001);
 
-        // Assert - Verify sixth test result (NotExecuted)
+        // Assert: Verify sixth test result (NotExecuted)
         Assert.AreEqual("test6", results.Results[5].Name);
         Assert.AreEqual("test6", results.Results[5].ClassName);
         Assert.AreEqual(TestOutcome.NotExecuted, results.Results[5].Outcome);
@@ -107,35 +107,35 @@ public class TrxExampleTests
     [TestMethod]
     public void TrxExampleTests_Deserialize_Example2Trx_ReturnsAllTestResults()
     {
-        // Arrange - Load the second example TRX file from embedded resources
+        // Arrange: Load the second example TRX file from embedded resources
         var trxContent = TestHelpers.GetEmbeddedResource(
             "DemaConsulting.TestResults.Tests.IO.Examples.example2.trx");
 
-        // Act - Deserialize the TRX content
+        // Act: Deserialize the TRX content
         var results = TrxSerializer.Deserialize(trxContent);
 
-        // Assert - Verify we got all 4 test results
+        // Assert: Verify we got all 4 test results
         Assert.HasCount(4, results.Results);
 
-        // Assert - Verify first test result
+        // Assert: Verify first test result
         Assert.AreEqual("AddShouldReturnCorrectValue", results.Results[0].Name);
         Assert.AreEqual("Gidget.Tests.MathTests", results.Results[0].ClassName);
         Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
         Assert.AreEqual(0.0042209, results.Results[0].Duration.TotalSeconds, 0.001);
 
-        // Assert - Verify second test result
+        // Assert: Verify second test result
         Assert.AreEqual("OnePlusOneShouldNotEqualFive", results.Results[1].Name);
         Assert.AreEqual("Gidget.Tests.MathTests", results.Results[1].ClassName);
         Assert.AreEqual(TestOutcome.Passed, results.Results[1].Outcome);
         Assert.AreEqual(0.0008597, results.Results[1].Duration.TotalSeconds, 0.001);
 
-        // Assert - Verify third test result
+        // Assert: Verify third test result
         Assert.AreEqual("AddShouldReturnCorrectValue", results.Results[2].Name);
         Assert.AreEqual("Gidget.Tests.MathTests", results.Results[2].ClassName);
         Assert.AreEqual(TestOutcome.Passed, results.Results[2].Outcome);
         Assert.AreEqual(0.0000173, results.Results[2].Duration.TotalSeconds, 0.001);
 
-        // Assert - Verify fourth test result
+        // Assert: Verify fourth test result
         Assert.AreEqual("AddShouldReturnCorrectValue", results.Results[3].Name);
         Assert.AreEqual("Gidget.Tests.MathTests", results.Results[3].ClassName);
         Assert.AreEqual(TestOutcome.Passed, results.Results[3].Outcome);

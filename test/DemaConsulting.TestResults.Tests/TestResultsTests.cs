@@ -34,12 +34,12 @@ public class TestResultsTests
     [TestMethod]
     public void TestResults_Id_Default_IsNotEmpty()
     {
-        // Arrange - create a new TestResults with default property values
+        // Arrange: create a new TestResults with default property values
 
-        // Act
+        // Act: create a new TestResults instance
         var results = new TestResults();
 
-        // Assert - Id should be auto-generated and not the empty GUID
+        // Assert: Id should be auto-generated and not the empty GUID
         Assert.AreNotEqual(Guid.Empty, results.Id);
     }
 
@@ -50,13 +50,13 @@ public class TestResultsTests
     [TestMethod]
     public void TestResults_Id_TwoInstances_AreUnique()
     {
-        // Arrange - create two independent TestResults instances
+        // Arrange: create two independent TestResults instances
 
-        // Act
+        // Act: create two independent TestResults instances
         var results1 = new TestResults();
         var results2 = new TestResults();
 
-        // Assert - each instance should have a distinct Id
+        // Assert: each instance should have a distinct Id
         Assert.AreNotEqual(results1.Id, results2.Id);
     }
 
@@ -66,12 +66,12 @@ public class TestResultsTests
     [TestMethod]
     public void TestResults_Name_Default_IsEmpty()
     {
-        // Arrange - create a new TestResults with default property values
+        // Arrange: create a new TestResults with default property values
 
-        // Act
+        // Act: create a new TestResults instance
         var results = new TestResults();
 
-        // Assert - Name should default to string.Empty
+        // Assert: Name should default to string.Empty
         Assert.AreEqual(string.Empty, results.Name);
     }
 
@@ -81,12 +81,12 @@ public class TestResultsTests
     [TestMethod]
     public void TestResults_UserName_Default_IsEmpty()
     {
-        // Arrange - create a new TestResults with default property values
+        // Arrange: create a new TestResults with default property values
 
-        // Act
+        // Act: create a new TestResults instance
         var results = new TestResults();
 
-        // Assert - UserName should default to string.Empty
+        // Assert: UserName should default to string.Empty
         Assert.AreEqual(string.Empty, results.UserName);
     }
 
@@ -96,12 +96,12 @@ public class TestResultsTests
     [TestMethod]
     public void TestResults_Results_Default_IsNotNull()
     {
-        // Arrange - create a new TestResults with default property values
+        // Arrange: create a new TestResults with default property values
 
-        // Act
+        // Act: create a new TestResults instance
         var results = new TestResults();
 
-        // Assert - Results list should be initialized (not null)
+        // Assert: Results list should be initialized (not null)
         Assert.IsNotNull(results.Results);
     }
 
@@ -111,12 +111,12 @@ public class TestResultsTests
     [TestMethod]
     public void TestResults_Results_Default_IsEmpty()
     {
-        // Arrange - create a new TestResults with default property values
+        // Arrange: create a new TestResults with default property values
 
-        // Act
+        // Act: create a new TestResults instance
         var results = new TestResults();
 
-        // Assert - Results list should contain no elements
+        // Assert: Results list should contain no elements
         Assert.HasCount(0, results.Results);
     }
 }

@@ -7,7 +7,7 @@
 sections:
   - title: Serializer Unit Requirements
     requirements:
-      - id: TestResults-Ser-FormatIdentify
+      - id: TestResults-Serializer-FormatIdentify
         title: The library shall automatically identify test result file format.
         justification: |
           Automatic format detection simplifies usage by eliminating the need for users to
@@ -18,7 +18,7 @@ sections:
           - Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit
           - Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit
 
-      - id: TestResults-Ser-FormatConversion
+      - id: TestResults-Serializer-FormatConversion
         title: The library shall support conversion between TRX and JUnit formats.
         justification: |
           Format conversion enables users to integrate test results across different toolchains
@@ -31,7 +31,7 @@ sections:
           - JUnitSerializer_Serialize_ThenDeserialize_PreservesTestData
           - Serializer_TrxSerializedResults_RoundTripsViaJUnit_PreservesCoreTestData
 
-      - id: TestResults-Ser-RoundTrip
+      - id: TestResults-Serializer-RoundTrip
         title: The library shall preserve test data during round-trip serialization.
         justification: |
           Round-trip preservation ensures that test results can be serialized and deserialized

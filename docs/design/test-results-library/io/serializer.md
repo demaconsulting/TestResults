@@ -21,7 +21,7 @@ The `TestResultFormat` enumeration identifies the file format of a test result d
 
 The `Serializer.Identify()` method determines the format of a serialized test result
 document without fully deserializing it. This satisfies requirement
-`TestResults-Ser-FormatIdentify`.
+`TestResults-Serializer-FormatIdentify`.
 
 The identification algorithm:
 
@@ -41,7 +41,7 @@ with a `TestRun` root element in any other namespace is not treated as TRX.
 
 The `Serializer.Deserialize()` method provides a single entry point for reading test
 result files regardless of their format. This satisfies requirement
-`TestResults-Ser-FormatConversion`.
+`TestResults-Serializer-FormatConversion`.
 
 The conversion algorithm:
 
@@ -53,14 +53,8 @@ The conversion algorithm:
 This design means that callers do not need to know or specify the format — they simply
 pass the raw content and receive a `TestResults` object.
 
-## Utf8StringWriter Helper
+## SerializerHelpers Dependency
 
-The `Utf8StringWriter` class is an internal helper that extends `StringWriter` to
-report UTF-8 as its encoding. When `XmlWriter` or `XmlSerializer` writes to a
-`StringWriter`, it reads the writer's `Encoding` property to determine which XML
-declaration encoding to emit. The default `StringWriter` reports UTF-16 (the
-.NET string encoding), which would cause serializers to write `encoding="utf-16"` in the
-XML declaration even when the resulting string is later converted to UTF-8 bytes.
-`Utf8StringWriter` overrides the `Encoding` property to return `Encoding.UTF8`, so
-the XML declaration correctly declares `encoding="UTF-8"`. It is used by both
-`TrxSerializer.Serialize()` and `JUnitSerializer.Serialize()`.
+The `Serializer.Deserialize()` method delegates writing to format-specific serializers
+that depend on the [SerializerHelpers](serializer-helpers.md) unit for UTF-8 output
+encoding. See [serializer-helpers.md](serializer-helpers.md) for details.

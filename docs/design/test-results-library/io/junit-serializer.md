@@ -9,7 +9,7 @@ produced or consumed beyond the JUnit XML structures it reads and writes.
 JUnit XML is a widely-adopted, cross-platform test result format supported by many
 CI/CD systems including Jenkins, GitLab CI, GitHub Actions, and CircleCI.
 
-This satisfies requirements `TestResults-Jun-Serialize` and `TestResults-Jun-Deserialize`.
+This satisfies requirements `TestResults-JUnit-Serialize` and `TestResults-JUnit-Deserialize`.
 
 ### JUnit Document Structure
 
@@ -76,7 +76,7 @@ When deserializing a JUnit document to a `TestResults` object:
 
 JUnit XML does not have distinct elements for every `TestOutcome` value, so two known
 fidelity limitations apply when round-tripping through JUnit. This satisfies requirement
-`TestResults-Ser-RoundTrip` for JUnit, subject to these limitations:
+`TestResults-Serializer-RoundTrip` for JUnit, subject to these limitations:
 
 - **`Timeout` and `Aborted` outcomes are not preserved.** Both are serialized as an
   `error` child element (since JUnit has no distinct timeout or aborted element), and
