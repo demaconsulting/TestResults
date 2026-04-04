@@ -17,6 +17,24 @@ sections:
           TestResult, TestOutcome) from their serialized form (TRX or JUnit XML). This allows
           callers to work with test results without knowing the source format, and enables
           conversion between formats via the IO subsystem.
+        children:
+          - TestResults-Mdl-Collection
+          - TestResults-Mdl-TestOutput
+          - TestResults-Mdl-ErrorInfo
+          - TestResults-Mdl-PassedOutcome
+          - TestResults-Mdl-FailedOutcome
+          - TestResults-Mdl-ErrorOutcome
+          - TestResults-Mdl-TimeoutOutcome
+          - TestResults-Mdl-NotExecutedOutcome
+          - TestResults-Mdl-InconclusiveOutcome
+          - TestResults-Mdl-AbortedOutcome
+          - TestResults-Mdl-PendingOutcome
+          - TestResults-Mdl-WarningOutcome
+          - TestResults-Mdl-PassedButRunAbortedOutcome
+          - TestResults-Mdl-NotRunnableOutcome
+          - TestResults-Mdl-CompletedOutcome
+          - TestResults-Mdl-InProgressOutcome
+          - TestResults-Mdl-DisconnectedOutcome
         tests:
           - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
       - id: TestResultsLibrary-Architecture-InMemoryModel
@@ -26,6 +44,8 @@ sections:
           a structured in-memory model that callers can navigate, query, and transform. This is
           the architectural contract between the IO subsystem and the model layer, and between
           the library and its consumers.
+        children:
+          - TestResults-IO-Deserialize
         tests:
           - TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
           - TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
@@ -37,6 +57,8 @@ sections:
           form the complete read/write contract of the library. Supporting both TRX and JUnit
           XML ensures the library can produce output compatible with the two dominant test result
           formats used across .NET and cross-platform CI/CD toolchains.
+        children:
+          - TestResults-IO-Serialize
         tests:
           - TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
           - TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent

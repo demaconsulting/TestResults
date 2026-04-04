@@ -16,6 +16,8 @@ sections:
           Callers need to determine whether a file is in TRX or JUnit XML format before
           reading it, and the subsystem must provide this capability reliably so that
           higher-level code can route files to the appropriate deserializer.
+        children:
+          - TestResults-Ser-FormatIdentify
         tests:
           - IO_Identify_TrxContent_ReturnsTrx
           - IO_Identify_JUnitContent_ReturnsJUnit
@@ -27,6 +29,10 @@ sections:
           of the IO subsystem. Supporting both TRX and JUnit XML ensures the library can
           integrate with the two dominant test result formats used across .NET and cross-platform
           CI/CD toolchains.
+        children:
+          - TestResults-Ser-FormatConversion
+          - TestResults-Trx-Deserialize
+          - TestResults-Jun-Deserialize
         tests:
           - IO_Deserialize_TrxContent_ReturnsTestResults
           - IO_Deserialize_JUnitContent_ReturnsTestResults
@@ -39,6 +45,9 @@ sections:
           both TRX and JUnit XML output ensures the library can produce test result files
           compatible with the two dominant formats used across .NET and cross-platform
           CI/CD toolchains.
+        children:
+          - TestResults-Trx-Serialize
+          - TestResults-Jun-Serialize
         tests:
           - IO_Serialize_TestResults_ProducesTrxContent
           - IO_Serialize_TestResults_ProducesJUnitContent
