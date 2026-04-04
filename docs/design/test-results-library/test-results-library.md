@@ -21,11 +21,9 @@ graph TD
         JUnitSerializer[JUnitSerializer]
     end
 
-    subgraph Model["Model Units"]
-        TestResults[TestResults]
-        TestResult[TestResult]
-        TestOutcome[TestOutcome]
-    end
+    TestResults[TestResults]
+    TestResult[TestResult]
+    TestOutcome[TestOutcome]
 
     CallingCode --> Serializer
     Serializer --> SerializerHelpers
@@ -39,11 +37,22 @@ graph TD
     TestResult --> TestOutcome
 ```
 
-## Subsystems and Units
+## In-Memory Model
 
-The TestResults Library contains one subsystem and three top-level units:
+The library's central design principle is a format-agnostic in-memory model. Calling
+code interacts exclusively with this model, without any knowledge of the underlying
+file format. The IO Subsystem is responsible for translating between the model and
+on-disk file formats.
 
-### IO Subsystem
+The in-memory model comprises three top-level units of the system:
+
+| Unit | Design | Description |
+| ---- | ------ | ----------- |
+| [TestOutcome](test-outcome.md) | `test-outcome.md` | Enumeration of possible test outcomes |
+| [TestResult](test-result.md) | `test-result.md` | Single test execution result |
+| [TestResults](test-results.md) | `test-results.md` | Named collection of test results |
+
+## IO Subsystem
 
 The [IO subsystem](io/io.md) handles reading and writing test result files. It comprises
 four units:
@@ -54,16 +63,6 @@ four units:
 | [SerializerHelpers](io/serializer-helpers.md) | `io/serializer-helpers.md` | Internal UTF-8 writer helper |
 | [TrxSerializer](io/trx-serializer.md) | `io/trx-serializer.md` | TRX format read/write |
 | [JUnitSerializer](io/junit-serializer.md) | `io/junit-serializer.md` | JUnit XML format read/write |
-
-### Top-Level Units
-
-The three model units are outside any subsystem:
-
-| Unit | Design | Description |
-| ---- | ------ | ----------- |
-| [TestOutcome](test-outcome.md) | `test-outcome.md` | Enumeration of possible test outcomes |
-| [TestResult](test-result.md) | `test-result.md` | Single test execution result |
-| [TestResults](test-results.md) | `test-results.md` | Named collection of test results |
 
 ## External Interfaces
 

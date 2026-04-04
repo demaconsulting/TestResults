@@ -11,7 +11,7 @@ The purpose of this document is to:
 - Describe the design decisions and structure of the TestResults Library
 - Provide a reference for developers contributing to or reviewing the library
 - Establish traceability between requirements and the components that fulfil them
-- Document the model units and IO subsystem in sufficient detail to support code review
+- Document the in-memory model units and IO subsystem in sufficient detail to support code review
 
 ## Scope
 
@@ -26,7 +26,7 @@ system/subsystem/unit hierarchy:
   - `SerializerHelpers` — internal UTF-8 writer helper used by both serializers
   - `TrxSerializer` — TRX (Visual Studio Test Results) format read/write
   - `JUnitSerializer` — JUnit XML format read/write
-- The **model units** (top-level, outside the IO subsystem):
+- The **three top-level units** forming the in-memory model (outside any subsystem):
   - `TestOutcome` — enumeration of all possible test outcomes
   - `TestResult` — single test execution result
   - `TestResults` — named collection of test results for a complete test run
