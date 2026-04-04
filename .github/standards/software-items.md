@@ -19,6 +19,7 @@ Categorize all software into four primary groups:
   providing functionality not developed in-house
 
 **Naming**: When names collide in hierarchy, add descriptive suffix to higher-level entity:
+
 - System: Application/Library/System  
 - Subsystem: Subsystem
 
