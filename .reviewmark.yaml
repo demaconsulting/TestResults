@@ -39,6 +39,7 @@ reviews:
       - "docs/reqstream/test-results-library/test-results-library.yaml"
       - "docs/design/introduction.md"
       - "docs/design/test-results-library/test-results-library.md"
+      - "test/DemaConsulting.TestResults.Tests/TestResultsLibraryTests.cs"
 
   - id: TestResults-Design
     title: Review of TestResults Library Design Documentation
