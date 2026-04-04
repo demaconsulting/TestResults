@@ -4,7 +4,7 @@
 
 The IO subsystem provides serialization and deserialization of test result data
 in multiple formats. It acts as the interface between the in-memory
-[TestResults](../test-results.md) model and external test result files.
+[TestResults](../test-results-library.md) model and external test result files.
 
 ## Subsystem Structure
 
@@ -29,11 +29,11 @@ The IO subsystem is responsible for:
 
 The IO subsystem depends on:
 
-- **Model layer**: [TestResults](../test-results.md), [TestResult](../test-result.md),
+- **Model layer**: [TestResults](../test-results-library.md), [TestResult](../test-result.md),
   [TestOutcome](../test-outcome.md)
 - **External**: `System.Xml.Linq` for XML processing
 
 ## Related Requirements
 
 Requirements for the IO subsystem are in
-[docs/reqstream/test-results/io/](../../../reqstream/test-results/io/).
+[docs/reqstream/test-results-library/io/](../../../reqstream/test-results-library/io/).

@@ -1,0 +1,22 @@
+---
+# System-Level Requirements for the TestResults Library
+#
+# The TestResults Library provides a format-agnostic in-memory model for test results
+# and supports reading and writing test result files in TRX and JUnit XML formats.
+#
+# System-level requirements describe the externally observable behaviour of the library
+# as a whole. Subsystem and unit requirements are in the individual files under this folder.
+
+sections:
+  - title: TestResults Library System Requirements
+    requirements:
+      - id: TestResultsLibrary-Architecture-InMemoryModel
+        title: The TestResults Library shall deserialize test result files into a navigable in-memory collection.
+        justification: |
+          The library's primary system promise is to translate serialized test result files into
+          a structured in-memory model that callers can navigate, query, and transform. This is
+          the architectural contract between the IO subsystem and the model layer, and between
+          the library and its consumers.
+        tests:
+          - IO_Deserialize_TrxContent_ReturnsTestResults
+          - IO_Deserialize_JUnitContent_ReturnsTestResults

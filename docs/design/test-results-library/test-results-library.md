@@ -1,14 +1,14 @@
-# TestResults System Design
+# TestResults Library System Design
 
 ## Overview
 
-The TestResults library is a .NET library for reading and writing test result
+The TestResults Library is a .NET library for reading and writing test result
 files in multiple formats. It provides a format-agnostic in-memory model and
 format-specific serialization implementations.
 
 ## System Architecture
 
-The TestResults library uses a layered architecture:
+The TestResults Library uses a layered architecture:
 
 ```mermaid
 graph TD
@@ -37,12 +37,12 @@ graph TD
 
 ## Software Items
 
-The software items in the TestResults system are described in the
+The software items in the TestResults Library are described in the
 [introduction](../introduction.md#software-structure).
 
 ## External Interfaces
 
-The TestResults library exposes the following public API entry points:
+The TestResults Library exposes the following public API entry points:
 
 - `Serializer.Identify(string)`: Detects format of a test result file
 - `Serializer.Deserialize(string)`: Reads a test result file into the model
@@ -61,9 +61,9 @@ The TestResults library exposes the following public API entry points:
 ## Related Requirements
 
 System-level requirements are in
-[docs/reqstream/test-results/test-results.yaml](../../reqstream/test-results/test-results.yaml).
+[docs/reqstream/test-results-library/test-results-library.yaml](../../reqstream/test-results-library/test-results-library.yaml).
 Platform requirements are in
-[docs/reqstream/test-results/platform-requirements.yaml](../../reqstream/test-results/platform-requirements.yaml).
+[docs/reqstream/test-results-library/platform-requirements.yaml](../../reqstream/test-results-library/platform-requirements.yaml).
 
 ## TestResults Class
 
