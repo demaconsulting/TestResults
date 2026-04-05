@@ -79,7 +79,6 @@ sections:
           deferred test execution and helps track test execution state.
         tests:
           - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
-          - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
 
       - id: TestResults-Model-WarningOutcome
         title: The library shall support the Warning test outcome.
