@@ -20,5 +20,5 @@ sections:
               - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
               - TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
               - TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
-              - TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent	
+              - TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
               - TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent

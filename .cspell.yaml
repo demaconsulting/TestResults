@@ -14,93 +14,23 @@ language: en
 
 # Project-specific technical terms and tool names
 words:
-  - antipatterns
-  - Anson
-  - Blockquotes
   - buildmark
-  - BuildMark
-  - buildnotes
-  - camelcase
-  - Checkmarx
-  - CodeQL
-  - copilot
-  - cspell
-  - csproj
-  - datarow
-  - dbproj
-  - dcterms
   - Dema
-  - demaconsulting
-  - DEMACONSULTINGNUGETKEY
-  - Dependabot
-  - dependabot
-  - DOCX
-  - doctitle
-  - dotnet
-  - editorconfig
-  - filepart
-  - fsproj
+  - fileassert
   - Gidget
-  - gitattributes
   - hotspots
-  - ibiqlik
-  - JUnit
   - LINQ
-  - maintainer
-  - markdownlint
-  - mermaid
   - mstest
-  - nameof
-  - myterm
-  - ncipollo
-  - nuget
-  - nupkg
-  - opencover
-  - pagetitle
-  - pandoc
-  - pandoctool
-  - Pylint
-  - Qube
+  - Pandoc
   - reqstream
-  - ReqStream
   - reviewmark
-  - ReviewMark
-  - build_notes
-  - code_quality
-  - code_review_plan
-  - code_review_report
-  - requirements_doc
-  - requirements_report
-  - trace_matrix
   - Sarif
   - sarifmark
-  - SarifMark
-  - SBOM
-  - Semgrep
-  - semver
-  - slnx
-  - snupkg
-  - Sonar
-  - sonarcloud
   - sonarmark
-  - SonarMark
-  - sonarscanner
-  - SonarQube
-  - spdx
-  - streetsidesoftware
-  - templatetool
-  - TestResults
-  - testname
-  - tracematrix
-  - triaging
-  - Trivy
-  - trx
-  - vbproj
-  - vcxproj
   - versionmark
-  - Weasyprint
-  - weasyprinttool
-  - yamllint
+  - Weasy
+  - weasyprint
+  - yamlfix
 
 # Exclude common build artifacts, dependencies, and vendored third-party code
 ignorePaths:
