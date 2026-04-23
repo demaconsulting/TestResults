@@ -163,7 +163,6 @@ The library supports the following test outcomes:
 - `Passed` - Test passed successfully
 - `PassedButRunAborted` - Test passed but the run was aborted
 - `Warning` - Test passed with warnings
-- `Completed` - Test completed successfully
 
 **Failure Outcomes:**
 
@@ -180,6 +179,7 @@ The library supports the following test outcomes:
 
 **Other Outcomes:**
 
+- `Completed` - Test completed successfully
 - `Inconclusive` - Test result was inconclusive
 - `Disconnected` - Test was disconnected
 - `InProgress` - Test is currently in progress
@@ -230,24 +230,15 @@ dotnet test
 
 For convenience, the repository includes helper scripts to streamline development:
 
-**Windows:**
-
 ```bash
 # Build and test the project
-build.bat
+pwsh ./build.ps1
 
 # Run code formatting, spelling, and markdown checks
-lint.bat
-```
+pwsh ./lint.ps1
 
-**Linux/macOS:**
-
-```bash
-# Build and test the project
-./build.sh
-
-# Run code formatting, spelling, and markdown checks
-./lint.sh
+# Auto-fix formatting issues
+pwsh ./fix.ps1
 ```
 
 **Visual Studio Code:**
@@ -306,6 +297,6 @@ Developed and maintained by [DEMA Consulting](https://github.com/demaconsulting)
 [link-nuget]: https://www.nuget.org/packages/DemaConsulting.TestResults
 
 <!-- Document References -->
-[architecture]: https://github.com/demaconsulting/TestResults/blob/main/ARCHITECTURE.md
+[architecture]: https://github.com/demaconsulting/TestResults/blob/main/docs/design/introduction.md
 [contributing]: https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md
 [code-of-conduct]: https://github.com/demaconsulting/TestResults/blob/main/CODE_OF_CONDUCT.md

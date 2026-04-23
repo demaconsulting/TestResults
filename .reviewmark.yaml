@@ -103,8 +103,10 @@ reviews:
   - id: TestResults-IO-SerializerHelpers
     title: Review that TestResults IO SerializerHelpers Implementation is Correct
     paths:
+      - "docs/reqstream/test-results-library/io/serializer-helpers.yaml"
       - "docs/design/test-results-library/io/serializer-helpers.md"
       - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
+      - "test/DemaConsulting.TestResults.Tests/IO/SerializerHelpersTests.cs"
 
   - id: TestResults-IO-TrxSerializer
     title: Review that TestResults IO TrxSerializer Implementation is Correct

@@ -45,7 +45,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml()
     {
-        // Construct a basic test results object
+        // Arrange: construct a basic test results object
         var suites = new TestResults
         {
             Name = "Basic",
@@ -65,22 +65,22 @@ public sealed class TrxSerializerTests
             ]
         };
 
-        // Serialize the test suites object
+        // Act: serialize the test suites object
         var result = TrxSerializer.Serialize(suites);
         Assert.IsNotNull(result);
 
-        // Parse the document
+        // Assert: parse the document
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
         nsMgr.AddNamespace("trx", TrxNamespace);
 
-        // Verify the UnitTestResult element is present
+        // Assert: verify the UnitTestResult element is present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='Test']", nsMgr));
 
-        // Verify the UnitTest element is present
+        // Assert: verify the UnitTest element is present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@name='Test']", nsMgr));
 
-        // Verify the Counters element is present
+        // Assert: verify the Counters element is present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:ResultSummary/trx:Counters[@total='1']", nsMgr));
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:ResultSummary/trx:Counters[@executed='1']", nsMgr));
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:ResultSummary/trx:Counters[@passed='1']", nsMgr));
@@ -93,7 +93,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml()
     {
-        // Construct a complex test results object
+        // Arrange: construct a complex test results object
         var suites = new TestResults
         {
             Name = "Basic",
@@ -124,24 +124,24 @@ public sealed class TrxSerializerTests
             ]
         };
 
-        // Serialize the test suites object
+        // Act: serialize the test suites object
         var result = TrxSerializer.Serialize(suites);
         Assert.IsNotNull(result);
 
-        // Parse the document
+        // Assert: parse the document
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
         nsMgr.AddNamespace("trx", TrxNamespace);
 
-        // Verify the UnitTestResult elements are present
+        // Assert: verify the UnitTestResult elements are present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='Test1']", nsMgr));
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='Test2']", nsMgr));
 
-        // Verify the UnitTest elements are present
+        // Assert: verify the UnitTest elements are present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@name='Test1']", nsMgr));
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:TestDefinitions/trx:UnitTest[@name='Test2']", nsMgr));
 
-        // Verify the Counters element is present
+        // Assert: verify the Counters element is present
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:ResultSummary/trx:Counters[@total='2']", nsMgr));
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:ResultSummary/trx:Counters[@executed='2']", nsMgr));
         Assert.IsNotNull(doc.XPathSelectElement("/trx:TestRun/trx:ResultSummary/trx:Counters[@passed='1']", nsMgr));
@@ -154,7 +154,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Deserialize_BasicTrxXml_ReturnsTestResults()
     {
-        // Deserialize the test results object
+        // Act: deserialize the test results object
         var results = TrxSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -211,7 +211,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Deserialize_ComplexTrxXml_ReturnsTestResults()
     {
-        // Deserialize the test results object
+        // Act: deserialize the test results object
         var results = TrxSerializer.Deserialize(
             """
             <?xml version="1.0" encoding="utf-8"?>
@@ -295,7 +295,7 @@ public sealed class TrxSerializerTests
     [TestMethod]
     public void TrxSerializer_Serialize_StackTraceWithoutMessage_IncludesStackTraceElement()
     {
-        // Construct a test results object with stack trace but no message
+        // Arrange: construct a test results object with stack trace but no message
         var suites = new TestResults
         {
             Name = "StackTraceOnly",
@@ -315,16 +315,16 @@ public sealed class TrxSerializerTests
             ]
         };
 
-        // Serialize the test suites object
+        // Act: serialize the test suites object
         var result = TrxSerializer.Serialize(suites);
         Assert.IsNotNull(result);
 
-        // Parse the document
+        // Assert: parse the document
         var doc = XDocument.Parse(result);
         var nsMgr = new XmlNamespaceManager(new NameTable());
         nsMgr.AddNamespace("trx", TrxNamespace);
 
-        // Verify the StackTrace element is present
+        // Assert: verify the StackTrace element is present
         var stackTraceElement = doc.XPathSelectElement(
             "/trx:TestRun/trx:Results/trx:UnitTestResult[@testName='TestWithStackTrace']/trx:Output/trx:ErrorInfo/trx:StackTrace",
             nsMgr);

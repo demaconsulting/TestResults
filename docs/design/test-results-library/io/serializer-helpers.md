@@ -1,5 +1,7 @@
 # SerializerHelpers
 
+Requirements: [serializer-helpers.yaml](../../../../reqstream/test-results-library/io/serializer-helpers.yaml)
+
 The `SerializerHelpers` unit provides internal helper types shared by the IO subsystem's
 serializer implementations. It is not part of the public API.
 
