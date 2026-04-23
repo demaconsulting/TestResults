@@ -2,7 +2,6 @@
 # This workflow annotates the SBOM for the DemaConsulting.TestResults with
 # build tools, and generates a summary markdown.
 
-
 # Workflow Parameters
 parameters:
   dotnet-version: unknown

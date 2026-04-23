@@ -11,7 +11,6 @@ includes:
   - docs/reqstream/test-results-library/test-result.yaml
   - docs/reqstream/test-results-library/io/io.yaml
   - docs/reqstream/test-results-library/io/serializer.yaml
-  - docs/reqstream/test-results-library/io/serializer-helpers.yaml
   - docs/reqstream/test-results-library/io/trx-serializer.yaml
   - docs/reqstream/test-results-library/io/junit-serializer.yaml
   - docs/reqstream/test-results-library/platform-requirements.yaml
@@ -22,6 +21,6 @@ includes:
   - docs/reqstream/ots/sarifmark.yaml
   - docs/reqstream/ots/sonarmark.yaml
   - docs/reqstream/ots/reviewmark.yaml
-  - docs/reqstream/ots/sonarscanner.yaml
-  - docs/reqstream/ots/pandoctool.yaml
-  - docs/reqstream/ots/weasyprinttool.yaml
+  - docs/reqstream/ots/pandoc.yaml
+  - docs/reqstream/ots/weasyprint.yaml
+  - docs/reqstream/ots/fileassert.yaml
