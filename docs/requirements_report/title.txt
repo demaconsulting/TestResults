@@ -1,8 +1,8 @@
 ---
-title: TestResults Library
+title: TestResults Trace Matrix
 subtitle: Requirements Trace Matrix
 author: DEMA Consulting
-description: Requirements traceability matrix for the TestResults C# library showing the relationship between requirements and test cases
+description: Requirements Traceability Matrix for the TestResults C# library showing the relationship between requirements and test cases
 lang: en-US
 keywords:
   - TestResults
