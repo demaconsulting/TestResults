@@ -22,6 +22,15 @@ sections:
           - JUnitSerializer_Serialize_TestWithOutput_IncludesSystemOutAndErr
           - JUnitSerializer_Serialize_MultipleTestsInClasses_GroupsByClassName
 
+      - id: TestResults-JUnit-Utf8Encoding
+        title: JUnit XML serialized output shall include a UTF-8 XML encoding declaration.
+        justification: |
+          JUnit XML consumers and downstream tools must correctly interpret the XML as UTF-8.
+          Without an explicit encoding declaration, some tools may default to a different encoding
+          interpretation, causing processing failures when the output is written to a byte stream.
+        tests:
+          - JUnitSerializer_Serialize_IncludesXmlDeclarationWithUtf8Encoding
+
       - id: TestResults-JUnit-Deserialize
         title: The library shall support deserializing JUnit XML test result files.
         justification: |

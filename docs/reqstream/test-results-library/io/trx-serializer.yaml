@@ -18,6 +18,15 @@ sections:
           - TrxSerializer_Serialize_BasicTestResults_ProducesValidTrxXml
           - TrxSerializer_Serialize_MultipleTestResults_ProducesValidTrxXml
 
+      - id: TestResults-Trx-Utf8Encoding
+        title: TRX serialized output shall include a UTF-8 XML encoding declaration.
+        justification: |
+          TRX consumers and downstream tools must correctly interpret the XML as UTF-8. Without
+          an explicit encoding declaration, some tools may default to a different encoding
+          interpretation, causing processing failures when the output is written to a byte stream.
+        tests:
+          - TrxSerializer_Serialize_IncludesXmlDeclarationWithUtf8Encoding
+
       - id: TestResults-Trx-Deserialize
         title: The library shall support deserializing TRX test result files.
         justification: |

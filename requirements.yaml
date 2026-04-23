@@ -11,7 +11,6 @@ includes:
   - docs/reqstream/test-results-library/test-result.yaml
   - docs/reqstream/test-results-library/io/io.yaml
   - docs/reqstream/test-results-library/io/serializer.yaml
-  - docs/reqstream/test-results-library/io/serializer-helpers.yaml
   - docs/reqstream/test-results-library/io/trx-serializer.yaml
   - docs/reqstream/test-results-library/io/junit-serializer.yaml
   - docs/reqstream/test-results-library/platform-requirements.yaml
