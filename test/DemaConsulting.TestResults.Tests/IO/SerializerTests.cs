@@ -35,7 +35,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_TrxContent_ReturnsTrx()
     {
-        // Create a sample TRX content
+        // Arrange: create a sample TRX content
         var trxContent = """
             <?xml version="1.0"?>
             <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="da21858f-2c78-442a-8ea6-51fe73762e0e" name="Test Run" runUser="User">
@@ -62,10 +62,10 @@ public sealed class SerializerTests
             </TestRun>
             """;
 
-        // Identify format
+        // Act: identify format
         var format = Serializer.Identify(trxContent);
 
-        // Verify it's identified as TRX
+        // Assert: verify it's identified as TRX
         Assert.AreEqual(TestResultFormat.Trx, format);
     }
 
@@ -75,7 +75,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit()
     {
-        // Create a sample JUnit content with testsuites root
+        // Arrange: create a sample JUnit content with testsuites root
         var junitContent = """
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites name="Test Suite">
@@ -85,10 +85,10 @@ public sealed class SerializerTests
             </testsuites>
             """;
 
-        // Identify format
+        // Act: identify format
         var format = Serializer.Identify(junitContent);
 
-        // Verify it's identified as JUnit
+        // Assert: verify it's identified as JUnit
         Assert.AreEqual(TestResultFormat.JUnit, format);
     }
 
@@ -98,7 +98,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit()
     {
-        // Create a sample JUnit content with testsuite root
+        // Arrange: create a sample JUnit content with testsuite root
         var junitContent = """
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuite name="TestClass" tests="1" failures="0" errors="0" skipped="0" time="1.500">
@@ -106,10 +106,10 @@ public sealed class SerializerTests
             </testsuite>
             """;
 
-        // Identify format
+        // Act: identify format
         var format = Serializer.Identify(junitContent);
 
-        // Verify it's identified as JUnit
+        // Assert: verify it's identified as JUnit
         Assert.AreEqual(TestResultFormat.JUnit, format);
     }
 
@@ -119,10 +119,10 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_EmptyContent_ReturnsUnknown()
     {
-        // Identify format of empty string
+        // Act: identify format of empty string
         var format = Serializer.Identify(string.Empty);
 
-        // Verify it's identified as Unknown
+        // Assert: verify it's identified as Unknown
         Assert.AreEqual(TestResultFormat.Unknown, format);
     }
 
@@ -132,10 +132,10 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_NullContent_ReturnsUnknown()
     {
-        // Identify format of null string
+        // Act: identify format of null string
         var format = Serializer.Identify(null!);
 
-        // Verify it's identified as Unknown
+        // Assert: verify it's identified as Unknown
         Assert.AreEqual(TestResultFormat.Unknown, format);
     }
 
@@ -145,10 +145,10 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_WhitespaceContent_ReturnsUnknown()
     {
-        // Identify format of whitespace string
+        // Act: identify format of whitespace string
         var format = Serializer.Identify("   \n\t  ");
 
-        // Verify it's identified as Unknown
+        // Assert: verify it's identified as Unknown
         Assert.AreEqual(TestResultFormat.Unknown, format);
     }
 
@@ -158,13 +158,13 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_InvalidXml_ReturnsUnknown()
     {
-        // Create invalid XML content
+        // Arrange: create invalid XML content
         var invalidXml = "<invalid><unclosed>";
 
-        // Identify format
+        // Act: identify format
         var format = Serializer.Identify(invalidXml);
 
-        // Verify it's identified as Unknown
+        // Assert: verify it's identified as Unknown
         Assert.AreEqual(TestResultFormat.Unknown, format);
     }
 
@@ -174,7 +174,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Identify_UnrecognizedXmlFormat_ReturnsUnknown()
     {
-        // Create XML with unrecognized root element
+        // Arrange: create XML with unrecognized root element
         var unrecognizedXml = """
             <?xml version="1.0"?>
             <UnknownRoot>
@@ -182,10 +182,10 @@ public sealed class SerializerTests
             </UnknownRoot>
             """;
 
-        // Identify format
+        // Act: identify format
         var format = Serializer.Identify(unrecognizedXml);
 
-        // Verify it's identified as Unknown
+        // Assert: verify it's identified as Unknown
         Assert.AreEqual(TestResultFormat.Unknown, format);
     }
 
@@ -195,7 +195,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_TrxContent_ReturnsTestResults()
     {
-        // Create a sample TRX content
+        // Arrange: create a sample TRX content
         var trxContent = """
             <?xml version="1.0"?>
             <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="da21858f-2c78-442a-8ea6-51fe73762e0e" name="Test Run" runUser="User">
@@ -222,10 +222,10 @@ public sealed class SerializerTests
             </TestRun>
             """;
 
-        // Deserialize
+        // Act: deserialize
         var results = Serializer.Deserialize(trxContent);
 
-        // Verify results
+        // Assert: verify results
         Assert.IsNotNull(results);
         Assert.AreEqual("Test Run", results.Name);
         Assert.AreEqual("User", results.UserName);
@@ -240,7 +240,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_JUnitContent_ReturnsTestResults()
     {
-        // Create a sample JUnit content
+        // Arrange: create a sample JUnit content
         var junitContent = """
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites name="Test Suite">
@@ -253,10 +253,10 @@ public sealed class SerializerTests
             </testsuites>
             """;
 
-        // Deserialize
+        // Act: deserialize
         var results = Serializer.Deserialize(junitContent);
 
-        // Verify results
+        // Assert: verify results
         Assert.IsNotNull(results);
         Assert.AreEqual("Test Suite", results.Name);
         Assert.HasCount(2, results.Results);
@@ -273,18 +273,18 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_RealTrxExample_ReturnsTestResults()
     {
-        // Load example TRX file
+        // Arrange: load example TRX file
         var trxContent = TestHelpers.GetEmbeddedResource(
             "DemaConsulting.TestResults.Tests.IO.Examples.example1.trx");
 
-        // Identify and verify format
+        // Act: identify and verify format
         var format = Serializer.Identify(trxContent);
         Assert.AreEqual(TestResultFormat.Trx, format);
 
-        // Deserialize
+        // Act: deserialize
         var results = Serializer.Deserialize(trxContent);
 
-        // Verify results
+        // Assert: verify results
         Assert.IsNotNull(results);
         Assert.AreEqual("Sample TRX Import", results.Name);
         Assert.AreEqual("Brian Mancini", results.UserName);
@@ -297,7 +297,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_TrxWithMultipleOutcomes_ParsesCorrectly()
     {
-        // Create TRX content with different outcomes
+        // Arrange: create TRX content with different outcomes
         var trxContent = """
             <?xml version="1.0"?>
             <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="da21858f-2c78-442a-8ea6-51fe73762e0e" name="Test Run" runUser="User">
@@ -336,10 +336,10 @@ public sealed class SerializerTests
             </TestRun>
             """;
 
-        // Deserialize
+        // Act: deserialize
         var results = Serializer.Deserialize(trxContent);
 
-        // Verify results
+        // Assert: verify results
         Assert.IsNotNull(results);
         Assert.HasCount(2, results.Results);
 
@@ -359,7 +359,7 @@ public sealed class SerializerTests
     [TestMethod]
     public void Serializer_Deserialize_JUnitWithSystemOutput_ParsesCorrectly()
     {
-        // Create JUnit content with system output
+        // Arrange: create JUnit content with system output
         var junitContent = """
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites name="Test Suite">
@@ -372,10 +372,10 @@ public sealed class SerializerTests
             </testsuites>
             """;
 
-        // Deserialize
+        // Act: deserialize
         var results = Serializer.Deserialize(junitContent);
 
-        // Verify results
+        // Assert: verify results
         Assert.IsNotNull(results);
         Assert.HasCount(1, results.Results);
         Assert.AreEqual("Test1", results.Results[0].Name);
