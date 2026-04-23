@@ -1,275 +1,298 @@
 # Contributing to TestResults
 
-First off, thank you for considering contributing to TestResults! It's people like you that make TestResults such a
-great tool.
+Thank you for your interest in contributing to TestResults! We welcome contributions from the community and
+appreciate your help in making this project better.
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by our
-[Code of Conduct][code-of-conduct]. By participating, you are expected to uphold this code. Please report
-unacceptable behavior through GitHub issues.
+This project adheres to a [Code of Conduct][code-of-conduct]. By participating, you are expected to uphold this code.
+Please report unacceptable behavior through GitHub.
 
-## How Can I Contribute?
+## How to Contribute
 
 ### Reporting Bugs
 
-Before creating bug reports, please check the existing issues as you might find out that you don't need to create one.
-When you are creating a bug report, please include as many details as possible:
+If you find a bug, please create an issue on GitHub with the following information:
 
-- **Use a clear and descriptive title** for the issue to identify the problem
-- **Describe the exact steps which reproduce the problem** in as much detail as possible
-- **Provide specific examples to demonstrate the steps**
-- **Describe the behavior you observed after following the steps** and point out what exactly is the problem with that
-  behavior
-- **Explain which behavior you expected to see instead and why**
-- **Include code samples and test cases** if applicable
+- **Description**: Clear description of the bug
+- **Steps to Reproduce**: Detailed steps to reproduce the issue
+- **Expected Behavior**: What you expected to happen
+- **Actual Behavior**: What actually happened
+- **Environment**: Operating system, .NET version, TestResults version
+- **Logs**: Any relevant error messages or logs
 
-### Suggesting Enhancements
+### Suggesting Features
 
-Enhancement suggestions are tracked as GitHub issues. When creating an enhancement suggestion, please include:
+We welcome feature suggestions! Please create an issue on GitHub with:
 
-- **Use a clear and descriptive title** for the issue to identify the suggestion
-- **Provide a step-by-step description of the suggested enhancement** in as much detail as possible
-- **Provide specific examples to demonstrate the steps** or provide examples of how the enhancement would be used
-- **Describe the current behavior** and **explain which behavior you expected to see instead** and why
-- **Explain why this enhancement would be useful** to most TestResults users
+- **Feature Description**: Clear description of the proposed feature
+- **Use Case**: Why this feature would be useful
+- **Proposed Solution**: Your ideas on how to implement it (optional)
+- **Alternatives**: Any alternative solutions you've considered (optional)
 
-### Pull Requests
+### Submitting Pull Requests
 
-- Fill in the pull request template
-- Follow the C# coding style used throughout the project
-- Include unit tests for new functionality
-- Update documentation to reflect any changes
-- Ensure all tests pass and there are no linting errors
+We follow a standard GitHub workflow for contributions:
+
+1. **Fork** the repository
+2. **Clone** your fork locally
+3. **Create a branch** for your changes (`git checkout -b feature/my-feature`)
+4. **Make your changes** following our coding standards
+5. **Test your changes** thoroughly
+6. **Commit your changes** with clear commit messages
+7. **Push** to your fork
+8. **Create a Pull Request** to the main repository
 
 ## Development Setup
 
 ### Prerequisites
 
-- [.NET SDK 8.0, 9.0, or 10.0][dotnet-download]
-- A code editor ([Visual Studio][vs], [Visual Studio Code][vscode], or [JetBrains Rider][rider])
+- [.NET SDK][dotnet-download] 8.0, 9.0, or 10.0
+- Git
+- A code editor (Visual Studio, VS Code, or Rider recommended)
 
 ### Getting Started
 
-1. Fork the repository
-2. Clone your fork:
+1. Clone the repository:
 
    ```bash
-   git clone https://github.com/YOUR-USERNAME/TestResults.git
+   git clone https://github.com/demaconsulting/TestResults.git
    cd TestResults
    ```
 
-3. Restore .NET tools:
+2. Restore dependencies:
 
    ```bash
    dotnet tool restore
-   ```
-
-4. Restore dependencies:
-
-   ```bash
    dotnet restore
    ```
 
-5. Build the project:
+3. Build the project:
 
    ```bash
-   dotnet build
+   dotnet build --configuration Release
    ```
 
-6. Run tests:
+4. Run unit tests:
 
    ```bash
-   dotnet test
+   dotnet test --configuration Release
    ```
 
-### Helper Scripts
+## Coding Standards
 
-The repository includes helper scripts to simplify common development tasks:
+### General Guidelines
 
-**Quick Build and Test:**
+- Follow the [C# Coding Conventions][csharp-conventions]
+- Use clear, descriptive names for variables, methods, and classes
+- Write XML documentation comments for all public, internal, and private members
+- Keep methods focused and single-purpose
+- Write tests for new functionality
 
-```bash
-# On Windows
-build.bat
+### Code Style
 
-# On Linux/macOS
-./build.sh
+This project enforces code style through `.editorconfig`. Key requirements:
+
+- **Indentation**: 4 spaces for C#, 2 spaces for YAML/JSON/XML
+- **Line Endings**: LF (Unix-style)
+- **Encoding**: UTF-8
+- **Namespaces**: Use file-scoped namespace declarations
+- **Braces**: Required for all control statements
+- **Naming Conventions**:
+  - Interfaces: `IInterfaceName`
+  - Classes/Structs/Enums: `PascalCase`
+  - Methods/Properties: `PascalCase`
+  - Parameters/Local Variables: `camelCase`
+
+### XML Documentation
+
+All members require XML documentation with proper indentation:
+
+```csharp
+/// <summary>
+///     Brief description of what this does.
+/// </summary>
+/// <param name="parameter">Description of the parameter.</param>
+/// <returns>Description of the return value.</returns>
+public int ExampleMethod(string parameter)
+{
+    // Implementation
+}
 ```
 
-**Quick Linting:**
+Note the spaces after `///` for proper indentation in summary blocks.
+
+## Testing Guidelines
+
+### Test Framework
+
+We use MSTest v4 for unit and integration tests.
+
+### Test Naming Convention
+
+Use the pattern: `ClassName_MethodUnderTest_Scenario_ExpectedBehavior`
+
+Examples:
+
+- `Program_Main_NoArguments_ReturnsSuccess`
+- `Context_Create_WithInvalidFlag_ThrowsArgumentException`
+- `Validation_Run_AllTests_ReturnsSuccess`
+
+### Writing Tests
+
+- Write tests that are clear and focused
+- Use modern MSTest v4 assertions:
+  - `Assert.HasCount(expectedCount, collection)`
+  - `Assert.IsEmpty(collection)`
+  - `Assert.DoesNotContain(item, collection)`
+- Always clean up resources (use `try/finally` for console redirection)
+- Link tests to requirements in `requirements.yaml` when applicable
+
+### Running Tests
+
+#### Unit Tests
 
 ```bash
-# On Windows
-lint.bat
+# Run all unit tests
+dotnet test --configuration Release
 
-# On Linux/macOS
-./lint.sh
+# Run specific unit test
+dotnet test --filter "FullyQualifiedName~YourTestName"
+
+# Run with coverage
+dotnet test --collect "XPlat Code Coverage"
 ```
 
-### Visual Studio Code Tasks
+## Documentation
 
-If you're using Visual Studio Code, preconfigured tasks are available:
+### Markdown Guidelines
 
-- Press `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (macOS) to access build tasks
-- Press `Ctrl+Shift+P` and type "Tasks: Run Task" to access all tasks
-- Available tasks: `build`, `test`, `clean`, `restore`, `lint`, `format`
+All markdown files must follow these rules (enforced by markdownlint):
 
-### Making Changes
+- Maximum line length: 120 characters
+- Use ATX-style headers (`# Header`)
+- Lists must be surrounded by blank lines
+- Use reference-style links: `[text][ref]` with `[ref]: url` at document end
+- **Exceptions**:
+  - `README.md` uses absolute URLs (it's included in the NuGet package)
+  - AI agent markdown files (`.github/agents/*.agent.md`) use inline links
+    `[text](url)` so URLs are visible in agent context
 
-1. Create a new branch for your changes:
+### Spell Checking
 
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+All files are spell-checked using cspell. **Never** add a word to the `.cspell.yaml` word list in order to silence a
+spell-checking failure. Doing so defeats the purpose of spell-checking and reduces the quality of the repository.
 
-2. Make your changes, following the coding guidelines below
-3. Add or update tests as needed
-4. Run the full test suite to ensure nothing is broken
-5. Run pre-commit quality checks (see below)
-6. Commit your changes with a clear and descriptive commit message
-7. Push to your fork and submit a pull request
+- If cspell flags a word that is **misspelled**, fix the spelling in the source file.
+- If cspell flags a word that is a **genuine technical term** (tool name, project identifier, etc.) and is spelled
+  correctly, raise a **proposal** (e.g. comment in a pull request) explaining why the word should be added. The
+  proposal must be reviewed and approved before the word is added to the list.
 
-### Pre-Commit Quality Checks
+## Quality Checks
 
-Before committing your changes, ensure the following checks pass:
+Before submitting a pull request, ensure all quality checks pass:
 
-**Using Helper Scripts (Recommended):**
-
-```bash
-# On Windows
-build.bat && lint.bat
-
-# On Linux/macOS
-./build.sh && ./lint.sh
-```
-
-**Manual Commands:**
+### 1. Build and Test
 
 ```bash
 # Build the project
 dotnet build --configuration Release
 
-# Run all tests
+# Run unit tests
 dotnet test --configuration Release
-
-# Verify code formatting
-dotnet format --verify-no-changes
-
-# (Optional) Run spell checker if you modified documentation
-cspell "**/*.{md,cs}"
-
-# (Optional) Run markdown linter if you modified markdown files
-markdownlint "**/*.md"
-
-# (Optional) Run YAML linter if you modified YAML files
-yamllint '**/*.{yml,yaml}'
 ```
 
-All builds must complete with zero warnings, and all tests must pass.
+All tests must pass with zero warnings.
 
-## Coding Guidelines
+### 2. Linting
 
-### C# Style
+```pwsh
+# After making changes: applies dotnet format, markdown, and YAML fixes silently
+pwsh ./fix.ps1
 
-- Follow standard C# naming conventions:
-  - PascalCase for classes, methods, properties, and public fields
-  - camelCase for local variables and private fields
-  - Interface names should start with 'I'
-- Use meaningful and descriptive names for variables, methods, and classes
-- Add XML documentation comments for all public APIs
-- Keep methods focused and concise (Single Responsibility Principle)
-- Prefer composition over inheritance
-- Use nullable reference types appropriately
-
-### Code Quality
-
-- Warnings are treated as errors - ensure your code produces no warnings
-- Follow the existing code style in the project
-- Use the .editorconfig settings provided in the repository
-- Run static analysis and address any issues
-- Maintain high code coverage with unit tests
-
-### Testing
-
-- Write unit tests for all new functionality
-- Follow the AAA (Arrange, Act, Assert) pattern
-- Use descriptive test names that explain what is being tested
-- Test both success and failure scenarios
-- Keep tests isolated and independent
-- Mock external dependencies when appropriate
-
-### Documentation
-
-- Update README.md if you change functionality
-- Add XML documentation comments for all public APIs
-- Update ARCHITECTURE.md for significant architectural changes
-- Include code examples for new features
-
-## Commit Message Guidelines
-
-- Use the present tense ("Add feature" not "Added feature")
-- Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-- Limit the first line to 72 characters or less
-- Reference issues and pull requests liberally after the first line
-- Consider starting the commit message with an applicable emoji:
-  - ✨ `:sparkles:` when adding a new feature
-  - 🐛 `:bug:` when fixing a bug
-  - 📝 `:memo:` when writing docs
-  - 🎨 `:art:` when improving the format/structure of the code
-  - ⚡ `:zap:` when improving performance
-  - ✅ `:white_check_mark:` when adding tests
-  - 🔒 `:lock:` when dealing with security
-
-## Project Structure
-
-```text
-TestResults/
-├── .config/                      # .NET tool configuration
-├── .github/workflows/            # CI/CD workflows
-├── .vscode/                      # VS Code configuration
-│   └── tasks.json               # Build, test, and lint tasks
-├── src/
-│   └── DemaConsulting.TestResults/   # Main library
-├── test/
-│   └── DemaConsulting.TestResults.Tests/  # Unit tests
-├── .editorconfig                 # Editor configuration
-├── .gitignore                    # Git ignore rules
-├── AGENTS.md                     # AI agent instructions
-├── ARCHITECTURE.md               # Architecture documentation
-├── CODE_OF_CONDUCT.md            # Code of conduct
-├── CONTRIBUTING.md               # This file
-├── build.bat / build.sh          # Build helper scripts
-├── lint.bat / lint.sh            # Lint helper scripts
-├── DemaConsulting.TestResults.slnx # Solution file
-├── LICENSE                       # MIT license
-└── README.md                     # Main documentation
+# Before submitting a pull request: all linters must pass
+pwsh ./lint.ps1
 ```
+
+### 3. Code Coverage
+
+Maintain or improve code coverage. Use the `--collect "XPlat Code Coverage"` option when running tests.
+
+## Commit Messages
+
+Write clear, concise commit messages:
+
+- Use present tense ("Add feature" not "Added feature")
+- Use imperative mood ("Move cursor to..." not "Moves cursor to...")
+- Limit first line to 72 characters
+- Reference issues and pull requests when applicable
+
+Examples:
+
+- `Add support for custom report headers`
+- `Fix crash when results file path is invalid`
+- `Update documentation for --report-depth option`
+- `Refactor argument parsing for better testability`
+
+## Pull Request Process
+
+1. **Update Documentation**: Update relevant documentation for your changes
+2. **Add Tests**: Include tests that cover your changes
+3. **Run Quality Checks**: Ensure all linters, tests, and builds pass
+4. **Submit PR**: Create a pull request with a clear description
+5. **Code Review**: Address feedback from maintainers
+6. **Merge**: Once approved, a maintainer will merge your PR
+
+### Pull Request Template
+
+When creating a pull request, include:
+
+- **Description**: What changes does this PR introduce?
+- **Motivation**: Why are these changes needed?
+- **Related Issues**: Link to any related issues
+- **Testing**: How have you tested these changes?
+- **Checklist**:
+  - [ ] Tests added/updated
+  - [ ] Documentation updated
+  - [ ] All tests pass
+  - [ ] Code follows style guidelines
+  - [ ] No new warnings introduced
+
+## Requirements Management
+
+TestResults uses [DemaConsulting.ReqStream][reqstream] for requirements traceability:
+
+- All requirements are defined in `requirements.yaml`
+- Each requirement should be linked to test cases
+- Run `dotnet reqstream` to generate requirements documentation
+- Use the `--enforce` flag to ensure all requirements have test coverage
 
 ## Release Process
 
-Releases are managed by the project maintainers:
+Releases are managed by project maintainers. The process includes:
 
-1. Version numbers follow [Semantic Versioning][semver]
-2. Releases are created through GitHub releases
-3. NuGet packages are automatically published on release
-4. Release notes are generated from commit messages
+1. Version bump in project files
+2. Tag the release in Git
+3. Build and test across all supported platforms
+4. Publish NuGet package
+5. Create GitHub release with artifacts and release notes
 
-## Questions?
+## Getting Help
 
-Feel free to open an issue with your question or reach out to the maintainers directly through GitHub.
+- **Questions**: Use [GitHub Discussions][discussions]
+- **Bugs**: Report via [GitHub Issues][issues]
+- **Security**: See [SECURITY.md][security] for vulnerability reporting
 
-## Recognition
+## License
 
-Contributors will be recognized in the project README and release notes. We appreciate all contributions, no matter
-how small!
+By contributing to TestResults, you agree that your contributions will be licensed under the MIT License.
 
 Thank you for contributing to TestResults! 🎉
 
-<!-- Link References -->
-[code-of-conduct]: CODE_OF_CONDUCT.md
+[code-of-conduct]: https://github.com/demaconsulting/TestResults/blob/main/CODE_OF_CONDUCT.md
 [dotnet-download]: https://dotnet.microsoft.com/download
-[vs]: https://visualstudio.microsoft.com/
-[vscode]: https://code.visualstudio.com/
-[rider]: https://www.jetbrains.com/rider/
-[semver]: https://semver.org/
+[csharp-conventions]: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+[reqstream]: https://github.com/demaconsulting/ReqStream
+[discussions]: https://github.com/demaconsulting/TestResults/discussions
+[issues]: https://github.com/demaconsulting/TestResults/issues
+[security]: https://github.com/demaconsulting/TestResults/blob/main/SECURITY.md

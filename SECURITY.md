@@ -2,135 +2,139 @@
 
 ## Supported Versions
 
-We release patches for security vulnerabilities for the following versions:
+We release patches for security vulnerabilities in the following versions:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| Latest  | :white_check_mark: |
-| < Latest| :x:                |
-
-We recommend always using the latest version of the TestResults library to ensure you have the most recent security
-updates and bug fixes.
+| Version   | Supported          |
+| --------- | ------------------ |
+| Latest    | :white_check_mark: |
+| < Latest  | :x:                |
 
 ## Reporting a Vulnerability
 
-The TestResults team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your
-findings.
+We take the security of TestResults seriously. If you believe you have found a
+security vulnerability, please report it to us as described below.
 
-### How to Report a Security Vulnerability
+### How to Report
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
 Instead, please report them using one of the following methods:
 
-1. **GitHub Security Advisories** (Preferred)
-   - Go to the [Security tab][security-tab]
-   - Click on "Report a vulnerability"
-   - Fill out the form with details about the vulnerability
-
-2. **Direct Contact**
-   - Open a private security advisory on GitHub
-   - Contact the project maintainers directly through GitHub
-
-### What to Include in Your Report
+- **Preferred**: [GitHub Security Advisories][security-advisories] - Use the private vulnerability reporting feature
+- **Alternative**: Contact the project maintainers directly through GitHub
 
 Please include the following information in your report:
 
-- **Description**: A clear description of the vulnerability
-- **Impact**: What kind of vulnerability is it and what is the potential impact?
-- **Location**: Where in the codebase the vulnerability exists
-- **Reproduction Steps**: Detailed steps to reproduce the vulnerability
-- **Proof of Concept**: If possible, provide a proof-of-concept or exploit code
-- **Suggested Fix**: If you have a suggestion for how to fix the vulnerability, please include it
-- **Your Details**: Your name and contact information (optional, but helpful for follow-up questions)
+- **Type of vulnerability** (e.g., SQL injection, cross-site scripting, etc.)
+- **Full path** of source file(s) related to the vulnerability
+- **Location** of the affected source code (tag/branch/commit or direct URL)
+- **Step-by-step instructions** to reproduce the issue
+- **Proof-of-concept or exploit code** (if possible)
+- **Impact** of the issue, including how an attacker might exploit it
 
 ### What to Expect
 
-After you submit a vulnerability report:
+After submitting a vulnerability report, you can expect:
 
-1. **Acknowledgment**: We will acknowledge receipt of your vulnerability report within 3 business days
-2. **Investigation**: We will investigate and validate the vulnerability
-3. **Updates**: We will keep you informed about the progress of addressing the vulnerability
-4. **Resolution**: We will work on a fix and coordinate the release with you
-5. **Credit**: We will credit you in the security advisory (unless you prefer to remain anonymous)
+1. **Acknowledgment**: We will acknowledge receipt of your vulnerability report promptly
+2. **Investigation**: We will investigate the issue and determine its impact and severity
+3. **Updates**: We will keep you informed of our progress as we work on a fix
+4. **Resolution**: Once the vulnerability is fixed, we will:
+   - Release a security patch
+   - Publicly disclose the vulnerability (with credit to you, if desired)
+   - Update this security policy as needed
 
-### Disclosure Policy
+### Response Timeline
 
-- We ask that you give us reasonable time to address the vulnerability before any public disclosure
-- We will work with you to understand the severity and impact of the vulnerability
-- We will coordinate the release of security patches and advisories with you
-- We will publicly acknowledge your responsible disclosure (if you wish to be credited)
+- **Initial Response**: Promptly
+- **Status Update**: Regular updates as investigation progresses
+- **Fix Timeline**: Varies based on severity and complexity
 
-## Security Measures
+### Security Update Policy
 
-The TestResults library implements several security best practices:
+Security updates will be released as:
 
-### Code Security
+- **Critical vulnerabilities**: Patch release as soon as possible
+- **High severity**: Patch release within 30 days
+- **Medium/Low severity**: Included in the next regular release
 
-- **No External Dependencies**: The library has zero runtime dependencies, minimizing the attack surface
-- **Input Validation**: All public APIs validate their inputs
-- **No File Operations**: The library does not perform file I/O operations internally (caller controls file operations)
-- **No Network Operations**: The library does not make any network calls
-- **Static Analysis**: Code is analyzed with Microsoft.CodeAnalysis.NetAnalyzers
-- **Warnings as Errors**: All compiler warnings are treated as errors
+## Security Best Practices
 
-### Build Security
+When using TestResults, we recommend following these security best practices:
 
-- **Continuous Integration**: All code changes go through automated CI/CD pipelines
-- **SonarCloud Analysis**: Code quality and security are analyzed by SonarCloud
-- **Code Coverage**: Unit tests provide comprehensive code coverage
-- **SBOM Generation**: Software Bill of Materials is generated for all releases
-- **Dependency Scanning**: Dependencies are regularly scanned for known vulnerabilities
+### Input Validation
 
-### Development Security
+- Validate input parameters and data before processing
+- Be cautious when processing data from untrusted sources
+- Use the latest version of TestResults to benefit from security updates
 
-- **Code Review**: All changes require code review before merging
-- **Branch Protection**: The main branch is protected and requires passing CI checks
-- **Signed Commits**: We encourage signed commits for verification
-- **Least Privilege**: Development follows the principle of least privilege
+### Dependencies
 
-## Known Vulnerabilities
+- Keep TestResults and its dependencies up to date
+- Review the release notes for security-related updates
+- Use `dotnet list package --vulnerable` to check for vulnerable dependencies
 
-We maintain transparency about known security issues:
+### Usage Environment
 
-- No known vulnerabilities at this time
+- Use TestResults with the minimum required permissions
+- Validate API tokens and credentials are stored securely
+- Follow secure coding practices when integrating the library
 
-Historical security advisories can be found in the
-[GitHub Security Advisories][security-advisories] section.
+## Known Security Considerations
 
-## Security Best Practices for Users
+### Data Handling
 
-When using the TestResults library:
+TestResults processes data according to its API. Users should:
 
-1. **Keep Updated**: Always use the latest version of the library
-2. **Validate Input**: If accepting test result file paths from users, validate and sanitize them
-3. **File Permissions**: When writing test result files (TRX or JUnit XML), use appropriate file permissions
-4. **Error Handling**: Implement proper error handling when using the library
-5. **Code Review**: Review any code that uses this library as part of your security practices
+- Validate input data before passing to library functions
+- Handle sensitive data according to security requirements
+- Be cautious when processing data from untrusted sources
 
-## Scope
+## Security Disclosure Policy
 
-This security policy applies to:
+When we receive a security bug report, we will:
 
-- The TestResults library source code
-- Official NuGet packages published by DEMA Consulting
-- GitHub repository and infrastructure
+1. Confirm the problem and determine affected versions
+2. Audit code to find similar problems
+3. Prepare fixes for all supported versions
+4. Release patches as soon as possible
 
-This policy does not cover:
+We will credit security researchers who report vulnerabilities responsibly. If you would like to be credited:
 
-- Third-party applications that use the TestResults library
-- Forks of the repository not maintained by DEMA Consulting
-- Issues in dependencies (report those to the respective projects)
+- Provide your name or pseudonym
+- Optionally provide a link to your website or GitHub profile
+- Let us know if you prefer to remain anonymous
+
+## Third-Party Dependencies
+
+TestResults relies on third-party packages. We:
+
+- Regularly update dependencies to address known vulnerabilities
+- Use Dependabot to monitor for security updates
+- Review security advisories for all dependencies
+
+To check for vulnerable dependencies yourself:
+
+```bash
+dotnet list package --vulnerable
+```
 
 ## Contact
 
-For any questions about this security policy, please open an issue in the GitHub repository or contact the maintainers
-directly.
+For security concerns, please use [GitHub Security Advisories][security-advisories] or contact the project
+maintainers directly through GitHub.
 
-## Attribution
+For general bugs and feature requests, please use [GitHub Issues][issues].
 
-This security policy is based on security policy best practices and adapted for the TestResults project.
+## Additional Resources
 
-<!-- Link References -->
-[security-tab]: https://github.com/demaconsulting/TestResults/security
+- [OWASP Secure Coding Practices][owasp-practices]
+- [.NET Security Best Practices][dotnet-security]
+- [GitHub Security Advisories][security-advisories]
+
+Thank you for helping keep TestResults and its users safe!
+
 [security-advisories]: https://github.com/demaconsulting/TestResults/security/advisories
+[issues]: https://github.com/demaconsulting/TestResults/issues
+[owasp-practices]: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/
+[dotnet-security]: https://learn.microsoft.com/en-us/dotnet/standard/security/

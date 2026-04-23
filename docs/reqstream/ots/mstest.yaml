@@ -1,15 +1,24 @@
 ---
 # MSTest OTS Software Requirements
 #
-# Requirements for the MSTest testing framework.
-#
-# TODO: MSTest is used as the test runner for this project. The fact that MSTest
-#       can generate TRX files is unrelated to proving that the framework works
-#       correctly. Proper "Does MSTest work" self-validation tests are needed
-#       before this requirement can be linked and uncommented.
+# Requirements for the MSTest testing framework functionality.
 
 sections:
   - title: OTS Software Requirements
     sections:
-      # TODO: Add requirement when proper MSTest self-validation tests are available
       - title: MSTest Requirements
+        requirements:
+          - id: TestResults-OTS-MSTest
+            title: MSTest shall execute unit tests and report results.
+            justification: |
+              MSTest (MSTest.TestFramework and MSTest.TestAdapter) is the unit-testing framework used
+              by the project. It discovers and runs all test methods and writes TRX result files that
+              feed into coverage reporting and requirements traceability. Passing tests confirm the
+              framework is functioning correctly.
+            tags: [ots]
+            tests:
+              - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
+              - TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
+              - TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
+              - TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent	
+              - TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
