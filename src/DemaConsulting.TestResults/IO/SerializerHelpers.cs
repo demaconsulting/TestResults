@@ -23,12 +23,23 @@ using System.Text;
 namespace DemaConsulting.TestResults.IO;
 
 /// <summary>
-///     String writer that uses UTF-8 encoding
+///     String writer that reports UTF-8 as its encoding.
 /// </summary>
+/// <remarks>
+///     <see cref="System.Xml.XmlWriter"/> reads the <see cref="System.IO.TextWriter.Encoding"/>
+///     property of the underlying writer to determine which encoding declaration to emit in the
+///     XML prolog. The default <see cref="StringWriter"/> reports UTF-16 (the .NET in-memory
+///     string encoding), which would cause serializers to write <c>encoding="utf-16"</c> even
+///     when the resulting string is later consumed or stored as UTF-8. This class overrides
+///     <see cref="Encoding"/> to return <see cref="System.Text.Encoding.UTF8"/> so that the
+///     XML declaration correctly declares <c>encoding="UTF-8"</c>.
+/// </remarks>
 internal sealed class Utf8StringWriter : StringWriter
 {
     /// <summary>
-    ///     Gets the UTF-8 encoding
+    ///     Gets the UTF-8 encoding, overriding the default UTF-16 reported by
+    ///     <see cref="StringWriter"/> so that XML serializers emit the correct
+    ///     <c>encoding="UTF-8"</c> declaration in the XML prolog.
     /// </summary>
     public override Encoding Encoding => Encoding.UTF8;
 }

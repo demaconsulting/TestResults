@@ -100,6 +100,7 @@ docs/reqstream/test-results-library/           — Unit-level requirements
 ├── io/
 │   ├── io.yaml                                — IO Subsystem requirements
 │   ├── serializer.yaml                        — Serializer unit requirements
+│   ├── serializer-helpers.yaml                — SerializerHelpers unit requirements
 │   ├── trx-serializer.yaml                    — TrxSerializer unit requirements
 │   └── junit-serializer.yaml                  — JUnitSerializer unit requirements
 ├── test-outcome.yaml                          — TestOutcome unit requirements
@@ -119,7 +120,9 @@ src/DemaConsulting.TestResults/                — Source implementation
     └── JUnitSerializer.cs
 test/DemaConsulting.TestResults.Tests/         — Unit tests
 └── IO/
+    ├── IOTests.cs
     ├── SerializerTests.cs
+    ├── SerializerHelpersTests.cs
     ├── TrxSerializerTests.cs
     └── JUnitSerializerTests.cs
 ```
