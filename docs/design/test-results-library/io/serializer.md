@@ -55,6 +55,6 @@ pass the raw content and receive a `TestResults` object.
 
 ## SerializerHelpers Dependency
 
-The `Serializer.Deserialize()` method delegates writing to format-specific serializers
-that depend on the [SerializerHelpers](serializer-helpers.md) unit for UTF-8 output
-encoding. See [serializer-helpers.md](serializer-helpers.md) for details.
+The `TrxSerializer.Serialize()` and `JUnitSerializer.Serialize()` methods both depend
+on the [SerializerHelpers](serializer-helpers.md) unit for UTF-8 output encoding.
+See [serializer-helpers.md](serializer-helpers.md) for details.

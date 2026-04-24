@@ -15,5 +15,5 @@ to write `encoding="utf-16"` in the XML declaration even when the resulting stri
 later converted to UTF-8 bytes.
 
 `Utf8StringWriter` overrides the `Encoding` property to return `Encoding.UTF8`, so the
-XML declaration correctly declares `encoding="UTF-8"`. It is used by both
+XML declaration correctly declares `encoding="utf-8"`. It is used by both
 `TrxSerializer.Serialize()` and `JUnitSerializer.Serialize()`.

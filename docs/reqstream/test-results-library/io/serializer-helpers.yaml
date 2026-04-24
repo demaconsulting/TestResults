@@ -1,0 +1,31 @@
+---
+# Software Unit Requirements for the SerializerHelpers Unit
+#
+# DERIVATION NOTE: These requirements are a top-down decomposition of
+# TestResults-IO-Serialize (io.yaml). The IO subsystem's obligation to produce
+# correctly-encoded XML serialized output decomposes into three sibling unit
+# responsibilities: TrxSerializer, JUnitSerializer, and SerializerHelpers.
+# SerializerHelpers satisfies the shared encoding constraint that both XML
+# serializer units depend on.
+#
+# These requirements were NOT derived from or driven by the existing
+# implementation. The need for a correct UTF-8 encoding declaration is an
+# interoperability constraint placed on the IO subsystem by downstream XML
+# consumers; SerializerHelpers is the unit that satisfies that constraint
+# on behalf of both serializer units.
+
+sections:
+  - title: SerializerHelpers Unit Requirements
+    requirements:
+      - id: TestResults-SerializerHelpers-Utf8Encoding
+        title: The SerializerHelpers unit shall provide a string writer that reports UTF-8 as its character encoding.
+        justification: |
+          XML serializers read the encoding reported by their underlying string writer to
+          determine which encoding declaration to emit in the XML prolog. The IO subsystem
+          must produce XML output that declares encoding="utf-8" so that downstream tools
+          correctly interpret the byte stream. The default StringWriter reports UTF-16, which
+          would produce an incorrect declaration. This unit satisfies the encoding constraint
+          shared by both TrxSerializer and JUnitSerializer by providing a writer that correctly
+          reports UTF-8, decomposing the TestResults-IO-Serialize obligation.
+        tests:
+          - Utf8StringWriter_Encoding_ReturnsUtf8

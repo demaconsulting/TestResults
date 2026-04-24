@@ -89,5 +89,43 @@ src/DemaConsulting.TestResults/
 └── TestResults.cs               — Collection of test results (TestResults unit)
 ```
 
-[user-guide]: https://github.com/demaconsulting/TestResults
-[requirements-doc]: https://github.com/demaconsulting/TestResults
+## Companion Artifact Structure
+
+Each design unit has corresponding artifacts across requirements, source, tests, and
+review-set entries, forming end-to-end traceability:
+
+```text
+requirements.yaml                              — System-level requirements (TestResults-*)
+docs/reqstream/test-results-library/           — Unit-level requirements
+├── io/
+│   ├── io.yaml                                — IO Subsystem requirements
+│   ├── serializer.yaml                        — Serializer unit requirements
+│   ├── serializer-helpers.yaml                — SerializerHelpers unit requirements
+│   ├── trx-serializer.yaml                    — TrxSerializer unit requirements
+│   └── junit-serializer.yaml                  — JUnitSerializer unit requirements
+├── test-outcome.yaml                          — TestOutcome unit requirements
+├── test-result.yaml                           — TestResult unit requirements
+└── test-results.yaml                          — TestResults unit requirements
+docs/design/                                   — Design documentation (this document and sub-documents)
+├── test-results-library/
+│   ├── io/                                    — IO Subsystem design
+│   ├── test-outcome.md                        — TestOutcome unit design
+│   ├── test-result.md                         — TestResult unit design
+│   └── test-results.md                        — TestResults unit design
+src/DemaConsulting.TestResults/                — Source implementation
+└── IO/
+    ├── Serializer.cs
+    ├── SerializerHelpers.cs
+    ├── TrxSerializer.cs
+    └── JUnitSerializer.cs
+test/DemaConsulting.TestResults.Tests/         — Unit tests
+└── IO/
+    ├── IOTests.cs
+    ├── SerializerTests.cs
+    ├── SerializerHelpersTests.cs
+    ├── TrxSerializerTests.cs
+    └── JUnitSerializerTests.cs
+```
+
+[user-guide]: https://github.com/demaconsulting/TestResults/blob/main/docs/user_guide/introduction.md
+[requirements-doc]: https://github.com/demaconsulting/TestResults/blob/main/requirements.yaml

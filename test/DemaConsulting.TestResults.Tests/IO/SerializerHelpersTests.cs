@@ -19,27 +19,30 @@
 // SOFTWARE.
 
 using System.Text;
+using DemaConsulting.TestResults.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DemaConsulting.TestResults.IO;
+namespace DemaConsulting.TestResults.Tests.IO;
 
 /// <summary>
-///     String writer that reports UTF-8 as its encoding.
+///     Tests for SerializerHelpers unit
 /// </summary>
-/// <remarks>
-///     <see cref="System.Xml.XmlWriter"/> reads the <see cref="System.IO.TextWriter.Encoding"/>
-///     property of the underlying writer to determine which encoding declaration to emit in the
-///     XML prolog. The default <see cref="StringWriter"/> reports UTF-16 (the .NET in-memory
-///     string encoding), which would cause serializers to write <c>encoding="utf-16"</c> even
-///     when the resulting string is later consumed or stored as UTF-8. This class overrides
-///     <see cref="Encoding"/> to return <see cref="System.Text.Encoding.UTF8"/> so that the
-///     XML declaration correctly declares <c>encoding="utf-8"</c>.
-/// </remarks>
-internal sealed class Utf8StringWriter : StringWriter
+[TestClass]
+public sealed class SerializerHelpersTests
 {
     /// <summary>
-    ///     Gets the UTF-8 encoding, overriding the default UTF-16 reported by
-    ///     <see cref="StringWriter"/> so that XML serializers emit the correct
-    ///     <c>encoding="utf-8"</c> declaration in the XML prolog.
+    ///     Test that Utf8StringWriter reports UTF-8 as its encoding
     /// </summary>
-    public override Encoding Encoding => Encoding.UTF8;
+    [TestMethod]
+    public void Utf8StringWriter_Encoding_ReturnsUtf8()
+    {
+        // Arrange: create a Utf8StringWriter
+        using var writer = new Utf8StringWriter();
+
+        // Act: read the reported encoding
+        var encoding = writer.Encoding;
+
+        // Assert: encoding is UTF-8
+        Assert.AreEqual(Encoding.UTF8, encoding);
+    }
 }
