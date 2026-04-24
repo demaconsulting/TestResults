@@ -277,8 +277,10 @@ public sealed class SerializerTests
         var trxContent = TestHelpers.GetEmbeddedResource(
             "DemaConsulting.TestResults.Tests.IO.Examples.example1.trx");
 
-        // Act: identify and verify format
+        // Act: identify format
         var format = Serializer.Identify(trxContent);
+
+        // Assert: verify format
         Assert.AreEqual(TestResultFormat.Trx, format);
 
         // Act: deserialize
