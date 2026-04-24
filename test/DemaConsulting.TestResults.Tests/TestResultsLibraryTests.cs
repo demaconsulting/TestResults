@@ -162,8 +162,8 @@ public sealed class TestResultsLibraryTests
 
         // Assert: the content is valid TRX XML containing the expected data
         Assert.IsNotNull(content);
-        Assert.IsTrue(content.Contains("TestRun"), "Expected TRX XML to contain 'TestRun'");
-        Assert.IsTrue(content.Contains("Test1"), "Expected TRX XML to contain 'Test1'");
+        Assert.Contains("TestRun", content, "Expected TRX XML to contain 'TestRun'");
+        Assert.Contains("Test1", content, "Expected TRX XML to contain 'Test1'");
     }
 
     /// <summary>
@@ -191,7 +191,7 @@ public sealed class TestResultsLibraryTests
 
         // Assert: the content is valid JUnit XML containing the expected data
         Assert.IsNotNull(content);
-        Assert.IsTrue(content.Contains("testsuites"), "Expected JUnit XML to contain 'testsuites'");
-        Assert.IsTrue(content.Contains("Test1"), "Expected JUnit XML to contain 'Test1'");
+        Assert.Contains("testsuites", content, "Expected JUnit XML to contain 'testsuites'");
+        Assert.Contains("Test1", content, "Expected JUnit XML to contain 'Test1'");
     }
 }
