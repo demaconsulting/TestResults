@@ -126,6 +126,8 @@ public sealed class TrxSerializerTests
 
         // Act: serialize the test suites object
         var result = TrxSerializer.Serialize(suites);
+
+        // Assert: verify the serialized result is present
         Assert.IsNotNull(result);
 
         // Assert: parse the document
