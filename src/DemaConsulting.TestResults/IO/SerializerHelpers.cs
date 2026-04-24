@@ -32,14 +32,14 @@ namespace DemaConsulting.TestResults.IO;
 ///     string encoding), which would cause serializers to write <c>encoding="utf-16"</c> even
 ///     when the resulting string is later consumed or stored as UTF-8. This class overrides
 ///     <see cref="Encoding"/> to return <see cref="System.Text.Encoding.UTF8"/> so that the
-///     XML declaration correctly declares <c>encoding="UTF-8"</c>.
+///     XML declaration correctly declares <c>encoding="utf-8"</c>.
 /// </remarks>
 internal sealed class Utf8StringWriter : StringWriter
 {
     /// <summary>
     ///     Gets the UTF-8 encoding, overriding the default UTF-16 reported by
     ///     <see cref="StringWriter"/> so that XML serializers emit the correct
-    ///     <c>encoding="UTF-8"</c> declaration in the XML prolog.
+    ///     <c>encoding="utf-8"</c> declaration in the XML prolog.
     /// </summary>
     public override Encoding Encoding => Encoding.UTF8;
 }

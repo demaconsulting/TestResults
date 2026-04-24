@@ -22,7 +22,7 @@ sections:
         justification: |
           XML serializers read the encoding reported by their underlying string writer to
           determine which encoding declaration to emit in the XML prolog. The IO subsystem
-          must produce XML output that declares encoding="UTF-8" so that downstream tools
+          must produce XML output that declares encoding="utf-8" so that downstream tools
           correctly interpret the byte stream. The default StringWriter reports UTF-16, which
           would produce an incorrect declaration. This unit satisfies the encoding constraint
           shared by both TrxSerializer and JUnitSerializer by providing a writer that correctly
