@@ -1,14 +1,15 @@
 ---
-title: TestResults Code Quality
-subtitle: Code Quality Report
+title: TestResults Code Quality Report
+subtitle: .NET library for TRX and JUnit test results
 author: DEMA Consulting
-description: Code Quality Report for the TestResults C# library for creating test result files in TRX and JUnit XML formats
+description: Code Quality Report for TestResults
 lang: en-US
 keywords:
   - TestResults
   - Code Quality
+  - Static Analysis
   - SonarCloud
-  - Analysis
+  - CodeQL
   - C#
   - .NET
   - TRX

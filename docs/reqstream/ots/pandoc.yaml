@@ -1,7 +1,7 @@
 ---
-# Pandoc OTS Software Requirements
+# Pandoc OTS requirements
 #
-# Requirements for the Pandoc document conversion tool functionality.
+# Requirements for the Pandoc document conversion tool used to convert Markdown documents to HTML.
 
 sections:
   - title: OTS Software Requirements

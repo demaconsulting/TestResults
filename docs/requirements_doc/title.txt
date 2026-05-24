@@ -1,8 +1,8 @@
 ---
-title: TestResults Requirements
-subtitle: Requirements Specification
-author: DEMA Consulting
-description: Requirements specification for the TestResults C# library for creating test result files in TRX and JUnit XML formats
+title: "TestResults Requirements Document"
+subtitle: ".NET library for TRX and JUnit test results"
+author: "DEMA Consulting"
+description: "Requirements Document for TestResults"
 lang: en-US
 keywords:
   - TestResults

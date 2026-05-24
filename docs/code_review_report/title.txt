@@ -1,12 +1,12 @@
 ---
-title: TestResults Review Report
-subtitle: File Review Report for the TestResults Library
-author: DEMA Consulting
-description: File Review Report for the TestResults Library
+title: "TestResults Code Review Report"
+subtitle: ".NET library for TRX and JUnit test results"
+author: "DEMA Consulting"
+description: "Code Review Report for TestResults"
 lang: en-US
 keywords:
   - TestResults
-  - Review Report
+  - Code Review
   - File Reviews
   - .NET
   - Library

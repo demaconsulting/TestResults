@@ -1,15 +1,17 @@
 ---
-title: TestResults Trace Matrix
-subtitle: Requirements Trace Matrix
-author: DEMA Consulting
-description: Requirements Traceability Matrix for the TestResults C# library showing the relationship between requirements and test cases
+title: "TestResults Trace Matrix"
+subtitle: ".NET library for TRX and JUnit test results"
+author: "DEMA Consulting"
+description: "Trace Matrix for TestResults"
 lang: en-US
 keywords:
-  - TestResults
-  - Trace Matrix
   - Requirements
+  - Trace Matrix
+  - TestResults
   - C#
   - .NET
+  - TRX
+  - JUnit
   - Testing
   - Traceability
 ---

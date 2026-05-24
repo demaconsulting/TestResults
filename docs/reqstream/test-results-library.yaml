@@ -1,5 +1,5 @@
 ---
-# System-Level Requirements for the TestResults Library
+# TestResults Library system-level requirements
 #
 # The TestResults Library provides a format-agnostic in-memory model for test results
 # and supports reading and writing test result files in TRX and JUnit XML formats.
@@ -8,7 +8,7 @@
 # as a whole. Subsystem and unit requirements are in the individual files under this folder.
 
 sections:
-  - title: TestResults Library System Requirements
+  - title: TestResults Library Requirements
     requirements:
       - id: TestResultsLibrary-Model-FormatIndependence
         title: The TestResults Library shall provide a format-independent representation of test results.
@@ -17,7 +17,9 @@ sections:
           format. This allows callers to process results from different sources uniformly and enables
           conversion between formats without requiring format-specific logic in consuming code.
         children:
-          - TestResults-Model-Collection
+          - TestResults-Model-RunIdentity
+          - TestResults-Model-RunNaming
+          - TestResults-Model-RunCollection
           - TestResults-Model-TestOutput
           - TestResults-Model-ErrorInfo
           - TestResults-Model-PassedOutcome
@@ -34,6 +36,13 @@ sections:
           - TestResults-Model-CompletedOutcome
           - TestResults-Model-InProgressOutcome
           - TestResults-Model-DisconnectedOutcome
+          - TestResults-Model-TestIdentity
+          - TestResults-Model-TestName
+          - TestResults-Model-TestOutcomeDefault
+          - TestResults-Model-TestTiming
+          - TestResults-Model-TestCodeBase
+          - TestResults-Model-TestClassName
+          - TestResults-Model-TestComputerName
         tests:
           - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
       - id: TestResultsLibrary-IO-ReadResults
@@ -59,3 +68,15 @@ sections:
         tests:
           - TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
           - TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
+      - id: TestResultsLibrary-IO-IdentifyFormat
+        title: The TestResults library shall identify test result file formats.
+        justification: |
+          Users need to determine the format of test result content without
+          attempting to deserialize it. This is required to support format-aware
+          workflows.
+        children:
+          - TestResults-IO-Identify
+        tests:
+          - TestResultsLibrary_Identify_TrxContent_ReturnsTrx
+          - TestResultsLibrary_Identify_JUnitContent_ReturnsJUnit
+          - TestResultsLibrary_Identify_UnknownContent_ReturnsUnknown

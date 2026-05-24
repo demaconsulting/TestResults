@@ -1,7 +1,7 @@
 ---
-# SonarMark OTS Software Requirements
+# SonarMark OTS requirements
 #
-# Requirements for the SonarMark quality reporting tool functionality.
+# Requirements for the SonarMark quality reporting tool used to generate SonarCloud quality reports.
 
 sections:
   - title: OTS Software Requirements

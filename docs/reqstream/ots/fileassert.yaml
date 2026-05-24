@@ -1,7 +1,7 @@
 ---
-# FileAssert OTS Software Requirements
+# FileAssert OTS requirements
 #
-# Requirements for the FileAssert document assertion tool functionality.
+# Requirements for the FileAssert document assertion tool used to validate generated documents.
 
 sections:
   - title: OTS Software Requirements

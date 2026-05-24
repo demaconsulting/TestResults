@@ -1,29 +1,22 @@
 # Introduction
 
-This document specifies the requirements for the TestResults library, a C# library for creating
-test result files in TRX and JUnit XML formats.
+This document lists all requirements for TestResults.
 
 ## Purpose
 
-The purpose of this document is to:
-
-- Define the functional and quality requirements for the TestResults library
-- Provide traceability between requirements and test cases
-- Serve as a baseline for development and validation
+To provide a complete, traceable record of all requirements for TestResults, including requirements
+at the system, subsystem, and unit levels, plus OTS and platform requirements.
 
 ## Scope
 
-The TestResults library is designed to:
+This document covers all requirements defined in `docs/reqstream/` for TestResults, including:
 
-- Provide a lightweight, zero-dependency library for creating test result files
-- Support TRX (Visual Studio Test Results) and JUnit XML formats
-- Offer a simple, type-safe API for programmatic test result creation
-- Target .NET 8, 9, and 10 frameworks
+- System-level requirements for the TestResults library
+- Model unit requirements (test results collection, test outcomes, test result entries)
+- I/O subsystem requirements (serialization, TRX serializer, JUnit serializer, serializer helpers)
+- Platform requirements
+- Off-the-shelf (OTS) component requirements
 
-## Audience
+## References
 
-This document is intended for:
-
-- Software developers implementing the library
-- Quality assurance engineers validating the requirements
-- Project stakeholders reviewing the scope and capabilities
+N/A

@@ -30,13 +30,14 @@ internal static class TestHelpers
     /// </summary>
     /// <param name="resourceName">Resource name</param>
     /// <returns>Resource string</returns>
+    /// <exception cref="InvalidOperationException">Thrown when the embedded resource is not found.</exception>
     public static string GetEmbeddedResource(string resourceName)
     {
         // Open the resource
         using var stream = typeof(TestHelpers).Assembly.GetManifestResourceStream(resourceName);
         if (stream == null)
         {
-            return string.Empty;
+            throw new InvalidOperationException($"Embedded resource '{resourceName}' not found.");
         }
 
         // Read the resource

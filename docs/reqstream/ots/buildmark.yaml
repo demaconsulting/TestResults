@@ -1,7 +1,7 @@
 ---
-# BuildMark OTS Software Requirements
+# BuildMark OTS requirements
 #
-# Requirements for the BuildMark build documentation tool functionality.
+# Requirements for the BuildMark build documentation tool used to generate build-notes from GitHub Actions metadata.
 
 sections:
   - title: OTS Software Requirements

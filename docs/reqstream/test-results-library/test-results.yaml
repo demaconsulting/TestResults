@@ -1,5 +1,5 @@
 ---
-# Software Unit Requirements for the TestResults Class
+# TestResults unit requirements
 #
 # The TestResults class represents a named collection of test results for a complete test run,
 # including run-level metadata such as an identifier, name, and user name.
@@ -8,19 +8,38 @@
 # IO subsystem and unit requirements are in the io/ subfolder.
 
 sections:
-  - title: TestResults Unit Requirements
-    requirements:
-      - id: TestResults-Model-Collection
-        title: The TestResults class shall represent a named collection of test results for a complete test run.
-        justification: |
-          A test run typically consists of many individual test results that must be grouped together
-          with identifying metadata such as a name and a unique identifier. The TestResults collection
-          provides this grouping, enabling serializers and consumers to treat a full test run as a
-          single unit while preserving all individual results.
-        tests:
-          - TestResults_Id_Default_IsNotEmpty
-          - TestResults_Id_TwoInstances_AreUnique
-          - TestResults_Name_Default_IsEmpty
-          - TestResults_UserName_Default_IsEmpty
-          - TestResults_Results_Default_IsNotNull
-          - TestResults_Results_Default_IsEmpty
+  - title: TestResults Library Requirements
+    sections:
+      - title: TestResults Requirements
+        requirements:
+          - id: TestResults-Model-RunIdentity
+            title: The TestResults class shall automatically assign a unique identifier to each test run.
+            justification: |
+              A test run must be uniquely identifiable so that result consumers and serializers can
+              distinguish one run from another without relying on name or timing metadata. Auto-
+              generating a GUID on construction ensures every instance is distinct from the moment
+              of creation and no caller is required to supply or manage run identifiers.
+            tests:
+              - TestResults_Id_Default_IsNotEmpty
+              - TestResults_Id_TwoInstances_AreUnique
+
+          - id: TestResults-Model-RunNaming
+            title: The TestResults class shall default the run name and user name to empty strings.
+            justification: |
+              Serializers and consumers must be able to use a TestResults object immediately after
+              construction without setting optional metadata. Defaulting Name and UserName to empty
+              strings avoids null-reference issues and produces predictably empty fields in
+              serialized output when the caller does not supply identifying metadata.
+            tests:
+              - TestResults_Name_Default_IsEmpty
+              - TestResults_UserName_Default_IsEmpty
+
+          - id: TestResults-Model-RunCollection
+            title: The TestResults class shall initialize the Results collection as a non-null empty list.
+            justification: |
+              Callers must be able to add test results immediately after construction without first
+              checking for a null collection. Initializing Results to an empty list ensures safe
+              enumeration and addition at any point without additional initialization steps.
+            tests:
+              - TestResults_Results_Default_IsNotNull
+              - TestResults_Results_Default_IsEmpty

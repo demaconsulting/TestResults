@@ -1,7 +1,7 @@
 ---
-# SarifMark OTS Software Requirements
+# SarifMark OTS requirements
 #
-# Requirements for the SarifMark SARIF report processing tool functionality.
+# Requirements for the SarifMark SARIF report processing tool used to convert CodeQL results to markdown.
 
 sections:
   - title: OTS Software Requirements

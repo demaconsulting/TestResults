@@ -1,88 +1,93 @@
-# TrxSerializer
+### TrxSerializer
 
-The `TrxSerializer` class reads and writes test result data in the TRX (Visual Studio
-Test Results) XML format. It operates on the model layer types and has no knowledge of
-how test results are produced or consumed beyond the TRX XML structures it reads and
-writes.
+#### Purpose
 
-## TRX Format
+The TrxSerializer unit converts between the shared in-memory model and Microsoft TRX test
+result documents. It is responsible for preserving the richer TRX metadata model, including
+run metadata, test-definition cross-references, output streams, and summary counters.
 
-TRX is the native test result format for Visual Studio and Azure DevOps. It is an XML
-format with the namespace `http://microsoft.com/schemas/VisualStudio/TeamTest/2010`.
+#### Data Model
 
-This satisfies requirements `TestResults-Trx-Serialize` and `TestResults-Trx-Deserialize`.
+**TrxNamespace**: `XNamespace` - Fixed TRX namespace used for element construction and lookup.
 
-### TRX Document Structure
+**TestTypeGuid**: `string` - Standard GUID written to each `UnitTestResult/@testType` to mark
+unit-test entries.
 
-A TRX document has the following top-level structure:
+**TestListId**: `string` - Standard GUID written to `TestEntry` and `TestList` elements for the
+`All Loaded Results` list.
 
-```text
-TestRun (xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010")
-├── Results
-│   └── UnitTestResult (one per test case)
-│       └── Output
-│           ├── StdOut
-│           ├── StdErr
-│           └── ErrorInfo
-│               ├── Message
-│               └── StackTrace
-├── TestDefinitions
-│   └── UnitTest (one per test case)
-│       ├── Execution
-│       └── TestMethod
-├── TestEntries
-│   └── TestEntry (one per test case)
-├── TestLists
-│   └── TestList (at least one, the default list)
-└── ResultSummary
-    └── Counters
-```
+**TestListName**: `string` - Human-readable name of the standard TRX test list.
 
-### TRX Serialization
+**InvalidTrxFileMessage**: `string` - Shared error text used when the input TRX structure is not
+self-consistent.
 
-When serializing a `TestResults` object to TRX:
+**DateTimeFormatString**: `string` - ISO 8601 round-trip format string (`"o"`) used to format
+and parse TRX timestamps.
 
-- The `TestRun` element receives the `id`, `name`, and `runUser` attributes from
-  `TestResults.Id`, `TestResults.Name`, and `TestResults.UserName`
-- Each `TestResult` is written as a `UnitTestResult` element under `Results`, with
-  attributes for `testId`, `executionId`, `testName`, `computerName`, `startTime`,
-  `endTime`, `duration`, `outcome`, `testType` (fixed GUID identifying the unit test
-  type), and `testListId` (referencing the standard "All Loaded Results" test list)
-- An `Output` element is always written for each `UnitTestResult`; its child
-  elements `StdOut`, `StdErr`, and `ErrorInfo` are written conditionally
-- Standard output is written to `Output/StdOut` if `SystemOutput` is non-empty
-- Standard error is written to `Output/StdErr` if `SystemError` is non-empty
-- Error information is written to `Output/ErrorInfo/Message` and
-  `Output/ErrorInfo/StackTrace` if `ErrorMessage` or `ErrorStackTrace` is non-empty
-- A corresponding `UnitTest` element is written under `TestDefinitions` with the
-  `testId`, `name`, and `storage` (from `CodeBase`) attributes, plus a `TestMethod`
-  child element carrying `codeBase` (also from `CodeBase`), `className`, and `name`
-- A `TestEntry` element is written under `TestEntries` linking `testId`, `executionId`,
-  and `testListId`
-- A single default `TestList` is included under `TestLists`
-- A `ResultSummary` element with outcome counters closes the document
+**DurationFormatString**: `string` - Constant/invariant format string (`"c"`) used to format
+and parse TRX durations as TimeSpan values.
 
-### TRX Deserialization
+#### Key Methods
 
-When deserializing a TRX document to a `TestResults` object:
+**Serialize**: Writes a `TestResults` model as TRX XML.
 
-- `TestResults.Id`, `TestResults.Name`, and `TestResults.UserName` are read from the
-  `TestRun` attributes (`id`, `name`, and `runUser` respectively)
-- Each `UnitTestResult` element under `Results` is mapped to a `TestResult`
-- `TestId`, `ExecutionId`, `ComputerName`, `StartTime`, `Duration`, and
-  `Outcome` are read from the `UnitTestResult` element attributes
-- `SystemOutput`, `SystemError`, `ErrorMessage`, and `ErrorStackTrace` are read from
-  the corresponding child elements under `Output`
-- `Name`, `CodeBase`, and `ClassName` are resolved by locating the matching `UnitTest`
-  element in `TestDefinitions` by matching `UnitTestResult/@testId` against
-  `UnitTest/@id`, then reading from the `TestMethod` child element
-- Throws `InvalidOperationException` if the document structure is invalid: a
-  `UnitTestResult` that references a non-existent `testId`, or the `TestDefinitions`
-  section contains duplicate `UnitTest/@id` values
+- *Parameters*: `TestResults results` - Run metadata and ordered test results to serialize.
+- *Returns*: `string` - TRX XML text with a UTF-8 declaration.
+- *Preconditions*: `results` must be non-null.
+- *Postconditions*: Emits a `TestRun` document containing `Results`, `TestDefinitions`,
+  `TestEntries`, `TestLists`, and `ResultSummary` sections that reflect the supplied model.
 
-### TRX Round-Trip Fidelity
+The method builds the TRX tree from helper methods so every `TestResult` is represented in
+both the execution section and the definition section, preserving the TRX cross-reference
+structure.
 
-Round-trip fidelity (serialize → deserialize → same data) is fully preserved for the
-TRX format. All `TestResults` and `TestResult` properties that are written during
-serialization are read back identically during deserialization. This satisfies
-requirement `TestResults-Serializer-RoundTrip` for TRX.
+**Known limitation**: `ResultSummary/Counters` emits only `total`, `executed`, `passed`, and
+`failed` counter attributes. Extended counter attributes such as `error`, `timeout`,
+`inconclusive`, and `notExecuted` are not emitted. This is a known limitation of the current
+serialization implementation.
+
+**Deserialize**: Reads TRX XML into the shared model.
+
+- *Parameters*: `string trxContents` - TRX XML text to parse.
+- *Returns*: `TestResults` - Populated run model.
+- *Preconditions*: `trxContents` must be non-null and non-whitespace.
+- *Postconditions*: Returns run metadata plus one `TestResult` per `UnitTestResult`, with
+  names and code metadata resolved from matching `UnitTest` definitions.
+
+The method builds a lookup from `UnitTest/@id` to `TestMethod` so `UnitTestResult/@testId`
+resolution is linear rather than repeatedly scanning the XML document.
+
+**ParseTestOutcome**: Normalizes TRX outcome text to a defined `TestOutcome` member.
+
+- *Parameters*: `string? value` - Raw `outcome` attribute value.
+- *Returns*: `TestOutcome` - Parsed outcome, or `TestOutcome.Failed` when parsing fails.
+- *Preconditions*: None.
+- *Postconditions*: Always returns a defined enum member.
+
+The method accepts named values and defined numeric values, then falls back to `Failed` so
+callers never receive an undefined `TestOutcome` from TRX deserialization.
+
+#### Error Handling
+
+`Serialize()` throws `ArgumentNullException` when `results` is null. `Deserialize()` throws
+`ArgumentNullException` or `ArgumentException` for null or whitespace input, and throws
+`InvalidOperationException` when the TRX structure is inconsistent, including duplicate
+`UnitTest/@id` values or `UnitTestResult` records that reference a missing test definition.
+Malformed or missing GUIDs fall back to newly generated GUIDs, malformed durations fall back
+to `TimeSpan.Zero`, malformed timestamps fall back to `DateTime.UtcNow`, and unrecognized
+outcome values fall back to `TestOutcome.Failed`.
+
+#### Dependencies
+
+- **TestResults** - provides run-level metadata for `TestRun` and receives deserialized runs.
+- **TestResult** - provides per-test execution data and receives deserialized test cases.
+- **TestOutcome** - supplies outcome values and summary classification helpers.
+- **SerializerHelpers** - provides `Utf8StringWriter` for UTF-8 XML output.
+- **System.Xml.Linq** and **System.Xml.XPath** - construct and query TRX XML.
+- **System.Globalization** - formats and parses invariant timestamps and durations.
+
+#### Callers
+
+- **Serializer** - delegates TRX deserialization after format identification.
+- **Library consumers** - call the static serialize and deserialize entry points directly when
+  they already know the content is TRX.

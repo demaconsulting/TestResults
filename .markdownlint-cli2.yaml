@@ -25,6 +25,10 @@ config:
   MD003:
     style: atx
 
+  # Consistent unordered list markers
+  MD004:
+    style: dash
+
   # Set consistent indentation for nested lists
   MD007:
     indent: 2
@@ -39,16 +43,20 @@ config:
   # Allow inline HTML for enhanced documentation
   MD033: false
 
-  # Allow documents without top-level header (for fragments)
+  # Disable first-line-heading: subsystem, unit, OTS, and shared-package files
+  # intentionally start with ## or  ### because they are assembled by Pandoc into
+  # a single document via definition.yaml. In the assembled document the heading
+  # hierarchy is correct; markdownlint sees fragments in isolation and would
+  # otherwise raise false positives on every sub-document file.
   MD041: false
 
 # Exclude common build artifacts, dependencies, and vendored third-party code
 ignores:
-  - "**/.git/**"
-  - "**/node_modules/**"
-  - "**/.venv/**"
-  - "**/thirdparty/**"
-  - "**/third-party/**"
-  - "**/3rd-party/**"
-  - "**/AGENT_REPORT_*.md"
-  - "**/.agent-logs/**"
+  - '**/.git/**'
+  - '**/node_modules/**'
+  - '**/.venv/**'
+  - '**/thirdparty/**'
+  - '**/third-party/**'
+  - '**/3rd-party/**'
+  - '**/generated/**'
+  - '**/.agent-logs/**'

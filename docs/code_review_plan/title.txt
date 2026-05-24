@@ -1,13 +1,15 @@
 ---
-title: TestResults Review Plan
-subtitle: File Review Plan for the TestResults Library
-author: DEMA Consulting
-description: File Review Plan for the TestResults Library
+title: "TestResults Code Review Plan"
+subtitle: ".NET library for TRX and JUnit test results"
+author: "DEMA Consulting"
+description: "Code Review Plan for TestResults"
 lang: en-US
 keywords:
+  - Code Review
   - TestResults
-  - Review Plan
-  - File Reviews
   - .NET
+  - TRX
+  - JUnit
+  - C#
   - Library
 ---

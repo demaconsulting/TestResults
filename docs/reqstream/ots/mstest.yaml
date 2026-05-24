@@ -1,7 +1,7 @@
 ---
-# MSTest OTS Software Requirements
+# MSTest OTS requirements
 #
-# Requirements for the MSTest testing framework functionality.
+# Requirements for the MSTest testing framework used to execute unit tests and report results.
 
 sections:
   - title: OTS Software Requirements

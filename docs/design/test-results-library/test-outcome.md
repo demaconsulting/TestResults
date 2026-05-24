@@ -1,78 +1,72 @@
-# TestOutcome
+## TestOutcome
 
-The `TestOutcome` enumeration and its companion `TestOutcomeExtensions` class define
-the full set of outcome values recognized by the library and provide extension methods
-that classify those values into the logical categories used by the IO subsystem
-and by consumers who need to aggregate or summarize results.
+### Purpose
 
-## TestOutcome Enumeration
+The TestOutcome unit defines the complete set of execution outcomes that the library can
+represent and provides the classification rules used by serializers and consumers when they
+need to count passed, failed, or not-executed tests.
 
-The `TestOutcome` enumeration (`TestOutcome.cs`) defines the full set of outcome values
-recognized by the library. The values are drawn from the Visual Studio TRX format and
-cover all states that a test case may reach during execution.
+### Data Model
 
-| Outcome               | Category     | Description                                                             |
-|-----------------------|--------------|-------------------------------------------------------------------------|
-| `Error`               | Failed       | Test encountered an unexpected error or exception                       |
-| `Failed`              | Failed       | Test executed but did not meet its success criteria                     |
-| `Timeout`             | Failed       | Test exceeded its allotted execution time                               |
-| `Aborted`             | Failed       | Test was terminated before completion                                   |
-| `Inconclusive`        | Executed     | Test executed but produced no definitive pass or fail result            |
-| `PassedButRunAborted` | Passed       | Test passed, but the overall run was subsequently aborted               |
-| `NotRunnable`         | Not executed | Test could not be executed (e.g., invalid configuration)                |
-| `NotExecuted`         | Not executed | Test was not run (maps to JUnit `skipped`)                              |
-| `Disconnected`        | Executed     | Test agent became disconnected; execution started but result is unknown |
-| `Warning`             | Passed       | Test completed successfully but produced warnings                       |
-| `Passed`              | Passed       | Test executed and met all success criteria                              |
-| `Completed`           | Executed     | Test completed execution (used by some frameworks)                      |
-| `InProgress`          | Executed     | Test is currently executing                                             |
-| `Pending`             | Not executed | Test is scheduled but has not yet started                               |
+**Outcome Values**: `TestOutcome` - Enumerates `Error`, `Failed`, `Timeout`, `Aborted`,
+`Inconclusive`, `PassedButRunAborted`, `NotRunnable`, `NotExecuted`, `Disconnected`,
+`Warning`, `Passed`, `Completed`, `InProgress`, and `Pending`.
 
-The *Category* column is consistent with the `TestOutcomeExtensions` helpers: only outcomes
-for which `IsExecuted()` returns `false` are labeled **Not executed**; outcomes that execute
-but do not count as passed or failed are labeled **Executed**.
+**Classification Rules**: `TestOutcomeExtensions` - Encodes the invariants that only
+`Passed`, `PassedButRunAborted`, and `Warning` are passed; only `Failed`, `Error`,
+`Timeout`, and `Aborted` are failed; and only `NotRunnable`, `NotExecuted`, and `Pending`
+count as not executed.
 
-## TestOutcome Extensions
+### Key Methods
 
-The `TestOutcomeExtensions` class provides three extension methods on `TestOutcome` that
-classify an outcome into the three logical categories used by the IO subsystem and
-by consumers who need to aggregate or summarize results.
+**IsPassed**: Classifies an outcome as passed or not passed.
 
-### IsPassed()
+- *Parameters*: `TestOutcome outcome` - Outcome value to classify.
+- *Returns*: `bool` - `true` only for `Passed`, `PassedButRunAborted`, and `Warning`.
+- *Preconditions*: None.
+- *Postconditions*: Returns a deterministic passed/not-passed classification without
+  mutating state.
 
-Returns `true` when the outcome falls into the *passed* category:
+The method uses a switch expression so serializers can count passed tests without duplicating
+outcome tables.
 
-- `Passed`
-- `PassedButRunAborted`
-- `Warning`
+**IsFailed**: Classifies an outcome as failed or not failed.
 
-All other outcomes return `false`. This satisfies requirements
-`TestResults-Model-PassedOutcome`, `TestResults-Model-PassedButRunAbortedOutcome`,
-`TestResults-Model-WarningOutcome`.
+- *Parameters*: `TestOutcome outcome` - Outcome value to classify.
+- *Returns*: `bool` - `true` only for `Failed`, `Error`, `Timeout`, and `Aborted`.
+- *Preconditions*: None.
+- *Postconditions*: Returns a deterministic failed/not-failed classification without
+  mutating state.
 
-### IsFailed()
+The method centralizes failure semantics used by TRX summary counters and by callers that
+aggregate failures.
 
-Returns `true` when the outcome falls into the *failed* category:
+**IsExecuted**: Classifies whether a test was actually executed.
 
-- `Failed`
-- `Error`
-- `Timeout`
-- `Aborted`
+- *Parameters*: `TestOutcome outcome` - Outcome value to classify.
+- *Returns*: `bool` - `false` only for `NotRunnable`, `NotExecuted`, and `Pending`.
+- *Preconditions*: None.
+- *Postconditions*: Returns a deterministic executed/not-executed classification without
+  mutating state.
 
-All other outcomes return `false`. This satisfies requirements
-`TestResults-Model-FailedOutcome`, `TestResults-Model-ErrorOutcome`,
-`TestResults-Model-TimeoutOutcome`, `TestResults-Model-AbortedOutcome`.
+The method lets JUnit serialization map all not-executed outcomes to `skipped` and lets TRX
+summary counters distinguish executed tests from scheduled or skipped ones.
 
-### IsExecuted()
+### Error Handling
 
-Returns `false` (i.e., the test was **not** executed) for the following outcomes:
+The unit does not throw exceptions during normal classification. The enum constrains ordinary
+callers to the defined outcome set, and the extension methods return a deterministic boolean
+result for every supplied enum value.
 
-- `NotRunnable`
-- `NotExecuted`
-- `Pending`
+### Dependencies
 
-Returns `true` for all other outcomes, including `Inconclusive`, `InProgress`, and
-`Disconnected`. This satisfies requirements `TestResults-Model-NotExecutedOutcome`,
-`TestResults-Model-NotRunnableOutcome`, `TestResults-Model-PendingOutcome`,
-`TestResults-Model-InconclusiveOutcome`, `TestResults-Model-CompletedOutcome`,
-`TestResults-Model-InProgressOutcome`, `TestResults-Model-DisconnectedOutcome`.
+N/A - this unit is a standalone enum and static helper class with no local software-item
+dependencies.
+
+### Callers
+
+- **TestResult** - stores the selected outcome for each test execution.
+- **TrxSerializer** - reads and writes TRX outcome values and computes summary counters.
+- **JUnitSerializer** - maps model outcomes to JUnit `failure`, `error`, and `skipped`
+  elements.
+- **Library consumers** - inspect outcome values and extension methods through the public API.

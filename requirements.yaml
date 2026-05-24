@@ -5,17 +5,17 @@
 # Organized by subsystem: system, model units, IO subsystem, system/platform, and OTS.
 
 includes:
-  - docs/reqstream/test-results-library/test-results-library.yaml
+  - docs/reqstream/test-results-library.yaml
   - docs/reqstream/test-results-library/test-results.yaml
   - docs/reqstream/test-results-library/test-outcome.yaml
   - docs/reqstream/test-results-library/test-result.yaml
-  - docs/reqstream/test-results-library/io/io.yaml
+  - docs/reqstream/test-results-library/io.yaml
   - docs/reqstream/test-results-library/io/serializer.yaml
   - docs/reqstream/test-results-library/io/serializer-helpers.yaml
   - docs/reqstream/test-results-library/io/trx-serializer.yaml
   - docs/reqstream/test-results-library/io/junit-serializer.yaml
   - docs/reqstream/test-results-library/platform-requirements.yaml
-  - docs/reqstream/ots/mstest.yaml
+  - docs/reqstream/ots/xunit.yaml
   - docs/reqstream/ots/reqstream.yaml
   - docs/reqstream/ots/buildmark.yaml
   - docs/reqstream/ots/versionmark.yaml

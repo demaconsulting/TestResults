@@ -1,60 +1,60 @@
-# Serializer
+### Serializer
 
-The `Serializer` class is a facade that auto-detects the format of a serialized test
-result document and delegates reading to the appropriate format-specific serializer.
-It exposes the `TestResultFormat` enumeration for format identification, the
-`Serializer.Identify()` method for probing document format, and the
-`Serializer.Deserialize()` method for reading a test result document regardless of
-its format.
+#### Purpose
 
-## TestResultFormat Enumeration
+The Serializer unit is the IO subsystem facade for callers that do not know the incoming
+format. It identifies whether XML content is TRX or JUnit and delegates deserialization to
+the corresponding format-specific serializer.
 
-The `TestResultFormat` enumeration identifies the file format of a test result document.
+#### Data Model
 
-| Value     | Description                                                       |
-|-----------|-------------------------------------------------------------------|
-| `Unknown` | Format could not be determined                                    |
-| `Trx`     | Visual Studio Test Results (TRX) XML format                       |
-| `JUnit`   | JUnit XML format                                                  |
+**TestResultFormat**: `enum` - Defines the three public detection outcomes: `Unknown`, `Trx`,
+and `JUnit`.
 
-## Format Identification
+**TrxNamespaceUri**: `string` - Hard-coded XML namespace used to distinguish genuine TRX
+`TestRun` roots from unrelated XML documents.
 
-The `Serializer.Identify()` method determines the format of a serialized test result
-document without fully deserializing it. This satisfies requirement
-`TestResults-Serializer-FormatIdentify`.
+#### Key Methods
 
-The identification algorithm:
+**Identify**: Detects the serialized test-result format from XML content.
 
-1. Returns `TestResultFormat.Unknown` immediately if the input is null or whitespace
-2. Attempts to parse the full XML document; returns `TestResultFormat.Unknown` if
-   parsing fails with an `XmlException` (the input is not valid XML)
-3. Returns `TestResultFormat.Trx` if the root element name is `TestRun` **and** the
-   namespace URI is `http://microsoft.com/schemas/VisualStudio/TeamTest/2010`
-4. Returns `TestResultFormat.JUnit` if the root element name is `testsuites` or
-   `testsuite` (case-sensitive, no namespace required)
-5. Returns `TestResultFormat.Unknown` for any other document structure
+- *Parameters*: `string contents` - Raw XML content to inspect.
+- *Returns*: `TestResultFormat` - `Trx`, `JUnit`, or `Unknown`.
+- *Preconditions*: None.
+- *Postconditions*: Returns `Unknown` for null, whitespace, malformed XML, or unrecognized
+  roots, and never throws for those cases.
 
-Using the XML namespace for TRX detection makes identification unambiguous — a document
-with a `TestRun` root element in any other namespace is not treated as TRX.
+The method parses the XML root, checks the exact TRX namespace plus `TestRun` root for TRX,
+and checks `testsuites` or `testsuite` root names for JUnit.
 
-## Format Conversion
+**Deserialize**: Routes supported XML content to the correct format-specific deserializer.
 
-The `Serializer.Deserialize()` method provides a single entry point for reading test
-result files regardless of their format. This satisfies requirement
-`TestResults-Serializer-FormatConversion`.
+- *Parameters*: `string contents` - Raw XML content to deserialize.
+- *Returns*: `TestResults` - Populated in-memory model.
+- *Preconditions*: `contents` must be non-null, non-whitespace, and represent a supported
+  format.
+- *Postconditions*: Returns the result of `TrxSerializer.Deserialize()` or
+  `JUnitSerializer.Deserialize()` and throws for unknown formats.
 
-The conversion algorithm:
+The method keeps format selection in one place so callers can deserialize mixed result files
+through a single entry point.
 
-1. Calls `Serializer.Identify()` to determine the format of the input document
-2. Delegates to `TrxSerializer.Deserialize()` for `TestResultFormat.Trx`
-3. Delegates to `JUnitSerializer.Deserialize()` for `TestResultFormat.JUnit`
-4. Throws an exception for `TestResultFormat.Unknown`
+#### Error Handling
 
-This design means that callers do not need to know or specify the format — they simply
-pass the raw content and receive a `TestResults` object.
+`Identify()` catches `XmlException` and converts invalid XML to `TestResultFormat.Unknown`.
+`Deserialize()` validates `contents` before any XML parsing: passing `null` throws
+`ArgumentNullException`, and passing an empty or whitespace-only string throws
+`ArgumentException`. It throws `InvalidOperationException` when `Identify()` cannot classify
+the document. Exceptions raised by the delegated serializer propagate to the caller.
 
-## SerializerHelpers Dependency
+#### Dependencies
 
-The `TrxSerializer.Serialize()` and `JUnitSerializer.Serialize()` methods both depend
-on the [SerializerHelpers](serializer-helpers.md) unit for UTF-8 output encoding.
-See [serializer-helpers.md](serializer-helpers.md) for details.
+- **TrxSerializer** - performs format-specific TRX deserialization.
+- **JUnitSerializer** - performs format-specific JUnit deserialization.
+- **TestResults** - common return type for deserialization.
+- **System.Xml.Linq.XDocument** - parses XML roots for format identification.
+
+#### Callers
+
+N/A - entry-point unit, called directly by library consumers and exercised by system and
+subsystem tests.

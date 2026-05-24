@@ -20,21 +20,20 @@
 
 using System.Text;
 using DemaConsulting.TestResults.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DemaConsulting.TestResults.Tests.IO;
 
 /// <summary>
 ///     Tests for SerializerHelpers unit
 /// </summary>
-[TestClass]
 public sealed class SerializerHelpersTests
 {
     /// <summary>
     ///     Test that Utf8StringWriter reports UTF-8 as its encoding
     /// </summary>
-    [TestMethod]
-    public void Utf8StringWriter_Encoding_ReturnsUtf8()
+    [Fact]
+    public void Utf8StringWriter_Encoding_Always_ReturnsUtf8()
     {
         // Arrange: create a Utf8StringWriter
         using var writer = new Utf8StringWriter();
@@ -43,6 +42,6 @@ public sealed class SerializerHelpersTests
         var encoding = writer.Encoding;
 
         // Assert: encoding is UTF-8
-        Assert.AreEqual(Encoding.UTF8, encoding);
+        Assert.Equal(Encoding.UTF8, encoding);
     }
 }

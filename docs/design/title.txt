@@ -1,16 +1,16 @@
 ---
-title: TestResults Software Design
-subtitle: Design Documentation
-author: DEMA Consulting
-description: Software design document for the TestResults C# library for creating test result files in TRX and JUnit XML formats
+title: "TestResults Software Design Document"
+subtitle: ".NET library for TRX and JUnit test results"
+author: "DEMA Consulting"
+description: "Software Design Document for TestResults"
 lang: en-US
 keywords:
-  - TestResults
   - Design
-  - C#
+  - Software Design Document
+  - TestResults
   - .NET
+  - C#
   - TRX
   - JUnit
   - Test Results
-  - Testing
 ---

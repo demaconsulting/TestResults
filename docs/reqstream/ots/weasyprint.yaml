@@ -1,7 +1,7 @@
 ---
-# WeasyPrint OTS Software Requirements
+# WeasyPrint OTS requirements
 #
-# Requirements for the WeasyPrint PDF generation tool functionality.
+# Requirements for the WeasyPrint PDF generation tool used in the documentation build pipeline.
 
 sections:
   - title: OTS Software Requirements

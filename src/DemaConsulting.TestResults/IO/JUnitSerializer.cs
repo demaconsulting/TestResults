@@ -57,6 +57,19 @@ public static class JUnitSerializer
     /// <summary>
     ///     Serializes the TestResults object to a JUnit XML file
     /// </summary>
+    /// <remarks>
+    ///     Groups test results by <see cref="TestResult.ClassName"/>, creating one
+    ///     <c>testsuite</c> element per distinct class name. Tests with an empty class name are
+    ///     grouped under the <c>DefaultSuite</c> sentinel name. Within each suite, outcomes are
+    ///     mapped to JUnit child elements as follows: <see cref="TestOutcome.Failed"/> produces a
+    ///     <c>failure</c> element; <see cref="TestOutcome.Error"/>, <see cref="TestOutcome.Timeout"/>,
+    ///     and <see cref="TestOutcome.Aborted"/> produce an <c>error</c> element; outcomes where
+    ///     <see cref="TestOutcomeExtensions.IsExecuted"/> returns <see langword="false"/> produce a
+    ///     <c>skipped</c> element; all other outcomes produce a plain <c>testcase</c> element with no
+    ///     outcome child. The <c>timestamp</c> attribute on each <c>testsuite</c> is set to the
+    ///     earliest <see cref="TestResult.StartTime"/> across all tests in that suite. Stateless;
+    ///     safe for concurrent calls.
+    /// </remarks>
     /// <param name="results">Test Results</param>
     /// <returns>JUnit XML file contents</returns>
     /// <exception cref="ArgumentNullException">Thrown when results is null</exception>
@@ -79,7 +92,7 @@ public static class JUnitSerializer
 
         // Write the XML text
         var doc = new XDocument(root);
-        var writer = new Utf8StringWriter();
+        using var writer = new Utf8StringWriter();
         doc.Save(writer);
         return writer.ToString();
     }
@@ -204,6 +217,17 @@ public static class JUnitSerializer
     /// <summary>
     ///     Deserializes a JUnit XML file to a TestResults object
     /// </summary>
+    /// <remarks>
+    ///     Accepts both the common two-level structure (<c>testsuites</c> → <c>testsuite</c> →
+    ///     <c>testcase</c>) and the bare single-level structure (<c>testsuite</c> → <c>testcase</c>)
+    ///     that some JUnit producers emit. The run name is read from the root element's
+    ///     <c>name</c> attribute in both cases. Known round-trip losses: <see cref="TestOutcome.Timeout"/>
+    ///     and <see cref="TestOutcome.Aborted"/> both deserialize as <see cref="TestOutcome.Error"/>
+    ///     because JUnit has no distinct timeout or aborted element; <see cref="TestOutcome.Inconclusive"/>
+    ///     deserializes as <see cref="TestOutcome.Passed"/> because JUnit has no inconclusive element;
+    ///     and a class name of <c>DefaultSuite</c> deserializes as an empty string. Stateless; safe
+    ///     for concurrent calls.
+    /// </remarks>
     /// <param name="junitContents">JUnit XML File Contents</param>
     /// <returns>Test Results</returns>
     /// <exception cref="ArgumentNullException">Thrown when junitContents is null</exception>

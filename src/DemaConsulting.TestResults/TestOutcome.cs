@@ -104,6 +104,12 @@ public static class TestOutcomeExtensions
     /// <summary>
     ///     Determines if the test outcome is considered passed.
     /// </summary>
+    /// <remarks>
+    ///     Returns <see langword="true"/> for <see cref="TestOutcome.Passed"/>,
+    ///     <see cref="TestOutcome.PassedButRunAborted"/>, and <see cref="TestOutcome.Warning"/>.
+    ///     Returns <see langword="false"/> for all other outcomes. This classification is used by
+    ///     serializers to count passed tests in summary counters. Stateless; safe for concurrent calls.
+    /// </remarks>
     /// <param name="outcome">Test outcome</param>
     /// <returns>True if the outcome indicates a pass</returns>
     public static bool IsPassed(this TestOutcome outcome)
@@ -121,6 +127,13 @@ public static class TestOutcomeExtensions
     /// <summary>
     ///     Determines if the test outcome is considered failed.
     /// </summary>
+    /// <remarks>
+    ///     Returns <see langword="true"/> for <see cref="TestOutcome.Failed"/>,
+    ///     <see cref="TestOutcome.Error"/>, <see cref="TestOutcome.Timeout"/>, and
+    ///     <see cref="TestOutcome.Aborted"/>. Returns <see langword="false"/> for all other outcomes.
+    ///     This classification is used by serializers to count failed tests and to map outcomes to
+    ///     JUnit <c>error</c> elements for infrastructure failures. Stateless; safe for concurrent calls.
+    /// </remarks>
     /// <param name="outcome">Test outcome</param>
     /// <returns>True if the outcome indicates a fail</returns>
     public static bool IsFailed(this TestOutcome outcome)
@@ -139,6 +152,15 @@ public static class TestOutcomeExtensions
     /// <summary>
     ///     Determines if the test outcome is considered executed.
     /// </summary>
+    /// <remarks>
+    ///     Returns <see langword="false"/> for <see cref="TestOutcome.NotRunnable"/>,
+    ///     <see cref="TestOutcome.NotExecuted"/>, and <see cref="TestOutcome.Pending"/>.
+    ///     Returns <see langword="true"/> for all other outcomes, including outcomes that are
+    ///     neither passed nor failed (such as <see cref="TestOutcome.Inconclusive"/>). This
+    ///     classification is used by JUnit serialization to map not-executed outcomes to the
+    ///     <c>skipped</c> element and by TRX summary counters to distinguish executed tests from
+    ///     scheduled or skipped ones. Stateless; safe for concurrent calls.
+    /// </remarks>
     /// <param name="outcome">Test outcome</param>
     /// <returns>True if the outcome indicates the test was executed</returns>
     public static bool IsExecuted(this TestOutcome outcome)
