@@ -6,7 +6,8 @@ The `TestResults` unit is verified with xUnit v3 tests in
 `test/DemaConsulting.TestResults.Tests/TestResultsTests.cs`. Verification uses direct
 construction of the real `TestResults` class because the unit is a simple collection and
 metadata container with no external dependencies to mock or stub. The tests provide direct
-evidence for requirement `TestResults-Model-Collection` by checking run-level identity,
+evidence for requirements `TestResults-Model-RunIdentity`, `TestResults-Model-RunNaming`,
+and `TestResults-Model-RunCollection` by checking run-level identity,
 metadata defaults, and collection initialization.
 
 ### Test Environment
@@ -25,15 +26,15 @@ services, or configuration beyond the standard .NET test runner.
 
 **Generated run identifier**: A new `TestResults` instance shall create a unique run ID so a
 test run can be serialized without additional caller setup, satisfying
-`TestResults-Model-Collection`. This scenario is tested by
+`TestResults-Model-RunIdentity`. This scenario is tested by
 `TestResults_Id_Default_IsNotEmpty` and `TestResults_Id_TwoInstances_AreUnique`.
 
 **Run metadata defaults**: A new `TestResults` instance shall initialize `Name` and
 `UserName` to empty strings so the model is safe to use before enrichment, satisfying
-`TestResults-Model-Collection`. This scenario is tested by
+`TestResults-Model-RunNaming`. This scenario is tested by
 `TestResults_Name_Default_IsEmpty` and `TestResults_UserName_Default_IsEmpty`.
 
 **Results collection initialization**: A new `TestResults` instance shall expose a non-null,
 empty `Results` list ready for callers to populate, satisfying
-`TestResults-Model-Collection`. This scenario is tested by
+`TestResults-Model-RunCollection`. This scenario is tested by
 `TestResults_Results_Default_IsNotNull` and `TestResults_Results_Default_IsEmpty`.

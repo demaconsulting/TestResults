@@ -24,7 +24,7 @@ external files or services.
 
 **Report UTF-8 from the shared writer**: The unit shall expose a string writer that reports
 UTF-8 as its encoding, satisfying `TestResults-SerializerHelpers-Utf8Encoding`. This
-scenario is tested by `Utf8StringWriter_Encoding_ReturnsUtf8`.
+scenario is tested by `Utf8StringWriter_Encoding_Always_ReturnsUtf8`.
 
 **Support serializer XML declarations**: The helper shall provide the encoding behavior needed
 by both XML serializers so they emit `encoding="utf-8"` declarations. This scenario is

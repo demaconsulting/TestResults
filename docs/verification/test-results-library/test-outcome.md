@@ -32,13 +32,13 @@ standard .NET test runner.
 other outcomes remain false, satisfying `TestResults-Model-PassedOutcome`,
 `TestResults-Model-WarningOutcome`, and
 `TestResults-Model-PassedButRunAbortedOutcome`. This scenario is tested by
-`TestOutcome_IsPassed_PassedOutcome_ReturnsTrue`.
+`TestOutcome_IsPassed_AllOutcomes_ReturnsExpectedResult`.
 
 **Failed outcome classification**: Failed-style outcomes shall be reported as failed while
 non-failure outcomes remain false, satisfying `TestResults-Model-FailedOutcome`,
 `TestResults-Model-ErrorOutcome`, `TestResults-Model-TimeoutOutcome`, and
 `TestResults-Model-AbortedOutcome`. This scenario is tested by
-`TestOutcome_IsFailed_FailedOutcome_ReturnsTrue`.
+`TestOutcome_IsFailed_AllOutcomes_ReturnsExpectedResult`.
 
 **Executed state classification across all outcomes**: The extension methods shall preserve
 the library's executed-versus-not-executed distinction for inconclusive, pending,
