@@ -168,7 +168,7 @@ tests:
             - field: Author
               contains: DEMA Consulting
             - field: Subject
-              contains: design document
+              contains: Design
           pages:
             min: 3
           text:
