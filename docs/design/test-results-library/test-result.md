@@ -1,59 +1,67 @@
-# TestResult
+## TestResult
 
-The `TestResult` class represents the result of a single test case execution. Each
-instance holds the identity, timing, output streams, and error information for one test.
+### Purpose
 
-## TestResult Class
+The TestResult unit represents one executed or scheduled test case. It stores identity,
+location, timing, output, outcome, and failure details in the format-neutral model shared by
+all serializers.
 
-The `TestResult` class (`TestResult.cs`) represents the result of a single test case
-execution. Each instance holds the identity, timing, output streams, and error information
-for one test.
+### Data Model
 
-### Identity Properties
+**TestId**: `Guid` - Unique identifier for the test definition. Defaults to a new GUID so TRX
+cross-references can be generated without caller-supplied IDs.
 
-| Property      | Type     | Default                    | Description                              |
-|---------------|----------|----------------------------|------------------------------------------|
-| `TestId`      | `Guid`   | `Guid.NewGuid()`           | Uniquely identifies the test definition  |
-| `ExecutionId` | `Guid`   | `Guid.NewGuid()`           | Uniquely identifies this execution       |
-| `Name`        | `string` | `string.Empty`             | Display name of the test case            |
-| `CodeBase`    | `string` | `string.Empty`             | Assembly or file path containing the test|
-| `ClassName`   | `string` | `string.Empty`             | Fully-qualified class name of the test   |
+**ExecutionId**: `Guid` - Unique identifier for the specific execution instance. Defaults to a
+new GUID for the same reason.
 
-`TestId` and `ExecutionId` are auto-generated on construction so that every `TestResult`
-is uniquely identifiable without requiring the caller to supply identifiers. They are
-preserved during round-trip serialization to maintain referential integrity in TRX files,
-where `TestDefinitions`, `TestEntries`, and `Results` sections all cross-reference these
-identifiers.
+**Name**: `string` - Display name of the test case. Defaults to `string.Empty`.
 
-### Execution Properties
+**CodeBase**: `string` - Assembly or storage path associated with the test definition.
+Defaults to `string.Empty`.
 
-| Property       | Type       | Default                      | Description                             |
-|----------------|------------|------------------------------|-----------------------------------------|
-| `ComputerName` | `string`   | `Environment.MachineName`    | Host that executed the test             |
-| `StartTime`    | `DateTime` | `DateTime.UtcNow`            | UTC timestamp when execution began      |
-| `Duration`     | `TimeSpan` | `TimeSpan.Zero`              | Wall-clock duration of the test         |
+**ClassName**: `string` - Fully-qualified or logical class name used for grouping and
+reporting. Defaults to `string.Empty`.
 
-`ComputerName` defaults to the current machine name so that it is populated correctly
-in the common case where the test is being recorded on the same machine that ran it.
+**ComputerName**: `string` - Name of the machine that ran the test. Defaults to
+`Environment.MachineName`.
 
-### Outcome Properties
+**StartTime**: `DateTime` - Execution start timestamp. Defaults to `DateTime.UtcNow` when the
+instance is created.
 
-| Property          | Type          | Default              | Description                          |
-|-------------------|---------------|----------------------|--------------------------------------|
-| `Outcome`         | `TestOutcome` | `NotExecuted`        | Result classification of the test    |
-| `ErrorMessage`    | `string`      | `string.Empty`       | Human-readable failure message       |
-| `ErrorStackTrace` | `string`      | `string.Empty`       | Stack trace associated with a failure|
+**Duration**: `TimeSpan` - Execution duration. Defaults to `TimeSpan.Zero`.
 
-The default outcome of `NotExecuted` is intentional: a `TestResult` that has been
-constructed but not yet populated with execution data is considered not executed. This
-satisfies requirement `TestResults-Model-NotExecutedOutcome`.
+**SystemOutput**: `string` - Captured standard output stream. Defaults to `string.Empty`.
 
-### Output Properties
+**SystemError**: `string` - Captured standard error stream. Defaults to `string.Empty`.
 
-| Property       | Type     | Default        | Description                              |
-|----------------|----------|----------------|------------------------------------------|
-| `SystemOutput` | `string` | `string.Empty` | Content written to standard output       |
-| `SystemError`  | `string` | `string.Empty` | Content written to standard error        |
+**Outcome**: `TestOutcome` - Semantic result classification. Defaults to
+`TestOutcome.NotExecuted`.
 
-Capturing output streams satisfies requirement `TestResults-Model-TestOutput`. Error
-messages and stack traces satisfy requirement `TestResults-Model-ErrorInfo`.
+**ErrorMessage**: `string` - Failure or skip summary text. Defaults to `string.Empty`.
+
+**ErrorStackTrace**: `string` - Failure stack trace text. Defaults to `string.Empty`.
+
+### Key Methods
+
+N/A - this unit is a data container with auto-properties and no behavioral methods.
+
+### Error Handling
+
+The class does not validate assignments or throw during ordinary use. Constructor-time
+defaults keep string properties non-null, initialize identifiers automatically, and ensure the
+instance always starts in a valid state for serialization.
+
+### Dependencies
+
+- **TestOutcome** - provides the outcome type stored in `Outcome`.
+- **System.Environment** - supplies the default computer name.
+- **System.Guid**, **System.DateTime**, and **System.TimeSpan** - provide identity and timing
+  value types.
+
+### Callers
+
+- **TestResults** - stores ordered `TestResult` instances for a run.
+- **TrxSerializer** - populates and consumes all execution metadata during TRX translation.
+- **JUnitSerializer** - populates and consumes the subset of fields representable in JUnit
+  XML.
+- **Library consumers** - create and inspect individual test results through the public API.

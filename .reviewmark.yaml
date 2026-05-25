@@ -6,16 +6,17 @@
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
 needs-review:
-  - "README.md"                   # Root README file
-  - "requirements.yaml"           # Root requirements file
-  - "**/*.cs"                     # All C# source and test files
-  - "docs/reqstream/**/*.yaml"    # Requirements files
-  - "docs/design/**/*.md"         # Design documentation files
-  - "docs/user_guide/**/*.md"     # User guide documentation
-  - "!**/obj/**"                  # Exclude build output
-  - "!**/bin/**"                  # Exclude build output
-  - "!node_modules/**"            # Exclude npm dependencies
-  - "!**/.venv/**"                # Exclude Python virtual environment
+  - README.md  # Root README file
+  - requirements.yaml  # Root requirements file
+  - '**/*.cs'                       # All C# source and test files
+  - docs/reqstream/**/*.yaml  # Requirements files
+  - docs/design/**/*.md  # Design documentation files
+  - docs/user_guide/**/*.md  # User guide documentation
+  - '!**/obj/**'                    # Exclude build output
+  - '!**/bin/**'                    # Exclude build output
+  - '!**/generated/**'              # Exclude generated content
+  - '!node_modules/**'              # Exclude npm dependencies
+  - '!**/.venv/**'                  # Exclude Python virtual environment
 
 # Evidence source: review data and index.json are located in the 'reviews' branch
 # of this repository, accessed through the GitHub public HTTPS raw content access.
@@ -31,97 +32,100 @@ reviews:
   - id: Purpose
     title: Review that Advertised Features Match System Design
     paths:
-      - "README.md"
-      - "docs/user_guide/**/*.md"
-      - "docs/reqstream/test-results-library/test-results-library.yaml"
-      - "docs/design/introduction.md"
-      - "docs/design/test-results-library/test-results-library.md"
+      - README.md
+      - docs/user_guide/**/*.md
+      - docs/reqstream/test-results-library.yaml
+      - docs/design/introduction.md
+      - docs/design/test-results-library.md
 
   - id: TestResults-Architecture
     title: Review that TestResults Library Architecture Satisfies Requirements
     paths:
-      - "docs/reqstream/test-results-library/test-results-library.yaml"
-      - "docs/design/introduction.md"
-      - "docs/design/test-results-library/test-results-library.md"
-      - "test/DemaConsulting.TestResults.Tests/TestResultsLibraryTests.cs"
+      - docs/reqstream/test-results-library.yaml
+      - docs/design/introduction.md
+      - docs/design/test-results-library.md
+      - test/DemaConsulting.TestResults.Tests/TestResultsLibraryTests.cs
 
   - id: TestResults-Design
     title: Review that TestResults Library Design is Consistent and Complete
     paths:
-      - "docs/reqstream/test-results-library/test-results-library.yaml"
-      - "docs/reqstream/test-results-library/platform-requirements.yaml"
-      - "docs/design/introduction.md"
-      - "docs/design/test-results-library/**/*.md"
+      - docs/reqstream/test-results-library.yaml
+      - docs/reqstream/test-results-library/platform-requirements.yaml
+      - docs/design/introduction.md
+      - docs/design/test-results-library.md
+      - docs/design/test-results-library/**/*.md
 
   - id: TestResults-AllRequirements
     title: Review that All TestResults Library Requirements are Complete
     paths:
-      - "requirements.yaml"
-      - "docs/reqstream/test-results-library/**/*.yaml"
-      - "docs/reqstream/ots/**/*.yaml"
+      - requirements.yaml
+      - docs/reqstream/test-results-library.yaml
+      - docs/reqstream/test-results-library/**/*.yaml
+      - docs/reqstream/ots/**/*.yaml
 
   - id: TestResults-IO
     title: Review that TestResults IO Satisfies Subsystem Requirements
     paths:
-      - "docs/reqstream/test-results-library/io/io.yaml"
-      - "docs/design/test-results-library/io/io.md"
-      - "test/DemaConsulting.TestResults.Tests/IO/IOTests.cs"
+      - docs/reqstream/test-results-library/io.yaml
+      - docs/design/test-results-library/io.md
+      - docs/verification/test-results-library/io.md
+      - test/DemaConsulting.TestResults.Tests/IO/IOTests.cs
 
   - id: TestResults-TestOutcome
     title: Review that TestResults TestOutcome Implementation is Correct
     paths:
-      - "docs/reqstream/test-results-library/test-outcome.yaml"
-      - "docs/design/test-results-library/test-outcome.md"
-      - "src/DemaConsulting.TestResults/TestOutcome.cs"
-      - "test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs"
+      - docs/reqstream/test-results-library/test-outcome.yaml
+      - docs/design/test-results-library/test-outcome.md
+      - src/DemaConsulting.TestResults/TestOutcome.cs
+      - test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs
 
   - id: TestResults-TestResult
     title: Review that TestResults TestResult Implementation is Correct
     paths:
-      - "docs/reqstream/test-results-library/test-result.yaml"
-      - "docs/design/test-results-library/test-result.md"
-      - "src/DemaConsulting.TestResults/TestResult.cs"
-      - "test/DemaConsulting.TestResults.Tests/TestResultTests.cs"
+      - docs/reqstream/test-results-library/test-result.yaml
+      - docs/design/test-results-library/test-result.md
+      - src/DemaConsulting.TestResults/TestResult.cs
+      - test/DemaConsulting.TestResults.Tests/TestResultTests.cs
 
   - id: TestResults-TestResults
     title: Review that TestResults TestResults Implementation is Correct
     paths:
-      - "docs/reqstream/test-results-library/test-results.yaml"
-      - "docs/design/test-results-library/test-results.md"
-      - "src/DemaConsulting.TestResults/TestResults.cs"
-      - "test/DemaConsulting.TestResults.Tests/TestResultsTests.cs"
+      - docs/reqstream/test-results-library/test-results.yaml
+      - docs/design/test-results-library/test-results.md
+      - src/DemaConsulting.TestResults/TestResults.cs
+      - test/DemaConsulting.TestResults.Tests/TestResultsTests.cs
 
   - id: TestResults-IO-Serializer
     title: Review that TestResults IO Serializer Implementation is Correct
     paths:
-      - "docs/reqstream/test-results-library/io/serializer.yaml"
-      - "docs/design/test-results-library/io/serializer.md"
-      - "src/DemaConsulting.TestResults/IO/Serializer.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
+      - docs/reqstream/test-results-library/io/serializer.yaml
+      - docs/design/test-results-library/io/serializer.md
+      - src/DemaConsulting.TestResults/IO/Serializer.cs
+      - test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs
+      - test/DemaConsulting.TestResults.Tests/TestHelpers.cs
 
   - id: TestResults-IO-SerializerHelpers
     title: Review that TestResults IO SerializerHelpers Implementation is Correct
     paths:
-      - "docs/reqstream/test-results-library/io/serializer-helpers.yaml"
-      - "docs/design/test-results-library/io/serializer-helpers.md"
-      - "src/DemaConsulting.TestResults/IO/SerializerHelpers.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/SerializerHelpersTests.cs"
+      - docs/reqstream/test-results-library/io/serializer-helpers.yaml
+      - docs/design/test-results-library/io/serializer-helpers.md
+      - src/DemaConsulting.TestResults/IO/SerializerHelpers.cs
+      - test/DemaConsulting.TestResults.Tests/IO/SerializerHelpersTests.cs
 
   - id: TestResults-IO-TrxSerializer
     title: Review that TestResults IO TrxSerializer Implementation is Correct
     paths:
-      - "docs/reqstream/test-results-library/io/trx-serializer.yaml"
-      - "docs/design/test-results-library/io/trx-serializer.md"
-      - "src/DemaConsulting.TestResults/IO/TrxSerializer.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs"
-      - "test/DemaConsulting.TestResults.Tests/TestHelpers.cs"
+      - docs/reqstream/test-results-library/io/trx-serializer.yaml
+      - docs/design/test-results-library/io/trx-serializer.md
+      - src/DemaConsulting.TestResults/IO/TrxSerializer.cs
+      - test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs
+      - test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs
+      - test/DemaConsulting.TestResults.Tests/TestHelpers.cs
 
   - id: TestResults-IO-JUnitSerializer
     title: Review that TestResults IO JUnitSerializer Implementation is Correct
     paths:
-      - "docs/reqstream/test-results-library/io/junit-serializer.yaml"
-      - "docs/design/test-results-library/io/junit-serializer.md"
-      - "src/DemaConsulting.TestResults/IO/JUnitSerializer.cs"
-      - "test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs"
+      - docs/reqstream/test-results-library/io/junit-serializer.yaml
+      - docs/design/test-results-library/io/junit-serializer.md
+      - src/DemaConsulting.TestResults/IO/JUnitSerializer.cs
+      - test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs

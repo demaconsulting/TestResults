@@ -1,140 +1,175 @@
 ---
-# Software Unit Requirements for the TestOutcome Class
+# TestOutcome unit requirements
 #
-# The TestOutcome class represents the possible outcomes of a test execution,
+# The TestOutcome enumeration represents the possible outcomes of a test execution,
 # providing classification of test results such as Passed, Failed, Error, etc.
 
 sections:
-  - title: TestOutcome Unit Requirements
-    requirements:
-      - id: TestResults-Model-PassedOutcome
-        title: The library shall support the Passed test outcome.
-        justification: |
-          The Passed outcome represents a successful test execution and is the most common test
-          result status. Supporting this outcome is fundamental to accurately representing test
-          results in both TRX and JUnit formats.
-        tests:
-          - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
+  - title: TestResults Library Requirements
+    sections:
+      - title: TestOutcome Requirements
+        requirements:
+          - id: TestResults-Model-PassedOutcome
+            title: The library shall provide a Passed test outcome.
+            justification: |
+              The Passed outcome represents a successful test execution and is the most common test
+              result status. Supporting this outcome is fundamental to accurately representing test
+              results in both TRX and JUnit formats.
+            tests:
+              - TestOutcome_IsPassed_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-FailedOutcome
-        title: The library shall support the Failed test outcome.
-        justification: |
-          The Failed outcome indicates a test that executed but did not meet its success criteria.
-          This is a critical status for identifying regressions and quality issues, making it
-          essential for any test result representation.
-        tests:
-          - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+          - id: TestResults-Model-FailedOutcome
+            title: The library shall provide a Failed test outcome.
+            justification: |
+              The Failed outcome indicates a test that executed but did not meet its success criteria.
+              This is a critical status for identifying regressions and quality issues, making it
+              essential for any test result representation.
+            tests:
+              - TestOutcome_IsFailed_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-ErrorOutcome
-        title: The library shall support the Error test outcome.
-        justification: |
-          The Error outcome represents tests that encountered an unexpected error or exception
-          during execution, distinct from a normal test failure. This status is important for
-          distinguishing between test logic failures and environmental or system errors, which
-          is a key distinction in both TRX and JUnit formats.
-        tests:
-          - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+          - id: TestResults-Model-ErrorOutcome
+            title: The library shall provide an Error test outcome.
+            justification: |
+              The Error outcome represents tests that encountered an unexpected error or exception
+              during execution, distinct from a normal test failure. This status is important for
+              distinguishing between test logic failures and environmental or system errors, which
+              is a key distinction in both TRX and JUnit formats.
+            tests:
+              - TestOutcome_IsFailed_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-TimeoutOutcome
-        title: The library shall support the Timeout test outcome.
-        justification: |
-          The Timeout outcome represents tests that exceeded their allotted execution time and
-          were terminated. This status is important for identifying performance issues and tests
-          that hang or run indefinitely, which is critical for maintaining efficient test suites.
-        tests:
-          - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+          - id: TestResults-Model-TimeoutOutcome
+            title: The library shall provide a Timeout test outcome.
+            justification: |
+              The Timeout outcome represents tests that exceeded their allotted execution time and
+              were terminated. This status is important for identifying performance issues and tests
+              that hang or run indefinitely, which is critical for maintaining efficient test suites.
+            tests:
+              - TestOutcome_IsFailed_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-NotExecutedOutcome
-        title: The library shall support the NotExecuted test outcome.
-        justification: |
-          The NotExecuted outcome represents tests that were not run, which maps to the skipped
-          status in JUnit format. This status provides granular control over test execution
-          tracking and is important for accurate test result reporting in both TRX and JUnit formats.
-        tests:
-          - TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse
+          - id: TestResults-Model-NotExecutedOutcome
+            title: The library shall provide a NotExecuted test outcome.
+            justification: |
+              The NotExecuted outcome represents tests that were not run, which maps to the skipped
+              status in JUnit format. This status provides granular control over test execution
+              tracking and is important for accurate test result reporting in both TRX and JUnit formats.
+            tests:
+              - TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse
 
-      - id: TestResults-Model-InconclusiveOutcome
-        title: The library shall support the Inconclusive test outcome.
-        justification: |
-          The Inconclusive outcome represents tests that executed but did not produce a definitive
-          pass or fail result. This status is important for test frameworks that support
-          inconclusive results and helps distinguish ambiguous test executions from failures.
-        tests:
-          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+          - id: TestResults-Model-InconclusiveOutcome
+            title: The library shall provide an Inconclusive test outcome.
+            justification: |
+              The Inconclusive outcome represents tests that executed but did not produce a definitive
+              pass or fail result. This status is important for test frameworks that support
+              inconclusive results and helps distinguish ambiguous test executions from failures.
+            tests:
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-AbortedOutcome
-        title: The library shall support the Aborted test outcome.
-        justification: |
-          The Aborted outcome represents tests that were terminated before completion, typically
-          due to external intervention or system issues. This status is important for tracking
-          test execution integrity and identifying when tests are interrupted abnormally.
-        tests:
-          - TestOutcome_IsFailed_FailedOutcome_ReturnsTrue
+          - id: TestResults-Model-AbortedOutcome
+            title: The library shall provide an Aborted test outcome.
+            justification: |
+              The Aborted outcome represents tests that were terminated before completion, typically
+              due to external intervention or system issues. This status is important for tracking
+              test execution integrity and identifying when tests are interrupted abnormally.
+            tests:
+              - TestOutcome_IsFailed_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-PendingOutcome
-        title: The library shall support the Pending test outcome.
-        justification: |
-          The Pending outcome represents tests that are scheduled for execution but have not yet
-          started. This status is important for test frameworks that support asynchronous or
-          deferred test execution and helps track test execution state.
-        tests:
-          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+          - id: TestResults-Model-PendingOutcome
+            title: The library shall provide a Pending test outcome.
+            justification: |
+              The Pending outcome represents tests that are scheduled for execution but have not yet
+              started. This status is important for test frameworks that support asynchronous or
+              deferred test execution and helps track test execution state.
+            tests:
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-WarningOutcome
-        title: The library shall support the Warning test outcome.
-        justification: |
-          The Warning outcome represents tests that passed but produced warnings or minor issues.
-          This status allows test frameworks to report tests that completed successfully but may
-          require attention, supporting a more nuanced test result classification.
-        tests:
-          - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
+          - id: TestResults-Model-WarningOutcome
+            title: The library shall provide a Warning test outcome.
+            justification: |
+              The Warning outcome represents tests that passed but produced warnings or minor issues.
+              This status allows test frameworks to report tests that completed successfully but may
+              require attention, supporting a more nuanced test result classification.
+            tests:
+              - TestOutcome_IsPassed_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-PassedButRunAbortedOutcome
-        title: The library shall support the PassedButRunAborted test outcome.
-        justification: |
-          The PassedButRunAborted outcome represents tests that passed individually but were part
-          of a test run that was subsequently aborted. This status is important for distinguishing
-          between tests that succeeded before an abort and those that failed, maintaining accurate
-          test result classification in TRX format.
-        tests:
-          - TestOutcome_IsPassed_PassedOutcome_ReturnsTrue
-          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+          - id: TestResults-Model-PassedButRunAbortedOutcome
+            title: The library shall provide a PassedButRunAborted test outcome.
+            justification: |
+              The PassedButRunAborted outcome represents tests that passed individually but were part
+              of a test run that was subsequently aborted. This status is important for distinguishing
+              between tests that succeeded before an abort and those that failed, maintaining accurate
+              test result classification in TRX format.
+            tests:
+              - TestOutcome_IsPassed_AllOutcomes_ReturnsExpectedResult
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-NotRunnableOutcome
-        title: The library shall support the NotRunnable test outcome.
-        justification: |
-          The NotRunnable outcome represents tests that could not be executed due to configuration
-          issues, missing dependencies, or other environmental problems. This status is important
-          for identifying test infrastructure issues distinct from skipped tests, which is a key
-          distinction in TRX format.
-        tests:
-          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+          - id: TestResults-Model-NotRunnableOutcome
+            title: The library shall provide a NotRunnable test outcome.
+            justification: |
+              The NotRunnable outcome represents tests that could not be executed due to configuration
+              issues, missing dependencies, or other environmental problems. This status is important
+              for identifying test infrastructure issues distinct from skipped tests, which is a key
+              distinction in TRX format.
+            tests:
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-CompletedOutcome
-        title: The library shall support the Completed test outcome.
-        justification: |
-          The Completed outcome represents tests that finished execution, used by some test
-          frameworks to indicate completion without specifying pass or fail. This status is
-          important for compatibility with test frameworks that use this terminology and is
-          referenced in TRX ResultSummary elements.
-        tests:
-          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+          - id: TestResults-Model-CompletedOutcome
+            title: The library shall provide a Completed test outcome.
+            justification: |
+              The Completed outcome represents tests that finished execution, used by some test
+              frameworks to indicate completion without specifying pass or fail. This status is
+              important for compatibility with test frameworks that use this terminology and is
+              referenced in TRX ResultSummary elements.
+            tests:
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-InProgressOutcome
-        title: The library shall support the InProgress test outcome.
-        justification: |
-          The InProgress outcome represents tests that are currently executing. This status is
-          important for test frameworks that report real-time test execution status and allows
-          tracking of long-running tests or tests that may have hung during execution.
-        tests:
-          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+          - id: TestResults-Model-InProgressOutcome
+            title: The library shall provide an InProgress test outcome.
+            justification: |
+              The InProgress outcome represents tests that are currently executing. This status is
+              important for test frameworks that report real-time test execution status and allows
+              tracking of long-running tests or tests that may have hung during execution.
+            tests:
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
 
-      - id: TestResults-Model-DisconnectedOutcome
-        title: The library shall support the Disconnected test outcome.
-        justification: |
-          The Disconnected outcome represents tests where the test agent became disconnected during
-          execution. This status is important for distributed test execution scenarios and helps
-          distinguish between test failures and infrastructure failures, which is critical for
-          accurate test result analysis in enterprise environments.
-        tests:
-          - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+          - id: TestResults-Model-DisconnectedOutcome
+            title: The library shall provide a Disconnected test outcome.
+            justification: |
+              The Disconnected outcome represents tests where the test agent became disconnected during
+              execution. This status is important for distributed test execution scenarios and helps
+              distinguish between test failures and infrastructure failures, which is critical for
+              accurate test result analysis in enterprise environments.
+            tests:
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+
+          - id: TestResults-Model-OutcomeIsPassed
+            title: The IsPassed method shall return true for Passed, PassedButRunAborted, and Warning outcomes only.
+            justification: |
+              Callers such as TrxSerializer and JUnitSerializer rely on IsPassed to count passed tests
+              and generate summary counters without duplicating outcome tables. A precise, enumerated
+              contract for which outcomes are considered passed prevents inconsistencies when new
+              outcomes are added and ensures that consumers can rely on the classification without
+              inspecting each outcome value individually.
+            tests:
+              - TestOutcome_IsPassed_AllOutcomes_ReturnsExpectedResult
+
+          - id: TestResults-Model-OutcomeIsFailed
+            title: The IsFailed method shall return true for Failed, Error, Timeout, and Aborted outcomes only.
+            justification: |
+              Callers such as TrxSerializer aggregate failure counts using IsFailed to produce summary
+              counters. A precise, enumerated contract for which outcomes are considered failed
+              prevents misclassification of infrastructure errors, timeouts, and aborts and ensures
+              that failure reporting is consistent across all serialization formats.
+            tests:
+              - TestOutcome_IsFailed_AllOutcomes_ReturnsExpectedResult
+
+          - id: TestResults-Model-OutcomeIsExecuted
+            title: The IsExecuted method shall return false for NotRunnable, NotExecuted, and Pending outcomes only.
+            justification: |
+              JUnit serialization maps all not-executed outcomes to the skipped element, and TRX
+              summary counters distinguish executed tests from scheduled or skipped ones. A precise,
+              enumerated contract for which outcomes count as not executed ensures that skipped test
+              reporting is correct across both formats and that consumers do not need to enumerate
+              the not-executed set themselves.
+            tests:
+              - TestOutcome_IsExecuted_AllOutcomes_ReturnsExpectedResult
+              - TestOutcome_IsExecuted_NotExecutedOutcome_ReturnsFalse

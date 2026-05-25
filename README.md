@@ -1,4 +1,7 @@
-# TestResults Library
+# TestResults
+
+<!-- IMPORTANT: All links in this file must be absolute URLs.
+     This file is distributed in packages and relative links will not resolve. -->
 
 [![GitHub forks][badge-forks]][link-forks]
 [![GitHub stars][badge-stars]][link-stars]
@@ -9,13 +12,18 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
-A lightweight C# library for programmatically creating test result files in TRX and JUnit formats.
+.NET library for TRX and JUnit test results
+
+## Overview
+
+A .NET library for reading and writing test result files in multiple formats. Provides an in-memory model for
+test outcomes and results, supporting serialization to/from TRX (Visual Studio Test Results) and JUnit XML formats.
 
 ## Features
 
-- ✨ **Simple API** - Intuitive and easy-to-use object model
-- 🎯 **Type-Safe** - Strongly-typed C# classes for test results
-- 🪶 **Lightweight** - Minimal external dependencies
+- ✨ **Simple API** - Intuitive and easy-to-use object model for test results
+- 🎯 **Type-Safe** - Strongly-typed C# classes for test outcomes and results
+- 🪶 **Lightweight** - Zero runtime dependencies
 - 🔄 **Multi-Target** - Supports .NET Standard 2.0, .NET 8, 9, and 10
 - 📦 **NuGet Ready** - Easy integration via NuGet package
 - 📊 **Multiple Formats** - Supports both TRX and JUnit XML formats
@@ -25,8 +33,6 @@ A lightweight C# library for programmatically creating test result files in TRX 
   methodology
 
 ## Installation
-
-Install via NuGet Package Manager:
 
 ```bash
 dotnet add package DemaConsulting.TestResults
@@ -38,11 +44,7 @@ Or via Package Manager Console:
 Install-Package DemaConsulting.TestResults
 ```
 
-## Quick Start
-
-### Creating Test Result Files
-
-The following code-snippet shows how to create test result files in both TRX and JUnit XML formats:
+## Usage
 
 ```csharp
 using DemaConsulting.TestResults;
@@ -51,230 +53,85 @@ using DemaConsulting.TestResults.IO;
 // Create a TestResults instance
 var results = new TestResults { Name = "SomeTests" };
 
-// Add some results
-results.Results.Add(
-    new TestResult
-    {
-        Name = "Test1",
-        ClassName = "SomeTestClass",
-        CodeBase = "MyTestAssembly",
-        Outcome = TestOutcome.Passed,
-        Duration = TimeSpan.FromSeconds(1.5),
-        StartTime = DateTime.UtcNow
-    });
+// Add test results
+results.Results.Add(new TestResult
+{
+    Name = "Test1",
+    ClassName = "SomeTestClass",
+    CodeBase = "MyTestAssembly",
+    Outcome = TestOutcome.Passed,
+    Duration = TimeSpan.FromSeconds(1.5),
+    StartTime = DateTime.UtcNow
+});
 
-results.Results.Add(
-    new TestResult
-    {
-        Name = "Test2",
-        ClassName = "SomeTestClass",
-        CodeBase = "MyTestAssembly",
-        Outcome = TestOutcome.Failed,
-        ErrorMessage = "Expected value to be 42 but was 0",
-        ErrorStackTrace = "at SomeTestClass.Test2() in Test.cs:line 15"
-    });
+results.Results.Add(new TestResult
+{
+    Name = "Test2",
+    ClassName = "SomeTestClass",
+    CodeBase = "MyTestAssembly",
+    Outcome = TestOutcome.Failed,
+    ErrorMessage = "Expected value to be 42 but was 0",
+    ErrorStackTrace = "at SomeTestClass.Test2() in Test.cs:line 15"
+});
 
-// Save the results to a TRX file (Visual Studio format)
+// Save as TRX (Visual Studio format)
 File.WriteAllText("results.trx", TrxSerializer.Serialize(results));
 
-// Save the results to a JUnit XML file
+// Save as JUnit XML
 File.WriteAllText("results.xml", JUnitSerializer.Serialize(results));
 ```
 
-### Automatic Format Detection
-
-The library can automatically detect the format of test result files:
+The library can automatically detect and convert between formats:
 
 ```csharp
 using DemaConsulting.TestResults.IO;
 
 // Automatically detect and deserialize any supported format
-var testResultsXml = File.ReadAllText("test-results.xml");
-var results = Serializer.Deserialize(testResultsXml);
+var results = Serializer.Deserialize(File.ReadAllText("test-results.xml"));
 
-// Or identify the format without deserializing
-var format = Serializer.Identify(testResultsXml);
-if (format == TestResultFormat.Trx)
-{
-    Console.WriteLine("This is a TRX file");
-}
-else if (format == TestResultFormat.JUnit)
-{
-    Console.WriteLine("This is a JUnit XML file");
-}
-```
-
-### Converting Between Formats
-
-The library supports reading and converting between TRX and JUnit formats:
-
-```csharp
-using DemaConsulting.TestResults.IO;
-
-// Automatic format detection and conversion
-var testResultsXml = File.ReadAllText("test-results.xml");
-var results = Serializer.Deserialize(testResultsXml);  // Works with TRX or JUnit
-var trxXml = TrxSerializer.Serialize(results);
-File.WriteAllText("converted.trx", trxXml);
-
-// Or use specific deserializers if format is known
-var junitXml = File.ReadAllText("junit-results.xml");
-var results2 = JUnitSerializer.Deserialize(junitXml);
-var trxXml2 = TrxSerializer.Serialize(results2);
-File.WriteAllText("converted-from-junit.trx", trxXml2);
-```
-
-## Advanced Usage
-
-### Capturing Standard Output
-
-```csharp
-var result = new TestResult
-{
-    Name = "TestWithOutput",
-    ClassName = "MyTests",
-    CodeBase = "MyAssembly",
-    Outcome = TestOutcome.Passed,
-    SystemOutput = "Debug information\nTest completed successfully"
-};
-```
-
-### Handling Test Failures
-
-```csharp
-var failedResult = new TestResult
-{
-    Name = "FailingTest",
-    ClassName = "MyTests",
-    CodeBase = "MyAssembly",
-    Outcome = TestOutcome.Failed,
-    ErrorMessage = "Assertion failed: Expected 100, got 50",
-    ErrorStackTrace = "at MyTests.FailingTest() in Tests.cs:line 42",
-    SystemError = "Additional error details"
-};
+// Convert JUnit to TRX
+var junitResults = JUnitSerializer.Deserialize(File.ReadAllText("junit-results.xml"));
+File.WriteAllText("converted.trx", TrxSerializer.Serialize(junitResults));
 ```
 
 ## Test Outcomes
 
-The library supports the following test outcomes:
+The library supports the following test outcomes via the `TestOutcome` enum:
 
-**Successful Outcomes:**
+**Successful:** `Passed`, `PassedButRunAborted`, `Warning`
 
-- `Passed` - Test passed successfully
-- `PassedButRunAborted` - Test passed but the run was aborted
-- `Warning` - Test passed with warnings
+**Failure:** `Failed`, `Error`, `Timeout`, `Aborted`
 
-**Failure Outcomes:**
+**Skipped/Not Run:** `NotExecuted`, `NotRunnable`, `Pending`
 
-- `Failed` - Test failed
-- `Error` - Test encountered an error
-- `Timeout` - Test exceeded timeout limit
-- `Aborted` - Test was aborted
+**Other:** `Completed`, `Inconclusive`, `Disconnected`, `InProgress`
 
-**Skipped/Not Run Outcomes:**
+Helper extension methods: `IsPassed()`, `IsFailed()`, `IsExecuted()`
 
-- `NotExecuted` - Test was not executed
-- `NotRunnable` - Test is not runnable
-- `Pending` - Test is pending execution
+## Building
 
-**Other Outcomes:**
-
-- `Completed` - Test completed successfully
-- `Inconclusive` - Test result was inconclusive
-- `Disconnected` - Test was disconnected
-- `InProgress` - Test is currently in progress
-
-The `TestOutcome` enum also provides helper extension methods:
-
-- `IsPassed()` - Returns true for passed outcomes (Passed, PassedButRunAborted, Warning)
-- `IsFailed()` - Returns true for failed outcomes (Failed, Error, Timeout, Aborted)
-- `IsExecuted()` - Returns true if the test was executed
-
-## Use Cases
-
-This library is useful when you need to:
-
-- Generate TRX or JUnit XML files from custom test runners
-- Convert test results between formats (TRX ↔ JUnit)
-- Create test reports programmatically
-- Aggregate test results from multiple sources
-- Build custom testing tools that integrate with Visual Studio, Azure DevOps, or CI/CD systems
-
-## Documentation
-
-- [Architecture][architecture] - Learn about the library's architecture and design
-- [Contributing][contributing] - Guidelines for contributing to the project
-- [Code of Conduct][code-of-conduct] - Our code of conduct for contributors
-
-## Building from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/demaconsulting/TestResults.git
-cd TestResults
-
-# Restore tools
-dotnet tool restore
-
-# Restore dependencies
-dotnet restore
-
-# Build
-dotnet build
-
-# Run tests
-dotnet test
-```
-
-### Helper Scripts
-
-For convenience, the repository includes helper scripts to streamline development:
-
-```bash
-# Build and test the project
+```pwsh
 pwsh ./build.ps1
-
-# Run code formatting, spelling, and markdown checks
-pwsh ./lint.ps1
-
-# Auto-fix formatting issues
-pwsh ./fix.ps1
 ```
 
-**Visual Studio Code:**
+## User Guide
 
-If you're using VS Code, preconfigured tasks are available via `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (macOS):
-
-- `build` - Build the solution (default build task)
-- `test` - Run all tests (default test task)
-- `clean` - Clean build artifacts
-- `restore` - Restore NuGet packages
-- `lint` - Check code formatting
-- `format` - Auto-format code
-
-## Requirements
-
-- .NET 8.0, 9.0, or 10.0
+The TestResults User Guide is available on the
+[TestResults releases page](https://github.com/demaconsulting/TestResults/releases).
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide][contributing] for details.
+See [CONTRIBUTING.md](https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md) for guidelines.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE][link-license] file for details.
-
-By contributing to this project, you agree that your contributions will be licensed under the MIT License.
+This project is licensed under the MIT License —
+see [LICENSE](https://github.com/demaconsulting/TestResults/blob/main/LICENSE).
 
 ## Support
 
-- 📝 [Report a Bug](https://github.com/demaconsulting/TestResults/issues/new?labels=bug)
-- 💡 [Request a Feature](https://github.com/demaconsulting/TestResults/issues/new?labels=enhancement)
-- 💬 [Ask a Question](https://github.com/demaconsulting/TestResults/discussions)
-
-## Acknowledgments
-
-Developed and maintained by [DEMA Consulting](https://github.com/demaconsulting).
+- [Report a bug or request a feature](https://github.com/demaconsulting/TestResults/issues)
+- [Ask a question or start a discussion](https://github.com/demaconsulting/TestResults/discussions)
 
 <!-- Badge References -->
 [badge-forks]: https://img.shields.io/github/forks/demaconsulting/TestResults?style=plastic
@@ -295,8 +152,3 @@ Developed and maintained by [DEMA Consulting](https://github.com/demaconsulting)
 [link-quality]: https://sonarcloud.io/dashboard?id=demaconsulting_TestResults
 [link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_TestResults
 [link-nuget]: https://www.nuget.org/packages/DemaConsulting.TestResults
-
-<!-- Document References -->
-[architecture]: https://github.com/demaconsulting/TestResults/blob/main/docs/design/introduction.md
-[contributing]: https://github.com/demaconsulting/TestResults/blob/main/CONTRIBUTING.md
-[code-of-conduct]: https://github.com/demaconsulting/TestResults/blob/main/CODE_OF_CONDUCT.md

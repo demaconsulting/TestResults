@@ -1,30 +1,40 @@
-# TestResults
+## TestResults
 
-The `TestResults` class represents a complete test run — a named collection of
-`TestResult` objects along with run-level metadata such as a unique identifier,
-a display name, and the user who initiated the run.
+### Purpose
 
-## TestResults Class
+The TestResults unit represents a complete test run. It groups ordered `TestResult`
+instances with run-level identity and metadata so serializers and callers can treat a whole
+run as one logical object.
 
-The `TestResults` class (`TestResults.cs`) is the top-level container returned by the IO
-subsystem after deserializing a test result file, and passed to it when serializing.
+### Data Model
 
-### Properties
+**Id**: `Guid` - Unique identifier for the run. Defaults to a new GUID so TRX output always
+has a stable `TestRun/@id`.
 
-| Property   | Type                | Default          | Description                            |
-|------------|---------------------|------------------|----------------------------------------|
-| `Id`       | `Guid`              | `Guid.NewGuid()` | Uniquely identifies this test run      |
-| `Name`     | `string`            | `string.Empty`   | Display name of the test run           |
-| `UserName` | `string`            | `string.Empty`   | User or identity that initiated the run|
-| `Results`  | `List<TestResult>`  | `[]`             | Ordered collection of test case results|
+**Name**: `string` - Human-readable run or suite name. Defaults to `string.Empty`.
 
-`Id` is auto-generated on construction so that every `TestResults` instance is uniquely
-identifiable in TRX output without requiring callers to supply an identifier.
+**UserName**: `string` - Identity that initiated the run. Defaults to `string.Empty`.
 
-`Results` is initialized to an empty list, so callers can simply add items without
-first checking for null.
+**Results**: `List<TestResult>` - Ordered collection of individual test results. Defaults to an
+empty list so callers can add results without null checks.
 
-## Related Requirements
+### Key Methods
 
-Unit requirements are in
-[docs/reqstream/test-results-library/test-results.yaml](../../reqstream/test-results-library/test-results.yaml).
+N/A - this unit is a data container with auto-properties and no behavioral methods.
+
+### Error Handling
+
+The class does not perform validation or throw during ordinary use. Default values ensure the
+collection is always initialized and run metadata is always present in a serializable form.
+
+### Dependencies
+
+- **TestResult** - provides the element type stored in `Results`.
+- **System.Guid** - provides the run identifier type and default GUID generation.
+
+### Callers
+
+- **Serializer** - returns `TestResults` from format-agnostic deserialization.
+- **TrxSerializer** - serializes the run to TRX and reconstructs it from TRX input.
+- **JUnitSerializer** - serializes the run to JUnit XML and reconstructs it from JUnit input.
+- **Library consumers** - build and inspect complete test runs through the public API.

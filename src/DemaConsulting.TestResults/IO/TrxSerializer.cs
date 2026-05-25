@@ -68,7 +68,16 @@ public static class TrxSerializer
     /// <summary>
     ///     Serializes the TestResults object to a TRX file
     /// </summary>
-    /// <param name="results">Test Results</param>
+    /// <remarks>
+    ///     Produces TRX XML for consumption by Visual Studio, Azure DevOps, and other tools that
+    ///     understand the MSTest TRX format.  The method generates all required TRX structural elements
+    ///     — <c>Results</c>, <c>TestDefinitions</c>, <c>TestEntries</c>, <c>TestLists</c>, and
+    ///     <c>ResultSummary</c> — from the supplied model by delegating to focused helper methods.
+    ///     A fixed default test-list GUID is assigned and written to every <c>TestEntry</c> and the
+    ///     single <c>TestList</c> element, satisfying the TRX cross-reference requirement without
+    ///     requiring the caller to supply list identifiers.  Stateless; safe for concurrent calls.
+    /// </remarks>
+    /// <param name="results">The test results to serialize. Must not be null.</param>
     /// <returns>TRX file contents</returns>
     /// <exception cref="ArgumentNullException">Thrown when results is null</exception>
     public static string Serialize(TestResults results)
@@ -104,7 +113,7 @@ public static class TrxSerializer
         root.Add(summaryElement);
 
         // Write the TRX text
-        var writer = new Utf8StringWriter();
+        using var writer = new Utf8StringWriter();
         doc.Save(writer);
         return writer.ToString();
     }
@@ -302,7 +311,17 @@ public static class TrxSerializer
     /// <summary>
     ///     Deserializes a TRX file to a TestResults object
     /// </summary>
-    /// <param name="trxContents">TRX File Contents</param>
+    /// <remarks>
+    ///     Reads TRX XML produced by <c>dotnet test</c> or Visual Studio into the in-memory model.
+    ///     To maximize resilience with real-world TRX files, the method applies fallback values rather
+    ///     than throwing for malformed attributes: malformed or missing GUIDs fall back to
+    ///     <see cref="Guid.NewGuid"/>, malformed durations fall back to <see cref="TimeSpan.Zero"/>,
+    ///     malformed timestamps fall back to <see cref="DateTime.UtcNow"/>, and unrecognized outcome
+    ///     values fall back to <see cref="TestOutcome.Failed"/>.  The method builds a lookup from
+    ///     <c>UnitTest/@id</c> to <c>TestMethod</c> once per document so <c>UnitTestResult/@testId</c>
+    ///     resolution is O(1) rather than O(N).  Stateless; safe for concurrent calls.
+    /// </remarks>
+    /// <param name="trxContents">The TRX XML file contents to deserialize. Must not be null or whitespace.</param>
     /// <returns>Test Results</returns>
     /// <exception cref="ArgumentNullException">Thrown when trxContents is null</exception>
     /// <exception cref="ArgumentException">Thrown when trxContents is whitespace</exception>

@@ -23,9 +23,28 @@ namespace DemaConsulting.TestResults;
 /// <summary>
 ///     Represents a collection of test results for a complete test run.
 /// </summary>
+/// <remarks>
+///     Groups individual <see cref="TestResult" /> objects together with run-level identity so
+///     that serializers and consumers can treat a whole test run as one unit. A single
+///     <see cref="TestResults" /> instance carries enough data to populate TRX
+///     <c>TestRun</c> and JUnit <c>testsuites</c> root elements without requiring callers to
+///     maintain side-tables.
+///     <para>
+///         <see cref="Id" /> auto-generates a <see cref="Guid" /> at construction time to give
+///         every run a stable, unique identifier required by the TRX <c>TestRun/@id</c>
+///         attribute. All string properties default to <see cref="string.Empty" /> to prevent
+///         null propagation at call sites — consumers can safely read any string property
+///         without null-checking.
+///     </para>
+///     <para>
+///         This class is not thread-safe. Concurrent reads are safe only if no writes occur
+///         simultaneously; callers that share instances across threads must provide their own
+///         synchronization.
+///     </para>
+/// </remarks>
 public sealed class TestResults
 {
-    // Identity and metadata — unique identifier and human-readable name for the run
+    // Identity and metadata — unique run identifier, human-readable name, and initiating user
 
     /// <summary>
     ///     Gets or sets the ID of the test results.
@@ -34,7 +53,7 @@ public sealed class TestResults
     public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
-    ///     Gets or sets the name of the tests.
+    ///     Gets or sets the name of the test run.
     ///     Defaults to <see cref="string.Empty" /> so the property is always non-null.
     /// </summary>
     public string Name { get; set; } = string.Empty;

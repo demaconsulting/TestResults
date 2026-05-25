@@ -1,32 +1,102 @@
 ---
-# Software Unit Requirements for the TestResult Class
+# TestResult unit requirements
 #
 # The TestResult class represents a single test execution result, including
 # the test outcome, output streams, and error information.
 
 sections:
-  - title: TestResult Unit Requirements
-    requirements:
-      - id: TestResults-Model-TestOutput
-        title: The library shall support capturing test output streams.
-        justification: |
-          Capturing standard output and error streams from tests is essential for debugging
-          test failures and understanding test behavior. This capability enables developers to
-          review console output, diagnostic messages, and error logs directly within test results.
-        tests:
-          - TestResult_SystemOutput_Default_IsEmpty
-          - TestResult_SystemOutput_Set_RetainsValue
-          - TestResult_SystemError_Default_IsEmpty
-          - TestResult_SystemError_Set_RetainsValue
+  - title: TestResults Library Requirements
+    sections:
+      - title: TestResult Requirements
+        requirements:
+          - id: TestResults-Model-TestOutput
+            title: The library shall support capturing test output streams.
+            justification: |
+              Capturing standard output and error streams from tests is essential for debugging
+              test failures and understanding test behavior. This capability enables developers to
+              review console output, diagnostic messages, and error logs directly within test results.
+            tests:
+              - TestResult_SystemOutput_Default_IsEmpty
+              - TestResult_SystemOutput_Set_RetainsValue
+              - TestResult_SystemError_Default_IsEmpty
+              - TestResult_SystemError_Set_RetainsValue
 
-      - id: TestResults-Model-ErrorInfo
-        title: The library shall support capturing error messages and stack traces.
-        justification: |
-          Error messages and stack traces are critical for diagnosing test failures. They provide
-          developers with immediate context about what went wrong and where, enabling faster
-          debugging and resolution of issues.
-        tests:
-          - TestResult_ErrorMessage_Default_IsEmpty
-          - TestResult_ErrorMessage_Set_RetainsValue
-          - TestResult_ErrorStackTrace_Default_IsEmpty
-          - TestResult_ErrorStackTrace_Set_RetainsValue
+          - id: TestResults-Model-ErrorInfo
+            title: The library shall support capturing error messages and stack traces.
+            justification: |
+              Error messages and stack traces are critical for diagnosing test failures. They provide
+              developers with immediate context about what went wrong and where, enabling faster
+              debugging and resolution of issues.
+            tests:
+              - TestResult_ErrorMessage_Default_IsEmpty
+              - TestResult_ErrorMessage_Set_RetainsValue
+              - TestResult_ErrorStackTrace_Default_IsEmpty
+              - TestResult_ErrorStackTrace_Set_RetainsValue
+
+          - id: TestResults-Model-TestIdentity
+            title: The library shall automatically assign unique identifiers to each test result.
+            justification: |
+              Automatic unique identifier assignment eliminates the need for callers to manage GUIDs
+              manually, ensures TRX cross-references are valid by default, and guarantees that each
+              test result instance can be uniquely identified throughout its lifecycle.
+            tests:
+              - TestResult_TestId_Default_IsNotEmpty
+              - TestResult_TestId_TwoInstances_AreUnique
+              - TestResult_ExecutionId_Default_IsNotEmpty
+              - TestResult_ExecutionId_TwoInstances_AreUnique
+
+          - id: TestResults-Model-TestName
+            title: The library shall support naming each test result.
+            justification: |
+              A test name is the primary human-readable identifier for a test case. Defaulting to
+              an empty string ensures the property is always non-null and serializable without
+              requiring callers to supply a name when constructing minimal results.
+            tests:
+              - TestResult_Name_Default_IsEmpty
+
+          - id: TestResults-Model-TestOutcomeDefault
+            title: The library shall default the test outcome to NotExecuted.
+            justification: |
+              Defaulting to NotExecuted means a newly created TestResult is in a safe, serializable
+              state before any execution information has been recorded, preventing accidental
+              misclassification of uninitialized results as passed or failed.
+            tests:
+              - TestResult_Outcome_Default_IsNotExecuted
+
+          - id: TestResults-Model-TestTiming
+            title: The library shall record test start time and duration.
+            justification: |
+              Start time and duration are required for accurate test result reporting in both TRX
+              and JUnit formats. Defaulting StartTime to DateTime.UtcNow and Duration to
+              TimeSpan.Zero ensures the instance is immediately serializable without caller-supplied
+              timing data.
+            tests:
+              - TestResult_StartTime_Default_IsApproximatelyNow
+              - TestResult_Duration_Default_IsZero
+
+          - id: TestResults-Model-TestCodeBase
+            title: The library shall support recording the code base assembly of a test result.
+            justification: |
+              CodeBase identifies the source assembly of a test result, providing traceability
+              back to the test's origin. This field is required by TRX format and kept as an
+              empty string default so the model is always in a valid state for serialization.
+            tests:
+              - TestResult_CodeBase_Default_IsEmpty
+
+          - id: TestResults-Model-TestClassName
+            title: The library shall support recording the class name of a test result.
+            justification: |
+              ClassName identifies the grouping class of a test result and is used for suite
+              grouping in JUnit format. Keeping a sensible empty-string default ensures the
+              model is always in a valid state for serialization.
+            tests:
+              - TestResult_ClassName_Default_IsEmpty
+
+          - id: TestResults-Model-TestComputerName
+            title: The library shall support recording the computer name where the test was executed.
+            justification: |
+              ComputerName identifies the execution host and is required by TRX format. Defaulting
+              to the environment machine name ensures that serialized results always carry the
+              execution host without requiring callers to supply this information explicitly.
+            tests:
+              - TestResult_ComputerName_Default_IsEnvironmentMachineName

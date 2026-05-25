@@ -58,6 +58,15 @@ public static class Serializer
     /// <summary>
     ///     Identifies the test result format based on the contents
     /// </summary>
+    /// <remarks>
+    ///     Parses the XML and inspects the root element to determine the format. TRX format is
+    ///     detected by a <c>TestRun</c> root element in the
+    ///     <c>http://microsoft.com/schemas/VisualStudio/TeamTest/2010</c> namespace. JUnit format
+    ///     is detected by a <c>testsuites</c> or <c>testsuite</c> root element. All other inputs
+    ///     — including null, whitespace, malformed XML, and valid XML with an unrecognized root —
+    ///     return <see cref="TestResultFormat.Unknown"/> without throwing. Stateless; safe for
+    ///     concurrent calls.
+    /// </remarks>
     /// <param name="contents">The test result file contents</param>
     /// <returns>
     ///     The identified test result format, or <see cref="TestResultFormat.Unknown"/> if the
@@ -109,11 +118,17 @@ public static class Serializer
     /// <summary>
     ///     Deserializes test result contents to TestResults using the appropriate deserializer
     /// </summary>
+    /// <remarks>
+    ///     Calls <see cref="Identify"/> to determine the format and then dispatches to
+    ///     <see cref="TrxSerializer.Deserialize"/> or <see cref="JUnitSerializer.Deserialize"/>
+    ///     accordingly. Exceptions thrown by the delegated deserializer propagate as their own
+    ///     types and are not wrapped. Stateless; safe for concurrent calls.
+    /// </remarks>
     /// <param name="contents">The test result file contents</param>
     /// <returns>Deserialized test results</returns>
     /// <exception cref="ArgumentNullException">Thrown when contents is null</exception>
     /// <exception cref="ArgumentException">Thrown when contents is whitespace</exception>
-    /// <exception cref="InvalidOperationException">Thrown when format cannot be identified or deserialization fails</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the format cannot be identified</exception>
     public static TestResults Deserialize(string contents)
     {
         // Validate input

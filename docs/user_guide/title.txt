@@ -1,16 +1,16 @@
 ---
-title: TestResults User Guide
-subtitle: Developer Guide
-author: DEMA Consulting
-description: User Guide and Reference Implementation for the TestResults C# library for creating test result files in TRX and JUnit XML formats
+title: "TestResults User Guide"
+subtitle: ".NET library for TRX and JUnit test results"
+author: "DEMA Consulting"
+description: "User Guide for the TestResults .NET library for reading and writing TRX and JUnit test result files"
 lang: en-US
 keywords:
   - TestResults
+  - User Guide
   - C#
   - .NET
   - TRX
   - JUnit
   - Test Results
-  - Testing
-  - Documentation
+  - NuGet
 ---

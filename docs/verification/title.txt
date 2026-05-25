@@ -1,0 +1,15 @@
+---
+title: "TestResults Verification Design Document"
+subtitle: ".NET library for TRX and JUnit test results"
+author: "DEMA Consulting"
+description: "Verification Design Document for TestResults"
+lang: en-US
+keywords:
+  - TestResults
+  - Verification
+  - Testing
+  - C#
+  - .NET
+  - TRX
+  - JUnit
+---

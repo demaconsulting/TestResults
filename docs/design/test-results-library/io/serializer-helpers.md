@@ -1,19 +1,43 @@
-# SerializerHelpers
+### SerializerHelpers
 
-The `SerializerHelpers` unit provides internal helper types shared by the IO subsystem's
-serializer implementations. It is not part of the public API.
+#### Purpose
 
-## Utf8StringWriter
+The SerializerHelpers unit provides shared infrastructure used by both XML serializers. Its
+single responsibility is to make string-based XML serialization report UTF-8 rather than the
+default UTF-16 declaration produced by `StringWriter`.
 
-The `Utf8StringWriter` class (`SerializerHelpers.cs`) is an internal helper that extends
-`StringWriter` to report UTF-8 as its encoding.
+#### Data Model
 
-When `XmlWriter` or `XmlSerializer` writes to a `StringWriter`, it reads the writer's
-`Encoding` property to determine which XML declaration encoding to emit. The default
-`StringWriter` reports UTF-16 (the .NET string encoding), which would cause serializers
-to write `encoding="utf-16"` in the XML declaration even when the resulting string is
-later converted to UTF-8 bytes.
+**Utf8StringWriter**: `internal sealed class` - Specialized `StringWriter` implementation used
+by both serializer units when saving XML to a string.
 
-`Utf8StringWriter` overrides the `Encoding` property to return `Encoding.UTF8`, so the
-XML declaration correctly declares `encoding="utf-8"`. It is used by both
-`TrxSerializer.Serialize()` and `JUnitSerializer.Serialize()`.
+**Encoding**: `Encoding` - Overridden property that always returns `Encoding.UTF8` so the XML
+prolog declares `encoding="utf-8"`.
+
+#### Key Methods
+
+**Encoding**: Reports UTF-8 as the writer encoding.
+
+- *Parameters*: None.
+- *Returns*: `Encoding` - Always `Encoding.UTF8`.
+- *Preconditions*: None.
+- *Postconditions*: Any XML writer using this instance emits a UTF-8 declaration in the XML
+  prolog.
+
+The property exists because .NET `StringWriter` defaults to UTF-16, which would advertise the
+wrong encoding for XML strings that callers later persist as UTF-8.
+
+#### Error Handling
+
+N/A - the unit exposes a deterministic property override with no inputs, branching, or local
+error recovery.
+
+#### Dependencies
+
+- **System.IO.StringWriter** - base class for string-backed text writing.
+- **System.Text.Encoding** - provides the UTF-8 encoding instance returned by the override.
+
+#### Callers
+
+- **TrxSerializer** - uses `Utf8StringWriter` when saving TRX XML to a string.
+- **JUnitSerializer** - uses `Utf8StringWriter` when saving JUnit XML to a string.

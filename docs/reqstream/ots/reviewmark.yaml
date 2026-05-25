@@ -1,7 +1,7 @@
 ---
-# ReviewMark OTS Software Requirements
+# ReviewMark OTS requirements
 #
-# Requirements for the ReviewMark file review tool functionality.
+# Requirements for the ReviewMark file review tool used to generate review plans and reports.
 
 sections:
   - title: OTS Software Requirements

@@ -1,65 +1,31 @@
 # Introduction
 
-This document describes the internal design of the TestResults Library. It provides a
-structured account of the key components, their responsibilities, and how they interact to
-deliver the library's capabilities.
+This document defines the software design for the TestResults repository. It describes the
+local software items that make up the TestResultsLibrary system, explains how the IO
+subsystem translates between the in-memory model and XML result formats, and records the
+companion artifact paths used for requirements, design, source, tests, and verification.
 
 ## Purpose
 
-The purpose of this document is to:
-
-- Describe the design decisions and structure of the TestResults Library
-- Provide a reference for developers contributing to or reviewing the library
-- Establish traceability between requirements and the components that fulfil them
-- Document the in-memory model units and IO subsystem in sufficient detail to support code review
+The purpose of this document is to provide reviewable design information for each local
+software item in TestResults. A reviewer should be able to understand how
+TestResultsLibrary, the IO subsystem, and each unit satisfy their responsibilities and
+requirements without reverse-engineering the code from source files alone.
 
 ## Scope
 
-This document covers the design of the TestResults Library, organized by the following
-system/subsystem/unit hierarchy:
+Local items covered by this document:
 
-- The **TestResults Library** (System): a .NET library for reading and writing test result
-  files in multiple formats
-- The **IO Subsystem**: the components responsible for reading and writing test result
-  files in TRX and JUnit XML formats, comprising four units:
-  - `Serializer` — format-detection facade
-  - `SerializerHelpers` — internal UTF-8 writer helper used by both serializers
-  - `TrxSerializer` — TRX (Visual Studio Test Results) format read/write
-  - `JUnitSerializer` — JUnit XML format read/write
-- The **three top-level units** forming the in-memory model (outside any subsystem):
-  - `TestOutcome` — enumeration of all possible test outcomes
-  - `TestResult` — single test execution result
-  - `TestResults` — named collection of test results for a complete test run
+- **TestResultsLibrary**: full system design for the .NET library.
+- **IO**: subsystem design for format identification and XML serialization.
+- **Serializer**, **SerializerHelpers**, **TrxSerializer**, **JUnitSerializer**,
+  **TestOutcome**, **TestResult**, and **TestResults**: unit-level design.
 
-This document does not cover installation, end-user usage patterns, or the CI/CD pipeline
-configuration. Those topics are addressed in the [User Guide][user-guide] and the
-[Requirements document][requirements-doc].
-
-## Audience
-
-This document is intended for:
-
-- Software developers implementing features or fixing defects in the library
-- Reviewers conducting formal design and code reviews
-- Quality assurance engineers tracing requirements to implementation
-
-Readers are assumed to be familiar with C# and .NET development, XML processing, and
-the general concepts of unit-test result reporting.
-
-## Relationship to Requirements and Code
-
-Each component described here corresponds to one or more requirements defined in
-`requirements.yaml`. Requirements identifiers are referenced inline where relevant to
-make traceability explicit.
-
-The source code in `src/DemaConsulting.TestResults/` is the authoritative implementation.
-This document describes the intent and structure of that code; any discrepancy between
-this document and the code should be resolved by updating this document to reflect the
-actual implementation, or by raising a defect against the code.
+Out of scope are the test projects themselves, build and CI pipeline behavior, and the
+internal design of external framework libraries. This collection does not define separate
+OTS or shared package design files.
 
 ## Software Structure
-
-The TestResults Library is organized into one subsystem and three top-level units:
 
 ```text
 TestResults Library (System)
@@ -75,57 +41,75 @@ TestResults Library (System)
 
 ## Folder Layout
 
-The source code is organized to mirror the design documentation structure:
-
 ```text
 src/DemaConsulting.TestResults/
-├── IO/                          — IO Subsystem
-│   ├── Serializer.cs            — Format-detection facade (Serializer unit)
-│   ├── SerializerHelpers.cs     — Internal UTF-8 writer helper (SerializerHelpers unit)
-│   ├── TrxSerializer.cs         — TRX format read/write (TrxSerializer unit)
-│   └── JUnitSerializer.cs       — JUnit XML format read/write (JUnitSerializer unit)
-├── TestOutcome.cs               — Test outcome enumeration (TestOutcome unit)
-├── TestResult.cs                — Single test result data (TestResult unit)
-└── TestResults.cs               — Collection of test results (TestResults unit)
+├── IO/
+│   ├── Serializer.cs              - Identifies XML result formats and delegates deserialization.
+│   ├── SerializerHelpers.cs       - Provides Utf8StringWriter for XML declarations.
+│   ├── TrxSerializer.cs           - Serializes and deserializes TRX test result documents.
+│   └── JUnitSerializer.cs         - Serializes and deserializes JUnit XML test result documents.
+├── TestOutcome.cs                 - Defines supported test outcomes and classification helpers.
+├── TestResult.cs                  - Represents one test case result with metadata and output.
+└── TestResults.cs                 - Represents a complete test run and its ordered results.
+
+test/DemaConsulting.TestResults.Tests/
+├── TestResultsLibraryTests.cs     - End-to-end tests for the public library behavior.
+├── TestOutcomeTests.cs            - Unit tests for outcome classification helpers.
+├── TestResultTests.cs             - Unit tests for TestResult defaults and property retention.
+├── TestResultsTests.cs            - Unit tests for TestResults defaults and collection behavior.
+└── IO/
+    ├── IOTests.cs                 - Subsystem tests for format identification and model translation.
+    ├── SerializerTests.cs         - Unit tests for format detection and delegated deserialization.
+    ├── SerializerHelpersTests.cs  - Unit tests for UTF-8 writer behavior.
+    ├── TrxSerializerTests.cs      - Unit tests for TRX serialization and deserialization.
+    ├── JUnitSerializerTests.cs    - Unit tests for JUnit XML serialization and deserialization.
+    └── TrxExampleTests.cs         - Regression tests using embedded TRX example files.
 ```
 
 ## Companion Artifact Structure
 
-Each design unit has corresponding artifacts across requirements, source, tests, and
-review-set entries, forming end-to-end traceability:
-
 ```text
-requirements.yaml                              — System-level requirements (TestResults-*)
-docs/reqstream/test-results-library/           — Unit-level requirements
-├── io/
-│   ├── io.yaml                                — IO Subsystem requirements
-│   ├── serializer.yaml                        — Serializer unit requirements
-│   ├── serializer-helpers.yaml                — SerializerHelpers unit requirements
-│   ├── trx-serializer.yaml                    — TrxSerializer unit requirements
-│   └── junit-serializer.yaml                  — JUnitSerializer unit requirements
-├── test-outcome.yaml                          — TestOutcome unit requirements
-├── test-result.yaml                           — TestResult unit requirements
-└── test-results.yaml                          — TestResults unit requirements
-docs/design/                                   — Design documentation (this document and sub-documents)
-├── test-results-library/
-│   ├── io/                                    — IO Subsystem design
-│   ├── test-outcome.md                        — TestOutcome unit design
-│   ├── test-result.md                         — TestResult unit design
-│   └── test-results.md                        — TestResults unit design
-src/DemaConsulting.TestResults/                — Source implementation
-└── IO/
-    ├── Serializer.cs
-    ├── SerializerHelpers.cs
-    ├── TrxSerializer.cs
-    └── JUnitSerializer.cs
-test/DemaConsulting.TestResults.Tests/         — Unit tests
-└── IO/
-    ├── IOTests.cs
-    ├── SerializerTests.cs
-    ├── SerializerHelpersTests.cs
-    ├── TrxSerializerTests.cs
-    └── JUnitSerializerTests.cs
+requirements.yaml
+└── includes docs/reqstream/test-results-library.yaml
+
+docs/reqstream/
+├── test-results-library.yaml      - System requirements for TestResultsLibrary.
+└── test-results-library/
+    ├── test-outcome.yaml          - Unit requirements for TestOutcome.
+    ├── test-result.yaml           - Unit requirements for TestResult.
+    ├── test-results.yaml          - Unit requirements for TestResults.
+    ├── io.yaml                    - Subsystem requirements for IO.
+    └── io/
+        ├── serializer.yaml        - Unit requirements for Serializer.
+        ├── serializer-helpers.yaml - Unit requirements for SerializerHelpers.
+        ├── trx-serializer.yaml    - Unit requirements for TrxSerializer.
+        └── junit-serializer.yaml  - Unit requirements for JUnitSerializer.
+
+docs/design/
+├── test-results-library.md        - System design for TestResultsLibrary.
+└── test-results-library/
+    ├── io.md                      - Subsystem design for IO.
+    ├── test-outcome.md            - Unit design for TestOutcome.
+    ├── test-result.md             - Unit design for TestResult.
+    ├── test-results.md            - Unit design for TestResults.
+    └── io/
+        ├── serializer.md          - Unit design for Serializer.
+        ├── serializer-helpers.md  - Unit design for SerializerHelpers.
+        ├── trx-serializer.md      - Unit design for TrxSerializer.
+        └── junit-serializer.md    - Unit design for JUnitSerializer.
+
+docs/verification/
+└── test-results-library[...]      - Verification documents parallel to the design tree.
+
+src/DemaConsulting.TestResults/
+└── implementation for the local units and subsystem.
+
+test/DemaConsulting.TestResults.Tests/
+└── verification tests for the system, subsystem, and units.
 ```
 
-[user-guide]: https://github.com/demaconsulting/TestResults/blob/main/docs/user_guide/introduction.md
-[requirements-doc]: https://github.com/demaconsulting/TestResults/blob/main/requirements.yaml
+## References
+
+- [TestResults releases](https://github.com/demaconsulting/TestResults/releases)
+- [MSTest and TRX overview](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest)
+- [JUnit 5](https://junit.org/junit5/)

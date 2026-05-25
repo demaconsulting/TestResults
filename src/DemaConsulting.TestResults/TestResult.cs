@@ -23,6 +23,25 @@ namespace DemaConsulting.TestResults;
 /// <summary>
 ///     Represents the result of a single test case execution.
 /// </summary>
+/// <remarks>
+///     Groups identity, timing, classification, and diagnostic data for a single test case
+///     execution so that serializers and consumers can treat all information about one test run
+///     as a single cohesive unit. Each <see cref="TestResult" /> instance carries enough data
+///     to populate both TRX and JUnit output without requiring callers to maintain separate
+///     side-tables.
+///     <para>
+///         All string properties default to <see cref="string.Empty" /> to prevent null
+///         propagation at call sites — consumers can safely read any string property without
+///         null-checking. <see cref="Outcome" /> defaults to
+///         <see cref="TestOutcome.NotExecuted" /> so a result that was never populated is not
+///         mistaken for a pass.
+///     </para>
+///     <para>
+///         This class is not thread-safe. Concurrent reads are safe only if no writes occur
+///         simultaneously; callers that share instances across threads must provide their own
+///         synchronization.
+///     </para>
+/// </remarks>
 public sealed class TestResult
 {
     // Identity properties — each result needs unique IDs for cross-referencing

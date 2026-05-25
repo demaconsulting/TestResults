@@ -1,29 +1,17 @@
 # Introduction
 
-This document provides a requirements traceability matrix for the TestResults library, showing
-the relationship between requirements and test cases.
+This document provides the requirements Trace Matrix for TestResults,
+mapping each requirement to its corresponding test evidence.
 
 ## Purpose
 
-The purpose of this document is to:
-
-- Demonstrate that all requirements are covered by test cases
-- Provide traceability from requirements to implementation verification
-- Support compliance and validation activities
+To demonstrate that every requirement is covered by at least one passing test,
+providing compliance evidence for TestResults.
 
 ## Scope
 
-This trace matrix covers:
+This document covers all requirements in `docs/reqstream/` and their test evidence.
 
-- All functional, quality, and documentation requirements
-- Test cases that verify each requirement
-- Pass/fail status for each requirement verification
+## References
 
-## How to Read This Document
-
-The trace matrix shows:
-
-- **Requirement ID**: Unique identifier for each requirement
-- **Requirement Title**: Brief description of the requirement
-- **Test Cases**: Tests that verify the requirement
-- **Status**: Pass/fail status based on test execution results
+- [REF-1] [TestResults releases](https://github.com/demaconsulting/TestResults/releases)

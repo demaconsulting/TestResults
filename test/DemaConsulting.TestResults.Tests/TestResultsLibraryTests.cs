@@ -19,6 +19,7 @@
 // SOFTWARE.
 
 using DemaConsulting.TestResults.IO;
+using Xunit;
 
 namespace DemaConsulting.TestResults.Tests;
 
@@ -35,7 +36,6 @@ namespace DemaConsulting.TestResults.Tests;
 ///         <item>The library serializes an in-memory collection into test result files.</item>
 ///     </list>
 /// </remarks>
-[TestClass]
 public sealed class TestResultsLibraryTests
 {
     /// <summary>
@@ -46,7 +46,7 @@ public sealed class TestResultsLibraryTests
     ///     test results independently of any file format. Proves that the model is format-agnostic
     ///     and can be constructed, populated, and navigated without any serialization involved.
     /// </remarks>
-    [TestMethod]
+    [Fact]
     public void TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults()
     {
         // Arrange: create an in-memory model without involving any file format
@@ -61,12 +61,12 @@ public sealed class TestResultsLibraryTests
         };
 
         // Act: navigate the model (combined with Assert)
-        Assert.AreEqual("MySuite", results.Name);
-        Assert.HasCount(2, results.Results);
-        Assert.AreEqual("Test1", results.Results[0].Name);
-        Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
-        Assert.AreEqual("Test2", results.Results[1].Name);
-        Assert.AreEqual(TestOutcome.Failed, results.Results[1].Outcome);
+        Assert.Equal("MySuite", results.Name);
+        Assert.Equal(2, results.Results.Count);
+        Assert.Equal("Test1", results.Results[0].Name);
+        Assert.Equal(TestOutcome.Passed, results.Results[0].Outcome);
+        Assert.Equal("Test2", results.Results[1].Name);
+        Assert.Equal(TestOutcome.Failed, results.Results[1].Outcome);
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public sealed class TestResultsLibraryTests
     ///     Tests the end-to-end flow from TRX file content to the in-memory model. Proves that a
     ///     library consumer can read a TRX file and navigate the resulting model.
     /// </remarks>
-    [TestMethod]
+    [Fact]
     public void TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel()
     {
         // Arrange: TRX content representing one passing test
@@ -101,10 +101,10 @@ public sealed class TestResultsLibraryTests
         var results = Serializer.Deserialize(content);
 
         // Assert: the model is navigable and contains the expected data
-        Assert.IsNotNull(results);
-        Assert.HasCount(1, results.Results);
-        Assert.AreEqual("Test1", results.Results[0].Name);
-        Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
+        Assert.NotNull(results);
+        Assert.Single(results.Results);
+        Assert.Equal("Test1", results.Results[0].Name);
+        Assert.Equal(TestOutcome.Passed, results.Results[0].Outcome);
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ public sealed class TestResultsLibraryTests
     ///     Tests the end-to-end flow from JUnit XML file content to the in-memory model. Proves that a
     ///     library consumer can read a JUnit file and navigate the resulting model.
     /// </remarks>
-    [TestMethod]
+    [Fact]
     public void TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel()
     {
         // Arrange: JUnit content representing one passing test
@@ -131,10 +131,10 @@ public sealed class TestResultsLibraryTests
         var results = Serializer.Deserialize(content);
 
         // Assert: the model is navigable and contains the expected data
-        Assert.IsNotNull(results);
-        Assert.HasCount(1, results.Results);
-        Assert.AreEqual("Test1", results.Results[0].Name);
-        Assert.AreEqual(TestOutcome.Passed, results.Results[0].Outcome);
+        Assert.NotNull(results);
+        Assert.Single(results.Results);
+        Assert.Equal("Test1", results.Results[0].Name);
+        Assert.Equal(TestOutcome.Passed, results.Results[0].Outcome);
     }
 
     /// <summary>
@@ -144,7 +144,7 @@ public sealed class TestResultsLibraryTests
     ///     Tests the end-to-end flow from an in-memory model to TRX file content. Proves that a
     ///     library consumer can write an in-memory model to a TRX file.
     /// </remarks>
-    [TestMethod]
+    [Fact]
     public void TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent()
     {
         // Arrange: create an in-memory model with one passing test
@@ -161,9 +161,9 @@ public sealed class TestResultsLibraryTests
         var content = TrxSerializer.Serialize(results);
 
         // Assert: the content is valid TRX XML containing the expected data
-        Assert.IsNotNull(content);
-        Assert.Contains("TestRun", content, "Expected TRX XML to contain 'TestRun'");
-        Assert.Contains("Test1", content, "Expected TRX XML to contain 'Test1'");
+        Assert.NotNull(content);
+        Assert.Contains("TestRun", content);
+        Assert.Contains("Test1", content);
     }
 
     /// <summary>
@@ -173,7 +173,7 @@ public sealed class TestResultsLibraryTests
     ///     Tests the end-to-end flow from an in-memory model to JUnit XML file content. Proves that a
     ///     library consumer can write an in-memory model to a JUnit XML file.
     /// </remarks>
-    [TestMethod]
+    [Fact]
     public void TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent()
     {
         // Arrange: create an in-memory model with one passing test
@@ -190,8 +190,136 @@ public sealed class TestResultsLibraryTests
         var content = JUnitSerializer.Serialize(results);
 
         // Assert: the content is valid JUnit XML containing the expected data
-        Assert.IsNotNull(content);
-        Assert.Contains("testsuites", content, "Expected JUnit XML to contain 'testsuites'");
-        Assert.Contains("Test1", content, "Expected JUnit XML to contain 'Test1'");
+        Assert.NotNull(content);
+        Assert.Contains("testsuites", content);
+        Assert.Contains("Test1", content);
+    }
+
+    /// <summary>
+    ///     Test that the TestResults Library identifies TRX content as TRX format.
+    /// </summary>
+    /// <remarks>
+    ///     Verifies that a library consumer can determine the format of TRX file content
+    ///     using Serializer.Identify() without attempting to deserialize it.
+    /// </remarks>
+    [Fact]
+    public void TestResultsLibrary_Identify_TrxContent_ReturnsTrx()
+    {
+        // Arrange: TRX content with the expected namespace and root element
+        const string content = """
+            <?xml version="1.0"?>
+            <TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="da21858f-2c78-442a-8ea6-51fe73762e0e" name="Test Run" runUser="User">
+            </TestRun>
+            """;
+
+        // Act: identify the format
+        var format = Serializer.Identify(content);
+
+        // Assert: the format is identified as TRX
+        Assert.Equal(TestResultFormat.Trx, format);
+    }
+
+    /// <summary>
+    ///     Test that the TestResults Library identifies JUnit content as JUnit format.
+    /// </summary>
+    /// <remarks>
+    ///     Verifies that a library consumer can determine the format of JUnit XML file content
+    ///     using Serializer.Identify() without attempting to deserialize it.
+    /// </remarks>
+    [Fact]
+    public void TestResultsLibrary_Identify_JUnitContent_ReturnsJUnit()
+    {
+        // Arrange: JUnit content with testsuites root element
+        const string content = """
+            <?xml version="1.0"?>
+            <testsuites name="MySuite">
+            </testsuites>
+            """;
+
+        // Act: identify the format
+        var format = Serializer.Identify(content);
+
+        // Assert: the format is identified as JUnit
+        Assert.Equal(TestResultFormat.JUnit, format);
+    }
+
+    /// <summary>
+    ///     Test that the TestResults Library identifies unrecognized content as Unknown format.
+    /// </summary>
+    /// <remarks>
+    ///     Verifies that content with an unrecognized XML root element is identified as Unknown
+    ///     without throwing an exception, allowing format-aware workflows to handle unknown formats.
+    /// </remarks>
+    [Fact]
+    public void TestResultsLibrary_Identify_UnknownContent_ReturnsUnknown()
+    {
+        // Arrange: XML content with an unrecognized root element
+        const string content = """
+            <?xml version="1.0"?>
+            <unknown-format>
+            </unknown-format>
+            """;
+
+        // Act: identify the format
+        var format = Serializer.Identify(content);
+
+        // Assert: the format is identified as Unknown
+        Assert.Equal(TestResultFormat.Unknown, format);
+    }
+
+    /// <summary>
+    ///     Test that Serializer.Deserialize throws ArgumentNullException when content is null.
+    /// </summary>
+    /// <remarks>
+    ///     Verifies the null-rejection contract documented in the External Interfaces section of
+    ///     the system design. Null inputs cannot represent any test result format.
+    /// </remarks>
+    [Fact]
+    public void TestResultsLibrary_Deserialize_NullContent_ThrowsArgumentNullException()
+    {
+        // Arrange: null content
+        string? content = null;
+
+        // Act / Assert: null input throws ArgumentNullException
+        Assert.Throws<ArgumentNullException>(() => Serializer.Deserialize(content!));
+    }
+
+    /// <summary>
+    ///     Test that Serializer.Deserialize throws ArgumentException when content is whitespace.
+    /// </summary>
+    /// <remarks>
+    ///     Verifies the whitespace-rejection contract documented in the External Interfaces section
+    ///     of the system design. Whitespace-only content cannot represent a valid test result file.
+    /// </remarks>
+    [Fact]
+    public void TestResultsLibrary_Deserialize_WhitespaceContent_ThrowsArgumentException()
+    {
+        // Arrange: whitespace-only content
+        const string content = "   ";
+
+        // Act / Assert: whitespace input throws ArgumentException
+        Assert.Throws<ArgumentException>(() => Serializer.Deserialize(content));
+    }
+
+    /// <summary>
+    ///     Test that Serializer.Deserialize throws InvalidOperationException for unrecognized XML.
+    /// </summary>
+    /// <remarks>
+    ///     Verifies the unknown-format-rejection contract documented in the External Interfaces section
+    ///     of the system design. XML with an unrecognized root element cannot be deserialized and must
+    ///     not silently return an empty result.
+    /// </remarks>
+    [Fact]
+    public void TestResultsLibrary_Deserialize_UnrecognizedXmlContent_ThrowsInvalidOperationException()
+    {
+        // Arrange: XML with an unrecognized root element
+        const string content = """
+            <?xml version="1.0"?>
+            <unknown-format>
+            </unknown-format>
+            """;
+
+        // Act / Assert: unrecognized format throws InvalidOperationException
+        Assert.Throws<InvalidOperationException>(() => Serializer.Deserialize(content));
     }
 }

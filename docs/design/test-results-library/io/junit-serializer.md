@@ -1,90 +1,118 @@
-# JUnitSerializer
+### JUnitSerializer
 
-The `JUnitSerializer` class reads and writes test result data in the JUnit XML format.
-It operates on the model layer types and has no knowledge of how test results are
-produced or consumed beyond the JUnit XML structures it reads and writes.
+#### Purpose
 
-## JUnit XML Format
+The JUnitSerializer unit converts between the shared in-memory model and JUnit XML test
+result documents. It adapts the richer local model to the narrower JUnit schema by grouping
+results into suites, projecting outcomes onto JUnit elements, and recovering as much metadata
+as the format provides when reading JUnit input.
 
-JUnit XML is a widely-adopted, cross-platform test result format supported by many
-CI/CD systems including Jenkins, GitLab CI, GitHub Actions, and CircleCI.
+#### Data Model
 
-This satisfies requirements `TestResults-JUnit-Serialize` and `TestResults-JUnit-Deserialize`.
+**DefaultSuiteName**: `string` - Sentinel suite name used when a `TestResult` has an empty
+`ClassName`.
 
-### JUnit Document Structure
+**TimeFormatString**: `string` - Fixed numeric format used when emitting durations in seconds
+with three decimal places.
 
-A JUnit document has the following top-level structure:
+**InvalidJUnitFileMessage**: `string` - Shared error text used when the XML document has no
+root element.
 
-```text
-testsuites
-└── testsuite (one per unique class name)
-    └── testcase (one per test case)
-        ├── failure   (present when outcome is Failed)
-        ├── error     (present when outcome is Error, Timeout, or Aborted)
-        ├── skipped   (present when outcome is not executed)
-        ├── system-out (present when SystemOutput is non-empty)
-        └── system-err (present when SystemError is non-empty)
-```
+**MessageAttributeName**: `string` - Attribute name reused for `failure`, `error`, and
+`skipped` message text.
 
-A document with a single test suite may use `testsuite` as the root element directly,
-omitting the `testsuites` wrapper. Both forms are handled transparently during
-deserialization.
+#### Key Methods
 
-### JUnit Serialization
+**Serialize**: Writes a `TestResults` model as JUnit XML.
 
-When serializing a `TestResults` object to JUnit XML:
+- *Parameters*: `TestResults results` - Run metadata and ordered test results to serialize.
+- *Returns*: `string` - JUnit XML text with a UTF-8 declaration.
+- *Preconditions*: `results` must be non-null.
+- *Postconditions*: Emits a `testsuites` root containing one `testsuite` per class name and
+  one `testcase` per `TestResult`.
 
-- The `testsuites` root element receives a `name` attribute set from `TestResults.Name`
-- Test results are **grouped by `ClassName`** into `testsuite` elements under a
-  `testsuites` root
-- Each `testsuite` carries `name`, `tests`, `failures`, `errors`, `skipped`,
-  `time` (total duration in seconds), and `timestamp` (ISO 8601 UTC start time,
-  formatted with a trailing `Z`, of the earliest test in the suite) aggregate attributes
-- Each `TestResult` is written as a `testcase` element with `name`, `classname`,
-  and `time` (duration in seconds) attributes
-- A `failure` child element is written when `Outcome` is `Failed`; the `message`
-  attribute is set from `ErrorMessage` when non-empty, and the element text content
-  is set from `ErrorStackTrace` when non-empty
-- An `error` child element is written when `Outcome` is `Error`, `Timeout`, or
-  `Aborted`; the `message` attribute and text content follow the same convention as
-  `failure`
-- A `skipped` child element is written when `IsExecuted()` returns `false`; if
-  `ErrorMessage` is non-empty it is written as a `message` attribute on the element
-- Standard output is written to `system-out` and standard error to `system-err`
-  child elements if the respective properties are non-empty
+The method groups tests by `ClassName`, uses the earliest `StartTime` in each suite as the
+suite timestamp, writes failure details for `Failed`, writes error details for `Error`,
+`Timeout`, and `Aborted`, and writes `skipped` for outcomes where `IsExecuted()` is false.
 
-### JUnit Deserialization
+**Deserialize**: Reads JUnit XML into the shared model.
 
-When deserializing a JUnit document to a `TestResults` object:
+- *Parameters*: `string junitContents` - JUnit XML text to parse.
+- *Returns*: `TestResults` - Populated run model.
+- *Preconditions*: `junitContents` must be non-null and non-whitespace.
+- *Postconditions*: Returns one `TestResult` per `testcase`, using suite timestamps when
+  present and populating output, error, and skip fields from child elements.
 
-- Each `testsuite` element carries an optional `timestamp` attribute (ISO 8601 UTC); when
-  present it is used as the `StartTime` for all test cases in that suite; when absent or
-  malformed, `StartTime` defaults to the time of deserialization
-- Each `testcase` element is mapped to a `TestResult`
-- `Name` and `ClassName` are read from the `name` and `classname` attributes
-- `Duration` is read from the `time` attribute (seconds as a decimal)
-- The presence of a `failure` child element sets `Outcome` to `Failed` and populates
-  `ErrorMessage` and `ErrorStackTrace`
-- The presence of an `error` child element sets `Outcome` to `Error` and populates
-  `ErrorMessage` and `ErrorStackTrace`
-- The presence of a `skipped` child element sets `Outcome` to `NotExecuted`
-- If none of the above child elements are present, `Outcome` is set to `Passed`
-- `SystemOutput` and `SystemError` are read from `system-out` and `system-err` child
-  elements if present
+The method accepts both `testsuites` and single `testsuite` roots so callers can ingest the
+common JUnit variants emitted by different tools.
 
-### JUnit Round-Trip Fidelity
+**ParseOutcome**: Maps JUnit child elements to the shared outcome model.
 
-JUnit XML does not have distinct elements for every `TestOutcome` value, so two known
-fidelity limitations apply when round-tripping through JUnit. This satisfies requirement
-`TestResults-Serializer-RoundTrip` for JUnit, subject to these limitations:
+- *Parameters*: `XElement testCaseElement` - `testcase` element to inspect.
+- *Returns*: `(TestOutcome outcome, string errorMessage, string errorStackTrace)` - Outcome and
+  attached failure information.
+- *Preconditions*: `testCaseElement` must represent one JUnit testcase element.
+- *Postconditions*: `failure` maps to `Failed`, `error` maps to `Error`, `skipped` maps to
+  `NotExecuted`, and a testcase with no outcome element maps to `Passed`.
 
-- **`Timeout` and `Aborted` outcomes are not preserved.** Both are serialized as an
-  `error` child element (since JUnit has no distinct timeout or aborted element), and
-  deserialize back as `TestOutcome.Error`. Callers that require precise outcome
-  preservation should use TRX.
+The method concentrates the JUnit-to-model projection in one place so Deserialize
+behavior stays consistent with round-trip tests.
 
-- **`ClassName = "DefaultSuite"` round-trips with an empty `ClassName`.** Tests without
-  a class name are grouped under the sentinel value `"DefaultSuite"` during
-  serialization. On deserialization, that sentinel is mapped back to an empty string.
-  Therefore a test whose `ClassName` is literally `"DefaultSuite"` will lose its class
-  name after a JUnit round-trip.
+**CreateTestSuiteElement**: Builds a `testsuite` XElement for one class-name group.
+
+- *Parameters*: `IGrouping<string, TestResult> suiteGroup` - All test results sharing one class
+  name.
+- *Returns*: `XElement` - A valid `testsuite` element with child `testcase` elements and summary
+  counters.
+- *Preconditions*: `suiteGroup` must be non-null and contain at least one element.
+- *Postconditions*: Returns a `testsuite` element whose `name` attribute uses `DefaultSuiteName`
+  when the class name is empty; whose `tests`, `failures`, `errors`, `skipped`, and `time` (total
+  suite duration in seconds, formatted to 3 decimal places) attributes reflect the grouped results;
+  whose `timestamp` attribute is set to the earliest
+  `StartTime` across all test cases in the group (formatted as UTC ISO 8601 with Z suffix); and
+  whose child `testcase` elements are produced by `CreateTestCaseElement`.
+
+The method uses `Min(StartTime)` over the group to produce a suite-level timestamp that
+represents the earliest test start, matching the convention used by common JUnit producers.
+
+**ParseTestCase**: Converts a JUnit `testcase` element into a `TestResult`.
+
+- *Parameters*: `XElement testCaseElement` - The `testcase` element to parse; `DateTime? startTime`
+  - Suite-level start time from the enclosing `testsuite` element, or `null` if absent.
+- *Returns*: `TestResult` - Populated model object.
+- *Preconditions*: `testCaseElement` must be non-null.
+- *Postconditions*: Returns a `TestResult` with `Name`, `ClassName`, `Duration`, `Outcome`,
+  `ErrorMessage`, `ErrorStackTrace`, `SystemOutput`, and `SystemError` populated from the element;
+  `StartTime` is set to `startTime` when the parameter is non-null, otherwise left at the
+  `TestResult` default; the `DefaultSuiteName` sentinel classname is mapped back to an empty
+  string so round-trips produce the original `ClassName` value.
+
+#### Error Handling
+
+`Serialize()` throws `ArgumentNullException` when `results` is null. `Deserialize()` throws
+`ArgumentNullException` or `ArgumentException` for null or whitespace input and throws
+`InvalidOperationException` only when the XML document has no root element. Missing or
+malformed durations fall back to `TimeSpan.Zero`. Missing or malformed suite timestamps leave
+`StartTime` at the default value created by `TestResult`. Because JUnit has no dedicated
+`Timeout` or `Aborted` element, those outcomes deserialize back as `TestOutcome.Error`. The
+`DefaultSuiteName` sentinel also means a literal class name of `DefaultSuite` round-trips back
+to an empty class name. Because JUnit has no inconclusive element, `Inconclusive` tests
+serialize as plain `testcase` elements, making them indistinguishable from `Passed` outcomes
+on deserialization; this round-trip loss is a known limitation of the JUnit format.
+
+#### Dependencies
+
+- **TestResults** - provides run metadata for the `testsuites` root and receives
+  deserialized runs.
+- **TestResult** - provides per-test data and receives deserialized testcase data.
+- **TestOutcome** - supplies outcome values and execution classification helpers.
+- **SerializerHelpers** - provides `Utf8StringWriter` for UTF-8 XML output.
+- **System.Xml.Linq** - constructs and queries JUnit XML.
+- **System.Globalization** - formats and parses timestamps and durations using invariant
+  culture.
+
+#### Callers
+
+- **Serializer** - delegates JUnit deserialization after format identification.
+- **Library consumers** - call the static serialize and deserialize entry points directly when
+  they already know the content is JUnit XML.
