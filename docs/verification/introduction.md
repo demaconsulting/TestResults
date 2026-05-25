@@ -28,21 +28,25 @@ This document covers the following local software items:
 
 This document excludes the internal structure of the test project itself, build-pipeline
 implementation details, and generated compliance artifacts under any `generated/` folder.
-No OTS or Shared Package verification documents are included in this collection.
+No dedicated OTS or Shared Package verification documents are included in this collection;
+OTS software requirements (such as xUnit) are verified through the library test evidence
+that exercises those tools.
 
 ## Companion Artifact Structure
 
 Local items have parallel artifacts in:
 
-- Requirements: `docs/reqstream/test-results-library/test-results-library.yaml`,
+- Requirements: `docs/reqstream/test-results-library.yaml`,
   `docs/reqstream/test-results-library/test-outcome.yaml`,
   `docs/reqstream/test-results-library/test-result.yaml`,
-  `docs/reqstream/test-results-library/test-results.yaml`, and
+  `docs/reqstream/test-results-library/test-results.yaml`,
+  `docs/reqstream/test-results-library/io.yaml`, and
   `docs/reqstream/test-results-library/io/*.yaml`
-- Design: `docs/design/test-results-library/test-results-library.md`,
+- Design: `docs/design/test-results-library.md`,
   `docs/design/test-results-library/test-outcome.md`,
   `docs/design/test-results-library/test-result.md`,
-  `docs/design/test-results-library/test-results.md`, and
+  `docs/design/test-results-library/test-results.md`,
+  `docs/design/test-results-library/io.md`, and
   `docs/design/test-results-library/io/*.md`
 - Verification: `docs/verification/test-results-library.md`,
   `docs/verification/test-results-library/test-outcome.md`,
