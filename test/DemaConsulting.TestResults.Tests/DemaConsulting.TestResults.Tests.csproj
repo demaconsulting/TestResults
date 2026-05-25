@@ -34,7 +34,7 @@
   <!-- System.Memory is required on net481 to resolve assembly binding conflicts introduced by -->
   <!-- transitive dependencies (e.g. Polyfill 10.7.0+) that reference System.Memory 4.0.x. -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net481'">
-    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Memory" Version="4.6.3" />
   </ItemGroup>
 
   <!-- Test Framework Dependencies -->
