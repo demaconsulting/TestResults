@@ -22,8 +22,13 @@ Local items covered by this document:
   **TestOutcome**, **TestResult**, and **TestResults**: unit-level design.
 
 Out of scope are the test projects themselves, build and CI pipeline behavior, and the
-internal design of external framework libraries. This collection does not define separate
-OTS or shared package design files.
+internal design of external framework libraries.
+
+OTS software items used in this repository:
+
+- **BuildMark**, **FileAssert**, **Pandoc**, **ReqStream**, **ReviewMark**, **SarifMark**,
+  **SonarMark**, **VersionMark**, **WeasyPrint**, **xUnit**, and **XmlDocMarkdown**:
+  integration and usage design for each is in `docs/design/ots.md` and `docs/design/ots/`.
 
 ## Software Structure
 
@@ -37,6 +42,19 @@ TestResults Library (System)
 ├── TestOutcome (Unit)
 ├── TestResult (Unit)
 └── TestResults (Unit)
+
+OTS Software Items
+├── BuildMark
+├── FileAssert
+├── Pandoc
+├── ReqStream
+├── ReviewMark
+├── SarifMark
+├── SonarMark
+├── VersionMark
+├── WeasyPrint
+├── xUnit
+└── XmlDocMarkdown
 ```
 
 ## Folder Layout
@@ -87,6 +105,8 @@ docs/reqstream/
 
 docs/design/
 ├── test-results-library.md        - System design for TestResultsLibrary.
+├── ots.md                         - OTS integration design overview.
+├── ots/                           - Per-OTS-item integration design files.
 └── test-results-library/
     ├── io.md                      - Subsystem design for IO.
     ├── test-outcome.md            - Unit design for TestOutcome.
@@ -99,6 +119,8 @@ docs/design/
         └── junit-serializer.md    - Unit design for JUnitSerializer.
 
 docs/verification/
+├── ots.md                         - OTS verification overview.
+├── ots/                           - Per-OTS-item verification files.
 └── test-results-library[...]      - Verification documents parallel to the design tree.
 
 src/DemaConsulting.TestResults/

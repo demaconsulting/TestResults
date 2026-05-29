@@ -83,4 +83,30 @@
     <None Include="..\..\Icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <!-- API Documentation Generation -->
+  <PropertyGroup>
+    <!-- Run doc generation only for this framework in multi-targeted builds -->
+    <ApiDocsTargetFramework>netstandard2.0</ApiDocsTargetFramework>
+    <!-- Configuration-specific output so debug and release docs don't overwrite each other -->
+    <ApiDocsOutputDir>$(MSBuildProjectDirectory)/bin/$(Configuration)/api-docs</ApiDocsOutputDir>
+  </PropertyGroup>
+
+  <!-- Generate API documentation markdown from the XML doc file after each Release build -->
+  <Target Name="GenerateApiDocs" AfterTargets="Build" Condition="'$(TargetFramework)' == '$(ApiDocsTargetFramework)'">
+    <Exec Command="dotnet tool run xmldocmd &quot;$(TargetPath)&quot; &quot;$(ApiDocsOutputDir)&quot; --source &quot;https://github.com/demaconsulting/TestResults/blob/main/src/DemaConsulting.TestResults&quot; --visibility public --clean" />
+  </Target>
+
+  <!-- Include the generated API docs in the NuGet package under docs/ -->
+  <Target Name="IncludeApiDocsInPackage" BeforeTargets="_GetPackageFiles">
+    <Error
+      Condition="!Exists('$(ApiDocsOutputDir)')"
+      Text="API documentation not found at '$(ApiDocsOutputDir)'. Run 'dotnet build --configuration $(Configuration)' first." />
+    <ItemGroup>
+      <None Include="$(ApiDocsOutputDir)/**/*.*">
+        <Pack>true</Pack>
+        <PackagePath>docs/</PackagePath>
+      </None>
+    </ItemGroup>
+  </Target>
+
 </Project>

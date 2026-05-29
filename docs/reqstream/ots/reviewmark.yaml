@@ -8,20 +8,39 @@ sections:
     sections:
       - title: ReviewMark Requirements
         requirements:
-          - id: TestResults-OTS-ReviewMark
-            title: ReviewMark shall generate a review plan and review report from the review configuration.
+          - id: TestResults-OTS-ReviewMark-Operational
+            title: ReviewMark shall respond to standard operational flags.
             justification: |
-              DemaConsulting.ReviewMark reads the .reviewmark.yaml configuration and the review
-              evidence store to produce a review plan and review report documenting file review
-              coverage and currency. It runs in the same CI pipeline that produces the TRX test
-              results, so a successful pipeline run is evidence that ReviewMark executed without error.
+              DemaConsulting.ReviewMark is installed as a dotnet tool. It must load and respond to
+              --version and --help before any CI pipeline step depends on it. A passing response to
+              these flags confirms the binary is installed and executable.
             tags: [ots]
             tests:
               - ReviewMark_VersionDisplay
               - ReviewMark_HelpDisplay
+          - id: TestResults-OTS-ReviewMark-PlanGeneration
+            title: ReviewMark shall generate a review plan from the review configuration.
+            justification: |
+              DemaConsulting.ReviewMark reads the .reviewmark.yaml configuration and the review
+              evidence store index to produce a review plan documenting file review coverage and
+              currency. It supports working directory override, enforcement, and elaboration. A
+              successful pipeline run with --enforce proves all files are assigned to a review-set
+              and that review plan generation is functioning.
+            tags: [ots]
+            tests:
               - ReviewMark_ReviewPlanGeneration
-              - ReviewMark_ReviewReportGeneration
               - ReviewMark_IndexScan
               - ReviewMark_WorkingDirectoryOverride
               - ReviewMark_Enforce
               - ReviewMark_Elaborate
+          - id: TestResults-OTS-ReviewMark-ReportGeneration
+            title: ReviewMark shall generate a review report from the review configuration and evidence store.
+            justification: |
+              DemaConsulting.ReviewMark reads the .reviewmark.yaml configuration and the review
+              evidence store to produce a review report summarizing completed reviews and identifying
+              files with stale or missing review evidence. It runs in the same CI pipeline that
+              produces the TRX test results, so a successful pipeline run is evidence that review
+              report generation is functioning.
+            tags: [ots]
+            tests:
+              - ReviewMark_ReviewReportGeneration

@@ -26,8 +26,33 @@ using System.Xml.XPath;
 namespace DemaConsulting.TestResults.IO;
 
 /// <summary>
-///     TRX Serializer class
+///     Serializes and deserializes test results in the TRX (Visual Studio Test Results) format.
 /// </summary>
+/// <remarks>
+///     TRX is the XML format produced by MSTest, <c>dotnet test</c>, and Azure DevOps pipelines.
+///     Use this class directly when you know the format is TRX. For auto-detected deserialization
+///     of unknown inputs, prefer <see cref="Serializer.Deserialize"/> instead.
+///     <para>
+///         The serialized output is compatible with Visual Studio Test Explorer, Azure DevOps
+///         test result publishing, and any tool that accepts the
+///         <c>http://microsoft.com/schemas/VisualStudio/TeamTest/2010</c> namespace.
+///     </para>
+///     <para>Both methods are stateless and safe for concurrent calls.</para>
+/// </remarks>
+/// <example>
+///     Write a TRX file:
+///     <code>
+///     var results = new TestResults { Name = "My Run" };
+///     results.Results.Add(new TestResult { Name = "Test1", Outcome = TestOutcome.Passed });
+///     string trx = TrxSerializer.Serialize(results);
+///     File.WriteAllText("results.trx", trx);
+///     </code>
+///     Read a TRX file:
+///     <code>
+///     string trx = File.ReadAllText("results.trx");
+///     TestResults results = TrxSerializer.Deserialize(trx);
+///     </code>
+/// </example>
 public static class TrxSerializer
 {
     /// <summary>

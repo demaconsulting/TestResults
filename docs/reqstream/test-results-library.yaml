@@ -18,10 +18,14 @@ sections:
           conversion between formats without requiring format-specific logic in consuming code.
         children:
           - TestResults-Model-RunIdentity
-          - TestResults-Model-RunNaming
-          - TestResults-Model-RunCollection
-          - TestResults-Model-TestOutput
-          - TestResults-Model-ErrorInfo
+          - TestResults-Model-RunName
+          - TestResults-Model-RunUserName
+          - TestResults-Model-RunCollectionNonNull
+          - TestResults-Model-RunCollectionEmpty
+          - TestResults-Model-SystemOutput
+          - TestResults-Model-SystemError
+          - TestResults-Model-ErrorMessage
+          - TestResults-Model-ErrorStackTrace
           - TestResults-Model-PassedOutcome
           - TestResults-Model-FailedOutcome
           - TestResults-Model-ErrorOutcome
@@ -36,13 +40,17 @@ sections:
           - TestResults-Model-CompletedOutcome
           - TestResults-Model-InProgressOutcome
           - TestResults-Model-DisconnectedOutcome
-          - TestResults-Model-TestIdentity
+          - TestResults-Model-TestId
+          - TestResults-Model-ExecutionId
           - TestResults-Model-TestName
           - TestResults-Model-TestOutcomeDefault
           - TestResults-Model-TestTiming
           - TestResults-Model-TestCodeBase
           - TestResults-Model-TestClassName
           - TestResults-Model-TestComputerName
+          - TestResults-Model-OutcomeIsPassed
+          - TestResults-Model-OutcomeIsFailed
+          - TestResults-Model-OutcomeIsExecuted
         tests:
           - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
       - id: TestResultsLibrary-IO-ReadResults
@@ -69,7 +77,7 @@ sections:
           - TestResultsLibrary_Serialize_InMemoryModel_ProducesTrxContent
           - TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
       - id: TestResultsLibrary-IO-IdentifyFormat
-        title: The TestResults library shall identify test result file formats.
+        title: The TestResults Library shall identify test result file formats.
         justification: |
           Users need to determine the format of test result content without
           attempting to deserialize it. This is required to support format-aware

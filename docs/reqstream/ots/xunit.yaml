@@ -1,7 +1,7 @@
 ---
 # xUnit OTS requirements
 #
-# Requirements for the xUnit v3 testing framework used to execute unit tests and report results.
+# Requirements for the xUnit v3 testing framework used to execute unit tests and produce TRX result files.
 
 sections:
   - title: OTS Software Requirements
@@ -9,7 +9,7 @@ sections:
       - title: xUnit Requirements
         requirements:
           - id: TestResults-OTS-XUnit
-            title: xUnit v3 shall execute unit tests and report results.
+            title: xUnit v3 shall produce verified passing test results for all test methods in the project.
             justification: |
               xUnit v3 (xunit.v3, xunit.runner.visualstudio, and Microsoft.NET.Test.Sdk) is the
               unit-testing framework used by the project. It discovers and runs all test methods

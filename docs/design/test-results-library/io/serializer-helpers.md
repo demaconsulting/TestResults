@@ -14,11 +14,10 @@ by both serializer units when saving XML to a string.
 **Encoding**: `Encoding` - Overridden property that always returns `Encoding.UTF8` so the XML
 prolog declares `encoding="utf-8"`.
 
-#### Key Methods
+#### Key Properties
 
-**Encoding**: Reports UTF-8 as the writer encoding.
+**Encoding**: Read-only property override that reports UTF-8 as the writer encoding.
 
-- *Parameters*: None.
 - *Returns*: `Encoding` - Always `Encoding.UTF8`.
 - *Preconditions*: None.
 - *Postconditions*: Any XML writer using this instance emits a UTF-8 declaration in the XML

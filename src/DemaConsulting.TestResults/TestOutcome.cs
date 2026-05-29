@@ -23,6 +23,25 @@ namespace DemaConsulting.TestResults;
 /// <summary>
 ///     Defines the possible outcomes for a test case execution.
 /// </summary>
+/// <remarks>
+///     Outcomes are partitioned into three groups used by serializers and extension methods:
+///     <list type="bullet">
+///         <item><b>Passed</b> (<see cref="TestOutcomeExtensions.IsPassed"/>):
+///             <see cref="Passed"/>, <see cref="PassedButRunAborted"/>, <see cref="Warning"/></item>
+///         <item><b>Failed</b> (<see cref="TestOutcomeExtensions.IsFailed"/>):
+///             <see cref="Failed"/>, <see cref="Error"/>, <see cref="Timeout"/>, <see cref="Aborted"/></item>
+///         <item><b>Not executed</b> (not <see cref="TestOutcomeExtensions.IsExecuted"/>):
+///             <see cref="NotRunnable"/>, <see cref="NotExecuted"/>, <see cref="Pending"/></item>
+///     </list>
+///     All remaining outcomes (<see cref="Inconclusive"/>, <see cref="Disconnected"/>,
+///     <see cref="InProgress"/>, <see cref="Completed"/>) are treated as executed but neither
+///     passed nor failed; they appear as plain passing test cases in JUnit output.
+///     <para>
+///         Values map directly to TRX <c>outcome</c> attribute strings (e.g. <c>"Passed"</c>,
+///         <c>"Failed"</c>) and to JUnit <c>failure</c>, <c>error</c>, and <c>skipped</c>
+///         child elements.
+///     </para>
+/// </remarks>
 public enum TestOutcome
 {
     /// <summary>
@@ -99,6 +118,11 @@ public enum TestOutcome
 /// <summary>
 ///     Extensions for the <see cref="TestOutcome" /> enum.
 /// </summary>
+/// <remarks>
+///     Centralizes outcome classification logic so that serializers and consumers share a single,
+///     consistent definition of which outcomes count as passed, failed, or executed.
+///     All methods are pure functions with no state; safe for concurrent calls.
+/// </remarks>
 public static class TestOutcomeExtensions
 {
     /// <summary>

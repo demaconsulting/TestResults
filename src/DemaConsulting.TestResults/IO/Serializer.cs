@@ -44,8 +44,26 @@ public enum TestResultFormat
 }
 
 /// <summary>
-///     General purpose serializer for test results
+///     Format-detecting facade over <see cref="TrxSerializer"/> and <see cref="JUnitSerializer"/>.
 /// </summary>
+/// <remarks>
+///     Use this class when the format of an input file is not known in advance.
+///     <see cref="Identify"/> inspects the XML root element and namespace to detect TRX or
+///     JUnit, and <see cref="Deserialize"/> calls the appropriate serializer automatically.
+///     <para>
+///         If you already know the format, call <see cref="TrxSerializer"/> or
+///         <see cref="JUnitSerializer"/> directly to avoid the detection overhead.
+///     </para>
+///     <para>Both methods are stateless and safe for concurrent calls.</para>
+/// </remarks>
+/// <example>
+///     Read a test results file without knowing its format:
+///     <code>
+///     string contents = File.ReadAllText("results.trx"); // or .xml
+///     TestResults results = Serializer.Deserialize(contents);
+///     Console.WriteLine($"Passed: {results.Results.Count(r => r.Outcome.IsPassed())}");
+///     </code>
+/// </example>
 public static class Serializer
 {
 #pragma warning disable S1075 // URIs should not be hardcoded - This is an XML namespace URI, not a file path

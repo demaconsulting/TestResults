@@ -72,3 +72,8 @@ tools:
   fileassert:
     command: dotnet tool list
     regex: '(?i)demaconsulting\.fileassert\s+(?<version>\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?)'
+
+  # XmlDocMarkdown (xmldocmd from dotnet tool list)
+  xmldocmd:
+    command: dotnet tool list
+    regex: '(?i)xmldocmd\s+(?<version>\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?)'

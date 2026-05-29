@@ -117,5 +117,5 @@ N/A - not a safety-classified software item.
 - Encoding: serialized XML must declare UTF-8 because downstream tools consume the returned
   strings as XML documents.
 - Fidelity: TRX round-trips preserve all modeled data, while JUnit preserves core data but
-  maps `Timeout` and `Aborted` back to `Error` and uses `DefaultSuite` as the empty-class
-  sentinel.
+  maps `Timeout` and `Aborted` back to `Error`, uses `DefaultSuite` as the empty-class
+  sentinel, and maps `Inconclusive` back to `Passed` (no JUnit inconclusive element exists).

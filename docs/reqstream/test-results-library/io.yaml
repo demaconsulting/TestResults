@@ -36,7 +36,8 @@ sections:
               integrate with the two dominant test result formats used across .NET and cross-platform
               CI/CD toolchains.
             children:
-              - TestResults-Serializer-FormatConversion
+              - TestResults-Serializer-TrxDeserialization
+              - TestResults-Serializer-JUnitDeserialization
               - TestResults-Serializer-RoundTrip
               - TestResults-Trx-Deserialize
               - TestResults-JUnit-Deserialize

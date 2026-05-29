@@ -23,23 +23,37 @@ sections:
               - TestResults_Id_Default_IsNotEmpty
               - TestResults_Id_TwoInstances_AreUnique
 
-          - id: TestResults-Model-RunNaming
-            title: The TestResults class shall default the run name and user name to empty strings.
+          - id: TestResults-Model-RunName
+            title: The TestResults class shall default the run name to an empty string.
             justification: |
               Serializers and consumers must be able to use a TestResults object immediately after
-              construction without setting optional metadata. Defaulting Name and UserName to empty
-              strings avoids null-reference issues and produces predictably empty fields in
-              serialized output when the caller does not supply identifying metadata.
+              construction without setting the run name. Defaulting Name to an empty string avoids
+              null-reference issues and produces a predictably empty field in serialized output.
             tests:
               - TestResults_Name_Default_IsEmpty
+
+          - id: TestResults-Model-RunUserName
+            title: The TestResults class shall default the run user name to an empty string.
+            justification: |
+              Serializers and consumers must be able to use a TestResults object immediately after
+              construction without setting the user name. Defaulting UserName to an empty string
+              avoids null-reference issues and produces a predictably empty field in serialized output.
+            tests:
               - TestResults_UserName_Default_IsEmpty
 
-          - id: TestResults-Model-RunCollection
-            title: The TestResults class shall initialize the Results collection as a non-null empty list.
+          - id: TestResults-Model-RunCollectionNonNull
+            title: The TestResults class shall initialize the Results collection as non-null.
             justification: |
-              Callers must be able to add test results immediately after construction without first
-              checking for a null collection. Initializing Results to an empty list ensures safe
-              enumeration and addition at any point without additional initialization steps.
+              Callers must be able to enumerate or add test results immediately after construction
+              without first checking for a null collection. A non-null default ensures safe
+              enumeration at any point without additional initialization steps.
             tests:
               - TestResults_Results_Default_IsNotNull
+
+          - id: TestResults-Model-RunCollectionEmpty
+            title: The TestResults class shall initialize the Results collection as empty.
+            justification: |
+              A newly constructed TestResults must not contain pre-populated results, ensuring that
+              callers can build a result set from scratch without first clearing the collection.
+            tests:
               - TestResults_Results_Default_IsEmpty
