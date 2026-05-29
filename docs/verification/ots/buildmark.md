@@ -20,8 +20,10 @@ verified in a purely local offline environment because it requires live GitHub A
 - The CI pipeline step invoking BuildMark completes without a non-zero exit code.
 - The output file `docs/build_notes/generated/build_notes.md` is produced and contains a
   non-trivial amount of content.
-- The requirements `TestResults-OTS-BuildMark` is linked to all four named test identifiers in
-  the ReqStream trace matrix.
+- The requirement `TestResults-OTS-BuildMark-ReportGeneration` is linked to `BuildMark_MarkdownReportGeneration`,
+  `TestResults-OTS-BuildMark-GitIntegration` to `BuildMark_GitIntegration`,
+  `TestResults-OTS-BuildMark-IssueTracking` to `BuildMark_IssueTracking`, and
+  `TestResults-OTS-BuildMark-KnownIssues` to `BuildMark_KnownIssuesReporting` in the ReqStream trace matrix.
 
 ### Test Scenarios
 

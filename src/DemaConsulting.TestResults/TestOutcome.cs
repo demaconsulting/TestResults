@@ -118,6 +118,11 @@ public enum TestOutcome
 /// <summary>
 ///     Extensions for the <see cref="TestOutcome" /> enum.
 /// </summary>
+/// <remarks>
+///     Centralizes outcome classification logic so that serializers and consumers share a single,
+///     consistent definition of which outcomes count as passed, failed, or executed.
+///     All methods are pure functions with no state; safe for concurrent calls.
+/// </remarks>
 public static class TestOutcomeExtensions
 {
     /// <summary>

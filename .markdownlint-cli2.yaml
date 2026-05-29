@@ -59,4 +59,5 @@ ignores:
   - '**/third-party/**'
   - '**/3rd-party/**'
   - '**/generated/**'
+  - '**/bin/**'
   - '**/.agent-logs/**'

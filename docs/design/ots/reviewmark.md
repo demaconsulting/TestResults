@@ -13,8 +13,6 @@ produce the evidence PDFs that demonstrate formal review compliance.
   each set, and the current review status of each file.
 - **Review report generation**: produces a markdown report summarizing completed reviews and
   identifying files with stale or missing review evidence.
-- **Configuration linting**: the `--lint` flag validates `.reviewmark.yaml` structure and
-  reports configuration errors without running the full plan.
 - **Evidence index scanning**: reads the evidence store index to determine which files have
   up-to-date review records.
 - **Enforcement mode**: the `--enforce` flag exits non-zero if any file in `needs-review` is

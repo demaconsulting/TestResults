@@ -1,7 +1,7 @@
 ---
 # VersionMark OTS requirements
 #
-# Requirements for the VersionMark version tracking tool used to capture and publish tool-version information.
+# Requirements for the VersionMark version tracking tool used to capture and generate tool-version reports.
 
 sections:
   - title: OTS Software Requirements
@@ -9,7 +9,7 @@ sections:
       - title: VersionMark Requirements
         requirements:
           - id: TestResults-OTS-VersionMark
-            title: VersionMark shall publish captured tool-version information.
+            title: VersionMark shall generate a markdown report of captured tool-version information.
             justification: |
               DemaConsulting.VersionMark reads version metadata for each dotnet tool used in the
               pipeline and writes a versions markdown document included in the release artifacts.

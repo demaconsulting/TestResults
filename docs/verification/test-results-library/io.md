@@ -46,3 +46,28 @@ shared in-memory model, satisfying `TestResults-IO-Serialize`. This scenario is 
 and pass/fail/skip outcomes when results are converted from TRX to JUnit format, satisfying
 `TestResults-IO-Deserialize`. This scenario is tested by
 `IO_TrxSerializedResults_RoundTripsViaJUnit_PreservesCoreTestData`.
+
+**Identify null content returns unknown**: The subsystem shall return `Unknown` when null
+content is supplied to `Identify`, satisfying `TestResults-IO-Identify`. This scenario is
+tested by `IO_Identify_NullContent_ReturnsUnknown`.
+
+**Identify invalid XML returns unknown**: The subsystem shall return `Unknown` for
+non-XML content supplied to `Identify`, satisfying `TestResults-IO-Identify`. This scenario
+is tested by `IO_Identify_InvalidXmlContent_ReturnsUnknown`.
+
+**Identify unrecognized XML returns unknown**: The subsystem shall return `Unknown` for
+valid XML with an unrecognized root or namespace, satisfying `TestResults-IO-Identify`. This
+scenario is tested by `IO_Identify_UnknownXmlContent_ReturnsUnknown`.
+
+**Deserialize null content throws**: The subsystem shall throw `ArgumentNullException` when
+null content is supplied to `Deserialize`, satisfying `TestResults-IO-Deserialize`. This
+scenario is tested by `IO_Deserialize_NullContent_ThrowsArgumentNullException`.
+
+**Deserialize whitespace content throws**: The subsystem shall throw `ArgumentException` when
+whitespace-only content is supplied to `Deserialize`, satisfying `TestResults-IO-Deserialize`.
+This scenario is tested by `IO_Deserialize_WhitespaceContent_ThrowsArgumentException`.
+
+**Deserialize unknown format throws**: The subsystem shall throw `InvalidOperationException`
+when content with an unrecognized format is supplied to `Deserialize`, satisfying
+`TestResults-IO-Deserialize`. This scenario is tested by
+`IO_Deserialize_UnknownContent_ThrowsInvalidOperationException`.

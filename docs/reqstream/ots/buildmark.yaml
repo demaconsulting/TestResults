@@ -8,16 +8,43 @@ sections:
     sections:
       - title: BuildMark Requirements
         requirements:
-          - id: TestResults-OTS-BuildMark
-            title: BuildMark shall generate build-notes documentation from GitHub Actions metadata.
+          - id: TestResults-OTS-BuildMark-ReportGeneration
+            title: BuildMark shall generate a markdown build-notes document from GitHub Actions workflow metadata.
             justification: |
-              DemaConsulting.BuildMark queries the GitHub API to capture workflow run details and
-              renders them as a markdown build-notes document included in the release artifacts.
-              It runs as part of the same CI pipeline that produces the TRX test results, so a
-              successful pipeline run is evidence that BuildMark executed without error.
+              DemaConsulting.BuildMark queries the GitHub Actions API to capture workflow run
+              details and renders them as a markdown build-notes document included in release
+              artifacts. A successful CI run with the expected output file present proves this
+              capability is operational.
             tags: [ots]
             tests:
               - BuildMark_MarkdownReportGeneration
+
+          - id: TestResults-OTS-BuildMark-GitIntegration
+            title: BuildMark shall record the commit SHA and branch associated with the build.
+            justification: |
+              Recording the commit SHA and branch in the build notes provides traceability between
+              the built artifact and the source code state. This is required for reproducible builds
+              and compliance evidence.
+            tags: [ots]
+            tests:
               - BuildMark_GitIntegration
+
+          - id: TestResults-OTS-BuildMark-IssueTracking
+            title: BuildMark shall list GitHub issues linked to the triggering commit or pull request.
+            justification: |
+              Linking issues to each build provides an audit trail connecting changes to their
+              motivating requirements or defects. This supports compliance traceability from release
+              artifact back to tracked work items.
+            tags: [ots]
+            tests:
               - BuildMark_IssueTracking
+
+          - id: TestResults-OTS-BuildMark-KnownIssues
+            title: BuildMark shall collect and report open issues labeled as known defects.
+            justification: |
+              Reporting known issues in the build notes makes the defect state of each release
+              explicit, so reviewers can confirm which issues were outstanding at the time of
+              release without separately querying the issue tracker.
+            tags: [ots]
+            tests:
               - BuildMark_KnownIssuesReporting

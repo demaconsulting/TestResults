@@ -118,6 +118,7 @@ reviews:
     paths:
       - docs/reqstream/test-results-library/io/trx-serializer.yaml
       - docs/design/test-results-library/io/trx-serializer.md
+      - docs/verification/test-results-library/io/trx-serializer.md
       - src/DemaConsulting.TestResults/IO/TrxSerializer.cs
       - test/DemaConsulting.TestResults.Tests/IO/TrxSerializerTests.cs
       - test/DemaConsulting.TestResults.Tests/IO/TrxExampleTests.cs
@@ -128,6 +129,7 @@ reviews:
     paths:
       - docs/reqstream/test-results-library/io/junit-serializer.yaml
       - docs/design/test-results-library/io/junit-serializer.md
+      - docs/verification/test-results-library/io/junit-serializer.md
       - src/DemaConsulting.TestResults/IO/JUnitSerializer.cs
       - test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs
 

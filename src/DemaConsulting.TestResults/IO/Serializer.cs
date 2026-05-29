@@ -44,7 +44,7 @@ public enum TestResultFormat
 }
 
 /// <summary>
-///     Format-detecting façade over <see cref="TrxSerializer"/> and <see cref="JUnitSerializer"/>.
+///     Format-detecting facade over <see cref="TrxSerializer"/> and <see cref="JUnitSerializer"/>.
 /// </summary>
 /// <remarks>
 ///     Use this class when the format of an input file is not known in advance.

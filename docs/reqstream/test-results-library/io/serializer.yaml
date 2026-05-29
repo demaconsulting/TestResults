@@ -22,17 +22,23 @@ sections:
                   - Serializer_Identify_JUnitTestsuitesContent_ReturnsJUnit
                   - Serializer_Identify_JUnitTestsuiteContent_ReturnsJUnit
 
-              - id: TestResults-Serializer-FormatConversion
-                title: The Serializer shall support conversion between TRX and JUnit formats.
+              - id: TestResults-Serializer-TrxDeserialization
+                title: The Serializer shall deserialize TRX content into the in-memory model.
                 justification: |
-                  Format conversion enables users to integrate test results across different toolchains
-                  and CI/CD systems. This capability is essential for organizations using multiple testing
-                  frameworks or migrating between platforms, as it allows a single source of test results
-                  to be consumed by different tools.
+                  TRX deserialization enables users to read Visual Studio/MSTest test results
+                  programmatically. The Serializer delegates to TrxSerializer after identifying
+                  the format, providing a single entry point for TRX consumption.
                 tests:
                   - Serializer_Deserialize_TrxContent_ReturnsTestResults
+
+              - id: TestResults-Serializer-JUnitDeserialization
+                title: The Serializer shall deserialize JUnit content into the in-memory model.
+                justification: |
+                  JUnit deserialization enables users to read cross-platform JUnit XML test results
+                  programmatically. The Serializer delegates to JUnitSerializer after identifying
+                  the format, providing a single entry point for JUnit consumption.
+                tests:
                   - Serializer_Deserialize_JUnitContent_ReturnsTestResults
-                  - Serializer_RoundTrip_TrxToJUnit_PreservesCoreTestData
 
               - id: TestResults-Serializer-RoundTrip
                 title: The Serializer shall preserve core test data during round-trip conversion between TRX and JUnit.

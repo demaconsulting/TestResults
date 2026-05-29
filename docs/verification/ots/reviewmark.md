@@ -22,8 +22,9 @@ and the CI network access to the evidence store.
 - The review plan is written to `docs/code_review_plan/generated/plan.md`.
 - The review report is written to `docs/code_review_report/generated/report.md`.
 - `reviewmark --version` and `reviewmark --help` exit with code 0.
-- The requirement `TestResults-OTS-ReviewMark` is linked to all eight named test identifiers in
-  the ReqStream trace matrix.
+- The requirements `TestResults-OTS-ReviewMark-Operational`, `TestResults-OTS-ReviewMark-PlanGeneration`,
+  and `TestResults-OTS-ReviewMark-ReportGeneration` are each linked to their named test identifiers
+  in the ReqStream trace matrix.
 
 ### Test Scenarios
 

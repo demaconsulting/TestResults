@@ -8,15 +8,28 @@ sections:
     sections:
       - title: FileAssert Requirements
         requirements:
-          - id: TestResults-OTS-FileAssert
-            title: FileAssert shall validate generated documents against acceptance criteria.
+          - id: TestResults-OTS-FileAssert-Operational
+            title: FileAssert shall be installed and operational in the CI pipeline.
             justification: |
-              DemaConsulting.FileAssert validates HTML and PDF documents produced during the
-              build, asserting that each document exists, has a non-trivial size, is structurally
-              valid, and contains expected content. It provides OTS evidence for Pandoc and
-              WeasyPrint and independently confirms file assertion is functioning. Self-validation
-              proves the tool itself is operational before ReqStream consumes the results.
+              Confirming that FileAssert is installed and responds to `--version` and `--help`
+              proves the tool binary is present and loads correctly before it is used to validate
+              build artifacts. This is the foundational check that all downstream document
+              assertions depend on.
             tags: [ots]
             tests:
               - FileAssert_VersionDisplay
               - FileAssert_HelpDisplay
+
+          - id: TestResults-OTS-FileAssert-Validates
+            title: FileAssert shall validate generated file outputs against acceptance criteria.
+            justification: |
+              DemaConsulting.FileAssert validates HTML, PDF, and NuGet package artifacts produced
+              during the build, asserting file existence, size, structural validity, content, and
+              zip entry presence. It provides OTS qualification evidence for Pandoc, WeasyPrint,
+              and XmlDocMarkdown by asserting their outputs are non-trivially correct. A passing
+              CI pipeline run — in which all FileAssert assertion steps exit with code 0 — is the
+              primary evidence that document validation is functioning correctly.
+            tags: [ots]
+            tests:
+              - FileAssert_Exists
+              - FileAssert_Contains

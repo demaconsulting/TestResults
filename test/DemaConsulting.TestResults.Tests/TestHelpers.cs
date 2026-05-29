@@ -33,6 +33,8 @@ internal static class TestHelpers
     /// <exception cref="InvalidOperationException">Thrown when the embedded resource is not found.</exception>
     public static string GetEmbeddedResource(string resourceName)
     {
+        ArgumentNullException.ThrowIfNullOrEmpty(resourceName);
+
         // Open the resource
         using var stream = typeof(TestHelpers).Assembly.GetManifestResourceStream(resourceName);
         if (stream == null)

@@ -9,39 +9,63 @@ sections:
     sections:
       - title: TestResult Requirements
         requirements:
-          - id: TestResults-Model-TestOutput
-            title: The library shall support capturing test output streams.
+          - id: TestResults-Model-SystemOutput
+            title: The library shall support capturing the standard output stream of a test.
             justification: |
-              Capturing standard output and error streams from tests is essential for debugging
-              test failures and understanding test behavior. This capability enables developers to
-              review console output, diagnostic messages, and error logs directly within test results.
+              Capturing standard output from tests is essential for debugging test failures and
+              understanding test behavior. This capability enables developers to review console
+              output and diagnostic messages directly within test results.
             tests:
               - TestResult_SystemOutput_Default_IsEmpty
               - TestResult_SystemOutput_Set_RetainsValue
+
+          - id: TestResults-Model-SystemError
+            title: The library shall support capturing the standard error stream of a test.
+            justification: |
+              Capturing standard error from tests enables developers to review error logs and
+              diagnostic messages produced on stderr directly within test results, distinct from
+              standard output.
+            tests:
               - TestResult_SystemError_Default_IsEmpty
               - TestResult_SystemError_Set_RetainsValue
 
-          - id: TestResults-Model-ErrorInfo
-            title: The library shall support capturing error messages and stack traces.
+          - id: TestResults-Model-ErrorMessage
+            title: The library shall support capturing the error message of a failed test.
             justification: |
-              Error messages and stack traces are critical for diagnosing test failures. They provide
-              developers with immediate context about what went wrong and where, enabling faster
-              debugging and resolution of issues.
+              Error messages are critical for diagnosing test failures. They provide developers
+              with immediate context about what went wrong, enabling faster debugging and
+              resolution of issues.
             tests:
               - TestResult_ErrorMessage_Default_IsEmpty
               - TestResult_ErrorMessage_Set_RetainsValue
+
+          - id: TestResults-Model-ErrorStackTrace
+            title: The library shall support capturing the stack trace of a failed test.
+            justification: |
+              Stack traces are critical for locating the source of a test failure. They provide
+              developers with the call chain at the point of failure, enabling faster identification
+              of the root cause.
+            tests:
               - TestResult_ErrorStackTrace_Default_IsEmpty
               - TestResult_ErrorStackTrace_Set_RetainsValue
 
-          - id: TestResults-Model-TestIdentity
-            title: The library shall automatically assign unique identifiers to each test result.
+          - id: TestResults-Model-TestId
+            title: The library shall automatically assign a unique TestId to each test result.
             justification: |
-              Automatic unique identifier assignment eliminates the need for callers to manage GUIDs
-              manually, ensures TRX cross-references are valid by default, and guarantees that each
-              test result instance can be uniquely identified throughout its lifecycle.
+              Automatic TestId assignment eliminates the need for callers to manage GUIDs manually
+              and ensures TRX cross-references are valid by default. Each test result instance must
+              be uniquely identifiable throughout its lifecycle.
             tests:
               - TestResult_TestId_Default_IsNotEmpty
               - TestResult_TestId_TwoInstances_AreUnique
+
+          - id: TestResults-Model-ExecutionId
+            title: The library shall automatically assign a unique ExecutionId to each test result.
+            justification: |
+              The ExecutionId is a separate GUID that TRX format uses to cross-reference test
+              definitions and execution results. Auto-generating it on construction ensures TRX
+              output is structurally valid without requiring callers to supply execution identifiers.
+            tests:
               - TestResult_ExecutionId_Default_IsNotEmpty
               - TestResult_ExecutionId_TwoInstances_AreUnique
 
