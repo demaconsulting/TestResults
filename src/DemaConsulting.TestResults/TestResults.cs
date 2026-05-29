@@ -42,6 +42,20 @@ namespace DemaConsulting.TestResults;
 ///         synchronization.
 ///     </para>
 /// </remarks>
+/// <example>
+///     Build a test run and serialize it to TRX:
+///     <code>
+///     var run = new TestResults { Name = "Smoke Tests", UserName = Environment.UserName };
+///     run.Results.Add(new TestResult
+///     {
+///         Name = "LoginSucceeds",
+///         ClassName = "AuthTests",
+///         Outcome = TestOutcome.Passed,
+///         Duration = TimeSpan.FromMilliseconds(42)
+///     });
+///     string trx = TrxSerializer.Serialize(run);
+///     </code>
+/// </example>
 public sealed class TestResults
 {
     // Identity and metadata — unique run identifier, human-readable name, and initiating user

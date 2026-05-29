@@ -24,8 +24,38 @@ using System.Xml.Linq;
 namespace DemaConsulting.TestResults.IO;
 
 /// <summary>
-///     JUnit Serializer class
+///     Serializes and deserializes test results in the JUnit XML format.
 /// </summary>
+/// <remarks>
+///     JUnit XML is the de-facto standard format accepted by Jenkins, GitHub Actions test
+///     reporters, GitLab CI, and many other CI systems. Use this class directly when you know
+///     the format is JUnit. For auto-detected deserialization of unknown inputs, prefer
+///     <see cref="Serializer.Deserialize"/> instead.
+///     <para>
+///         <b>Known round-trip losses:</b> <see cref="TestOutcome.Timeout"/> and
+///         <see cref="TestOutcome.Aborted"/> both serialize as <c>error</c> elements and
+///         deserialize back as <see cref="TestOutcome.Error"/>.
+///         <see cref="TestOutcome.Inconclusive"/> serializes as a plain passing <c>testcase</c>
+///         and deserializes back as <see cref="TestOutcome.Passed"/>. A
+///         <see cref="TestResult.ClassName"/> of <c>DefaultSuite</c> deserializes as an
+///         empty string.
+///     </para>
+///     <para>Both methods are stateless and safe for concurrent calls.</para>
+/// </remarks>
+/// <example>
+///     Write a JUnit XML file:
+///     <code>
+///     var results = new TestResults { Name = "My Run" };
+///     results.Results.Add(new TestResult { Name = "Test1", Outcome = TestOutcome.Passed });
+///     string xml = JUnitSerializer.Serialize(results);
+///     File.WriteAllText("results.xml", xml);
+///     </code>
+///     Read a JUnit XML file:
+///     <code>
+///     string xml = File.ReadAllText("results.xml");
+///     TestResults results = JUnitSerializer.Deserialize(xml);
+///     </code>
+/// </example>
 public static class JUnitSerializer
 {
     /// <summary>

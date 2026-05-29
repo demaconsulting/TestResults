@@ -7,6 +7,10 @@
 
 $buildError = $false
 
+Write-Host "Restoring tools..."
+dotnet tool restore
+if ($LASTEXITCODE -ne 0) { $buildError = $true }
+
 Write-Host "Restoring dependencies..."
 dotnet restore
 if ($LASTEXITCODE -ne 0) { $buildError = $true }

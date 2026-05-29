@@ -114,6 +114,11 @@ Helper extension methods: `IsPassed()`, `IsFailed()`, `IsExecuted()`
 pwsh ./build.ps1
 ```
 
+## API Documentation
+
+Detailed API documentation for all public types and members is distributed in the `docs/` folder
+of the NuGet package.
+
 ## User Guide
 
 The TestResults User Guide is available on the
