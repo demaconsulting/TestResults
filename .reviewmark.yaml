@@ -52,6 +52,7 @@ reviews:
       - docs/reqstream/test-results-library.yaml
       - docs/reqstream/test-results-library/platform-requirements.yaml
       - docs/design/introduction.md
+      - docs/design/ots.md
       - docs/design/test-results-library.md
       - docs/design/test-results-library/**/*.md
 
@@ -129,3 +130,80 @@ reviews:
       - docs/design/test-results-library/io/junit-serializer.md
       - src/DemaConsulting.TestResults/IO/JUnitSerializer.cs
       - test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs
+
+  - id: OTS-BuildMark
+    title: Review that BuildMark Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/buildmark.yaml
+      - docs/design/ots/buildmark.md
+      - docs/verification/ots/buildmark.md
+
+  - id: OTS-FileAssert
+    title: Review that FileAssert Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/fileassert.yaml
+      - docs/design/ots/fileassert.md
+      - docs/verification/ots/fileassert.md
+
+  - id: OTS-Pandoc
+    title: Review that Pandoc Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/pandoc.yaml
+      - docs/design/ots/pandoc.md
+      - docs/verification/ots/pandoc.md
+
+  - id: OTS-ReqStream
+    title: Review that ReqStream Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/reqstream.yaml
+      - docs/design/ots/reqstream.md
+      - docs/verification/ots/reqstream.md
+
+  - id: OTS-ReviewMark
+    title: Review that ReviewMark Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/reviewmark.yaml
+      - docs/design/ots/reviewmark.md
+      - docs/verification/ots/reviewmark.md
+
+  - id: OTS-SarifMark
+    title: Review that SarifMark Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/sarifmark.yaml
+      - docs/design/ots/sarifmark.md
+      - docs/verification/ots/sarifmark.md
+
+  - id: OTS-SonarMark
+    title: Review that SonarMark Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/sonarmark.yaml
+      - docs/design/ots/sonarmark.md
+      - docs/verification/ots/sonarmark.md
+
+  - id: OTS-VersionMark
+    title: Review that VersionMark Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/versionmark.yaml
+      - docs/design/ots/versionmark.md
+      - docs/verification/ots/versionmark.md
+
+  - id: OTS-WeasyPrint
+    title: Review that WeasyPrint Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/weasyprint.yaml
+      - docs/design/ots/weasyprint.md
+      - docs/verification/ots/weasyprint.md
+
+  - id: OTS-XUnit
+    title: Review that XUnit Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/xunit.yaml
+      - docs/design/ots/xunit.md
+      - docs/verification/ots/xunit.md
+
+  - id: OTS-XmlDocMd
+    title: Review that XmlDocMd Provides Required Functionality
+    paths:
+      - docs/reqstream/ots/xmldocmd.yaml
+      - docs/design/ots/xmldocmd.md
+      - docs/verification/ots/xmldocmd.md

@@ -28,9 +28,11 @@ This document covers the following local software items:
 
 This document excludes the internal structure of the test project itself, build-pipeline
 implementation details, and generated compliance artifacts under any `generated/` folder.
-No dedicated OTS or Shared Package verification documents are included in this collection;
-OTS software requirements (such as xUnit) are verified through the library test evidence
-that exercises those tools.
+
+- **BuildMark**, **FileAssert**, **Pandoc**, **ReqStream**, **ReviewMark**, **SarifMark**,
+  **SonarMark**, **VersionMark**, **WeasyPrint**, **xUnit**, and **XmlDocMarkdown**: OTS
+  verification evidence for each is in `docs/verification/ots.md` and
+  `docs/verification/ots/`.
 
 ## Companion Artifact Structure
 
@@ -54,6 +56,7 @@ Local items have parallel artifacts in:
   `docs/verification/test-results-library/test-results.md`,
   `docs/verification/test-results-library/io.md`, and
   `docs/verification/test-results-library/io/*.md`
+- OTS verification: `docs/verification/ots.md` and `docs/verification/ots/*.md`
 - Source: `src/DemaConsulting.TestResults/TestOutcome.cs`,
   `src/DemaConsulting.TestResults/TestResult.cs`,
   `src/DemaConsulting.TestResults/TestResults.cs`, and
