@@ -73,7 +73,7 @@ tools:
     command: dotnet tool list
     regex: '(?i)demaconsulting\.fileassert\s+(?<version>\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?)'
 
-  # XmlDocMarkdown (xmldocmd from dotnet tool list)
-  xmldocmd:
-    command: dotnet tool list
-    regex: '(?i)xmldocmd\s+(?<version>\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?)'
+  # ApiMark.MSBuild (DemaConsulting.ApiMark.MSBuild from project package references)
+  apimark-msbuild:
+    command: dotnet list src/DemaConsulting.TestResults/DemaConsulting.TestResults.csproj package
+    regex: '(?i)DemaConsulting\.ApiMark\.MSBuild\s+(?<version>\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?)'

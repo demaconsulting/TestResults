@@ -17,7 +17,7 @@ used:
   exists, is structurally valid, contains the expected metadata and text, and meets minimum size
   and page-count requirements. This applies to Pandoc and WeasyPrint.
 - **Artifact content validation**: FileAssert asserts that the NuGet package archive contains
-  the expected documentation files. This applies to XmlDocMarkdown.
+  the expected documentation files. This applies to ApiMark.
 - **Self-validation**: the tool is invoked with `--version` or `--help` flags to confirm it is
   installed and operational. This applies to FileAssert itself and forms part of the evidence for
   ReviewMark.
@@ -42,7 +42,7 @@ tests exist and are passing.
 | VersionMark | CI pipeline execution | Pipeline run success |
 | WeasyPrint | Document output validation | FileAssert PDF assertions |
 | xUnit | Library test exercise | Passing library tests |
-| XmlDocMarkdown | Artifact content validation | FileAssert NuGet package assertions |
+| ApiMark | Artifact content validation | FileAssert NuGet package assertions |
 
 See the individual verification files under *OTS Software Item Verification* for per-item
 acceptance criteria and test scenario details.

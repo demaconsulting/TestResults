@@ -26,7 +26,7 @@ sections:
               DemaConsulting.FileAssert validates HTML, PDF, and NuGet package artifacts produced
               during the build, asserting file existence, size, structural validity, content, and
               zip entry presence. It provides OTS qualification evidence for Pandoc, WeasyPrint,
-              and XmlDocMarkdown by asserting their outputs are non-trivially correct. A passing
+              and ApiMark by asserting their outputs are non-trivially correct. A passing
               CI pipeline run — in which all FileAssert assertion steps exit with code 0 — is the
               primary evidence that document validation is functioning correctly.
             tags: [ots]

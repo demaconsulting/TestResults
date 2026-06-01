@@ -116,7 +116,7 @@ pwsh ./build.ps1
 
 ## API Documentation
 
-Detailed API documentation for all public types and members is distributed in the `docs/` folder
+Detailed API documentation for all public types and members is distributed in the `api/` folder
 of the NuGet package.
 
 ## User Guide
