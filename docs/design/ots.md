@@ -30,7 +30,7 @@ artifacts that FileAssert validates to prove correct execution and meaningful ou
 | VersionMark | Version capture | Dotnet tool — captures and publishes tool-version information |
 | WeasyPrint | PDF generation | Dotnet tool wrapper — converts HTML documents to PDF |
 | xUnit | Test framework | NuGet packages — discovers and runs tests; produces TRX result files |
-| ApiMark | API documentation | NuGet package (`DemaConsulting.ApiMark.MSBuild`) — generates Markdown API docs during build |
+| ApiMark | API documentation | NuGet package (`ApiMark.MSBuild`) — generates Markdown API docs during build |
 
 See *BuildMark Integration Design*, *FileAssert Integration Design*, *Pandoc Integration Design*,
 *ReqStream Integration Design*, *ReviewMark Integration Design*, *SarifMark Integration Design*,

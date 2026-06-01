@@ -21,6 +21,7 @@ words:
   - hotspots
   - LINQ
   - mstest
+  - netstandard
   - Pandoc
   - postconditions
   - reqstream
