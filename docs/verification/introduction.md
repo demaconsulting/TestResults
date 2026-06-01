@@ -30,7 +30,7 @@ This document excludes the internal structure of the test project itself, build-
 implementation details, and generated compliance artifacts under any `generated/` folder.
 
 - **BuildMark**, **FileAssert**, **Pandoc**, **ReqStream**, **ReviewMark**, **SarifMark**,
-  **SonarMark**, **VersionMark**, **WeasyPrint**, **xUnit**, and **XmlDocMarkdown**: OTS
+  **SonarMark**, **VersionMark**, **WeasyPrint**, **xUnit**, and **ApiMark**: OTS
   verification evidence for each is in `docs/verification/ots.md` and
   `docs/verification/ots/`.
 

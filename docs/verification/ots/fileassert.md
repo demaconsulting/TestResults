@@ -9,7 +9,7 @@ FileAssert is verified through two complementary approaches:
   engine is functional. These tests provide objective evidence that the tool binary is present,
   loads successfully, and can perform assertions.
 - **CI pipeline evidence**: FileAssert is invoked multiple times during each CI run to validate
-  HTML, PDF, and NuGet package artifacts produced by Pandoc, WeasyPrint, and XmlDocMarkdown. A
+  HTML, PDF, and NuGet package artifacts produced by Pandoc, WeasyPrint, and ApiMark. A
   passing pipeline run — in which all FileAssert assertion steps exit with code 0 — constitutes
   evidence that the document-validation capability is operating correctly.
 

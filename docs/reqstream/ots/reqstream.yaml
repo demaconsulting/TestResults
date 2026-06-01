@@ -9,7 +9,8 @@ sections:
       - title: ReqStream Requirements
         requirements:
           - id: TestResults-OTS-ReqStream
-            title: ReqStream shall process requirements, generate traceability
+            title: >-
+              ReqStream shall process requirements, generate traceability
               artifacts, filter by tags, and enforce test coverage.
             justification: |
               DemaConsulting.ReqStream processes requirements.yaml and the TRX test-result files to

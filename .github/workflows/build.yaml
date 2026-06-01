@@ -140,7 +140,7 @@ jobs:
           JOB_ID="build-${OS_SHORT}"
           dotnet versionmark --capture --job-id "${JOB_ID}" \
             --output "artifacts/versionmark-${JOB_ID}.json" -- \
-            dotnet git dotnet-sonarscanner versionmark xmldocmd
+            dotnet git dotnet-sonarscanner versionmark apimark-msbuild
           echo "✓ Tool versions captured"
 
       # === CAPTURE OTS SELF-VALIDATION RESULTS ===

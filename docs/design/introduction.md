@@ -27,7 +27,7 @@ internal design of external framework libraries.
 OTS software items used in this repository:
 
 - **BuildMark**, **FileAssert**, **Pandoc**, **ReqStream**, **ReviewMark**, **SarifMark**,
-  **SonarMark**, **VersionMark**, **WeasyPrint**, **xUnit**, and **XmlDocMarkdown**:
+  **SonarMark**, **VersionMark**, **WeasyPrint**, **xUnit**, and **ApiMark**:
   integration and usage design for each is in `docs/design/ots.md` and `docs/design/ots/`.
 
 ## Software Structure
@@ -54,7 +54,7 @@ OTS Software Items
 ├── VersionMark
 ├── WeasyPrint
 ├── xUnit
-└── XmlDocMarkdown
+└── ApiMark
 ```
 
 ## Folder Layout

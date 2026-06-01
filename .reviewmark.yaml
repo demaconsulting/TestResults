@@ -203,9 +203,9 @@ reviews:
       - docs/design/ots/xunit.md
       - docs/verification/ots/xunit.md
 
-  - id: OTS-XmlDocMd
-    title: Review that XmlDocMd Provides Required Functionality
+  - id: OTS-ApiMark
+    title: Review that ApiMark Provides Required Functionality
     paths:
-      - docs/reqstream/ots/xmldocmd.yaml
-      - docs/design/ots/xmldocmd.md
-      - docs/verification/ots/xmldocmd.md
+      - docs/reqstream/ots/apimark.yaml
+      - docs/design/ots/apimark.md
+      - docs/verification/ots/apimark.md

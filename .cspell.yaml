@@ -21,6 +21,7 @@ words:
   - hotspots
   - LINQ
   - mstest
+  - netstandard
   - Pandoc
   - postconditions
   - reqstream
@@ -35,7 +36,7 @@ words:
   - Weasy
   - Weasyprint
   - weasyprint
-  - xmldocmd
+  - apimark
   - xunit
   - Xunit
   - yamlfix

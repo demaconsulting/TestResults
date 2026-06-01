@@ -7,15 +7,14 @@ detailed integration design for each is in the corresponding `docs/design/ots/` 
 
 ## OTS Integration Strategy
 
-All tool-type OTS items (BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark, SarifMark,
-SonarMark, VersionMark, WeasyPrint, and XmlDocMarkdown) are installed as `dotnet` tools and
-invoked from the CI pipeline. Their versions are managed through `requirements.yaml` and the
-`dotnet-tools.json` manifest. xUnit is integrated as a NuGet package dependency of the test
-project rather than a CLI tool.
+Most tool-type OTS items (BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark, SarifMark,
+SonarMark, VersionMark, and WeasyPrint) are installed as `dotnet` tools and invoked from the CI
+pipeline. xUnit is integrated as a NuGet package dependency of the test project. ApiMark is
+integrated as an MSBuild NuGet package dependency of the library project.
 
 The pipeline execution model treats a successful CI run as primary integration evidence for most
-pipeline tools. Document-output tools (Pandoc, WeasyPrint, and XmlDocMarkdown) additionally
-produce artifacts that FileAssert validates to prove correct execution and meaningful output.
+pipeline tools. Document-output tools (Pandoc, WeasyPrint, and ApiMark) additionally produce
+artifacts that FileAssert validates to prove correct execution and meaningful output.
 
 ## OTS Items
 
@@ -31,9 +30,9 @@ produce artifacts that FileAssert validates to prove correct execution and meani
 | VersionMark | Version capture | Dotnet tool — captures and publishes tool-version information |
 | WeasyPrint | PDF generation | Dotnet tool wrapper — converts HTML documents to PDF |
 | xUnit | Test framework | NuGet packages — discovers and runs tests; produces TRX result files |
-| XmlDocMarkdown | API documentation | Dotnet tool — generates Markdown API docs from the library assembly |
+| ApiMark | API documentation | NuGet package (`ApiMark.MSBuild`) — generates Markdown API docs during build |
 
 See *BuildMark Integration Design*, *FileAssert Integration Design*, *Pandoc Integration Design*,
 *ReqStream Integration Design*, *ReviewMark Integration Design*, *SarifMark Integration Design*,
 *SonarMark Integration Design*, *VersionMark Integration Design*, *WeasyPrint Integration Design*,
-*xUnit Integration Design*, and *XmlDocMarkdown Integration Design* for detailed per-item design.
+*xUnit Integration Design*, and *ApiMark Integration Design* for detailed per-item design.
