@@ -1,12 +1,12 @@
-## Serializer
+### Serializer
 
-### Purpose
+#### Purpose
 
 The Serializer unit is the IO subsystem facade for callers that do not know the incoming
 format. It identifies whether XML content is TRX or JUnit and delegates deserialization to
 the corresponding format-specific serializer.
 
-### Data Model
+#### Data Model
 
 **TestResultFormat**: `enum` - Defines the three public detection outcomes: `Unknown`, `Trx`,
 and `JUnit`.
@@ -14,7 +14,7 @@ and `JUnit`.
 **TrxNamespaceUri**: `string` - Hard-coded XML namespace used to distinguish genuine TRX
 `TestRun` roots from unrelated XML documents.
 
-### Key Methods
+#### Key Methods
 
 **Identify**: Detects the serialized test-result format from XML content.
 
@@ -39,7 +39,7 @@ and checks `testsuites` or `testsuite` root names for JUnit.
 The method keeps format selection in one place so callers can deserialize mixed result files
 through a single entry point.
 
-### Error Handling
+#### Error Handling
 
 `Identify()` catches `XmlException` and converts invalid XML to `TestResultFormat.Unknown`.
 `Deserialize()` validates `contents` before any XML parsing: passing `null` throws
@@ -47,14 +47,14 @@ through a single entry point.
 `ArgumentException`. It throws `InvalidOperationException` when `Identify()` cannot classify
 the document. Exceptions raised by the delegated serializer propagate to the caller.
 
-### Dependencies
+#### Dependencies
 
 - **TrxSerializer** - performs format-specific TRX deserialization.
 - **JUnitSerializer** - performs format-specific JUnit deserialization.
 - **TestResults** - common return type for deserialization.
 - **System.Xml.Linq.XDocument** - parses XML roots for format identification.
 
-### Callers
+#### Callers
 
 N/A - entry-point unit, called directly by library consumers and exercised by system and
 subsystem tests.

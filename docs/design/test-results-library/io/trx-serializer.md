@@ -1,12 +1,12 @@
-## TrxSerializer
+### TrxSerializer
 
-### Purpose
+#### Purpose
 
 The TrxSerializer unit converts between the shared in-memory model and Microsoft TRX test
 result documents. It is responsible for preserving the richer TRX metadata model, including
 run metadata, test-definition cross-references, output streams, and summary counters.
 
-### Data Model
+#### Data Model
 
 **TrxNamespace**: `XNamespace` - Fixed TRX namespace used for element construction and lookup.
 
@@ -27,7 +27,7 @@ and parse TRX timestamps.
 **DurationFormatString**: `string` - Constant/invariant format string (`"c"`) used to format
 and parse TRX durations as TimeSpan values.
 
-### Key Methods
+#### Key Methods
 
 **Serialize**: Writes a `TestResults` model as TRX XML.
 
@@ -67,7 +67,7 @@ resolution is linear rather than repeatedly scanning the XML document.
 The method accepts named values and defined numeric values, then falls back to `Failed` so
 callers never receive an undefined `TestOutcome` from TRX deserialization.
 
-### Error Handling
+#### Error Handling
 
 `Serialize()` throws `ArgumentNullException` when `results` is null. `Deserialize()` throws
 `ArgumentNullException` or `ArgumentException` for null or whitespace input, and throws
@@ -77,7 +77,7 @@ Malformed or missing GUIDs fall back to newly generated GUIDs, malformed duratio
 to `TimeSpan.Zero`, malformed timestamps fall back to `DateTime.UtcNow`, and unrecognized
 outcome values fall back to `TestOutcome.Failed`.
 
-### Dependencies
+#### Dependencies
 
 - **TestResults** - provides run-level metadata for `TestRun` and receives deserialized runs.
 - **TestResult** - provides per-test execution data and receives deserialized test cases.
@@ -86,7 +86,7 @@ outcome values fall back to `TestOutcome.Failed`.
 - **System.Xml.Linq** and **System.Xml.XPath** - construct and query TRX XML.
 - **System.Globalization** - formats and parses invariant timestamps and durations.
 
-### Callers
+#### Callers
 
 - **Serializer** - delegates TRX deserialization after format identification.
 - **Library consumers** - call the static serialize and deserialize entry points directly when

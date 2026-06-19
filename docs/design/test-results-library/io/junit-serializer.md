@@ -1,13 +1,13 @@
-## JUnitSerializer
+### JUnitSerializer
 
-### Purpose
+#### Purpose
 
 The JUnitSerializer unit converts between the shared in-memory model and JUnit XML test
 result documents. It adapts the richer local model to the narrower JUnit schema by grouping
 results into suites, projecting outcomes onto JUnit elements, and recovering as much metadata
 as the format provides when reading JUnit input.
 
-### Data Model
+#### Data Model
 
 **DefaultSuiteName**: `string` - Sentinel suite name used when a `TestResult` has an empty
 `ClassName`.
@@ -21,7 +21,7 @@ root element.
 **MessageAttributeName**: `string` - Attribute name reused for `failure`, `error`, and
 `skipped` message text.
 
-### Key Methods
+#### Key Methods
 
 **Serialize**: Writes a `TestResults` model as JUnit XML.
 
@@ -87,7 +87,7 @@ represents the earliest test start, matching the convention used by common JUnit
   `TestResult` default; the `DefaultSuiteName` sentinel classname is mapped back to an empty
   string so round-trips produce the original `ClassName` value.
 
-### Error Handling
+#### Error Handling
 
 `Serialize()` throws `ArgumentNullException` when `results` is null. `Deserialize()` throws
 `ArgumentNullException` or `ArgumentException` for null or whitespace input and throws
@@ -100,7 +100,7 @@ to an empty class name. Because JUnit has no inconclusive element, `Inconclusive
 serialize as plain `testcase` elements, making them indistinguishable from `Passed` outcomes
 on deserialization; this round-trip loss is a known limitation of the JUnit format.
 
-### Dependencies
+#### Dependencies
 
 - **TestResults** - provides run metadata for the `testsuites` root and receives
   deserialized runs.
@@ -111,7 +111,7 @@ on deserialization; this round-trip loss is a known limitation of the JUnit form
 - **System.Globalization** - formats and parses timestamps and durations using invariant
   culture.
 
-### Callers
+#### Callers
 
 - **Serializer** - delegates JUnit deserialization after format identification.
 - **Library consumers** - call the static serialize and deserialize entry points directly when
