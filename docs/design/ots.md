@@ -9,16 +9,16 @@ detailed integration design for each is in the corresponding `docs/design/ots/` 
 
 OTS items are selected based on the following criteria:
 
-- **License compatibility**: only items published under a permissive open-source license (MIT, Apache 2.0, or equivalent) are
-  accepted, ensuring compliance with the project's distribution requirements.
-- **Ecosystem alignment**: items must be available as a `dotnet` tool or NuGet package so they integrate naturally with the
-  .NET SDK toolchain and do not require separate runtime environments.
+- **License compatibility**: only items published under a permissive open-source license (MIT,
+  Apache 2.0, or equivalent) are accepted, ensuring compliance with the project's distribution requirements.
+- **Ecosystem alignment**: items must be available as a `dotnet` tool or NuGet package so they integrate naturally
+  with the .NET SDK toolchain and do not require separate runtime environments.
 - **Maturity and community support**: items should have an active release history, publicly accessible source, and
   demonstrated use in comparable software projects.
-- **Security track record**: no unresolved critical CVEs at the time of adoption; items from the DemaConsulting organisation
-  are under the same source-control and review processes as the host project.
-- **Qualification feasibility**: the item must be verifiable through CI pipeline execution, document output assertions, or
-  library test exercise without requiring access to vendor internal test suites.
+- **Security track record**: no unresolved critical CVEs at the time of adoption; items from the DemaConsulting
+  organization are under the same source-control and review processes as the host project.
+- **Qualification feasibility**: the item must be verifiable through CI pipeline execution, document output
+  assertions, or library test exercise without requiring access to vendor internal test suites.
 
 ## Version Management Policy
 
