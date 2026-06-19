@@ -24,5 +24,9 @@ sections:
               - WeasyPrint_ReviewReportPdf
               - WeasyPrint_DesignPdf
               - WeasyPrint_UserGuidePdf
-              - WeasyPrint_RequirementsPdf
-              - WeasyPrint_TraceMatrixPdf
+              # NOTE: WeasyPrint_RequirementsPdf and WeasyPrint_TraceMatrixPdf cannot be listed
+              # here because they run AFTER ReqStream in the CI pipeline. ReqStream publishes
+              # the requirements document and trace matrix first, then those PDFs are generated
+              # from the published HTML — a temporal dependency that prevents their test evidence
+              # from being available at requirements-publishing time. Adding them here causes the
+              # requirement to appear unsatisfied (temporal paradox).
