@@ -18,7 +18,7 @@ tests:
       - pattern: "src/DemaConsulting.TestResults/bin/Release/DemaConsulting.TestResults.*.nupkg"
         count: 1
         zip:
-          entries:
+          files:
             - pattern: "api/DemaConsulting.TestResults.md"
               min: 1
               max: 1
