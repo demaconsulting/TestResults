@@ -30,6 +30,7 @@ evidence-source:
 # Review sets following hierarchical scope principles.
 # Each review-set focuses on a single compliance question with manageable file counts.
 reviews:
+  # Purpose
   - id: Purpose
     title: Review that Advertised Features Match System Design
     paths:
@@ -39,6 +40,7 @@ reviews:
       - docs/design/introduction.md
       - docs/design/test-results-library.md
 
+  # TestResults - Specials
   - id: TestResults-Architecture
     title: Review that TestResults Library Architecture Satisfies Requirements
     paths:
@@ -76,6 +78,7 @@ reviews:
       - docs/reqstream/test-results-library/**/*.yaml
       - docs/reqstream/ots/**/*.yaml
 
+  # TestResults - IO
   - id: TestResults-IO
     title: Review that TestResults IO Satisfies Subsystem Requirements
     paths:
@@ -84,6 +87,7 @@ reviews:
       - docs/verification/test-results-library/io.md
       - test/DemaConsulting.TestResults.Tests/IO/IOTests.cs
 
+  # TestResults - TestOutcome
   - id: TestResults-TestOutcome
     title: Review that TestResults TestOutcome Implementation is Correct
     paths:
@@ -92,6 +96,7 @@ reviews:
       - src/DemaConsulting.TestResults/TestOutcome.cs
       - test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs
 
+  # TestResults - TestResult
   - id: TestResults-TestResult
     title: Review that TestResults TestResult Implementation is Correct
     paths:
@@ -100,6 +105,7 @@ reviews:
       - src/DemaConsulting.TestResults/TestResult.cs
       - test/DemaConsulting.TestResults.Tests/TestResultTests.cs
 
+  # TestResults - TestResults
   - id: TestResults-TestResults
     title: Review that TestResults TestResults Implementation is Correct
     paths:
@@ -145,6 +151,7 @@ reviews:
       - src/DemaConsulting.TestResults/IO/JUnitSerializer.cs
       - test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs
 
+  # OTS Items
   - id: OTS-BuildMark
     title: Review that BuildMark Provides Required Functionality
     paths:
