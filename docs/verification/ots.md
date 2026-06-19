@@ -1,10 +1,10 @@
-# OTS Software Item Verification
+# OTS Verification
 
 This document describes the overall verification strategy for the OTS software tools used in the
 TestResults repository. Detailed verification evidence for each OTS item is in the corresponding
 `docs/verification/ots/` file.
 
-## OTS Verification Strategy
+## Verification Strategy
 
 OTS items are verified through integration evidence rather than internal unit tests, because
 their source is external and not under local development control. Three evidence categories are
@@ -27,6 +27,38 @@ used:
 Test evidence is referenced by test name in each OTS requirements YAML file and linked to
 requirements by ReqStream. A successful CI pipeline run with `--enforce` proves all referenced
 tests exist and are passing.
+
+## Qualification Evidence
+
+The following evidence categories are used to demonstrate that each OTS item is fit for purpose:
+
+- **CI pipeline execution success**: a passing pipeline run with no errors or warnings constitutes evidence that the tool
+  is installed, correctly configured, and producing the expected outputs. This evidence is captured once per release
+  pipeline run and is referenced by test name in the OTS requirements YAML files.
+- **Document output assertions**: FileAssert checks that each generated HTML and PDF document exists, is non-empty,
+  contains expected metadata strings, and meets minimum size and page-count thresholds. These assertions are recorded as
+  named tests and linked to OTS requirements through ReqStream.
+- **Artifact content assertions**: FileAssert checks that the NuGet package archive produced by ApiMark contains the
+  expected Markdown documentation files.
+- **Self-validation invocations**: `fileassert --version` and `fileassert --help` are captured as named tests to confirm
+  the tool is installed and operational. A `reviewmark --version` invocation provides equivalent evidence for ReviewMark.
+- **Library test pass**: all passing library tests constitute evidence that xUnit is functional.
+
+All evidence items are named, linked to requirements, and verified complete by ReqStream on each CI run.
+
+## Regression Approach
+
+When an OTS item is upgraded to a new version, the following steps are performed to ensure the upgrade does not
+introduce regressions:
+
+- The full CI pipeline is executed against the new version. Any failure in pipeline execution, document output
+  assertions, or library tests is treated as a regression and blocks the upgrade.
+- For major version upgrades, the integration design documentation is reviewed to confirm the described features and
+  integration patterns remain accurate. Any discrepancies are resolved before the upgrade is accepted.
+- ReqStream enforces that all OTS requirement links are satisfied by current test evidence; an upgrade that removes
+  previously passing evidence cannot merge until the evidence is restored.
+- Version changes are recorded automatically in the SBOM artifacts rather than in design documentation, ensuring the
+  audit trail is always current without manual document updates.
 
 ## OTS Items
 

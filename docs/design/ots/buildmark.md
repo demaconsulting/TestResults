@@ -1,4 +1,4 @@
-## BuildMark Integration Design
+## BuildMark
 
 ### Purpose
 

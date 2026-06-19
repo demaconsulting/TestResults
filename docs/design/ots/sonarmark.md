@@ -1,4 +1,4 @@
-## SonarMark Integration Design
+## SonarMark
 
 ### Purpose
 

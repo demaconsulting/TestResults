@@ -32,30 +32,29 @@ OTS software items used in this repository:
 
 ## Software Structure
 
-```text
-TestResults Library (System)
-├── IO (Subsystem)
-│   ├── Serializer (Unit)
-│   ├── SerializerHelpers (Unit)
-│   ├── TrxSerializer (Unit)
-│   └── JUnitSerializer (Unit)
-├── TestOutcome (Unit)
-├── TestResult (Unit)
-└── TestResults (Unit)
+- **TestResultsLibrary** (System) - .NET library for reading and writing test result files in TRX and JUnit XML formats
+  - **IO** (Subsystem) - translates between the in-memory model and XML result formats
+    - Serializer (Unit) - identifies XML result formats and delegates deserialization
+    - SerializerHelpers (Unit) - provides Utf8StringWriter for XML declarations
+    - TrxSerializer (Unit) - serializes and deserializes TRX test result documents
+    - JUnitSerializer (Unit) - serializes and deserializes JUnit XML test result documents
+  - TestOutcome (Unit) - defines supported test outcomes and classification helpers
+  - TestResult (Unit) - represents one test case result with metadata and output
+  - TestResults (Unit) - represents a complete test run and its ordered results
 
-OTS Software Items
-├── BuildMark
-├── FileAssert
-├── Pandoc
-├── ReqStream
-├── ReviewMark
-├── SarifMark
-├── SonarMark
-├── VersionMark
-├── WeasyPrint
-├── xUnit
-└── ApiMark
-```
+**OTS Dependencies:**
+
+- BuildMark (OTS)
+- FileAssert (OTS)
+- Pandoc (OTS)
+- ReqStream (OTS)
+- ReviewMark (OTS)
+- SarifMark (OTS)
+- SonarMark (OTS)
+- VersionMark (OTS)
+- WeasyPrint (OTS)
+- xUnit (OTS)
+- ApiMark (OTS)
 
 ## Folder Layout
 

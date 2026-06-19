@@ -1,4 +1,4 @@
-## BuildMark Verification
+## BuildMark
 
 ### Verification Approach
 

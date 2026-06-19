@@ -1,4 +1,4 @@
-## SarifMark Integration Design
+## SarifMark
 
 ### Purpose
 

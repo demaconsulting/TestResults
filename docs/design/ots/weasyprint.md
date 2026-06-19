@@ -1,4 +1,4 @@
-## WeasyPrint Integration Design
+## WeasyPrint
 
 ### Purpose
 

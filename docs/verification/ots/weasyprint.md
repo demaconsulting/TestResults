@@ -1,4 +1,4 @@
-## WeasyPrint Verification
+## WeasyPrint
 
 ### Verification Approach
 

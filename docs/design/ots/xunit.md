@@ -1,4 +1,4 @@
-## xUnit Integration Design
+## xUnit
 
 ### Purpose
 

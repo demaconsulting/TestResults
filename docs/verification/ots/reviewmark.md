@@ -1,4 +1,4 @@
-## ReviewMark Verification
+## ReviewMark
 
 ### Verification Approach
 

@@ -1,4 +1,4 @@
-## FileAssert Integration Design
+## FileAssert
 
 ### Purpose
 

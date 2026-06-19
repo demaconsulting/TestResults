@@ -1,4 +1,4 @@
-## VersionMark Integration Design
+## VersionMark
 
 ### Purpose
 

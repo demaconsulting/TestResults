@@ -1,4 +1,4 @@
-## ReqStream Verification
+## ReqStream
 
 ### Verification Approach
 

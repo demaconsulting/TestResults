@@ -1,4 +1,4 @@
-## ReviewMark Integration Design
+## ReviewMark
 
 ### Purpose
 

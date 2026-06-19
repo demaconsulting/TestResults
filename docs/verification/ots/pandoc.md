@@ -1,4 +1,4 @@
-## Pandoc Verification
+## Pandoc
 
 ### Verification Approach
 

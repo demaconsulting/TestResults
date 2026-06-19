@@ -1,4 +1,4 @@
-## ApiMark Integration Design
+## ApiMark
 
 ### Purpose
 

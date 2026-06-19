@@ -1,4 +1,4 @@
-## xUnit Verification
+## xUnit
 
 ### Verification Approach
 
