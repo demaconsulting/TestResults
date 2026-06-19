@@ -89,7 +89,9 @@ flowchart TD
 
 N/A - the system relies only on the .NET runtime and base class library APIs such as LINQ to
 XML, XPath, culture-aware formatting, and text encoding. No separately documented OTS or
-shared package design files are modeled in this design collection.
+shared package design files are modeled in this design collection. CI and documentation
+tooling OTS items are documented separately in the OTS design collection but are not runtime
+dependencies of the library.
 
 ## Risk Control Measures
 
@@ -108,8 +110,10 @@ N/A - not a safety-classified software item.
 
 ## Design Constraints
 
-- Platform: the implementation is an in-process C#/.NET library with no built-in file,
-  network, or database transport layer.
+- Platform: the implementation is an in-process C#/.NET library targeting .NET Standard 2.0,
+  .NET 8, .NET 9, and .NET 10, with no built-in file, network, or database transport layer.
+- Runtime dependencies: zero — the library depends only on the .NET runtime and base class
+  library; no third-party packages are required at runtime.
 - Format neutrality: the model units store test semantics, not TRX-specific or
   JUnit-specific XML nodes, so conversion stays isolated in the IO subsystem.
 - XML compatibility: TRX detection requires the exact TRX namespace and `TestRun` root,

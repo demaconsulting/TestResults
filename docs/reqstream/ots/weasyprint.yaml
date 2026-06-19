@@ -24,3 +24,5 @@ sections:
               - WeasyPrint_ReviewReportPdf
               - WeasyPrint_DesignPdf
               - WeasyPrint_UserGuidePdf
+              - WeasyPrint_RequirementsPdf
+              - WeasyPrint_TraceMatrixPdf

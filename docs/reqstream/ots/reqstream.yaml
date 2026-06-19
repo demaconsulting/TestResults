@@ -8,21 +8,62 @@ sections:
     sections:
       - title: ReqStream Requirements
         requirements:
-          - id: TestResults-OTS-ReqStream
+          - id: TestResults-OTS-ReqStream-RequirementsProcessing
             title: >-
-              ReqStream shall process requirements, generate traceability
-              artifacts, filter by tags, and enforce test coverage.
+              ReqStream shall read hierarchical requirements YAML files and produce a structured
+              requirements document.
             justification: |
-              DemaConsulting.ReqStream processes requirements.yaml and the TRX test-result files to
-              produce a requirements report, justifications document, and traceability matrix. It
-              supports tag-based filtering for phased pipeline execution. When run with --enforce,
-              it exits with a non-zero code if any requirement lacks test evidence, making unproven
-              requirements a build-breaking condition. A successful pipeline run with --enforce proves
-              all requirements are covered and that ReqStream is functioning.
+              DemaConsulting.ReqStream parses requirements.yaml and any referenced YAML files to
+              build a complete, hierarchical requirements model. A successful pipeline run producing
+              the requirements document proves this ingestion and structuring capability is
+              functioning.
             tags: [ots]
             tests:
               - ReqStream_RequirementsProcessing
+
+          - id: TestResults-OTS-ReqStream-TraceMatrix
+            title: >-
+              ReqStream shall generate a traceability matrix linking requirements to test evidence.
+            justification: |
+              DemaConsulting.ReqStream correlates requirements identifiers against TRX test-result
+              files and emits a traceability matrix. A successful pipeline run producing the trace
+              matrix proves that requirement-to-test linkage is functioning.
+            tags: [ots]
+            tests:
               - ReqStream_TraceMatrix
+
+          - id: TestResults-OTS-ReqStream-ReportExport
+            title: >-
+              ReqStream shall export generated reports to the declared output paths.
+            justification: |
+              DemaConsulting.ReqStream writes its requirements document and traceability matrix to
+              the output paths specified in the pipeline configuration. A successful pipeline run
+              with the expected files present at their declared paths proves this export capability
+              is functioning.
+            tags: [ots]
+            tests:
               - ReqStream_ReportExport
+
+          - id: TestResults-OTS-ReqStream-TagsFiltering
+            title: >-
+              ReqStream shall filter requirements by tag to support phased pipeline execution.
+            justification: |
+              DemaConsulting.ReqStream respects the tags: field on requirements, allowing pipelines
+              to process only the subset of requirements relevant to a given phase. A successful
+              pipeline run exercising tag-scoped invocations proves this filtering capability is
+              functioning.
+            tags: [ots]
+            tests:
               - ReqStream_TagsFiltering
+
+          - id: TestResults-OTS-ReqStream-EnforcementMode
+            title: >-
+              ReqStream shall exit non-zero when any requirement lacks test evidence.
+            justification: |
+              DemaConsulting.ReqStream is invoked with --enforce in the CI pipeline. When any
+              requirement has no linked passing test, it exits with a non-zero code, making coverage
+              gaps a build-breaking condition. A successful pipeline run with --enforce proves both
+              that all requirements are covered and that this enforcement mechanism is functioning.
+            tags: [ots]
+            tests:
               - ReqStream_EnforcementMode

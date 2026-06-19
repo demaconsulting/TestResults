@@ -171,6 +171,10 @@ tests:
         html:
           - query: //head/title
             count: 1
+          - query: //nav[@id='TOC']
+            count: 1
+          - query: (//span[@class='header-section-number'])[1]
+            count: 1
         text:
           - contains: Design
 
@@ -203,6 +207,10 @@ tests:
         count: 1
         html:
           - query: //head/title
+            count: 1
+          - query: //nav[@id='TOC']
+            count: 1
+          - query: (//span[@class='header-section-number'])[1]
             count: 1
         text:
           - contains: Verification

@@ -19,4 +19,12 @@ sections:
             tests:
               - SarifMark_SarifReading
               - SarifMark_MarkdownReportGeneration
+          - id: TestResults-OTS-SarifMark-Enforcement
+            title: SarifMark shall exit non-zero when SARIF findings exceed the configured threshold.
+            justification: |
+              Enforcement makes quality-gate failures build-breaking: when the number of SARIF findings
+              exceeds the configured threshold SarifMark returns a non-zero exit code, causing the CI
+              pipeline to fail and preventing a release until the findings are resolved.
+            tags: [ots]
+            tests:
               - SarifMark_Enforcement

@@ -39,13 +39,3 @@ sections:
                   the format, providing a single entry point for JUnit consumption.
                 tests:
                   - Serializer_Deserialize_JUnitContent_ReturnsTestResults
-
-              - id: TestResults-Serializer-RoundTrip
-                title: The Serializer shall preserve core test data during round-trip conversion between TRX and JUnit.
-                justification: |
-                  Round-trip preservation ensures that test results can be serialized and deserialized
-                  without data loss. This is critical for scenarios where test results are stored,
-                  transmitted, or converted between formats, ensuring data integrity throughout the
-                  test result lifecycle.
-                tests:
-                  - Serializer_RoundTrip_TrxToJUnit_PreservesCoreTestData

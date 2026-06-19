@@ -38,7 +38,6 @@ sections:
             children:
               - TestResults-Serializer-TrxDeserialization
               - TestResults-Serializer-JUnitDeserialization
-              - TestResults-Serializer-RoundTrip
               - TestResults-Trx-Deserialize
               - TestResults-JUnit-Deserialize
             tests:
@@ -47,7 +46,6 @@ sections:
               - IO_Deserialize_NullContent_ThrowsArgumentNullException
               - IO_Deserialize_WhitespaceContent_ThrowsArgumentException
               - IO_Deserialize_UnknownContent_ThrowsInvalidOperationException
-              - IO_TrxSerializedResults_RoundTripsViaJUnit_PreservesCoreTestData
           - id: TestResults-IO-Serialize
             title: The IO subsystem shall serialize test results to supported file formats.
             justification: |
@@ -63,3 +61,15 @@ sections:
             tests:
               - IO_Serialize_TestResults_ProducesTrxContent
               - IO_Serialize_TestResults_ProducesJUnitContent
+          - id: TestResults-IO-RoundTrip
+            title: The IO subsystem shall preserve core test data during round-trip conversion between TRX and JUnit.
+            justification: |
+              Round-trip preservation ensures that test results can be serialized and deserialized
+              without data loss. This is critical for scenarios where test results are stored,
+              transmitted, or converted between formats, ensuring data integrity throughout the
+              test result lifecycle. Round-trip fidelity is an emergent behavior of the IO subsystem
+              as a whole: the Serializer dispatches to TrxSerializer and JUnitSerializer, each of
+              which independently handles format-specific encoding and decoding.
+            tests:
+              - Serializer_RoundTrip_TrxToJUnit_PreservesCoreTestData
+              - IO_TrxSerializedResults_RoundTripsViaJUnit_PreservesCoreTestData

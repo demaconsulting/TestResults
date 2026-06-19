@@ -10,7 +10,7 @@ chosen because it integrates directly with the GitHub Actions environment, captu
 ### Features Used
 
 - **GitHub Actions metadata query**: retrieves workflow run details, trigger information, and
-  linked issues from the GitHub API using the `GITHUB_TOKEN` environment variable.
+  linked issues from the GitHub API using the `GH_TOKEN` environment variable.
 - **Git integration**: records the commit SHA and branch name associated with the build.
 - **Issue tracking**: lists GitHub issues linked to the pull request or commit being built.
 - **Known-issues reporting**: collects open issues labeled as known defects and includes them in
@@ -22,7 +22,7 @@ chosen because it integrates directly with the GitHub Actions environment, captu
 
 BuildMark is installed as a `dotnet` tool via the `dotnet-tools.json` manifest and restored
 before the pipeline documentation step. It is invoked once per release pipeline run after the
-build and test steps succeed. The tool reads `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, and
+build and test steps succeed. The tool reads `GH_TOKEN`, `GITHUB_REPOSITORY`, and
 `GITHUB_RUN_ID` from the GitHub Actions environment and writes its output to
 `docs/build_notes/generated/build_notes.md`. That file is then consumed by Pandoc to produce
 the build-notes HTML, which WeasyPrint converts to the release PDF. No runtime configuration

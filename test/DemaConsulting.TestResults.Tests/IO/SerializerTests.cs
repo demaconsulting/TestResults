@@ -478,8 +478,8 @@ public sealed class SerializerTests
     ///     Proves that the Serializer unit correctly dispatches to TrxSerializer and JUnitSerializer
     ///     so that test count, names, class names, and outcomes survive a serialize-deserialize-
     ///     serialize-deserialize chain through both formats. This exercises
-    ///     <c>TestResults-Serializer-FormatConversion</c> and <c>TestResults-Serializer-RoundTrip</c>
-    ///     at the unit level without relying on the IO subsystem test.
+    ///     <c>TestResults-Serializer-TrxDeserialization</c>, <c>TestResults-Serializer-JUnitDeserialization</c>,
+    ///     and <c>TestResults-IO-RoundTrip</c> at the unit level.
     /// </remarks>
     [Fact]
     public void Serializer_RoundTrip_TrxToJUnit_PreservesCoreTestData()

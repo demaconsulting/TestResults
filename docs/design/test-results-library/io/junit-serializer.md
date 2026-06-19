@@ -87,6 +87,36 @@ represents the earliest test start, matching the convention used by common JUnit
   `TestResult` default; the `DefaultSuiteName` sentinel classname is mapped back to an empty
   string so round-trips produce the original `ClassName` value.
 
+#### Outcome Mapping
+
+JUnit XML supports only three distinct outcome states — `failure`, `error`, and `skipped` child
+elements, with absence of any child element meaning the test passed. The table below documents how
+every `TestOutcome` value maps through JUnit serialization and deserialization. Entries marked
+**lossy** do not survive a round-trip.
+
+| `TestOutcome` | Serializes to JUnit element | Deserializes back as | Fidelity |
+| --- | --- | --- | --- |
+| `Passed` | *(no child element)* | `Passed` | Preserved |
+| `PassedButRunAborted` | *(no child element)* | `Passed` | **Lossy** |
+| `Warning` | *(no child element)* | `Passed` | **Lossy** |
+| `Inconclusive` | *(no child element)* | `Passed` | **Lossy** |
+| `Disconnected` | *(no child element)* | `Passed` | **Lossy** |
+| `Completed` | *(no child element)* | `Passed` | **Lossy** |
+| `InProgress` | *(no child element)* | `Passed` | **Lossy** |
+| `Failed` | `failure` element | `Failed` | Preserved |
+| `Error` | `error` element | `Error` | Preserved |
+| `Timeout` | `error` element | `Error` | **Lossy** |
+| `Aborted` | `error` element | `Error` | **Lossy** |
+| `NotExecuted` | `skipped` element | `NotExecuted` | Preserved |
+| `NotRunnable` | `skipped` element | `NotExecuted` | **Lossy** |
+| `Pending` | `skipped` element | `NotExecuted` | **Lossy** |
+
+The grouping logic mirrors `TestOutcomeExtensions`: `Failed` maps to a `failure` element;
+`Error`, `Timeout`, and `Aborted` (the outcomes where `IsErrorOutcome` returns true) map to an
+`error` element; outcomes where `IsExecuted()` returns false (`NotRunnable`, `NotExecuted`,
+`Pending`) map to a `skipped` element; all remaining executed outcomes that are not `Failed` or
+error-class produce a plain `testcase` with no child outcome element, which reads back as `Passed`.
+
 #### Error Handling
 
 `Serialize()` throws `ArgumentNullException` when `results` is null. `Deserialize()` throws

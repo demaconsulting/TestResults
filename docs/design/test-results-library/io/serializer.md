@@ -37,7 +37,9 @@ and checks `testsuites` or `testsuite` root names for JUnit.
   `JUnitSerializer.Deserialize()` and throws for unknown formats.
 
 The method keeps format selection in one place so callers can deserialize mixed result files
-through a single entry point.
+through a single entry point. Round-trip fidelity across TRX and JUnit is a subsystem-level
+guarantee achieved through the combined behavior of TrxSerializer and JUnitSerializer; the
+Serializer itself only provides the dispatch mechanism.
 
 #### Error Handling
 

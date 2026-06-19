@@ -5,7 +5,7 @@
 WeasyPrint is verified through document output validation using FileAssert. After WeasyPrint
 converts each HTML document to PDF, FileAssert asserts that the PDF file exists, contains at
 least one page, has the expected metadata fields (Title, Author, Subject), and includes the
-expected text content. Passing all six PDF assertions proves WeasyPrint executed correctly
+expected text content. Passing all eight PDF assertions proves WeasyPrint executed correctly
 across all document types. The tests are named in the OTS requirements and tracked by ReqStream.
 
 ### Test Environment
@@ -16,10 +16,10 @@ are required.
 
 ### Acceptance Criteria
 
-- All six FileAssert PDF assertions pass without error.
+- All eight FileAssert PDF assertions pass without error.
 - Each generated PDF file exists at the expected path under `docs/generated/`.
 - Each PDF contains at least one page and the expected metadata fields.
-- The requirement `TestResults-OTS-WeasyPrint` is linked to all six named test identifiers in
+- The requirement `TestResults-OTS-WeasyPrint` is linked to all eight named test identifiers in
   the ReqStream trace matrix.
 
 ### Test Scenarios
@@ -41,3 +41,9 @@ This scenario is confirmed by `WeasyPrint_DesignPdf`.
 
 **User guide PDF generation**: WeasyPrint shall produce a valid PDF from the user guide HTML.
 This scenario is confirmed by `WeasyPrint_UserGuidePdf`.
+
+**Requirements PDF generation**: WeasyPrint shall produce a valid PDF from the requirements HTML.
+This scenario is confirmed by `WeasyPrint_RequirementsPdf`.
+
+**Trace matrix PDF generation**: WeasyPrint shall produce a valid PDF from the trace matrix HTML.
+This scenario is confirmed by `WeasyPrint_TraceMatrixPdf`.

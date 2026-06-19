@@ -19,8 +19,12 @@ without a SARIF file produced by an actual CodeQL scan.
 - The CI pipeline step invoking SarifMark exits with code 0.
 - The markdown code quality document is produced at the expected output path under
   `docs/code_quality/generated/`.
-- The requirement `TestResults-OTS-SarifMark` is linked to all three named test identifiers in
-  the ReqStream trace matrix.
+- SarifMark exits non-zero when the configured finding threshold is exceeded, confirmed by
+  `SarifMark_Enforcement`.
+- The requirement `TestResults-OTS-SarifMark` is linked to `SarifMark_SarifReading` and
+  `SarifMark_MarkdownReportGeneration` in the ReqStream trace matrix.
+- The requirement `TestResults-OTS-SarifMark-Enforcement` is linked to `SarifMark_Enforcement`
+  in the ReqStream trace matrix.
 
 ### Test Scenarios
 
