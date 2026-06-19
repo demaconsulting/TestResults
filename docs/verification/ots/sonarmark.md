@@ -1,4 +1,4 @@
-## SonarMark Verification
+## SonarMark
 
 ### Verification Approach
 

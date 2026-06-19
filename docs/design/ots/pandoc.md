@@ -1,4 +1,4 @@
-## Pandoc Integration Design
+## Pandoc
 
 ### Purpose
 

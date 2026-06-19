@@ -1,4 +1,4 @@
-## VersionMark Verification
+## VersionMark
 
 ### Verification Approach
 

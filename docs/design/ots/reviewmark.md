@@ -1,4 +1,4 @@
-## ReviewMark Integration Design
+## ReviewMark
 
 ### Purpose
 
@@ -21,6 +21,9 @@ produce the evidence PDFs that demonstrate formal review compliance.
   artifact used during the formal review session.
 - **Working directory override**: the `--working-dir` flag allows the tool to run from a
   directory other than the repository root, supporting CI matrix builds.
+- **Configuration validation**: the `--lint` flag validates the `.reviewmark.yaml` configuration
+  against its schema and reports structural or semantic errors. It is invoked in `lint.ps1` as a
+  CI gate to prevent malformed configuration from reaching the pipeline.
 
 ### Integration Pattern
 

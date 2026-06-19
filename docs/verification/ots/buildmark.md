@@ -1,4 +1,4 @@
-## BuildMark Verification
+## BuildMark
 
 ### Verification Approach
 
@@ -11,15 +11,15 @@ exercised.
 
 ### Test Environment
 
-The GitHub Actions CI pipeline environment with access to the GitHub API, a valid `GITHUB_TOKEN`
+The GitHub Actions CI pipeline environment with access to the GitHub API, a valid `GH_TOKEN`
 environment variable, and an active repository with workflow run history. BuildMark cannot be
 verified in a purely local offline environment because it requires live GitHub API access.
 
 ### Acceptance Criteria
 
 - The CI pipeline step invoking BuildMark completes without a non-zero exit code.
-- The output file `docs/build_notes/generated/build_notes.md` is produced and contains a
-  non-trivial amount of content.
+- The output file `docs/build_notes/generated/build_notes.md` is produced, is at least 200 bytes
+  in size, and contains the workflow run ID, branch name, and commit SHA.
 - The requirement `TestResults-OTS-BuildMark-ReportGeneration` is linked to `BuildMark_MarkdownReportGeneration`,
   `TestResults-OTS-BuildMark-GitIntegration` to `BuildMark_GitIntegration`,
   `TestResults-OTS-BuildMark-IssueTracking` to `BuildMark_IssueTracking`, and
@@ -28,7 +28,7 @@ verified in a purely local offline environment because it requires live GitHub A
 ### Test Scenarios
 
 **Markdown report generation**: BuildMark shall produce a markdown build-notes document from the
-current workflow run metadata, satisfying `TestResults-OTS-BuildMark`. This scenario is
+current workflow run metadata, satisfying `TestResults-OTS-BuildMark-ReportGeneration`. This scenario is
 confirmed by `BuildMark_MarkdownReportGeneration`.
 
 **Git integration**: BuildMark shall record the commit SHA and branch associated with the build.

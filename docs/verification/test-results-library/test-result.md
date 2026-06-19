@@ -6,7 +6,8 @@ The `TestResult` unit is verified with xUnit v3 tests in
 `test/DemaConsulting.TestResults.Tests/TestResultTests.cs`. Verification uses direct
 construction and mutation of the real `TestResult` class, with no mocked or injected
 dependencies because the unit is a data container. The tests provide direct evidence for
-requirements `TestResults-Model-TestOutput` and `TestResults-Model-ErrorInfo`, and they also
+requirements `TestResults-Model-SystemOutput`, `TestResults-Model-SystemError`,
+`TestResults-Model-ErrorMessage`, and `TestResults-Model-ErrorStackTrace`, and they also
 verify supporting design behaviors such as generated identifiers, default metadata values,
 and the default `NotExecuted` outcome used by the serializers.
 
@@ -41,13 +42,14 @@ record. This scenario is tested by
 
 **Captured output streams**: The unit shall support empty-by-default standard output and
 standard error properties and preserve assigned content, satisfying
-`TestResults-Model-TestOutput`. This scenario is tested by
-`TestResult_SystemOutput_Default_IsEmpty`, `TestResult_SystemOutput_Set_RetainsValue`,
+`TestResults-Model-SystemOutput` and `TestResults-Model-SystemError`. This scenario is tested
+by `TestResult_SystemOutput_Default_IsEmpty`, `TestResult_SystemOutput_Set_RetainsValue`,
 `TestResult_SystemError_Default_IsEmpty`, and
 `TestResult_SystemError_Set_RetainsValue`.
 
 **Captured error details**: The unit shall support empty-by-default error fields and preserve
-assigned error text, satisfying `TestResults-Model-ErrorInfo`. This scenario is tested by
+assigned error text, satisfying `TestResults-Model-ErrorMessage` and
+`TestResults-Model-ErrorStackTrace`. This scenario is tested by
 `TestResult_ErrorMessage_Default_IsEmpty`, `TestResult_ErrorMessage_Set_RetainsValue`,
 `TestResult_ErrorStackTrace_Default_IsEmpty`, and
 `TestResult_ErrorStackTrace_Set_RetainsValue`.

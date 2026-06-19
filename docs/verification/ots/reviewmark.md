@@ -1,4 +1,4 @@
-## ReviewMark Verification
+## ReviewMark
 
 ### Verification Approach
 
@@ -6,15 +6,15 @@ ReviewMark is verified through CI pipeline execution evidence combined with self
 The tool is invoked during the standard CI pipeline to generate the review plan and review
 report; a successful run proves it is operational and correctly integrated. Additional
 self-validation tests (`ReviewMark_VersionDisplay`, `ReviewMark_HelpDisplay`) confirm the tool
-binary loads and responds to basic flags. All eight named tests are tracked by ReqStream to
+binary loads and responds to basic flags. All ten named tests are tracked by ReqStream to
 confirm each functional aspect was exercised.
 
 ### Test Environment
 
 The standard CI pipeline environment with `.reviewmark.yaml` present at the repository root and
 the evidence store index accessible at its configured URL. The `ReviewMark_IndexScan`,
-`ReviewMark_Enforce`, and `ReviewMark_Elaborate` tests require a fully populated `.reviewmark.yaml`
-and the CI network access to the evidence store.
+`ReviewMark_Enforce`, `ReviewMark_Elaborate`, and `ReviewMark_Lint` tests require a fully
+populated `.reviewmark.yaml` and CI network access to the evidence store.
 
 ### Acceptance Criteria
 
@@ -23,8 +23,10 @@ and the CI network access to the evidence store.
 - The review report is written to `docs/code_review_report/generated/report.md`.
 - `reviewmark --version` and `reviewmark --help` exit with code 0.
 - The requirements `TestResults-OTS-ReviewMark-Operational`, `TestResults-OTS-ReviewMark-PlanGeneration`,
-  and `TestResults-OTS-ReviewMark-ReportGeneration` are each linked to their named test identifiers
-  in the ReqStream trace matrix.
+  `TestResults-OTS-ReviewMark-IndexScan`, `TestResults-OTS-ReviewMark-WorkingDirectoryOverride`,
+  `TestResults-OTS-ReviewMark-Enforcement`, `TestResults-OTS-ReviewMark-Elaboration`,
+  `TestResults-OTS-ReviewMark-Lint`, and `TestResults-OTS-ReviewMark-ReportGeneration` are each
+  linked to their named test identifiers in the ReqStream trace matrix.
 
 ### Test Scenarios
 
@@ -52,3 +54,7 @@ covered by a review-set. This scenario is confirmed by `ReviewMark_Enforce`.
 
 **Review elaboration**: ReviewMark shall expand a named review-set into a review checklist when
 invoked with `--elaborate`. This scenario is confirmed by `ReviewMark_Elaborate`.
+
+**Configuration validation**: ReviewMark shall validate the `.reviewmark.yaml` configuration
+when invoked with `--lint` and exit with code 0 when the configuration is valid. This scenario
+is confirmed by `ReviewMark_Lint`.

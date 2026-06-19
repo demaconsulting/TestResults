@@ -1,4 +1,4 @@
-## ApiMark Verification
+## ApiMark
 
 ### Verification Approach
 

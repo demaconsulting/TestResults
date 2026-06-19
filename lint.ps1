@@ -2,10 +2,17 @@
 #
 # PURPOSE:
 #   Runs all lint checks and reports failures. Exits 1 on error.
-#   Used by CI/CD as the merge gate.
+#   Used by CI/CD as the merge gate and by the lint-fix agent
+#   during pre-PR cleanup.
+#
+#   To auto-fix formatting issues, run fix.ps1 instead.
 #
 # EXTENSION POINTS:
 #   Search for "[PROJECT-SPECIFIC]" comments to add project-specific checks.
+#
+# MODIFICATION POLICY:
+#   Only modify this file to add project-specific operations at the designated
+#   [PROJECT-SPECIFIC] extension points, or to update tool versions as needed.
 
 function Get-VenvActivateScript {
     if (Test-Path ".venv/Scripts/Activate.ps1") { return ".venv/Scripts/Activate.ps1" }

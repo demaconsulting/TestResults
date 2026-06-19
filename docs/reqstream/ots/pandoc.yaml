@@ -23,4 +23,54 @@ sections:
               - Pandoc_ReviewPlanHtml
               - Pandoc_ReviewReportHtml
               - Pandoc_DesignHtml
+              - Pandoc_VerificationHtml
               - Pandoc_UserGuideHtml
+              # NOTE: Pandoc_RequirementsHtml and Pandoc_TraceMatrixHtml cannot be listed
+              # here because they run AFTER ReqStream in the CI pipeline. ReqStream publishes
+              # the requirements document and trace matrix first, then those HTML files are
+              # generated from the Markdown output — a temporal dependency that prevents their
+              # test evidence from being available at requirements-publishing time. Adding them
+              # here causes the requirement to appear unsatisfied (temporal paradox).
+
+          - id: TestResults-OTS-Pandoc-Template
+            title: Pandoc shall apply an HTML template to produce a standalone HTML document.
+            justification: |
+              The documentation build pipeline configures Pandoc with `template: template.html`
+              via each document collection's `definition.yaml`. FileAssert validates that the
+              generated design and verification HTML files each contain a `<title>` element inside
+              a `<head>` element, which is only present when Pandoc processes the inputs through
+              the custom HTML template. Plain fragment output (no template) would contain no
+              `<head>` or `<title>`. Passing these assertions proves Pandoc correctly applies the
+              template to every document collection that requires it.
+            tags: [ots]
+            tests:
+              - Pandoc_DesignHtml
+              - Pandoc_VerificationHtml
+
+          - id: TestResults-OTS-Pandoc-Toc
+            title: Pandoc shall generate a table of contents for document collections.
+            justification: |
+              The documentation build pipeline configures Pandoc with `table-of-contents: true`
+              via each document collection's `definition.yaml`. FileAssert validates that the
+              generated design and verification HTML files each contain a `<nav id="TOC">` element,
+              which the HTML template emits only when Pandoc has processed the
+              `table-of-contents: true` option and produced a TOC structure. Passing these
+              assertions proves Pandoc correctly generates the table of contents.
+            tags: [ots]
+            tests:
+              - Pandoc_DesignHtml
+              - Pandoc_VerificationHtml
+
+          - id: TestResults-OTS-Pandoc-NumberSections
+            title: Pandoc shall apply sequential section numbers to document headings.
+            justification: |
+              The documentation build pipeline configures Pandoc with `number-sections: true`
+              via each document collection's `definition.yaml`. FileAssert validates that the
+              generated design and verification HTML files each contain at least one
+              `<span class="header-section-number">` element, which Pandoc inserts into heading
+              elements only when the number-sections option is enabled. Passing these assertions
+              proves Pandoc correctly numbers document sections.
+            tags: [ots]
+            tests:
+              - Pandoc_DesignHtml
+              - Pandoc_VerificationHtml

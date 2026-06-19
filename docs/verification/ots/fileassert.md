@@ -1,4 +1,4 @@
-## FileAssert Verification
+## FileAssert
 
 ### Verification Approach
 

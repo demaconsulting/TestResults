@@ -9,7 +9,8 @@ tests exercise the real in-memory model and the real serializer implementations 
 TRX and JUnit XML payloads; no mocks or stubs are introduced at the system boundary because
 the library has no external service dependencies. The system scenarios provide direct
 coverage for requirements `TestResultsLibrary-Model-FormatIndependence`,
-`TestResultsLibrary-IO-ReadResults`, and `TestResultsLibrary-IO-WriteResults`.
+`TestResultsLibrary-IO-ReadResults`, `TestResultsLibrary-IO-WriteResults`, and
+`TestResultsLibrary-IO-IdentifyFormat`.
 
 ## Test Environment
 
@@ -26,6 +27,7 @@ and embedded example files included in the repository.
   storage formats.
 - The library reads supported TRX and JUnit inputs into `TestResults` objects.
 - The library writes `TestResults` objects to both TRX and JUnit XML outputs.
+- The library identifies TRX, JUnit, and unknown content formats without deserializing.
 
 ## Test Scenarios
 
@@ -50,3 +52,9 @@ satisfying `TestResultsLibrary-IO-WriteResults`. This scenario is tested by
 **Write JUnit output from the model**: The system shall serialize an in-memory run to JUnit
 XML, satisfying `TestResultsLibrary-IO-WriteResults`. This scenario is tested by
 `TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent`.
+
+**Identify test result file format**: The system shall determine the format of test result
+content without deserializing it, satisfying `TestResultsLibrary-IO-IdentifyFormat`. This
+scenario is tested by `TestResultsLibrary_Identify_TrxContent_ReturnsTrx`,
+`TestResultsLibrary_Identify_JUnitContent_ReturnsJUnit`, and
+`TestResultsLibrary_Identify_UnknownContent_ReturnsUnknown`.

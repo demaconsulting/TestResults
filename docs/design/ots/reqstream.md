@@ -1,4 +1,4 @@
-## ReqStream Integration Design
+## ReqStream
 
 ### Purpose
 

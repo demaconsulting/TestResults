@@ -1,4 +1,4 @@
-## ReqStream Verification
+## ReqStream
 
 ### Verification Approach
 
@@ -20,23 +20,30 @@ available as input.
 - The CI pipeline step invoking ReqStream with `--enforce` exits with code 0.
 - The generated requirements document and trace matrix are written to their expected output
   paths under `docs/requirements_doc/generated/` and `docs/requirements_report/generated/`.
-- The requirement `TestResults-OTS-ReqStream` is linked to all five named test identifiers in
-  the ReqStream trace matrix.
+- Each requirement below is linked to its corresponding named test identifier in the ReqStream
+  trace matrix: `TestResults-OTS-ReqStream-RequirementsProcessing`,
+  `TestResults-OTS-ReqStream-TraceMatrix`, `TestResults-OTS-ReqStream-ReportExport`,
+  `TestResults-OTS-ReqStream-TagsFiltering`, and `TestResults-OTS-ReqStream-EnforcementMode`.
 
 ### Test Scenarios
 
 **Requirements processing**: ReqStream shall read hierarchical requirements YAML files and
-produce a structured requirements document. This scenario is confirmed by
+produce a structured requirements document. This scenario confirms requirement
+`TestResults-OTS-ReqStream-RequirementsProcessing` and is evidenced by
 `ReqStream_RequirementsProcessing`.
 
 **Trace matrix generation**: ReqStream shall produce a traceability matrix linking requirements
-to test names. This scenario is confirmed by `ReqStream_TraceMatrix`.
+to test names. This scenario confirms requirement `TestResults-OTS-ReqStream-TraceMatrix` and is
+evidenced by `ReqStream_TraceMatrix`.
 
 **Report export**: ReqStream shall write its generated documents to the declared output paths.
-This scenario is confirmed by `ReqStream_ReportExport`.
+This scenario confirms requirement `TestResults-OTS-ReqStream-ReportExport` and is evidenced by
+`ReqStream_ReportExport`.
 
 **Tags filtering**: ReqStream shall respect the `tags:` field on requirements to filter scope
-during phased pipeline execution. This scenario is confirmed by `ReqStream_TagsFiltering`.
+during phased pipeline execution. This scenario confirms requirement
+`TestResults-OTS-ReqStream-TagsFiltering` and is evidenced by `ReqStream_TagsFiltering`.
 
 **Enforcement mode**: ReqStream shall exit non-zero when any requirement lacks test evidence,
-making coverage gaps build-breaking. This scenario is confirmed by `ReqStream_EnforcementMode`.
+making coverage gaps build-breaking. This scenario confirms requirement
+`TestResults-OTS-ReqStream-EnforcementMode` and is evidenced by `ReqStream_EnforcementMode`.

@@ -1,9 +1,9 @@
-## SonarMark Integration Design
+## SonarMark
 
 ### Purpose
 
-SonarMark is a quality reporting tool that retrieves quality-gate status and metrics data from
-SonarCloud and renders them as a markdown document included in the release artifacts. It is
+SonarMark is a quality reporting tool that retrieves quality-gate status, issues, and hotspots
+from SonarCloud and renders them as a markdown document included in the release artifacts. It is
 chosen to surface static analysis quality data from SonarCloud in a format that can be reviewed
 alongside other compliance artifacts.
 
