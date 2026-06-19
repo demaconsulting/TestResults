@@ -6,7 +6,9 @@ WeasyPrint is verified through document output validation using FileAssert. Afte
 converts each HTML document to PDF, FileAssert asserts that the PDF file exists, contains at
 least one page, has the expected metadata fields (Title, Author, Subject), and includes the
 expected text content. Passing all eight PDF assertions proves WeasyPrint executed correctly
-across all document types. The tests are named in the OTS requirements and tracked by ReqStream.
+across all document types. Six of these tests run before ReqStream and are named in the OTS
+requirements and tracked by ReqStream. The remaining two (Requirements and Trace Matrix PDFs)
+run after ReqStream due to pipeline ordering and cannot be listed as requirement test evidence.
 
 ### Test Environment
 
@@ -19,8 +21,10 @@ are required.
 - All eight FileAssert PDF assertions pass without error.
 - Each generated PDF file exists at the expected path under `docs/generated/`.
 - Each PDF contains at least one page and the expected metadata fields.
-- The requirement `TestResults-OTS-WeasyPrint` is linked to all eight named test identifiers in
-  the ReqStream trace matrix.
+- The requirement `TestResults-OTS-WeasyPrint` is linked to the six test identifiers that run
+  before ReqStream in the CI pipeline. `WeasyPrint_RequirementsPdf` and
+  `WeasyPrint_TraceMatrixPdf` are excluded from requirement tracing because they run after
+  ReqStream publishes the requirements document (temporal dependency).
 
 ### Test Scenarios
 
