@@ -23,6 +23,7 @@ sections:
               - WeasyPrint_ReviewPlanPdf
               - WeasyPrint_ReviewReportPdf
               - WeasyPrint_DesignPdf
+              - WeasyPrint_VerificationPdf
               - WeasyPrint_UserGuidePdf
               # NOTE: WeasyPrint_RequirementsPdf and WeasyPrint_TraceMatrixPdf cannot be listed
               # here because they run AFTER ReqStream in the CI pipeline. ReqStream publishes

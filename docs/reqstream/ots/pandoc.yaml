@@ -23,7 +23,14 @@ sections:
               - Pandoc_ReviewPlanHtml
               - Pandoc_ReviewReportHtml
               - Pandoc_DesignHtml
+              - Pandoc_VerificationHtml
               - Pandoc_UserGuideHtml
+              # NOTE: Pandoc_RequirementsHtml and Pandoc_TraceMatrixHtml cannot be listed
+              # here because they run AFTER ReqStream in the CI pipeline. ReqStream publishes
+              # the requirements document and trace matrix first, then those HTML files are
+              # generated from the Markdown output — a temporal dependency that prevents their
+              # test evidence from being available at requirements-publishing time. Adding them
+              # here causes the requirement to appear unsatisfied (temporal paradox).
 
           - id: TestResults-OTS-Pandoc-Template
             title: Pandoc shall apply an HTML template to produce a standalone HTML document.
