@@ -23,7 +23,7 @@ test exercises the tool's internal assertion engine without any external files.
 
 - `fileassert --version` exits with code 0 and prints a version string to standard output.
 - `fileassert --help` exits with code 0 and prints usage information to standard output.
-- `fileassert --validate` exits with code 0, with `FileAssert_Exists` and `FileAssert_Contains` passing,
+- `fileassert --validate` exits with code 0, with `FileAssert_File` and `FileAssert_Text` passing,
   confirming the assertion engine is operational.
 - All FileAssert assertion steps in the CI pipeline exit with code 0 in each successful build.
 - Requirements `TestResults-OTS-FileAssert-Operational` and `TestResults-OTS-FileAssert-Validates`
@@ -40,7 +40,7 @@ confirming the tool loads and parses arguments correctly. This scenario is confi
 `FileAssert_HelpDisplay`.
 
 **File existence assertion**: FileAssert shall assert that files matching a glob pattern exist,
-confirming the core file-validation capability. This scenario is confirmed by `FileAssert_Exists`.
+confirming the core file-validation capability. This scenario is confirmed by `FileAssert_File`.
 
 **Content assertion**: FileAssert shall assert that file content contains expected text,
-confirming text-based validation capability. This scenario is confirmed by `FileAssert_Contains`.
+confirming text-based validation capability. This scenario is confirmed by `FileAssert_Text`.

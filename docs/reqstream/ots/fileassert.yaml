@@ -31,5 +31,5 @@ sections:
               primary evidence that document validation is functioning correctly.
             tags: [ots]
             tests:
-              - FileAssert_Exists
-              - FileAssert_Contains
+              - FileAssert_File
+              - FileAssert_Text
