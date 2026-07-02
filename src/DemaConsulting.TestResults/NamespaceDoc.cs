@@ -122,10 +122,12 @@ namespace DemaConsulting.TestResults;
 ///         </code>
 ///     </para>
 ///     <para>
-///         <b>Default values:</b> All string properties on <see cref="TestResult"/> and
-///         <see cref="TestResults"/> default to <see cref="string.Empty"/> so consumers can read
-///         any property without null-checking. <see cref="TestResult.Outcome"/> defaults to
-///         <see cref="TestOutcome.NotExecuted"/> so a result that was never populated is not
+///         <b>Default values:</b> String properties on <see cref="TestResult"/> and
+///         <see cref="TestResults"/> default to non-null values so consumers can read any
+///         property without null-checking. Specifically, most string properties default to
+///         <see cref="string.Empty"/>, while <see cref="TestResult.ComputerName"/> defaults to
+///         <see cref="System.Environment.MachineName"/>. <see cref="TestResult.Outcome"/> defaults
+///         to <see cref="TestOutcome.NotExecuted"/> so a result that was never populated is not
 ///         mistaken for a pass. <see cref="TestResult.TestId"/>,
 ///         <see cref="TestResult.ExecutionId"/>, and <see cref="TestResults.Id"/> each
 ///         auto-generate a fresh <see cref="System.Guid"/> at construction time.

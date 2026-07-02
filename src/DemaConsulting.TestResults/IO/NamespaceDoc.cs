@@ -27,7 +27,7 @@ namespace DemaConsulting.TestResults.IO;
 /// </summary>
 /// <remarks>
 ///     <para>
-///         This namespace contains three public types:
+///         This namespace contains four public types:
 ///         <list type="bullet">
 ///             <item>
 ///                 <see cref="TrxSerializer"/> — reads and writes the TRX XML format produced by
