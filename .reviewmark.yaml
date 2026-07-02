@@ -35,6 +35,7 @@ reviews:
     title: Review that Advertised Features Match System Design
     paths:
       - README.md
+      - src/DemaConsulting.TestResults/NamespaceDoc.cs
       - docs/user_guide/**/*.md
       - docs/reqstream/test-results-library.yaml
       - docs/design/introduction.md
