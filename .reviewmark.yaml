@@ -36,6 +36,7 @@ reviews:
     paths:
       - README.md
       - src/DemaConsulting.TestResults/NamespaceDoc.cs
+      - src/DemaConsulting.TestResults/IO/NamespaceDoc.cs
       - docs/user_guide/**/*.md
       - docs/reqstream/test-results-library.yaml
       - docs/design/introduction.md
