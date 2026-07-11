@@ -1,5 +1,7 @@
 ### SerializerHelpers
 
+![IO Structure](IOView.svg)
+
 #### Purpose
 
 The SerializerHelpers unit provides shared infrastructure used by both XML serializers. Its
@@ -14,7 +16,7 @@ by both serializer units when saving XML to a string.
 **Encoding**: `Encoding` - Overridden property that always returns `Encoding.UTF8` so the XML
 prolog declares `encoding="utf-8"`.
 
-#### Key Properties
+#### Key Methods
 
 **Encoding**: Read-only property override that reports UTF-8 as the writer encoding.
 

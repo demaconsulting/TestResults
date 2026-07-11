@@ -1,5 +1,7 @@
 ## TestOutcome
 
+![TestResultsLibrary Structure](TestResultsLibraryView.svg)
+
 ### Purpose
 
 The TestOutcome unit defines the complete set of execution outcomes that the library can

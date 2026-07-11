@@ -1,5 +1,7 @@
 ### JUnitSerializer
 
+![IO Structure](IOView.svg)
+
 #### Purpose
 
 The JUnitSerializer unit converts between the shared in-memory model and JUnit XML test
