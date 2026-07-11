@@ -75,6 +75,7 @@ if (-not $skipNpm) {
 # [PROJECT-SPECIFIC] Add additional npm-based lint checks here.
 
 # --- Compliance Tools ---
+# Runs compliance tools: reqstream, versionmark, reviewmark, sysml2tools.
 Write-Host "Linting: compliance tools..."
 $skipDotnetTools = $false
 dotnet tool restore > $null
@@ -89,6 +90,11 @@ if (-not $skipDotnetTools) {
 
     dotnet reviewmark --lint
     if ($LASTEXITCODE -ne 0) { $lintError = $true }
+
+    if (Test-Path docs/sysml2) {
+        dotnet sysml2tools lint 'docs/sysml2/**/*.sysml'
+        if ($LASTEXITCODE -ne 0) { $lintError = $true }
+    }
 }
 
 # [PROJECT-SPECIFIC] Add additional dotnet tool checks here.

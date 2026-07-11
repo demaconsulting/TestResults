@@ -1,5 +1,7 @@
 # TestResultsLibrary
 
+![TestResultsLibrary Structure](TestResultsLibraryView.svg)
+
 ## Architecture
 
 TestResultsLibrary uses a format-neutral in-memory model as the center of the design.

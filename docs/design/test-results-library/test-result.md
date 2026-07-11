@@ -1,5 +1,7 @@
 ## TestResult
 
+![TestResultsLibrary Structure](TestResultsLibraryView.svg)
+
 ### Purpose
 
 The TestResult unit represents one executed or scheduled test case. It stores identity,

@@ -1,5 +1,7 @@
 ### TrxSerializer
 
+![IO Structure](IOView.svg)
+
 #### Purpose
 
 The TrxSerializer unit converts between the shared in-memory model and Microsoft TRX test

@@ -1,5 +1,7 @@
 ### Serializer
 
+![IO Structure](IOView.svg)
+
 #### Purpose
 
 The Serializer unit is the IO subsystem facade for callers that do not know the incoming

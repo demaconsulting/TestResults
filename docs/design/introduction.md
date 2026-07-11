@@ -32,15 +32,18 @@ OTS software items used in this repository:
 
 ## Software Structure
 
-- **TestResultsLibrary** (System) - .NET library for reading and writing test result files in TRX and JUnit XML formats
-  - **IO** (Subsystem) - translates between the in-memory model and XML result formats
-    - Serializer (Unit) - identifies XML result formats and delegates deserialization
-    - SerializerHelpers (Unit) - provides Utf8StringWriter for XML declarations
-    - TrxSerializer (Unit) - serializes and deserializes TRX test result documents
-    - JUnitSerializer (Unit) - serializes and deserializes JUnit XML test result documents
-  - TestOutcome (Unit) - defines supported test outcomes and classification helpers
-  - TestResult (Unit) - represents one test case result with metadata and output
-  - TestResults (Unit) - represents a complete test run and its ordered results
+The full software structure — every System, Subsystem, and Unit and how they relate — is
+modeled in SysML2 under `docs/sysml2/`. Agents should query that model (see the
+`sysml2tools-query` skill) rather than parse this diagram or maintain a hand-written tree.
+The diagram below is rendered directly from the model and is the authoritative overview:
+
+![Software Structure](SoftwareStructureView.svg)
+
+**TestResultsLibrary** (System) is the .NET library for reading and writing test result
+files in TRX and JUnit XML formats. Its **IO** (Subsystem) translates between the in-memory
+model and XML result formats through four units: Serializer, SerializerHelpers,
+TrxSerializer, and JUnitSerializer. Three further units — TestOutcome, TestResult, and
+TestResults — sit directly under the system and define the shared in-memory model.
 
 **OTS Dependencies:**
 
@@ -55,6 +58,10 @@ OTS software items used in this repository:
 - WeasyPrint (OTS)
 - xUnit (OTS)
 - ApiMark (OTS)
+
+These OTS items are build-pipeline and documentation tooling, not runtime dependencies of the
+shipped library, so they are not modeled as SysML2 system parts; each is fully documented in
+`docs/design/ots.md` and `docs/design/ots/`.
 
 ## Folder Layout
 

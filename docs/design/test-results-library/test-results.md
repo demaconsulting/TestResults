@@ -1,5 +1,7 @@
 ## TestResults
 
+![TestResultsLibrary Structure](TestResultsLibraryView.svg)
+
 ### Purpose
 
 The TestResults unit represents a complete test run. It groups ordered `TestResult`

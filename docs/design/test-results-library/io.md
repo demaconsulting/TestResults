@@ -1,5 +1,7 @@
 ## IO
 
+![IO Structure](IOView.svg)
+
 ### Overview
 
 The IO subsystem translates between the format-neutral in-memory model and external XML test
