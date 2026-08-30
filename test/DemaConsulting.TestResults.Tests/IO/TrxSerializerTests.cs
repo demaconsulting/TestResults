@@ -207,10 +207,9 @@ public sealed class TrxSerializerTests
         Assert.Equal(Guid.Parse("0ef15ada-c28f-4755-8d4c-5b68d1f9dda6"), results.Id);
         Assert.Equal("Basic", results.Name);
         Assert.Equal("user", results.UserName);
-        Assert.Single(results.Results);
+        var result = Assert.Single(results.Results);
 
         // Assert: test result information
-        var result = results.Results[0];
         Assert.Equal(Guid.Parse("ec83398d-3b21-4dc4-b55c-c0ee2e81c074"), result.TestId);
         Assert.Equal(Guid.Parse("735286a7-f9ed-404f-8871-300f9266eac9"), result.ExecutionId);
         Assert.Equal("Test", result.Name);
@@ -752,8 +751,8 @@ public sealed class TrxSerializerTests
 
         // Assert: the resulting TestId is a valid non-empty GUID generated as a fallback
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.NotEqual(Guid.Empty, results.Results[0].TestId);
+        var result = Assert.Single(results.Results);
+        Assert.NotEqual(Guid.Empty, result.TestId);
     }
 
     /// <summary>
@@ -788,8 +787,8 @@ public sealed class TrxSerializerTests
 
         // Assert: the resulting Duration falls back to TimeSpan.Zero
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.Equal(TimeSpan.Zero, results.Results[0].Duration);
+        var result = Assert.Single(results.Results);
+        Assert.Equal(TimeSpan.Zero, result.Duration);
     }
 
     /// <summary>
@@ -826,8 +825,8 @@ public sealed class TrxSerializerTests
 
         // Assert: the resulting StartTime falls back to DateTime.UtcNow at parse time (within tolerance)
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        var startTime = results.Results[0].StartTime;
+        var result = Assert.Single(results.Results);
+        var startTime = result.StartTime;
         Assert.True(startTime >= before && startTime <= after, $"Expected StartTime between {before} and {after}, was {startTime}");
     }
 
@@ -863,7 +862,7 @@ public sealed class TrxSerializerTests
 
         // Assert: the resulting Outcome falls back to TestOutcome.Failed
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.Equal(TestOutcome.Failed, results.Results[0].Outcome);
+        var result = Assert.Single(results.Results);
+        Assert.Equal(TestOutcome.Failed, result.Outcome);
     }
 }

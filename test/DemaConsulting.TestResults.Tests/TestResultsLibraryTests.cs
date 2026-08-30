@@ -102,9 +102,9 @@ public sealed class TestResultsLibraryTests
 
         // Assert: the model is navigable and contains the expected data
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.Equal("Test1", results.Results[0].Name);
-        Assert.Equal(TestOutcome.Passed, results.Results[0].Outcome);
+        var result = Assert.Single(results.Results);
+        Assert.Equal("Test1", result.Name);
+        Assert.Equal(TestOutcome.Passed, result.Outcome);
     }
 
     /// <summary>
@@ -132,9 +132,9 @@ public sealed class TestResultsLibraryTests
 
         // Assert: the model is navigable and contains the expected data
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.Equal("Test1", results.Results[0].Name);
-        Assert.Equal(TestOutcome.Passed, results.Results[0].Outcome);
+        var result = Assert.Single(results.Results);
+        Assert.Equal("Test1", result.Name);
+        Assert.Equal(TestOutcome.Passed, result.Outcome);
     }
 
     /// <summary>
