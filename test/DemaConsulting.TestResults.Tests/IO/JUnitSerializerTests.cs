@@ -504,10 +504,9 @@ public sealed class JUnitSerializerTests
         // Assert: Verify results information
         Assert.NotNull(results);
         Assert.Equal("BasicTests", results.Name);
-        Assert.Single(results.Results);
+        var result = Assert.Single(results.Results);
 
         // Assert: Verify test result information
-        var result = results.Results[0];
         Assert.Equal("Test1", result.Name);
         Assert.Equal("MyTestClass", result.ClassName);
         Assert.Equal(1.5, result.Duration.TotalSeconds);
@@ -542,10 +541,9 @@ public sealed class JUnitSerializerTests
 
         // Assert: Verify results information
         Assert.Equal("FailureTests", results.Name);
-        Assert.Single(results.Results);
+        var result = Assert.Single(results.Results);
 
         // Assert: Verify test result information
-        var result = results.Results[0];
         Assert.Equal("Test2", result.Name);
         Assert.Equal("MyTestClass", result.ClassName);
         Assert.Equal(TestOutcome.Failed, result.Outcome);
@@ -1005,8 +1003,8 @@ public sealed class JUnitSerializerTests
 
         // Assert: StartTime should be at its default (between before and after) because the timestamp could not be parsed
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.True(results.Results[0].StartTime >= before && results.Results[0].StartTime <= after);
+        var result = Assert.Single(results.Results);
+        Assert.True(result.StartTime >= before && result.StartTime <= after);
     }
 
     /// <summary>
@@ -1043,8 +1041,8 @@ public sealed class JUnitSerializerTests
 
         // Assert: the Timeout outcome becomes Error because JUnit has no timeout element
         Assert.NotNull(deserialized);
-        Assert.Single(deserialized.Results);
-        Assert.Equal(TestOutcome.Error, deserialized.Results[0].Outcome);
+        var result = Assert.Single(deserialized.Results);
+        Assert.Equal(TestOutcome.Error, result.Outcome);
     }
 
     /// <summary>
@@ -1081,8 +1079,8 @@ public sealed class JUnitSerializerTests
 
         // Assert: the Aborted outcome becomes Error because JUnit has no aborted element
         Assert.NotNull(deserialized);
-        Assert.Single(deserialized.Results);
-        Assert.Equal(TestOutcome.Error, deserialized.Results[0].Outcome);
+        var result = Assert.Single(deserialized.Results);
+        Assert.Equal(TestOutcome.Error, result.Outcome);
     }
 
     /// <summary>
@@ -1109,11 +1107,11 @@ public sealed class JUnitSerializerTests
 
         // Assert: one test result should be deserialized correctly
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.Equal("Test1", results.Results[0].Name);
-        Assert.Equal("MyTestClass", results.Results[0].ClassName);
-        Assert.Equal(TestOutcome.Passed, results.Results[0].Outcome);
-        Assert.Equal(TimeSpan.FromSeconds(1.5), results.Results[0].Duration);
+        var result = Assert.Single(results.Results);
+        Assert.Equal("Test1", result.Name);
+        Assert.Equal("MyTestClass", result.ClassName);
+        Assert.Equal(TestOutcome.Passed, result.Outcome);
+        Assert.Equal(TimeSpan.FromSeconds(1.5), result.Duration);
     }
 
     /// <summary>
@@ -1274,7 +1272,7 @@ public sealed class JUnitSerializerTests
 
         // Assert: the Inconclusive outcome becomes Passed because JUnit has no inconclusive element
         Assert.NotNull(deserialized);
-        Assert.Single(deserialized.Results);
-        Assert.Equal(TestOutcome.Passed, deserialized.Results[0].Outcome);
+        var result = Assert.Single(deserialized.Results);
+        Assert.Equal(TestOutcome.Passed, result.Outcome);
     }
 }

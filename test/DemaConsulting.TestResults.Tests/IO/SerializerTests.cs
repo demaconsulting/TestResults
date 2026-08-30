@@ -228,9 +228,9 @@ public sealed class SerializerTests
         Assert.NotNull(results);
         Assert.Equal("Test Run", results.Name);
         Assert.Equal("User", results.UserName);
-        Assert.Single(results.Results);
-        Assert.Equal("Test1", results.Results[0].Name);
-        Assert.Equal(TestOutcome.Passed, results.Results[0].Outcome);
+        var result = Assert.Single(results.Results);
+        Assert.Equal("Test1", result.Name);
+        Assert.Equal(TestOutcome.Passed, result.Outcome);
     }
 
     /// <summary>
@@ -378,10 +378,10 @@ public sealed class SerializerTests
 
         // Assert: verify results
         Assert.NotNull(results);
-        Assert.Single(results.Results);
-        Assert.Equal("Test1", results.Results[0].Name);
-        Assert.Equal("Standard output", results.Results[0].SystemOutput);
-        Assert.Equal("Standard error", results.Results[0].SystemError);
+        var result = Assert.Single(results.Results);
+        Assert.Equal("Test1", result.Name);
+        Assert.Equal("Standard output", result.SystemOutput);
+        Assert.Equal("Standard error", result.SystemError);
     }
 
     /// <summary>
