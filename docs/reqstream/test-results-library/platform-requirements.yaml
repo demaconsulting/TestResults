@@ -24,6 +24,8 @@ sections:
         requirements:
           - id: TestResults-Platform-Windows
             title: The library shall build and run on Windows platforms.
+            tags:
+              - system
             justification: |
               DEMA Consulting libraries must support Windows as a major development platform.
               Most .NET developers use Windows as their primary development environment.
@@ -37,6 +39,8 @@ sections:
 
           - id: TestResults-Platform-Linux
             title: The library shall build and run on Linux platforms.
+            tags:
+              - system
             justification: |
               DEMA Consulting libraries must support Linux for CI/CD and containerized environments.
               Many modern deployment environments use Linux containers.
@@ -50,6 +54,8 @@ sections:
 
           - id: TestResults-Platform-MacOS
             title: The library shall build and run on macOS platforms.
+            tags:
+              - system
             justification: |
               DEMA Consulting libraries must support macOS for developers using Apple platforms.
               A significant portion of .NET developers use macOS as their primary development environment.
@@ -65,6 +71,8 @@ sections:
         requirements:
           - id: TestResults-Runtime-Net8
             title: The library shall support .NET 8 runtime.
+            tags:
+              - system
             justification: |
               .NET 8 is a Long-Term Support (LTS) release with support through November 2026. Supporting
               this framework ensures the library can be used in stable, enterprise environments that
@@ -78,6 +86,8 @@ sections:
 
           - id: TestResults-Runtime-Net9
             title: The library shall support .NET 9 runtime.
+            tags:
+              - system
             justification: |
               .NET 9 is a Standard-Term Support (STS) release that provides access to the latest
               framework features and performance improvements. Supporting this version allows users
@@ -92,6 +102,8 @@ sections:
 
           - id: TestResults-Runtime-NetStd20
             title: The library shall be compatible with .NET Standard 2.0.
+            tags:
+              - system
             justification: |
               .NET Standard 2.0 is a widely-supported target framework that enables the library to
               be used in MSBuild extensions and other tooling that requires .NET Standard compatibility.
@@ -108,6 +120,8 @@ sections:
 
           - id: TestResults-Runtime-Net10
             title: The library shall support .NET 10 runtime.
+            tags:
+              - system
             justification: |
               .NET 10 is a Long-Term Support (LTS) release in the .NET platform roadmap. Supporting
               this runtime ensures the library remains current and provides a clear upgrade path

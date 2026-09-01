@@ -12,6 +12,8 @@ sections:
     requirements:
       - id: TestResultsLibrary-Model-FormatIndependence
         title: The TestResults Library shall provide a format-independent representation of test results.
+        tags:
+          - system
         justification: |
           The library must represent test results in a way that is not tied to any particular file
           format. This allows callers to process results from different sources uniformly and enables
@@ -55,17 +57,22 @@ sections:
           - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
       - id: TestResultsLibrary-IO-ReadResults
         title: The TestResults Library shall read test result files into a structured, navigable collection.
+        tags:
+          - system
         justification: |
           Users of the library must be able to read test results from files and access them
           programmatically. Without this capability the library cannot serve its primary purpose
           of providing access to test result data produced by CI/CD and test tooling.
         children:
           - TestResults-IO-Deserialize
+          - TestResults-IO-RoundTrip
         tests:
           - TestResultsLibrary_Deserialize_TrxContent_ReturnsNavigableModel
           - TestResultsLibrary_Deserialize_JUnitContent_ReturnsNavigableModel
       - id: TestResultsLibrary-IO-WriteResults
         title: The TestResults Library shall write test result data to test result files.
+        tags:
+          - system
         justification: |
           Users of the library must be able to produce test result files from data built
           programmatically or converted from another format. Supporting both TRX and JUnit XML
@@ -78,6 +85,8 @@ sections:
           - TestResultsLibrary_Serialize_InMemoryModel_ProducesJUnitContent
       - id: TestResultsLibrary-IO-IdentifyFormat
         title: The TestResults Library shall identify test result file formats.
+        tags:
+          - system
         justification: |
           Users need to determine the format of test result content without
           attempting to deserialize it. This is required to support format-aware

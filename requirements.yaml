@@ -4,6 +4,17 @@
 # Root requirements file - includes all unit, platform, and OTS requirements.
 # Organized by subsystem: system, model units, IO subsystem, system/platform, and OTS.
 
+# root-tags identifies the requirements that represent externally observable product
+# behavior ("system") or repository/process quality outcomes ("quality"). ReqStream's
+# --enforce mode uses this to flag any requirement not reachable (directly or via
+# children) from a root-tagged requirement as orphaned - low-level requirements added
+# without a connection to real functionality. Configuring root-tags here (rather than
+# passing --root-tags on the command line) means orphan checking runs automatically on
+# every `reqstream --enforce` invocation, without agents needing to remember a flag.
+root-tags:
+  - system
+  - quality
+
 includes:
   - docs/reqstream/test-results-library.yaml
   - docs/reqstream/test-results-library/test-results.yaml
@@ -15,6 +26,7 @@ includes:
   - docs/reqstream/test-results-library/io/trx-serializer.yaml
   - docs/reqstream/test-results-library/io/junit-serializer.yaml
   - docs/reqstream/test-results-library/platform-requirements.yaml
+  - docs/reqstream/quality.yaml
   - docs/reqstream/ots/xunit.yaml
   - docs/reqstream/ots/reqstream.yaml
   - docs/reqstream/ots/buildmark.yaml

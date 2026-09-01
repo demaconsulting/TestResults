@@ -1,0 +1,142 @@
+---
+# Quality and process requirements
+#
+# These requirements represent repository-level and process outcomes (build
+# integrity, static analysis, peer review, documentation generation, test
+# infrastructure, requirements traceability, and API documentation) that are
+# not part of the TestResults Library's externally observable behavior, but
+# are required for the repository to be considered releasable. They exist so
+# the OTS (off-the-shelf) tooling requirements have a root to trace to,
+# instead of being orphaned leaves with no consumer.
+
+sections:
+  - title: Quality and Process Requirements
+    requirements:
+      - id: TestResults-Quality-BuildIntegrity
+        title: The repository shall produce build documentation and known-issue tracking for every release.
+        tags:
+          - quality
+        justification: |
+          Build integrity outcomes (build-notes generation, git integration, issue tracking, and
+          known-issues reporting) are produced by BuildMark and consumed by maintainers and
+          release reviewers, not by library callers. This requirement roots those OTS
+          requirements so they are not orphaned.
+        children:
+          - TestResults-OTS-BuildMark-ReportGeneration
+          - TestResults-OTS-BuildMark-GitIntegration
+          - TestResults-OTS-BuildMark-IssueTracking
+          - TestResults-OTS-BuildMark-KnownIssues
+          - TestResults-OTS-VersionMark
+        tests:
+          - BuildMark_MarkdownReportGeneration
+          - BuildMark_GitIntegration
+          - BuildMark_IssueTracking
+          - BuildMark_KnownIssuesReporting
+          - VersionMark_CapturesVersions
+
+      - id: TestResults-Quality-StaticAnalysis
+        title: The repository shall enforce static analysis and SARIF-based code quality gates.
+        tags:
+          - quality
+        justification: |
+          Static analysis outcomes (SARIF enforcement and SonarCloud quality gates) protect
+          code quality for maintainers and CI, not library callers. This requirement roots
+          those OTS requirements so they are not orphaned.
+        children:
+          - TestResults-OTS-SarifMark
+          - TestResults-OTS-SarifMark-Enforcement
+          - TestResults-OTS-SonarMark
+        tests:
+          - SarifMark_SarifReading
+          - SarifMark_Enforcement
+          - SonarMark_QualityGateRetrieval
+
+      - id: TestResults-Quality-PeerReview
+        title: The repository shall generate and enforce peer-review plans and reports for all reviewable files.
+        tags:
+          - quality
+        justification: |
+          Peer-review outcomes (plan generation, index scanning, enforcement, elaboration, lint,
+          and report generation) are produced by ReviewMark and consumed by maintainers and
+          reviewers, not by library callers. This requirement roots those OTS requirements so
+          they are not orphaned.
+        children:
+          - TestResults-OTS-ReviewMark-Operational
+          - TestResults-OTS-ReviewMark-PlanGeneration
+          - TestResults-OTS-ReviewMark-IndexScan
+          - TestResults-OTS-ReviewMark-WorkingDirectoryOverride
+          - TestResults-OTS-ReviewMark-Enforcement
+          - TestResults-OTS-ReviewMark-Elaboration
+          - TestResults-OTS-ReviewMark-Lint
+          - TestResults-OTS-ReviewMark-ReportGeneration
+        tests:
+          - ReviewMark_VersionDisplay
+          - ReviewMark_ReviewPlanGeneration
+          - ReviewMark_IndexScan
+          - ReviewMark_WorkingDirectoryOverride
+          - ReviewMark_Enforce
+          - ReviewMark_Elaborate
+          - ReviewMark_Lint
+          - ReviewMark_ReviewReportGeneration
+
+      - id: TestResults-Quality-DocumentationGeneration
+        title: The repository shall generate build-notes, design, and API documentation in distributable formats.
+        tags:
+          - quality
+        justification: |
+          Documentation generation outcomes (Pandoc HTML rendering, WeasyPrint PDF rendering,
+          FileAssert package validation, and ApiMark API documentation) are consumed by
+          maintainers and NuGet package consumers browsing documentation, not by library callers
+          at runtime. This requirement roots those OTS requirements so they are not orphaned.
+        children:
+          - TestResults-OTS-Pandoc
+          - TestResults-OTS-Pandoc-Template
+          - TestResults-OTS-Pandoc-Toc
+          - TestResults-OTS-Pandoc-NumberSections
+          - TestResults-OTS-WeasyPrint
+          - TestResults-OTS-FileAssert-Operational
+          - TestResults-OTS-FileAssert-Validates
+          - TestResults-OTS-ApiMark
+        tests:
+          - Pandoc_BuildNotesHtml
+          - Pandoc_DesignHtml
+          - WeasyPrint_BuildNotesPdf
+          - FileAssert_VersionDisplay
+          - FileAssert_File
+          - ApiMark_NuGetPackageContainsDocs
+
+      - id: TestResults-Quality-TestInfrastructure
+        title: The repository shall execute and report unit tests using a verified test framework.
+        tags:
+          - quality
+        justification: |
+          The xUnit test framework produces the passing test results that serve as evidence for
+          every other requirement in this document. It is a foundational process dependency
+          rather than a library behavior, so this requirement roots it instead of leaving it
+          orphaned.
+        children:
+          - TestResults-OTS-XUnit
+        tests:
+          - TestResultsLibrary_FormatAgnosticModel_CanRepresentTestResults
+
+      - id: TestResults-Quality-RequirementsTraceability
+        title: The repository shall maintain and enforce requirements traceability using ReqStream.
+        tags:
+          - quality
+        justification: |
+          Requirements traceability outcomes (requirements processing, trace matrix generation,
+          report export, tag filtering, and enforcement mode) are produced by ReqStream and
+          consumed by maintainers verifying compliance, not by library callers. This requirement
+          roots those OTS requirements so they are not orphaned.
+        children:
+          - TestResults-OTS-ReqStream-RequirementsProcessing
+          - TestResults-OTS-ReqStream-TraceMatrix
+          - TestResults-OTS-ReqStream-ReportExport
+          - TestResults-OTS-ReqStream-TagsFiltering
+          - TestResults-OTS-ReqStream-EnforcementMode
+        tests:
+          - ReqStream_RequirementsProcessing
+          - ReqStream_TraceMatrix
+          - ReqStream_ReportExport
+          - ReqStream_TagsFiltering
+          - ReqStream_EnforcementMode

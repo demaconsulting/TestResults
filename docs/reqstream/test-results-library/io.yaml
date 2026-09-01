@@ -58,6 +58,8 @@ sections:
               - TestResults-Trx-Serialize
               - TestResults-JUnit-Serialize
               - TestResults-SerializerHelpers-Utf8Encoding
+              - TestResults-Trx-Utf8Encoding
+              - TestResults-JUnit-Utf8Encoding
             tests:
               - IO_Serialize_TestResults_ProducesTrxContent
               - IO_Serialize_TestResults_ProducesJUnitContent
