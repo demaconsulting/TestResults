@@ -19,6 +19,8 @@
 A .NET library for reading and writing test result files in multiple formats. Provides an in-memory model for
 test outcomes and results, supporting serialization to/from TRX (Visual Studio Test Results) and JUnit XML formats.
 
+![TestResults architecture: files, serializers, in-memory model and your application][architecture]
+
 ## Features
 
 - ✨ **Simple API** - Intuitive and easy-to-use object model for test results
@@ -144,6 +146,7 @@ see [LICENSE](https://github.com/demaconsulting/TestResults/blob/main/LICENSE).
 [badge-quality]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=alert_status
 [badge-security]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=security_rating
 [badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.TestResults?style=plastic
+[architecture]: https://raw.githubusercontent.com/demaconsulting/TestResults/main/docs/images/architecture.png
 
 <!-- Link References -->
 [link-forks]: https://github.com/demaconsulting/TestResults/network/members
