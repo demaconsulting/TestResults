@@ -11,6 +11,8 @@ and supports bidirectional serialization to and from TRX (Visual Studio Test Res
 This guide exists to help developers integrate the TestResults library into their .NET applications, including custom
 test runners, format conversion utilities, test report aggregation tools, and CI/CD integration scripts.
 
+![TestResults architecture: files, serializers, the in-memory model, and your application](architecture.svg)
+
 ## Scope
 
 This guide covers the following topics:
