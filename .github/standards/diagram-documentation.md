@@ -59,8 +59,10 @@ Do not add a diagram when it:
   consume the SVG directly, embed the SVG and commit no PNG.
 - Composite SVGs that embed `.scad`, `.vl.json`, or document files can only be rendered
   by CanvasNet, so a PNG is always required for them.
-- Keep sources and outputs together in `docs/images/` with matching base names
-  (`name.svg` and `name.png`). Embedded assets must be in that folder or below.
+- Keep CanvasNet-authored sources and outputs together in `docs/images/` with matching
+  base names (`name.svg` and `name.png`). Embedded assets must be in that folder or below.
+  This does not apply to generator-managed outputs (for example SysML2 views rendered into
+  `docs/design/generated/`), which stay where their generator writes them.
 - Render with `--strict` and review the result visually before committing. Regenerate the
   PNG in the same commit whenever the source changes so the two never disagree.
 - Images referenced from a README that ships in a package use absolute URLs, per the

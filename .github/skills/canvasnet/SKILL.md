@@ -12,8 +12,9 @@ covers only how to use the tool.
 
 ## Prerequisites
 
-`canvasnet` is a local .NET tool pinned in `.config/dotnet-tools.json`. It is only
-available from inside the repository:
+`canvasnet` is a local .NET tool (`DemaConsulting.CanvasNet.Tool`) pinned in
+`.config/dotnet-tools.json`; add it to the manifest if it is missing. It is only available
+from inside the repository:
 
 ```pwsh
 dotnet tool restore
