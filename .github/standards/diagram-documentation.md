@@ -42,7 +42,8 @@ Do not add a diagram when it:
   Do not hand-draw a competing description of the same structure; a diagram derived from
   it is fine, and the model wins when they disagree.
 - **Simple flows and relationships** in design or verification documents may use
-  Mermaid, which the documentation pipeline already renders.
+  Mermaid, but only where the documentation pipeline has Mermaid rendering configured;
+  otherwise it is emitted as a plain code block.
 - **Illustrative or marketing-quality figures** (README, user guide): SVG.
 - **Data charts**: VegaLite, with the data file kept beside the spec.
 - **3D or physical objects**: OpenSCAD. Rare for software documentation.

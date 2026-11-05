@@ -54,7 +54,7 @@ lists, and look at an example if the format is unfamiliar.
    published on a page of unknown theme:
 
    ```pwsh
-   dotnet canvasnet render docs/images/name.svg -o preview.png --background "#0d1117"
+   dotnet canvasnet render docs/images/name.svg -o preview.png --background "#0d1117" --strict
    ```
 
    Delete previews and other scratch output when done.
