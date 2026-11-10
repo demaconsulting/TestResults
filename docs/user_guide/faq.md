@@ -112,7 +112,7 @@ that processes or converts those results.
 
 ## What .NET versions are supported?
 
-The library targets .NET Standard 2.0, .NET 8.0, .NET 9.0, and .NET 10.0. It has zero runtime dependencies.
+The library targets .NET Standard 2.0, .NET 8.0, .NET 9.0, .NET 10.0, and .NET 11.0. It has zero runtime dependencies.
 
 ## How do I report bugs or request features?
 

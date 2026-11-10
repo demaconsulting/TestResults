@@ -12,7 +12,7 @@ requirements and tracked by ReqStream.
 ### Test Environment
 
 The standard local or CI test runner environment invoking `dotnet test --configuration Release
---logger trx`. The test project targets `net481`, `net8.0`, `net9.0`, and `net10.0`; tests
+--logger trx`. The test project targets `net481`, `net8.0`, `net9.0`, `net10.0`, and `net11.0`; tests
 must pass on all target frameworks. No database, network service, or external configuration is
 required.
 

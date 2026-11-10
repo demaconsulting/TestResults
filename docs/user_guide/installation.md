@@ -14,7 +14,7 @@
 
 ### Compatibility
 
-The TestResults library targets .NET Standard 2.0, .NET 8.0, .NET 9.0, and .NET 10.0. It can be used in any
+The TestResults library targets .NET Standard 2.0, .NET 8.0, .NET 9.0, .NET 10.0, and .NET 11.0. It can be used in any
 .NET project type: console applications, class libraries, ASP.NET Core applications, worker services, and more.
 The library has zero runtime dependencies, minimizing integration friction.
 
