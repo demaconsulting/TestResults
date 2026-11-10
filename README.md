@@ -26,7 +26,7 @@ test outcomes and results, supporting serialization to/from TRX (Visual Studio T
 - ✨ **Simple API** - Intuitive and easy-to-use object model for test results
 - 🎯 **Type-Safe** - Strongly-typed C# classes for test outcomes and results
 - 🪶 **Lightweight** - Zero runtime dependencies
-- 🔄 **Multi-Target** - Supports .NET Standard 2.0, .NET 8, 9, and 10
+- 🔄 **Multi-Target** - Supports .NET Standard 2.0, .NET 8, 9, 10, and 11
 - 📦 **NuGet Ready** - Easy integration via NuGet package
 - 📊 **Multiple Formats** - Supports both TRX and JUnit XML formats
 - ✅ **Compatible** - Works with Visual Studio, Azure DevOps, and CI/CD systems
