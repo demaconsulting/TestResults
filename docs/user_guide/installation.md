@@ -4,7 +4,7 @@
 
 ### Required Tools
 
-- **.NET SDK**: Version 8.0, 9.0, or 10.0
+- **.NET SDK**: Version 8.0, 9.0, 10.0, or 11.0
 - **Development Environment**: Visual Studio 2022, Visual Studio Code, or JetBrains Rider
 
 ### Required Knowledge
