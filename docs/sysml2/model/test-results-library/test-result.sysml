@@ -1,11 +1,16 @@
 package TestResultsLibrary {
+    private import SoftwareItemMetadata::*;
+
     part def TestResult {
         doc /* Represents one test case result with metadata and output. */
 
-        comment sourceRef /* Source: src/DemaConsulting.TestResults/TestResult.cs */
-        comment testRef /* Test: test/DemaConsulting.TestResults.Tests/TestResultTests.cs */
-        comment designRef /* Design: docs/design/test-results-library/test-result.md */
-        comment verificationRef /* Verification: docs/verification/test-results-library/test-result.md */
-        comment reqRef /* Requirements: docs/reqstream/test-results-library/test-result.yaml */
+        metadata info : SoftwareInfo {
+            description = "Represents one test case result with metadata and output.";
+            sourceFiles = ("src/DemaConsulting.TestResults/TestResult.cs");
+            testFiles = ("test/DemaConsulting.TestResults.Tests/TestResultTests.cs");
+            designFiles = ("docs/design/test-results-library/test-result.md");
+            verificationFiles = ("docs/verification/test-results-library/test-result.md");
+            requirementFiles = ("docs/reqstream/test-results-library/test-result.yaml");
+        }
     }
 }
