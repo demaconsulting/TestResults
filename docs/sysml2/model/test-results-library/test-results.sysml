@@ -5,7 +5,6 @@ package TestResultsLibrary {
         doc /* Represents a complete test run and its ordered results. */
 
         metadata info : SoftwareInfo {
-            description = "Represents a complete test run and its ordered results.";
             sourceFiles = ("src/DemaConsulting.TestResults/TestResults.cs");
             testFiles = ("test/DemaConsulting.TestResults.Tests/TestResultsTests.cs");
             designFiles = ("docs/design/test-results-library/test-results.md");

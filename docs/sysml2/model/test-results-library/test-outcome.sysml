@@ -5,7 +5,6 @@ package TestResultsLibrary {
         doc /* Defines supported test outcomes and classification helpers. */
 
         metadata info : SoftwareInfo {
-            description = "Defines supported test outcomes and classification helpers.";
             sourceFiles = ("src/DemaConsulting.TestResults/TestOutcome.cs");
             testFiles = ("test/DemaConsulting.TestResults.Tests/TestOutcomeTests.cs");
             designFiles = ("docs/design/test-results-library/test-outcome.md");

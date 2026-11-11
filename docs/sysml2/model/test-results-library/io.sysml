@@ -5,7 +5,6 @@ package TestResultsLibrary {
         doc /* Translates between the in-memory model and XML result formats. */
 
         metadata info : SoftwareInfo {
-            description = "Translates between the in-memory model and XML result formats.";
             testFiles = ("test/DemaConsulting.TestResults.Tests/IO/IOTests.cs");
             designFiles = ("docs/design/test-results-library/io.md");
             verificationFiles = ("docs/verification/test-results-library/io.md");

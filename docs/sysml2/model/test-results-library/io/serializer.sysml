@@ -5,7 +5,6 @@ package TestResultsLibrary {
         doc /* Identifies XML result formats and delegates deserialization. */
 
         metadata info : SoftwareInfo {
-            description = "Identifies XML result formats and delegates deserialization.";
             sourceFiles = ("src/DemaConsulting.TestResults/IO/Serializer.cs");
             testFiles = ("test/DemaConsulting.TestResults.Tests/IO/SerializerTests.cs");
             designFiles = ("docs/design/test-results-library/io/serializer.md");
