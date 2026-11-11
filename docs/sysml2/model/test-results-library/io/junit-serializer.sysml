@@ -5,7 +5,6 @@ package TestResultsLibrary {
         doc /* Serializes and deserializes JUnit XML test result documents. */
 
         metadata info : SoftwareInfo {
-            description = "Serializes and deserializes JUnit XML test result documents.";
             sourceFiles = ("src/DemaConsulting.TestResults/IO/JUnitSerializer.cs");
             testFiles = ("test/DemaConsulting.TestResults.Tests/IO/JUnitSerializerTests.cs");
             designFiles = ("docs/design/test-results-library/io/junit-serializer.md");

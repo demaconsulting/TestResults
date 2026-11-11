@@ -5,7 +5,6 @@ package TestResultsLibrary {
         doc /* Provides Utf8StringWriter for XML declarations. */
 
         metadata info : SoftwareInfo {
-            description = "Provides Utf8StringWriter for XML declarations.";
             sourceFiles = ("src/DemaConsulting.TestResults/IO/SerializerHelpers.cs");
             testFiles = ("test/DemaConsulting.TestResults.Tests/IO/SerializerHelpersTests.cs");
             designFiles = ("docs/design/test-results-library/io/serializer-helpers.md");

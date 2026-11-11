@@ -11,7 +11,6 @@ package TestResultsLibrary {
         doc /* The TestResultsLibrary system as a whole. */
 
         metadata info : SoftwareInfo {
-            description = "The TestResultsLibrary system as a whole.";
             testFiles = ("test/DemaConsulting.TestResults.Tests/TestResultsLibraryTests.cs");
             designFiles = ("docs/design/test-results-library.md");
             verificationFiles = ("docs/verification/test-results-library.md");
