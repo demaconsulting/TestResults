@@ -5,7 +5,8 @@
 // 'render' - is what scopes the rendered diagram content.
 package TestResultsLibrary {
     view SoftwareStructureView {
-        expose TestResultsLibrary;
+        expose TestResultsLibrary::**;
+        render asInterconnectionDiagram;
     }
 
     view TestResultsLibraryView {
