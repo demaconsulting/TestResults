@@ -54,8 +54,8 @@ unit testing of the OTS source, because their source is external and not under l
   items (Pandoc and WeasyPrint) by confirming correct content, structure, and minimum size requirements.
 - **Artifact content validation**: FileAssert assertions on the NuGet package archive qualify ApiMark by confirming
   expected documentation files are present.
-- **Self-validation**: FileAssert is qualified by invoking it with `--version` and `--help` flags to confirm installation
-  and operational status.
+- **Self-validation**: FileAssert is qualified by invoking it with `--version` and `--help` flags to confirm
+  installation and operational status.
 - **Library test exercise**: xUnit is qualified indirectly; if the framework were non-functional, no library tests could
   pass and the CI gate would fail.
 
