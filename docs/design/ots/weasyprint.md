@@ -13,7 +13,8 @@ compliance archiving.
 - **PDF metadata embedding**: writes document metadata (Title, Author, Subject) into the PDF
   file headers, which FileAssert validates to confirm correct generation.
 - **Multi-page document rendering**: renders documents of any length, preserving section
-  headings, tables, code blocks, and Mermaid diagrams converted to inline SVG.
+  headings, tables, code blocks, and diagram images (Mermaid diagrams are rendered by the CanvasNet
+  Pandoc filter, for the diagram types it supports).
 
 ### Integration Pattern
 

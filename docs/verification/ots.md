@@ -32,16 +32,17 @@ tests exist and are passing.
 
 The following evidence categories are used to demonstrate that each OTS item is fit for purpose:
 
-- **CI pipeline execution success**: a passing pipeline run with no errors or warnings constitutes evidence that the tool
-  is installed, correctly configured, and producing the expected outputs. This evidence is captured once per release
-  pipeline run and is referenced by test name in the OTS requirements YAML files.
+- **CI pipeline execution success**: a passing pipeline run with no errors or warnings constitutes evidence that the
+  tool is installed, correctly configured, and producing the expected outputs. This evidence is captured once per
+  release pipeline run and is referenced by test name in the OTS requirements YAML files.
 - **Document output assertions**: FileAssert checks that each generated HTML and PDF document exists, is non-empty,
   contains expected metadata strings, and meets minimum size and page-count thresholds. These assertions are recorded as
   named tests and linked to OTS requirements through ReqStream.
 - **Artifact content assertions**: FileAssert checks that the NuGet package archive produced by ApiMark contains the
   expected Markdown documentation files.
 - **Self-validation invocations**: `fileassert --version` and `fileassert --help` are captured as named tests to confirm
-  the tool is installed and operational. A `reviewmark --version` invocation provides equivalent evidence for ReviewMark.
+  the tool is installed and operational. A `reviewmark --version` invocation provides equivalent evidence for
+  ReviewMark.
 - **Library test pass**: all passing library tests constitute evidence that xUnit is functional.
 
 All evidence items are named, linked to requirements, and verified complete by ReqStream on each CI run.

@@ -58,7 +58,7 @@ if (-not $skipPython) {
 }
 
 # --- Dotnet Tools Restore ---
-# Restores the local dotnet tools; required by TextLint and the compliance tools.
+# Restores the local dotnet tools; required by TextLint, LintMark and the compliance tools.
 $skipDotnetTools = $false
 dotnet tool restore > $null
 if ($LASTEXITCODE -ne 0) { $lintError = $true; $skipDotnetTools = $true }
@@ -73,17 +73,12 @@ if (-not $skipDotnetTools) {
 
 # --- Markdown ---
 Write-Host "Linting: markdown..."
-$skipNpm = $false
-$env:PUPPETEER_SKIP_DOWNLOAD = "true"
-npm install --silent
-if ($LASTEXITCODE -ne 0) { $lintError = $true; $skipNpm = $true }
-
-if (-not $skipNpm) {
-    npx markdownlint-cli2 "**/*.md"
+if (-not $skipDotnetTools) {
+    dotnet lintmark
     if ($LASTEXITCODE -ne 0) { $lintError = $true }
 }
 
-# [PROJECT-SPECIFIC] Add additional npm-based lint checks here.
+# [PROJECT-SPECIFIC] Add additional lint checks here.
 
 # --- Compliance Tools ---
 # Runs compliance tools: reqstream, versionmark, reviewmark, sysml2tools.
