@@ -12,6 +12,8 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
+![TestResults banner: the TestResults name with the tagline 'Any test results in. TRX or JUnit out.' and the C# call 'var r = Serializer.Deserialize(xml);'. TRX files, JUnit XML, test runner output, and results built in code flow on curved arrows into the TestResults .NET library, and arrows lead out to what it produces, an in-memory results model with Passed, Failed, and NotExecuted counts and written TRX and JUnit files, and on to where those files are used downstream: requirements evidence in compliance tools and CI artifacts][hero]
+
 .NET library for TRX and JUnit test results
 
 ## Overview
@@ -147,6 +149,7 @@ see [LICENSE](https://github.com/demaconsulting/TestResults/blob/main/LICENSE).
 [badge-security]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TestResults&metric=security_rating
 [badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.TestResults?style=plastic
 [architecture]: https://raw.githubusercontent.com/demaconsulting/TestResults/main/docs/images/architecture.png
+[hero]: https://raw.githubusercontent.com/demaconsulting/TestResults/main/docs/images/hero.png
 
 <!-- Link References -->
 [link-forks]: https://github.com/demaconsulting/TestResults/network/members
