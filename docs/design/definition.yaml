@@ -1,5 +1,5 @@
 ---
-resource-path: [docs/design, docs/template]
+resource-path: [docs/design, docs/design/generated, docs/template]
 embed-resources: true
 input-files:
   - docs/design/title.txt
