@@ -12,7 +12,7 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
-![TestResults banner: the TestResults name with the tagline 'Any test results in. TRX or JUnit out.' and the C# call 'var r = Serializer.Deserialize(xml);'. TRX files, JUnit XML, test runner output, and results built in code flow on curved arrows into the TestResults .NET library, and arrows lead out to an in-memory results model with Passed, Failed, and NotExecuted counts, written TRX and JUnit files, requirements evidence for compliance tools, and a CI artifact][hero]
+![TestResults banner: the TestResults name with the tagline 'Any test results in. TRX or JUnit out.' and the C# call 'var r = Serializer.Deserialize(xml);'. TRX files, JUnit XML, test runner output, and results built in code flow on curved arrows into the TestResults .NET library, and arrows lead out to what it produces, an in-memory results model with Passed, Failed, and NotExecuted counts and written TRX and JUnit files, and on to where those files are used downstream: requirements evidence in compliance tools and CI artifacts][hero]
 
 .NET library for TRX and JUnit test results
 
