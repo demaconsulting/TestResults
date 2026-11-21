@@ -1,7 +1,4 @@
-# TestResults
-
-<!-- IMPORTANT: All links in this file must be absolute URLs.
-     This file is distributed in packages and relative links will not resolve. -->
+# ![TestResults: TRX and JUnit results for .NET code][hero]
 
 [![GitHub forks][badge-forks]][link-forks]
 [![GitHub stars][badge-stars]][link-stars]
@@ -12,9 +9,8 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
-![TestResults banner: the TestResults name with the tagline 'Any test results in. TRX or JUnit out.' and the C# call 'var r = Serializer.Deserialize(xml);'. TRX files, JUnit XML, test runner output, and results built in code flow on curved arrows into the TestResults .NET library, and arrows lead out to what it produces, an in-memory results model with Passed, Failed, and NotExecuted counts and written TRX and JUnit files, and on to where those files are used downstream: requirements evidence in compliance tools and CI artifacts][hero]
-
-.NET library for TRX and JUnit test results
+<!-- IMPORTANT: All links in this file must be absolute URLs.
+     This file is distributed in packages and relative links will not resolve. -->
 
 ## Overview
 
