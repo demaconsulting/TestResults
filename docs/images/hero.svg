@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="640" viewBox="0 0 1600 640">
   <!-- The README hero banner. TRX files, JUnit XML, test runner output, and results built in code flow into the
-       TestResults library and come out as an in-memory results model with outcome counts, TRX and JUnit files,
-       evidence for compliance tools, and CI artifacts.
+       TestResults library and come out as an in-memory results model with outcome counts and TRX and JUnit files; the
+       last two cards show downstream uses of those files: requirements evidence via ReqStream and CI artifacts.
        The definitions and the left panel follow the shared DEMA Consulting hero (CanvasNet and BuildMark).
        This file is docs/images/hero.svg, beside its rendered docs/images/hero.png (matching base names, per the
        diagram documentation standard); the files it embeds are in docs/images/hero/. -->
@@ -9,7 +9,7 @@
     <style>
       .word { font: bold 92px sans-serif; fill: #ffffff; }
       .eyebrow { font: bold 25px sans-serif; fill: #a5b4fc; }
-      .tag { font: bold 40px sans-serif; fill: #f8fafc; }
+      .tag { font: bold 36px sans-serif; fill: #f8fafc; }
       .body { font: 25px sans-serif; fill: #cbd5e1; }
       .cmd { font: 25px monospace; fill: #e2e8f0; }
       .prompt { fill: #5eead4; }
@@ -114,16 +114,17 @@
   <!-- Wordmark and tagline -->
   <image href="hero/dc-logo-dark.svg" x="46" y="54" width="50" height="50"/>
   <text class="eyebrow" x="100" y="90">DEMA Consulting</text>
-  <!-- "TestResults" (5668 units) exceeds the 92px wordmark budget, so both words are 84px (as DictionaryMark);
-       the second word starts at x = 52 + 0.084 * 2056 = 224.7 -->
-  <text class="word" x="52" y="176" style="font-size: 84px">Test</text>
-  <text class="word brandText" x="224.7" y="176" style="font-size: 84px">Results</text>
+  <!-- "TestResults" (5668 units) exceeds the 92px wordmark budget, so both words are floor(488000 / 5668) = 86px.
+       The letter-width table puts the second word at x = 52 + 0.086 * 2056 = 228.8, but that leaves a visible gap
+       after "Test"; rendering "TestResults" as one text at 86px places the "R" 6px further left, so x = 222.8 -->
+  <text class="word" x="52" y="176" style="font-size: 86px">Test</text>
+  <text class="word brandText" x="222.8" y="176" style="font-size: 86px">Results</text>
   <rect x="58" y="200" width="132" height="6" rx="3" fill="url(#brand)"/>
-  <text class="tag" x="56" y="266">Any test results in.</text>
-  <text class="tag brandText" x="56" y="316">TRX or JUnit out.</text>
-  <text class="body" x="58" y="368">A .NET library that reads and writes</text>
-  <text class="body" x="58" y="402">TRX and JUnit XML test results with</text>
-  <text class="body" x="58" y="436">one strongly typed in-memory model.</text>
+  <text class="tag" x="56" y="266">TRX and JUnit results</text>
+  <text class="tag" x="56" y="314" style="fill: #a5b4fc">for .NET code.</text>
+  <text class="body" x="58" y="368">Reads a results file and detects its</text>
+  <text class="body" x="58" y="402">format; writes TRX or JUnit XML from</text>
+  <text class="body" x="58" y="436">one in-memory model of test results.</text>
   <!-- The command box: a typical C# call, on two lines -->
   <rect x="56" y="468" width="480" height="90" rx="12" fill="#0a1022" fill-opacity="0.8" stroke="#a78bfa" stroke-opacity="0.45" stroke-width="1.5"/>
   <text class="cmd" x="78" y="503">var r = Serializer</text>
@@ -292,7 +293,7 @@
     <line x1="1146" y1="510" x2="1318" y2="510" stroke="#ffffff" stroke-opacity="0.15"/>
     <circle cx="1152" cy="530" r="5" fill="#a78bfa"/>
     <rect class="bar" x="1166" y="526" width="118" height="8" rx="4" fill-opacity="0.75"/>
-    <text class="label" x="1232" y="585">Compliance</text>
+    <text class="label" x="1232" y="585">via ReqStream</text>
 
     <!-- Output four: a CI artifact -->
     <rect class="card" x="1355" y="390" width="205" height="210" rx="16"/>
@@ -301,6 +302,6 @@
     <path d="M1447 434 L1462 434 L1469 441 L1469 462 L1447 462 Z" fill="#ffffff"/>
     <rect x="1375" y="494" width="164" height="38" rx="8" fill="#ffffff" fill-opacity="0.08" stroke="#5eead4" stroke-opacity="0.6" stroke-width="1.5"/>
     <text class="miniMono" x="1457" y="520" fill="#e2e8f0" text-anchor="middle">results.trx</text>
-    <text class="label" x="1457" y="585">CI artifacts</text>
+    <text class="label" x="1457" y="585">via CI upload</text>
   </g>
 </svg>
