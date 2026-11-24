@@ -198,6 +198,7 @@ including uncommitted files). Each script requires a scope and prints its usage 
 
 ```pwsh
 pwsh ./build.ps1 -Changed    # build and test only when the changes affect the build
+pwsh ./build.ps1 -Project Tests   # build and test only the test projects affected by the named project
 pwsh ./fix.ps1 -Changed      # auto-fix only the changed file types
 pwsh ./lint.ps1 -Changed     # run only the lint checks whose inputs changed
 ```

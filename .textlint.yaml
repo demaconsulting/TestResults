@@ -49,6 +49,7 @@ words:
   - DEMA
   - demaconsulting
   - DEMACONSULTINGNUGETKEY
+  - distinguishability
   - Gidget
   - lintmark
   - ncipollo
@@ -57,11 +58,13 @@ words:
   - SARIF
   - Sarif
   - sarif
+  - Sensmetry
   - Setext
   - shopt
   - slnx
   - snupkg
   - sonarscanner
+  - Syside
   - thirdparty
   - unidirectionality
   - venv
