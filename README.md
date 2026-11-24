@@ -108,7 +108,7 @@ Helper extension methods: `IsPassed()`, `IsFailed()`, `IsExecuted()`
 ## Building
 
 ```pwsh
-pwsh ./build.ps1
+pwsh ./build.ps1 -All
 ```
 
 ## API Documentation

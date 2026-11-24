@@ -26,8 +26,7 @@ Before submitting this pull request, ensure you have completed the following:
 
 ### Build and Test
 
-- [ ] Code builds successfully: `dotnet build --configuration Release`
-- [ ] All unit tests pass: `dotnet test --configuration Release`
+- [ ] Code builds successfully and all tests pass: `pwsh ./build.ps1 -All`
 - [ ] Code produces zero warnings
 
 ### Code Quality
@@ -40,7 +39,7 @@ Before submitting this pull request, ensure you have completed the following:
 
 Please run the following checks before submitting:
 
-- [ ] **All linters pass**: `./lint.sh` (Unix/macOS) or `cmd /c lint.bat` / `./lint.bat` (Windows)
+- [ ] **All linters pass**: `pwsh ./lint.ps1 -All`
 
 ### Testing
 

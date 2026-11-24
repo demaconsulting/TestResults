@@ -14,7 +14,7 @@ coverage for requirements `TestResultsLibrary-Model-FormatIndependence`,
 
 ## Test Environment
 
-System tests run through the standard repository test runner by invoking `pwsh ./build.ps1`
+System tests run through the standard repository test runner by invoking `pwsh ./build.ps1 -All`
 or `dotnet test --configuration Release`. The test project targets `net481` on Windows and
 `net8.0`, `net9.0`, `net10.0`, and `net11.0` across supported environments. No database, network
 service, or external configuration is required; the tests use in-memory objects, inline XML,
